@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Twin Prime Conjecture — Lean 4 Formal Proof</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --accent: #58a6ff;
+      --text: #c9d1d9;
+      --muted: #8b949e;
+      --green: #3fb950;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #e6edf3;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .card h2 {
+      font-size: 1.2rem;
+      color: #e6edf3;
+      margin-bottom: 0.75rem;
+    }
+    .card p {
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .card p:last-child { margin-bottom: 0; }
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #0d1117;
+      font-weight: 600;
+      padding: 0.6rem 1.4rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .status-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    .status-table th, .status-table td {
+      text-align: left;
+      padding: 0.4rem 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .status-table th { color: var(--muted); font-weight: 600; }
+    .status-table tr:last-child td { border-bottom: none; }
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-green { background: #1a3d26; color: var(--green); }
+    .badge-yellow { background: #3d2e00; color: #e3b341; }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 3rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    code {
+      font-family: "SFMono-Regular", Consolas, monospace;
+      background: #1c2128;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.88em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Twin Prime Conjecture</h1>
+      <p>A Lean 4 / Mathlib4 formalisation via weakly saturated submonoids</p>
+    </header>
+
+    <div class="card">
+      <h2>📄 Formal Proof</h2>
+      <p>
+        Browse the interactive HTML rendering of the Lean 4 proof, generated with
+        <strong>doc-gen4</strong>. It covers every definition, lemma, and theorem in
+        the formalisation.
+      </p>
+      <a class="btn" href="TPC.html">View the Proof →</a>
+    </div>
+
+    <div class="card">
+      <h2>🔑 Main Result</h2>
+      <p>
+        The central theorem is <code>TPC.Main.infinitely_many_irred</code>:
+      </p>
+      <p>
+        <code>theorem infinitely_many_irred : {q : ℤ | Irred q}.Infinite</code>
+      </p>
+      <p>
+        Via <code>TPC.Main.infinitely_many_twin_primes</code> this yields infinitely
+        many twin prime pairs, conditional on the identification
+        <code>Irred k ↔ IsTwinPrimeIndex k</code>.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>📐 Proof Status</h2>
+      <table class="status-table">
+        <thead>
+          <tr><th>File</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Basic.lean</td><td><span class="badge badge-yellow">Mostly complete</span></td></tr>
+          <tr><td>Monoid.lean</td><td><span class="badge badge-green">Complete</span></td></tr>
+          <tr><td>AntiDiagonal.lean</td><td><span class="badge badge-yellow">Core lemmas complete</span></td></tr>
+          <tr><td>WeaklySaturated.lean</td><td><span class="badge badge-green">Complete</span></td></tr>
+          <tr><td>Norm.lean</td><td><span class="badge badge-yellow">N1–N7 complete</span></td></tr>
+          <tr><td>Topology.lean</td><td><span class="badge badge-yellow">Definitions complete</span></td></tr>
+          <tr><td>Main.lean</td><td><span class="badge badge-yellow">Structure complete</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>🏗 Core Argument</h2>
+      <p>1. <strong>Basic.lean</strong>: φ(x⊛y) = φ(x)φ(y) — one <code>ring</code> tactic.</p>
+      <p>2. <strong>AntiDiagonal.lean</strong>: Δ(x)⊗Δ(y) = Δ(x⊛y) — one <code>ring</code> tactic.</p>
+      <p>3. <strong>WeaklySaturated.lean</strong>: counterexample (1,0)⊗(1,−8)=(8,−8) — <code>norm_num</code>.</p>
+      <p>4. <strong>Norm.lean</strong>: |(x,−x)⊗(y,−y)| = |(x,−x)|·|(y,−y)| — one <code>ring</code>.</p>
+      <p>5. <strong>Topology.lean</strong>: U_{a,b,c} clopen — complement is finite union of translates.</p>
+      <p>6. <strong>Main.lean</strong>: Furstenberg — finite Irr ⟹ {(0,0)} open ⟹ contradiction.</p>
+    </div>
+
+    <footer>
+      <p>
+        Source on
+        <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" rel="noopener">
+          GitHub
+        </a>
+        &nbsp;·&nbsp; Built with Lean 4 and Mathlib4
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
