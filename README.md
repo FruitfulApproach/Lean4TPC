@@ -1,5 +1,7 @@
 # TPC — Twin Prime Conjecture via Weakly Saturated Submonoids
 
+**[Homepage](https://fruitfulapproach.github.io/Lean4TPC/)**
+
 A Lean 4 / Mathlib4 project formalising the algebraic approach to
 the Twin Prime Conjecture developed in the companion paper.
 
