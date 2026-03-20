@@ -5,6 +5,13 @@
 A Lean 4 / Mathlib4 project formalising the algebraic approach to
 the Twin Prime Conjecture developed in the companion paper.
 
+## Website
+
+The formal proof is hosted on GitHub Pages:
+
+- **Homepage**: <https://fruitfulapproach.github.io/Lean4TPC/>
+- **Proof viewer** (TPC.html): <https://fruitfulapproach.github.io/Lean4TPC/TPC.html>
+
 ## Structure
 
 ```
