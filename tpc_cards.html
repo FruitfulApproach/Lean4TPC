@@ -680,23 +680,41 @@ For this to be in $N$: $b-cz=-(a+cz)$, i.e., $a+b=0$, which holds when $a+b=0$. 
 lean:`${GH}/TPC/Topology.lean#L100`},
 
 {id:"t8.9",ch:"§8 Topology",b:"b-thm",
- t:`Thm 8.9 — $\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies L_p$ homeomorphism $\\implies$ $q\\otimes N$ closed`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Left multiplication $L_p(x)=p\\otimes x$ is a homeomorphism of $N$ onto a clopen subset. Therefore every coset $q\\otimes N$ is closed — this is what makes the finite-union-of-closed-sets argument work in the main theorem.</p>
-<div class="mdisp">$$p\\otimes N=V_{p_1,\\,6p_1+1}\\text{ (clopen)}, \\quad L_p\\text{ homeomorphism}\\implies p\\otimes C\\text{ closed for closed }C$$</div>
+ t:`Thm 8.9 — For every irreducible $q\\in\\mathrm{Irr}(N)$, the coset $q\\otimes N$ is closed`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every irreducible coset $q\\otimes N$ is closed in the subspace topology on $N$. This is the ingredient that lets the main theorem (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>) apply the finite-union-of-closed-sets argument.</p>
+<div class="mdisp">$$\\forall\\, q\\in\\mathrm{Irr}(N):\\quad q\\otimes N \\;\\text{ is closed in }N$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
 <p><strong>Step 1 — Define $L_p$:</strong> For $p=(p_1,-p_1)\\in N\\setminus\\{(0,0)\\}$, define left multiplication:</p>
 <p>$$L_p : N \\to N, \\quad L_p(x,-x) = p\\otimes(x,-x) = (p_1\\mathbin{\\circledast}x,\\;-(p_1\\mathbin{\\circledast}x))$$</p>
 <p>This is well-defined since $N=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}$ is closed under $\\otimes$ (<a class="iref" onclick="jumpId('d2.10')">Def 2.10</a>).</p>
 
-<p><strong>Step 2 — Continuity:</strong> We must show that for every basis element $V_{a,c}$ of $N$, the preimage $L_p^{-1}(V_{a,c})$ is open. We have $(x,-x)\\in L_p^{-1}(V_{a,c})$ iff $p_1\\mathbin{\\circledast}x\\equiv a\\pmod{c}$. Expanding:</p>
-<p>$$p_1\\mathbin{\\circledast}x = 6p_1 x + p_1 + x = (6p_1+1)x + p_1 = \\phi(p_1)\\,x + p_1$$</p>
-<p>So the condition becomes $\\phi(p_1)\\,x \\equiv a - p_1 \\pmod{c}$. Let $d=\\gcd(\\phi(p_1),\\,c)$.</p>
-<p><em>Case 1:</em> $d\\nmid(a-p_1)$. Then the congruence has no solution, so $L_p^{-1}(V_{a,c})=\\emptyset$, which is open. $\\checkmark$</p>
-<p><em>Case 2:</em> $d\\mid(a-p_1)$. Then by the theory of linear congruences, the solutions are $x\\equiv x_0\\pmod{c/d}$ for some fixed $x_0$. Therefore:</p>
-<p>$$L_p^{-1}(V_{a,c})=\\{(x_0+\\tfrac{c}{d}\\,n,\\;-(x_0+\\tfrac{c}{d}\\,n)):n\\in\\mathbb{Z}\\}=V_{x_0,\\,c/d}$$</p>
-<p>a basis element of $N$, hence open. $\\checkmark$</p>
-<p>In both cases, preimages of basis elements are open, so $L_p$ is continuous. $\\checkmark$</p>
+<p><strong>Step 2 — Continuity of $L_p$:</strong></p>
+
+<p><em>Goal:</em> A map between topological spaces is continuous iff the preimage of every basis element is open. So we must show: for every basis element $V_{a,c}$ of $N$, the preimage $L_p^{-1}(V_{a,c})$ is open in $N$.</p>
+
+<p><em>Recall:</em> The basis elements of $N$ are $V_{a,c}=N\\cap U_{a,-a,c}=\\{(a+cn,\\,-(a+cn)):n\\in\\mathbb{Z}\\}$, i.e., all diagonal points whose first coordinate lies in the arithmetic progression $a+c\\mathbb{Z}$.</p>
+
+<p><em>Unwind the preimage:</em> A point $(x,-x)\\in N$ belongs to $L_p^{-1}(V_{a,c})$ exactly when $L_p(x,-x)\\in V_{a,c}$, i.e., when the first coordinate of $L_p(x,-x)$, which is $p_1\\mathbin{\\circledast}x$, satisfies $p_1\\mathbin{\\circledast}x\\equiv a\\pmod{c}$.</p>
+
+<p><em>Simplify $p_1\\mathbin{\\circledast}x$:</em> By definition, $a\\mathbin{\\circledast}b=6ab+a+b$. So:</p>
+<p>$$p_1\\mathbin{\\circledast}x = 6p_1 x + p_1 + x$$</p>
+<p>Factor out $x$ from the two terms that contain it:</p>
+<p>$$= (6p_1 + 1)\\,x + p_1$$</p>
+<p>Recognise $6p_1+1=\\phi(p_1)$ (<a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>):</p>
+<p>$$= \\phi(p_1)\\,x + p_1$$</p>
+
+<p><em>Translate to a congruence in $x$:</em> The membership condition $p_1\\mathbin{\\circledast}x\\equiv a\\pmod{c}$ becomes:</p>
+<p>$$\\phi(p_1)\\,x + p_1 \\equiv a \\pmod{c} \\quad\\Longleftrightarrow\\quad \\phi(p_1)\\,x \\equiv a - p_1 \\pmod{c}$$</p>
+<p>This is a standard linear congruence in the unknown $x$, with modulus $c$ and coefficient $\\phi(p_1)$. Its solution set depends on $d := \\gcd(\\phi(p_1),\\,c)$:</p>
+
+<p><em>Case 1 — no solution:</em> If $d\\nmid(a-p_1)$, the congruence $\\phi(p_1)\\,x\\equiv a-p_1\\pmod{c}$ has no integer solutions (a standard fact from elementary number theory: $mx\\equiv r\\pmod{c}$ is solvable iff $\\gcd(m,c)\\mid r$). So $L_p^{-1}(V_{a,c})=\\emptyset$, which is open. $\\checkmark$</p>
+
+<p><em>Case 2 — solutions form an arithmetic progression:</em> If $d\\mid(a-p_1)$, then the congruence has exactly $d$ solutions modulo $c$, all of the form $x\\equiv x_0\\pmod{c/d}$ for a particular solution $x_0$ (obtained by dividing through by $d$: $\\tfrac{\\phi(p_1)}{d}\\,x\\equiv\\tfrac{a-p_1}{d}\\pmod{c/d}$, which has a unique solution mod $c/d$ since $\\gcd(\\tfrac{\\phi(p_1)}{d},\\,c/d)=1$). Therefore the full integer solution set is $x\\in x_0 + \\tfrac{c}{d}\\,\\mathbb{Z}$, and:</p>
+<p>$$L_p^{-1}(V_{a,c})=\\bigl\\{\\bigl(x_0+\\tfrac{c}{d}\\,n,\\;-(x_0+\\tfrac{c}{d}\\,n)\\bigr):n\\in\\mathbb{Z}\\bigr\\}=V_{x_0,\\;c/d}$$</p>
+<p>This is itself a basis element of $N$ (an arithmetic progression on the diagonal with step $c/d>0$), hence open. $\\checkmark$</p>
+
+<p><em>Conclusion:</em> In every case, $L_p^{-1}(V_{a,c})$ is either empty or a basis element — both open in $N$. Since preimages of all basis elements are open, $L_p$ is continuous. $\\checkmark$</p>
 
 <p><strong>Step 3 — Open map (basis elements $\\to$ basis elements):</strong> We show $L_p$ maps each basis element of $N$ to another basis element, which proves $L_p$ is an open map onto its image. Take a basis element $V_{x_0,c}=\\{(x_0+cn,\\,-(x_0+cn)):n\\in\\mathbb{Z}\\}$. For each $n$:</p>
 <p>$$p_1\\mathbin{\\circledast}(x_0+cn) = 6p_1(x_0+cn)+p_1+(x_0+cn)$$</p>
@@ -718,7 +736,7 @@ lean:`${GH}/TPC/Topology.lean#L100`},
 
 <p><strong>Step 6 — $L_p$ is a homeomorphism:</strong> Steps 2–5 show $L_p$ is continuous, open, and injective with clopen image $V_{p_1,\\,\\phi(p_1)}$. A continuous open bijection onto its image is a homeomorphism. $\\checkmark$</p>
 
-<p><strong>Step 7 — Cosets are closed:</strong> For any $q\\in\\mathrm{Irr}(N)$, we have $q\\otimes N = L_q(N) = V_{q_1,\\,\\phi(q_1)}$, which is clopen (hence closed) by Step 5. More generally, for any closed $C\\subseteq N$: $L_q(C)$ is closed in $L_q(N)$ (since $L_q$ is a homeomorphism), and $L_q(N)$ is clopen in $N$, so a closed subset of a clopen set is closed in the ambient space. Therefore $q\\otimes C$ is closed in $N$. $\\square$</p>
+<p><strong>Step 7 — Cosets are closed:</strong> For any irreducible $q=(q_1,-q_1)\\in\\mathrm{Irr}(N)$, the coset is $q\\otimes N = L_q(N) = V_{q_1,\\,\\phi(q_1)}$ by Step 5. This is a basis element of $N$, hence clopen — in particular, closed. $\\square$</p>
 <p><strong>Worked example ($p_1=1$):</strong></p>
 <div class="cblk"> L_{(1,-1)}: (x,-x) ↦ (1⊛x, -(1⊛x))
  φ(1)=7, so image has step size 7:
