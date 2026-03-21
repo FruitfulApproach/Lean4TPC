@@ -491,32 +491,41 @@ lean:`${GH}/TPC/WeaklySaturated.lean#L45`},
 
 <p><strong>($\\Leftarrow$) Composite $\\implies$ decomposable:</strong></p>
 
-<p>Suppose $n = 6x+1$ is composite. We must find $a,b\\neq0$ with $a\\mathbin{\\circledast}b=x$, equivalently $(6a+1)(6b+1)=n$.</p>
+<p>Suppose $n = 6x+1$ is composite. We must find $a,b\\neq0$ with $a\\mathbin{\\circledast}b=x$.</p>
 
-<p><em>Step 1 — Prime factorisation:</em> Since $n\\in6\\mathbb{Z}+1$, we have $n\\equiv1\\pmod{2}$ and $n\\equiv1\\pmod{3}$, so $\\gcd(n,6)=1$. Every prime factor $p$ of $n$ therefore satisfies $p\\equiv\\pm1\\pmod{6}$.</p>
+<p><em>Step 1 — Prime factorisation:</em> Since $n\\in6\\mathbb{Z}+1$, we have $\\gcd(n,6)=1$, so every prime factor $p$ of $n$ satisfies $p\\equiv\\pm1\\pmod{6}$. Since $n$ is composite, write $n = m\\cdot m'$ with $|m|,|m'|>1$. Both $m$ and $m'$ are products of primes $\\equiv\\pm1\\pmod6$, so $m,m'\\equiv\\pm1\\pmod6$. Since $n\\equiv1\\pmod6$, the two factors satisfy $m\\cdot m'\\equiv1\\pmod6$, which forces either both $\\equiv1$ or both $\\equiv-1\\pmod6$.</p>
 
-<p><em>Step 2 — Residue analysis:</em> Write $|n|=p_1 p_2\\cdots p_k$ with $k\\geq2$ and each $p_i\\equiv\\pm1\\pmod6$. Since $n\\equiv1\\pmod{6}$, the count of factors with $p_i\\equiv-1\\pmod6$ must be even (because the product of an odd number of $(-1)$'s is $-1\\not\\equiv1$).</p>
+<p><em>Case 1 — Both $m,m'\\equiv1\\pmod6$:</em> Then $m,m'\\in6\\mathbb{Z}+1$. Write $m=6a+1$, $m'=6b+1$ with $a,b\\in\\mathbb{Z}$. Since $|m|,|m'|\\geq5$ (the smallest elements of $6\\mathbb{Z}+1$ with absolute value $>1$ are $\\pm5,\\pm7,\\ldots$), we have $a,b\\neq0$. Then:</p>
+<p>$$n = (6a+1)(6b+1) = \\phi(a)\\,\\phi(b) = \\phi(a\\mathbin{\\circledast}b)$$</p>
+<p>So $a\\mathbin{\\circledast}b = x$ by injectivity of $\\phi$. $\\checkmark$</p>
 
-<p><em>Step 3 — Splitting into two factors in $6\\mathbb{Z}+1$:</em> Partition the prime factors into two nonempty groups $A$ and $B$ (possible since $k\\geq2$). Let $m=\\prod_{i\\in A} p_i$ and $m'=\\prod_{i\\in B} p_i$, so $|n|=m\\cdot m'$ with $m,m'>1$.</p>
+<p><em>Case 2 — Both $m,m'\\equiv-1\\pmod6$:</em> Then $m,m'\\in6\\mathbb{Z}-1$. Write $m=6\\alpha-1$, $m'=6\\beta-1$ with $\\alpha,\\beta\\in\\mathbb{Z}$. Note:</p>
+<p>$$(6\\alpha-1)(6\\beta-1) = 36\\alpha\\beta - 6\\alpha - 6\\beta + 1 = 6(6\\alpha\\beta-\\alpha-\\beta)+1 = n$$</p>
+<p>Now set $a=-\\alpha$ and $b=-\\beta$. Then $6a+1 = -6\\alpha+1 = -(6\\alpha-1) = -m$ and $6b+1 = -m'$, so:</p>
+<p>$$(6a+1)(6b+1) = (-m)(-m') = mm' = n = \\phi(x)$$</p>
+<p>Since $|m|,|m'|\\geq5$, we have $|6a+1|,|6b+1|\\geq5$, so $a,b\\neq0$. Again $\\phi(a)\\phi(b)=\\phi(x)$ gives $a\\mathbin{\\circledast}b=x$. $\\checkmark$</p>
 
-<p>Each of $m,m'$ is a product of primes $\\equiv\\pm1\\pmod6$, so $m,m'\\equiv\\pm1\\pmod6$. If both $\\equiv1$: set $u=m,v=m'\\in6\\mathbb{Z}+1$. If both $\\equiv-1$: set $u=-m,v=-m'$ (then $u,v\\equiv1\\pmod6$ and $uv=mm'=|n|$; if $n>0$ take $u,v$ as is; if $n<0$ negate one). In all cases we obtain $n=uv$ with $u,v\\in6\\mathbb{Z}+1$ and $|u|,|v|>1$.</p>
-
-<p><em>Step 4 — Recover $a,b$:</em> Write $u=6a+1$ and $v=6b+1$ (with $a=\\tfrac{u-1}{6}$, $b=\\tfrac{v-1}{6}\\in\\mathbb{Z}$). Since $|u|\\geq5$ and $|v|\\geq5$, we have $a\\neq0$ and $b\\neq0$. Then:</p>
-<p>$$\\phi(a)\\phi(b)=(6a+1)(6b+1)=uv=n=\\phi(x)$$</p>
-<p>So $a\\mathbin{\\circledast}b=x$ (since $\\phi$ is injective). $\\checkmark$</p>
+<p>In both cases we have found $a,b\\neq0$ with $a\\mathbin{\\circledast}b=x$. $\\checkmark$</p>
 
 <p><strong>Worked examples:</strong></p>
 <div class="cblk"> x=4:  φ(4) = 25 = 5·5 (composite)
-   5 ≡ -1 mod 6, so use u = -5, v = -5: (-5)(-5) = 25 ✓
-   u = -5 = 6(-1)+1, so a = -1
-   v = -5 = 6(-1)+1, so b = -1
+   Case 2: 5,5 ∈ 6ℤ-1 (both ≡ -1 mod 6)
+   α=1, β=1: (6·1-1)(6·1-1) = 25 ✓
+   a=-α=-1, b=-β=-1
+   φ(-1)φ(-1) = (-5)(-5) = 25 ✓
    Check: (-1)⊛(-1) = 6·1+(-1)+(-1) = 4 ✓
 
  x=14: φ(14) = 85 = 5·17 (composite)
-   5 ≡ -1 mod 6, 17 ≡ -1 mod 6 → even count ✓
-   u = -5, v = -17: (-5)(-17) = 85 ✓
-   a = -1, b = -3
+   Case 2: 5,17 ∈ 6ℤ-1 (both ≡ -1 mod 6)
+   α=1, β=3: (6·1-1)(6·3-1) = 5·17 = 85 ✓
+   a=-1, b=-3
+   φ(-1)φ(-3) = (-5)(-17) = 85 ✓
    Check: (-1)⊛(-3) = 6·3+(-1)+(-3) = 14 ✓
+
+ x=8:  φ(8) = 49 = 7·7 (composite)
+   Case 1: 7,7 ∈ 6ℤ+1 (both ≡ 1 mod 6)
+   a=1, b=1: φ(1)φ(1) = 7·7 = 49 ✓
+   Check: 1⊛1 = 6+1+1 = 8 ✓
 
  x=1:  φ(1) = 7 (prime) → NOT decomposable ✓
  x=2:  φ(2) = 13 (prime) → NOT decomposable ✓</div>
