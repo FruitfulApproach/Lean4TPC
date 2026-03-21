@@ -34,7 +34,7 @@ def Δ (x : ℤ) : ℤ × ℤ := (x, -x)
 
 /-- The key closure lemma: Δ(x) ⊗ Δ(y) = Δ(x ⊛ y) -/
 lemma Δ_otimes (x y : ℤ) : Δ x ⊗ Δ y = Δ (x ⊛ y) := by
-  simp [Δ, otimes, neg_sstar_neg]
+  simp [Δ, otimes, mstar, sstar]; ring
 
 /-- AntiDiag is closed under ⊗ -/
 lemma antiDiag_closed (p q : ℤ × ℤ) (hp : p ∈ AntiDiag) (hq : q ∈ AntiDiag) :
@@ -52,7 +52,7 @@ lemma antiDiag_closed (p q : ℤ × ℤ) (hp : p ∈ AntiDiag) (hq : q ∈ AntiD
 def antiDiagSubmonoid : Submonoid (ℤ × ℤ) where
   carrier  := AntiDiag
   one_mem' := antiDiag_one
-  mul_mem' := antiDiag_closed _ _
+  mul_mem' := fun hp hq => antiDiag_closed _ _ hp hq
 
 -- ============================================================
 -- Section 4: Weak saturation
@@ -114,7 +114,7 @@ def AntiDiagIrred (x : ℤ) : Prop :=
 
 /-- If x is ⊛-irreducible and ⋆-irreducible, then Δ(x) is ⊗-irreducible -/
 theorem antiDiagIrred_of_both_irred (x : ℤ)
-    (hm : MstarIrred x) (hs : SstarIrred x) : AntiDiagIrred x := by
+    (hm : MstarIrred x) (_hs : SstarIrred x) : AntiDiagIrred x := by
   constructor
   · exact hm.1
   · intro a b ha hb heq
