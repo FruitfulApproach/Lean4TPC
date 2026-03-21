@@ -8,8 +8,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/elkjs@0.9.3/lib/elk.bundled.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape-elk@2.2.0/dist/cytoscape-elk.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
   onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
@@ -679,46 +679,64 @@ For this to be in $N$: $b-cz=-(a+cz)$, i.e., $a+b=0$, which holds when $a+b=0$. 
 <p>This is the property that produces the <a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a> contradiction.</p>`,
 lean:`${GH}/TPC/Topology.lean#L100`},
 
-{id:"t8.9",ch:"§8 Topology",b:"b-thm",
- t:`Thm 8.9 — For every irreducible $q\\in\\mathrm{Irr}(N)$, the coset $q\\otimes N$ is closed`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every irreducible coset $q\\otimes N$ is closed in the subspace topology on $N$. This is the ingredient that lets the main theorem (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>) apply the finite-union-of-closed-sets argument.</p>
-<div class="mdisp">$$\\forall\\, q\\in\\mathrm{Irr}(N):\\quad q\\otimes N \\;\\text{ is closed in }N$$</div>
+{id:"l8.9a",ch:"§8 Topology",b:"b-lem",
+ t:`Lem 8.9a — $L_p$ is continuous`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Left multiplication $L_p(x,-x)=p\\otimes(x,-x)=(p_1\\mathbin{\\circledast}x,\\,-(p_1\\mathbin{\\circledast}x))$ is continuous on $N$: preimages of basis elements are open.</p>
+<div class="mdisp">$$L_p : N \\to N, \\quad L_p(x,-x) = (p_1\\mathbin{\\circledast}x,\\;-(p_1\\mathbin{\\circledast}x))$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>Step 1 — Define $L_p$:</strong> For $p=(p_1,-p_1)\\in N\\setminus\\{(0,0)\\}$, define left multiplication:</p>
-<p>$$L_p : N \\to N, \\quad L_p(x,-x) = p\\otimes(x,-x) = (p_1\\mathbin{\\circledast}x,\\;-(p_1\\mathbin{\\circledast}x))$$</p>
-<p>This is well-defined since $N=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}$ is closed under $\\otimes$ (<a class="iref" onclick="jumpId('d2.10')">Def 2.10</a>).</p>
+<p><strong>Setup:</strong> Fix $p=(p_1,-p_1)\\in N\\setminus\\{(0,0)\\}$. The map $L_p:N\\to N$ is well-defined since $N=\\Delta(\\mathbb{Z})$ is closed under $\\otimes$ (<a class="iref" onclick="jumpId('d2.10')">Def 2.10</a>).</p>
 
-<p><strong>Step 2 — Continuity of $L_p$:</strong></p>
+<p><strong>Goal:</strong> A map between topological spaces is continuous iff the preimage of every basis element is open. So we must show: for every basis element $V_{a,c}$ of $N$, the preimage $L_p^{-1}(V_{a,c})$ is open in $N$.</p>
 
-<p><em>Goal:</em> A map between topological spaces is continuous iff the preimage of every basis element is open. So we must show: for every basis element $V_{a,c}$ of $N$, the preimage $L_p^{-1}(V_{a,c})$ is open in $N$.</p>
+<p><strong>Recall:</strong> The basis elements of $N$ are $V_{a,c}=N\\cap U_{a,-a,c}=\\{(a+cn,\\,-(a+cn)):n\\in\\mathbb{Z}\\}$, i.e., all diagonal points whose first coordinate lies in the arithmetic progression $a+c\\mathbb{Z}$.</p>
 
-<p><em>Recall:</em> The basis elements of $N$ are $V_{a,c}=N\\cap U_{a,-a,c}=\\{(a+cn,\\,-(a+cn)):n\\in\\mathbb{Z}\\}$, i.e., all diagonal points whose first coordinate lies in the arithmetic progression $a+c\\mathbb{Z}$.</p>
+<p><strong>Unwind the preimage:</strong> A point $(x,-x)\\in N$ belongs to $L_p^{-1}(V_{a,c})$ exactly when $L_p(x,-x)\\in V_{a,c}$, i.e., when the first coordinate of $L_p(x,-x)$, which is $p_1\\mathbin{\\circledast}x$, satisfies $p_1\\mathbin{\\circledast}x\\equiv a\\pmod{c}$.</p>
 
-<p><em>Unwind the preimage:</em> A point $(x,-x)\\in N$ belongs to $L_p^{-1}(V_{a,c})$ exactly when $L_p(x,-x)\\in V_{a,c}$, i.e., when the first coordinate of $L_p(x,-x)$, which is $p_1\\mathbin{\\circledast}x$, satisfies $p_1\\mathbin{\\circledast}x\\equiv a\\pmod{c}$.</p>
-
-<p><em>Simplify $p_1\\mathbin{\\circledast}x$:</em> By definition, $a\\mathbin{\\circledast}b=6ab+a+b$. So:</p>
+<p><strong>Simplify $p_1\\mathbin{\\circledast}x$:</strong> By definition, $a\\mathbin{\\circledast}b=6ab+a+b$. So:</p>
 <p>$$p_1\\mathbin{\\circledast}x = 6p_1 x + p_1 + x$$</p>
 <p>Factor out $x$ from the two terms that contain it:</p>
 <p>$$= (6p_1 + 1)\\,x + p_1$$</p>
 <p>Recognise $6p_1+1=\\phi(p_1)$ (<a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>):</p>
 <p>$$= \\phi(p_1)\\,x + p_1$$</p>
 
-<p><em>Translate to a congruence in $x$:</em> The membership condition $p_1\\mathbin{\\circledast}x\\equiv a\\pmod{c}$ becomes:</p>
+<p><strong>Translate to a congruence in $x$:</strong> The membership condition $p_1\\mathbin{\\circledast}x\\equiv a\\pmod{c}$ becomes:</p>
 <p>$$\\phi(p_1)\\,x + p_1 \\equiv a \\pmod{c} \\quad\\Longleftrightarrow\\quad \\phi(p_1)\\,x \\equiv a - p_1 \\pmod{c}$$</p>
 <p>This is a standard linear congruence in the unknown $x$, with modulus $c$ and coefficient $\\phi(p_1)$. Its solution set depends on $d := \\gcd(\\phi(p_1),\\,c)$:</p>
 
-<p><em>Case 1 — no solution:</em> If $d\\nmid(a-p_1)$, the congruence $\\phi(p_1)\\,x\\equiv a-p_1\\pmod{c}$ has no integer solutions (a standard fact from elementary number theory: $mx\\equiv r\\pmod{c}$ is solvable iff $\\gcd(m,c)\\mid r$). So $L_p^{-1}(V_{a,c})=\\emptyset$, which is open. $\\checkmark$</p>
+<p><em>Case 1 — no solution:</em> If $d\\nmid(a-p_1)$, the congruence $\\phi(p_1)\\,x\\equiv a-p_1\\pmod{c}$ has no integer solutions (a standard fact: $mx\\equiv r\\pmod{c}$ is solvable iff $\\gcd(m,c)\\mid r$). So $L_p^{-1}(V_{a,c})=\\emptyset$, which is open. $\\checkmark$</p>
 
-<p><em>Case 2 — solutions form an arithmetic progression:</em> If $d\\mid(a-p_1)$, then the congruence has exactly $d$ solutions modulo $c$, all of the form $x\\equiv x_0\\pmod{c/d}$ for a particular solution $x_0$ (obtained by dividing through by $d$: $\\tfrac{\\phi(p_1)}{d}\\,x\\equiv\\tfrac{a-p_1}{d}\\pmod{c/d}$, which has a unique solution mod $c/d$ since $\\gcd(\\tfrac{\\phi(p_1)}{d},\\,c/d)=1$). Therefore the full integer solution set is $x\\in x_0 + \\tfrac{c}{d}\\,\\mathbb{Z}$, and:</p>
+<p><em>Case 2 — solutions form an arithmetic progression:</em> If $d\\mid(a-p_1)$, then dividing through by $d$ gives $\\tfrac{\\phi(p_1)}{d}\\,x\\equiv\\tfrac{a-p_1}{d}\\pmod{c/d}$, which has a unique solution $x_0$ mod $c/d$ since $\\gcd(\\tfrac{\\phi(p_1)}{d},\\,c/d)=1$. The full integer solution set is $x\\in x_0 + \\tfrac{c}{d}\\,\\mathbb{Z}$, so:</p>
 <p>$$L_p^{-1}(V_{a,c})=\\bigl\\{\\bigl(x_0+\\tfrac{c}{d}\\,n,\\;-(x_0+\\tfrac{c}{d}\\,n)\\bigr):n\\in\\mathbb{Z}\\bigr\\}=V_{x_0,\\;c/d}$$</p>
-<p>This is itself a basis element of $N$ (an arithmetic progression on the diagonal with step $c/d>0$), hence open. $\\checkmark$</p>
+<p>This is a basis element of $N$ (arithmetic progression on the diagonal with step $c/d>0$), hence open. $\\checkmark$</p>
 
-<p><em>Conclusion:</em> In every case, $L_p^{-1}(V_{a,c})$ is either empty or a basis element — both open in $N$. Since preimages of all basis elements are open, $L_p$ is continuous. $\\checkmark$</p>
+<p><strong>Conclusion:</strong> In every case, $L_p^{-1}(V_{a,c})$ is either empty or a basis element — both open in $N$. Since preimages of all basis elements are open, $L_p$ is continuous. $\\square$</p>
+</div>`,
+lean:`${GH}/TPC/Topology.lean#L155`},
 
-<p><strong>Step 3 — Open map (basis elements $\\to$ basis elements):</strong> We show $L_p$ maps each basis element of $N$ to another basis element, which proves $L_p$ is an open map onto its image. Take a basis element $V_{x_0,c}=\\{(x_0+cn,\\,-(x_0+cn)):n\\in\\mathbb{Z}\\}$. For each $n$:</p>
+{id:"l8.9b",ch:"§8 Topology",b:"b-lem",
+ t:`Lem 8.9b — $L_p$ is injective`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Left multiplication $L_p$ is one-to-one: distinct inputs produce distinct outputs. The key tool is the isomorphism $\\phi$, which turns $\\circledast$ into ordinary multiplication where cancellation is straightforward.</p>
+<div class="mdisp">$$p_1\\mathbin{\\circledast}x=p_1\\mathbin{\\circledast}y \\;\\implies\\; x=y$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p><strong>Assume</strong> $p_1\\mathbin{\\circledast}x=p_1\\mathbin{\\circledast}y$. Recall from <a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a> that $\\phi$ is a monoid isomorphism with $\\phi(a\\mathbin{\\circledast}b)=\\phi(a)\\phi(b)$. Applying $\\phi$ to both sides:</p>
+<p>$$\\phi(p_1\\mathbin{\\circledast}x) = \\phi(p_1\\mathbin{\\circledast}y) \\quad\\Longrightarrow\\quad \\phi(p_1)\\,\\phi(x) = \\phi(p_1)\\,\\phi(y)$$</p>
+<p>We need $\\phi(p_1)\\neq 0$ to cancel. Since $\\phi(p_1)=6p_1+1$ and $6p_1+1=0$ would require $p_1=-\\tfrac{1}{6}\\notin\\mathbb{Z}$, we have $\\phi(p_1)\\neq 0$ for all $p_1\\in\\mathbb{Z}$. Cancel to get:</p>
+<p>$$\\phi(x)=\\phi(y) \\quad\\Longrightarrow\\quad x=y$$</p>
+<p>where the last step uses injectivity of $\\phi$ (it is a bijection $\\mathbb{Z}\\to 6\\mathbb{Z}+1$). $\\square$</p>
+</div>`,
+lean:`${GH}/TPC/Topology.lean#L155`},
+
+{id:"l8.9c",ch:"§8 Topology",b:"b-lem",
+ t:`Lem 8.9c — $L_p$ is an open map with clopen image $V_{p_1,\\,\\phi(p_1)}$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">$L_p$ maps every basis element of $N$ to a basis element, so it is an open map. Its image is the arithmetic progression $V_{p_1,\\,\\phi(p_1)}$, which is a basis element and therefore clopen.</p>
+<div class="mdisp">$$L_p(V_{x_0,c}) = V_{p_1\\,\\circledast\\, x_0,\\;\\phi(p_1)\\,c}, \\qquad L_p(N)=V_{p_1,\\,\\phi(p_1)}\\text{ (clopen)}$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p><strong>Open map:</strong> Take a basis element $V_{x_0,c}=\\{(x_0+cn,\\,-(x_0+cn)):n\\in\\mathbb{Z}\\}$. For each $n$:</p>
 <p>$$p_1\\mathbin{\\circledast}(x_0+cn) = 6p_1(x_0+cn)+p_1+(x_0+cn)$$</p>
-<p>Expand the first term:</p>
+<p>Expand:</p>
 <p>$$= 6p_1 x_0 + 6p_1 cn + p_1 + x_0 + cn$$</p>
 <p>Group the constant part and the $n$-dependent part:</p>
 <p>$$= \\underbrace{(6p_1 x_0 + p_1 + x_0)}_{=\\,p_1\\,\\circledast\\, x_0} \\;+\\; \\underbrace{(6p_1 + 1)}_{=\\,\\phi(p_1)} \\cdot c \\cdot n$$</p>
@@ -726,17 +744,10 @@ lean:`${GH}/TPC/Topology.lean#L100`},
 <p>$$L_p(V_{x_0,c}) = \\{(p_1\\mathbin{\\circledast}x_0 + \\phi(p_1)\\,c\\,n,\\; -(p_1\\mathbin{\\circledast}x_0 + \\phi(p_1)\\,c\\,n)) : n\\in\\mathbb{Z}\\} = V_{p_1\\,\\circledast\\, x_0,\\;\\phi(p_1)\\,c}$$</p>
 <p>This is a basis element of $N$ with starting point $p_1\\mathbin{\\circledast}x_0$ and step size $\\phi(p_1)\\cdot c$. Since $L_p$ maps every basis element to a basis element, $L_p$ is an open map onto its image. $\\checkmark$</p>
 
-<p><strong>Step 4 — Injectivity:</strong> Suppose $p_1\\mathbin{\\circledast}x=p_1\\mathbin{\\circledast}y$. Recall from <a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a> that $\\phi$ is a monoid isomorphism with $\\phi(a\\mathbin{\\circledast}b)=\\phi(a)\\phi(b)$. Applying $\\phi$ to both sides:</p>
-<p>$$\\phi(p_1)\\,\\phi(x) = \\phi(p_1)\\,\\phi(y)$$</p>
-<p>Now $p_1\\neq 0$ implies $\\phi(p_1)=6p_1+1\\neq 1$, and more critically $\\phi(p_1)\\neq 0$ (since $6p_1+1=0$ would require $p_1=-\\tfrac{1}{6}\\notin\\mathbb{Z}$). So we may cancel $\\phi(p_1)$ to get $\\phi(x)=\\phi(y)$, hence $x=y$ by injectivity of $\\phi$. $\\checkmark$</p>
+<p><strong>Image characterisation:</strong> Setting $c=1$ and $x_0=0$ (so $V_{0,1}=N$):</p>
+<p>$$L_p(N) = V_{p_1\\,\\circledast\\, 0,\\;\\phi(p_1)\\cdot 1} = V_{p_1,\\,\\phi(p_1)}$$</p>
+<p>since $p_1\\mathbin{\\circledast}0 = 6p_1\\cdot 0 + p_1 + 0 = p_1$. This is the arithmetic progression $\\{(p_1+\\phi(p_1)\\,n,\\;-(p_1+\\phi(p_1)\\,n)):n\\in\\mathbb{Z}\\}$, a basis element, hence clopen in $N$. $\\square$</p>
 
-<p><strong>Step 5 — Image is clopen:</strong> As $x$ ranges over $\\mathbb{Z}$, $\\phi(x)=6x+1$ ranges over all of $6\\mathbb{Z}+1$. So:</p>
-<p>$$\\phi(L_p(N)) = \\{\\phi(p_1)\\,\\phi(x) : x\\in\\mathbb{Z}\\} = \\phi(p_1)\\cdot(6\\mathbb{Z}+1)$$</p>
-<p>Pulling back through $\\phi^{-1}$: $L_p(N) = V_{p_1,\\,\\phi(p_1)}$, the arithmetic progression $\\{(p_1+\\phi(p_1)\\,n,\\;-(p_1+\\phi(p_1)\\,n)):n\\in\\mathbb{Z}\\}$. This is a basis element, hence clopen in $N$. $\\checkmark$</p>
-
-<p><strong>Step 6 — $L_p$ is a homeomorphism:</strong> Steps 2–5 show $L_p$ is continuous, open, and injective with clopen image $V_{p_1,\\,\\phi(p_1)}$. A continuous open bijection onto its image is a homeomorphism. $\\checkmark$</p>
-
-<p><strong>Step 7 — Cosets are closed:</strong> For any irreducible $q=(q_1,-q_1)\\in\\mathrm{Irr}(N)$, the coset is $q\\otimes N = L_q(N) = V_{q_1,\\,\\phi(q_1)}$ by Step 5. This is a basis element of $N$, hence clopen — in particular, closed. $\\square$</p>
 <p><strong>Worked example ($p_1=1$):</strong></p>
 <div class="cblk"> L_{(1,-1)}: (x,-x) ↦ (1⊛x, -(1⊛x))
  φ(1)=7, so image has step size 7:
@@ -745,9 +756,37 @@ lean:`${GH}/TPC/Topology.lean#L100`},
  x=2: 1⊛2 = 15  → (15,-15)
  x=-1: 1⊛(-1)=-6 → (-6,6)
  Image = V_{1,7} = {(1+7n, -(1+7n)) : n∈ℤ} — clopen ✓</div>
+</div>`,
+lean:`${GH}/TPC/Topology.lean#L155`},
+
+{id:"t8.9",ch:"§8 Topology",b:"b-thm",
+ t:`Thm 8.9 — $L_p$ is a homeomorphism $\\implies$ $q\\otimes N$ is closed for every irreducible $q$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Combining the three lemmas above: $L_p$ is a continuous (<a class="iref" onclick="jumpId('l8.9a')">Lem 8.9a</a>), injective (<a class="iref" onclick="jumpId('l8.9b')">Lem 8.9b</a>), open map onto a clopen image (<a class="iref" onclick="jumpId('l8.9c')">Lem 8.9c</a>). This makes it a homeomorphism, and its image — the coset $q\\otimes N$ — is clopen, hence closed.</p>
+<div class="mdisp">$$L_p\\text{ continuous + injective + open + clopen image}\\;\\implies\\;L_p\\text{ homeomorphism}$$
+$$\\implies\\;q\\otimes N = V_{q_1,\\,\\phi(q_1)}\\text{ is clopen (hence closed) for every }q\\in\\mathrm{Irr}(N)$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p><strong>$L_p$ is a homeomorphism onto its image:</strong> By <a class="iref" onclick="jumpId('l8.9a')">Lem 8.9a</a>, $L_p$ is continuous. By <a class="iref" onclick="jumpId('l8.9b')">Lem 8.9b</a>, $L_p$ is injective. By <a class="iref" onclick="jumpId('l8.9c')">Lem 8.9c</a>, $L_p$ is an open map onto the clopen set $V_{p_1,\\,\\phi(p_1)}$. A continuous, injective, open map is a homeomorphism onto its image.</p>
+<p><strong>Cosets are closed:</strong> For any irreducible $q=(q_1,-q_1)\\in\\mathrm{Irr}(N)$, the coset is:</p>
+<p>$$q\\otimes N = L_q(N) = V_{q_1,\\,\\phi(q_1)}$$</p>
+<p>This is a basis element of $N$, hence clopen — in particular, closed. $\\square$</p>
 </div>
 <p><strong>Example ($p_1=1$):</strong> $L_{(1,-1)}$ maps $N$ onto $V_{1,7}=\\{(1+7n,-(1+7n))\\}$, step $7=\\phi(1)$.</p>`,
 lean:`${GH}/TPC/Topology.lean#L155`},
+
+{id:"l8.13",ch:"§8 Topology",b:"b-lem",
+ t:`Lem 8.13 — $q\\otimes C$ is closed for any $q\\in N\\setminus\\{0\\}$ and closed $C\\subseteq N$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Since $L_q$ is a homeomorphism onto a clopen image (<a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>), it preserves closedness: the image of any closed set under $L_q$ is closed in $N$.</p>
+<div class="mdisp">$$C\\subseteq N\\text{ closed},\\; q\\in N\\setminus\\{(0,0)\\} \\;\\implies\\; q\\otimes C\\text{ is closed in }N$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p><strong>Step 1 — Homeomorphism restricts to closed sets:</strong> By <a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>, $L_q$ is a homeomorphism from $N$ onto its image $L_q(N)=V_{q_1,\\,\\phi(q_1)}$. A homeomorphism maps closed sets to closed sets. So if $C$ is closed in $N$, then $L_q(C)=q\\otimes C$ is closed in $L_q(N)$.</p>
+
+<p><strong>Step 2 — Closed-in-clopen is closed-in-ambient:</strong> By <a class="iref" onclick="jumpId('l8.9c')">Lem 8.9c</a>, $L_q(N)=V_{q_1,\\,\\phi(q_1)}$ is clopen in $N$. In particular it is closed. A set that is closed inside a closed subspace is closed in the ambient space: if $q\\otimes C$ is closed in $L_q(N)$, then $q\\otimes C = L_q(N)\\cap F$ for some $F$ closed in $N$, so $q\\otimes C$ is an intersection of two closed sets in $N$, hence closed in $N$. $\\square$</p>
+
+<p><strong>Corollary (used in <a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>):</strong> Taking $C=N$ (closed in itself): for each irreducible $q$, the coset $q\\otimes N = V_{q_1,\\,\\phi(q_1)}$ is closed. This is the special case already noted in <a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>, but this lemma gives us the stronger general statement.</p>
+</div>`,
+lean:`${GH}/TPC/Topology.lean#L180`},
 
 {id:"t9.1",ch:"§9 Main",b:"b-thm",
  t:`Thm 9.1 — Covering + Closed Cosets + No Open Singletons $\\implies$ $|\\mathrm{Irr}(N)|=\\infty$`,
@@ -758,7 +797,7 @@ lean:`${GH}/TPC/Topology.lean#L155`},
 <p><strong>Ingredient 1 — Covering (<a class="iref" onclick="jumpId('c7.5')">Cor 7.5</a>):</strong>
 $$N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$$
 Every nonidentity element has an irreducible divisor, so it lies in some irreducible coset.</p>
-<p><strong>Ingredient 2 — Each coset is closed (<a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>):</strong> For each $q\\in\\mathrm{Irr}(N)$, the left multiplication $L_q$ is a homeomorphism, so $q\\otimes N=L_q(N)$ is clopen (hence closed) in $N$.</p>
+<p><strong>Ingredient 2 — Each coset is closed (<a class="iref" onclick="jumpId('l8.13')">Lem 8.13</a>):</strong> For each $q\\in\\mathrm{Irr}(N)$, $q\\otimes N$ is closed in $N$ (apply <a class="iref" onclick="jumpId('l8.13')">Lem 8.13</a> with $C=N$).</p>
 <p><strong>Ingredient 3 — No singleton is open (<a class="iref" onclick="jumpId('t8.7')">Thm 8.7</a>):</strong> Every nonempty open set in $N$ is infinite.</p>
 <p><strong>Proof by contradiction:</strong> Suppose $\\mathrm{Irr}(N)$ is finite, say $\\mathrm{Irr}(N)=\\{q_1,\\ldots,q_n\\}$. Then:</p>
 <p>$$N\\setminus\\{(0,0)\\}=q_1\\otimes N\\cup\\cdots\\cup q_n\\otimes N$$</p>
@@ -910,7 +949,11 @@ function initGraph(){
     {id:"d8.1", l:"Def 8.1\nU_{a,b,c}", t:"def"},
     {id:"t8.3", l:"Thm 8.3\nBasis+Clopen", t:"thm"},
     {id:"t8.7", l:"Thm 8.7\nNo Open {pt}", t:"thm"},
-    {id:"t8.9", l:"Thm 8.9\nCosets Closed", t:"thm"},
+    {id:"l8.9a",l:"Lem 8.9a\nLp contin.", t:"lem"},
+    {id:"l8.9b",l:"Lem 8.9b\nLp injective", t:"lem"},
+    {id:"l8.9c",l:"Lem 8.9c\nLp open+clopen", t:"lem"},
+    {id:"t8.9", l:"Thm 8.9\nLp homeo.", t:"thm"},
+    {id:"l8.13",l:"Lem 8.13\nq⊗C closed", t:"lem"},
     {id:"t9.1", l:"Thm 9.1\n|Irr|=∞", t:"thm"},
     {id:"c9.3", l:"Cor 9.3\n∞ Twin Primes", t:"cor"}
   ];
@@ -929,8 +972,12 @@ function initGraph(){
     ["t7.2","c7.5"],
     ["d8.1","t8.3"],
     ["t8.3","t8.7"],
-    ["t2.6","t8.9"],["t8.3","t8.9"],["d8.1","t8.9"],
-    ["c7.5","t9.1"],["t8.9","t9.1"],["t8.7","t9.1"],
+    ["t2.6","l8.9a"],["t8.3","l8.9a"],["d8.1","l8.9a"],
+    ["t2.6","l8.9b"],
+    ["t2.6","l8.9c"],["d2.1","l8.9c"],
+    ["l8.9a","t8.9"],["l8.9b","t8.9"],["l8.9c","t8.9"],
+    ["t8.9","l8.13"],["l8.9c","l8.13"],
+    ["c7.5","t9.1"],["l8.13","t9.1"],["t8.7","t9.1"],
     ["t5.1","c9.3"],["t9.1","c9.3"]
   ];
   const colors={def:"#1e90ff",thm:"#f5e642",prop:"#aaa",lem:"#666",cor:"#7ec8e3",ex:"#555"};
@@ -960,9 +1007,11 @@ function initGraph(){
       {selector:"edge",style:{
         "width":2,"line-color":"#556","target-arrow-color":"#99a",
         "target-arrow-shape":"triangle-backcurve",
-        "curve-style":"unbundled-bezier",
-        "control-point-distances":[20],"control-point-weights":[0.5],
-        "arrow-scale":0.9,"opacity":0.65,
+        "curve-style":"taxi",
+        "taxi-direction":"downward",
+        "taxi-turn":"50%",
+        "taxi-turn-min-distance":"15px",
+        "arrow-scale":0.9,"opacity":0.55,
         "line-cap":"round"
       }},
       {selector:"edge.highlighted",style:{"line-color":"#1e90ff","target-arrow-color":"#1e90ff","opacity":1,"width":3,"z-index":999}},
@@ -972,13 +1021,20 @@ function initGraph(){
       {selector:"edge.dimmed",style:{"opacity":0.1}}
     ],
     layout:{
-      name:"dagre",
-      rankDir:"TB",
-      nodeSep:40,
-      rankSep:70,
-      edgeSep:20,
-      ranker:"network-simplex",
-      spacingFactor:1.05
+      name:"elk",
+      elk:{
+        algorithm:"layered",
+        "elk.direction":"DOWN",
+        "elk.layered.spacing.nodeNodeBetweenLayers":"90",
+        "elk.spacing.nodeNode":"50",
+        "elk.layered.spacing.edgeNodeBetweenLayers":"30",
+        "elk.layered.spacing.edgeEdgeBetweenLayers":"15",
+        "elk.edgeRouting":"ORTHOGONAL",
+        "elk.layered.nodePlacement.strategy":"NETWORK_SIMPLEX",
+        "elk.layered.crossingMinimization.strategy":"LAYER_SWEEP",
+        "elk.layered.considerModelOrder.strategy":"NODES_AND_EDGES",
+        "elk.layered.mergeEdges":"true"
+      }
     },
     minZoom:0.3,maxZoom:3,wheelSensitivity:0.3,
     boxSelectionEnabled:false
