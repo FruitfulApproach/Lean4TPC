@@ -494,14 +494,8 @@ lean:`${GH}/TPC/WeaklySaturated.lean#L45`},
 <p>$$(-a,a)\\otimes(-b,b) = ((-a)\\mathbin{\\circledast}(-b),\\; a\\star b) = (-x,\\, x)$$</p>
 <p>Now $(-x,x)=\\eta_N(x,-x)$ where $\\eta_N(k,-k)=(-k,k)$ is an automorphism of $N$. Applying $\\eta_N^{-1}$, we get a nontrivial factorization of $(x,-x)$ itself, contradicting irreducibility. $\\checkmark$</p>
 
-<p><strong>Translating via the isomorphisms $\\phi$ and $\\psi$:</strong></p>
-<p>By <a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>, $\\phi:(\\mathbb{Z},\\circledast)\\xrightarrow{\\sim}(6\\mathbb{Z}+1,\\cdot)$ and $\\psi:(\\mathbb{Z},\\star)\\xrightarrow{\\sim}(6\\mathbb{Z}-1,\\bullet)$ are isomorphisms (where $a\\bullet b = -(ab)$). Since isomorphisms preserve irreducibility:</p>
-<p>$$x\\in\\mathrm{Irr}(\\mathbb{Z},\\circledast) \\;\\iff\\; \\phi(x)=6x+1\\in\\mathrm{Irr}(6\\mathbb{Z}+1,\\cdot) \\;\\iff\\; 6x+1\\in\\pm\\mathbb{P}$$
-$$x\\in\\mathrm{Irr}(\\mathbb{Z},\\star) \\;\\iff\\; \\psi(x)=6x-1\\in\\mathrm{Irr}(6\\mathbb{Z}-1,\\bullet) \\;\\iff\\; 6x-1\\in\\pm\\mathbb{P}$$</p>
-<p>(The last equivalence in each line holds because irreducibility under $\\cdot$ or $\\bullet$ in $6\\mathbb{Z}\\pm1$ amounts to $|n|$ being prime: if $|n|$ is prime, no nontrivial factorization exists; if $|n|$ is composite, one can group prime factors to produce a nontrivial factorization within $6\\mathbb{Z}\\pm1$ since the product of two elements $\\equiv-1\\pmod{6}$ is $\\equiv1\\pmod{6}$.)</p>
-
-<p><strong>Conclusion:</strong></p>
-<p>$$(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; 6x+1\\in\\pm\\mathbb{P}\\;\\wedge\\;6x-1\\in\\pm\\mathbb{P} \\;\\iff\\; (6x-1,6x+1)\\text{ is a twin prime pair}\\quad\\square$$</p>
+<p><strong>Conclusion:</strong> By definition, $x\\notin\\{a\\mathbin{\\circledast}b:a,b\\neq0\\}$ iff $\\phi(x)=6x+1$ has no nontrivial factorisation in $(6\\mathbb{Z}+1,\\cdot)$, i.e. $6x+1\\in\\pm\\mathbb{P}$. Likewise $x\\notin\\{a\\star b:a,b\\neq0\\}$ iff $6x-1\\in\\pm\\mathbb{P}$. So:</p>
+<p>$$x\\in\\mathrm{Irr}(\\circledast)\\cap\\mathrm{Irr}(\\star) \\;\\iff\\; 6x\\pm1\\in\\pm\\mathbb{P} \\;\\iff\\; (6x-1,6x+1)\\text{ is a twin prime pair}\\quad\\square$$</p>
 <p><strong>Worked example ($x=2$):</strong></p>
 <div class="cblk"> φ(2)=13 (prime), ψ(2)=11 (prime) → (2,-2) ∈ Irr(N)
  Check: any factor (a,-a)⊗(b,-b)=(2,-2) needs φ(a)φ(b)=13
