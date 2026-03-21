@@ -70,7 +70,7 @@ body{font-family:var(--sans);background:var(--g50);color:var(--black);min-height
 @keyframes slideRight{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:translateX(0)}}
 
 /* card top */
-.ctop{background:var(--black);padding:1.1rem 1.5rem .85rem}
+.ctop{background:#2d2d3a;padding:1.1rem 1.5rem .85rem}
 .badge-row{display:flex;align-items:center;gap:.4rem;margin-bottom:.55rem;flex-wrap:wrap}
 .tbadge{font-family:var(--mono);font-size:.61rem;font-weight:600;
   letter-spacing:.1em;text-transform:uppercase;padding:.17rem .52rem;border-radius:30px}
@@ -221,22 +221,30 @@ const cards=[
 
 {id:"d1.1",ch:"§1 Algebra",b:"b-def",
  t:`Def 1.1 — Weakly Saturated: $ab\\in N \\Rightarrow \\exists\\,a'b'\\in N$`,
- body:`<div class="mdisp">$$\\forall\\,a,b\\in M,\\quad a,b\\neq 1_M,\\quad ab\\in N\\implies\\exists\\,a',b'\\in N,\\;a',b'\\neq 1_N:a'b'=ab$$</div>
-<p>Whenever a nontrivial product in $M$ lands in $N$, it admits a nontrivial factorization <em>within</em> $N$.</p>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">A submonoid $N\\subseteq M$ is <strong>weakly saturated</strong> if: whenever two nontrivial elements of $M$ multiply to land in $N$, there exist two nontrivial elements <em>of $N$</em> with the same product.</p>
+<div class="mdisp">$$\\forall\\,a,b\\in M,\\quad a,b\\neq 1_M,\\quad ab\\in N\\implies\\exists\\,a',b'\\in N,\\;a',b'\\neq 1_N:a'b'=ab$$</div>
+<p>You may change the <em>factors</em> (from $a,b$ to $a',b'$), but the <em>product</em> stays the same.</p>
 <p><strong>Hierarchy:</strong> divisor-closed $\\Rightarrow$ saturated $\\Rightarrow$ weakly saturated. Our $N$ shows the last arrow is strict.</p>`,
 lean:`${GH}/TPC/WeaklySaturated.lean#L10`},
 
 {id:"c1.5",ch:"§1 Algebra",b:"b-cor",
  t:`Cor 1.5 — Weakly Saturated $\\implies$ Irred$_M(n)\\iff$ Irred$_N(n)$`,
- body:`<div class="mdisp">$$n\\in N,\\;N\\text{ w.s.}\\implies \\bigl(n\\text{ irred. in }M\\iff n\\text{ irred. in }N\\bigr)$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">An element that cannot be split in the big monoid $M$ also cannot be split in the submonoid $N$, and vice versa — weak saturation ensures factorizability transfers both ways.</p>
+<div class="mdisp">$$n\\in N,\\;N\\text{ w.s.}\\implies \\bigl(n\\text{ irred. in }M\\iff n\\text{ irred. in }N\\bigr)$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p>$(\\Rightarrow)$: factorization in $N\\subseteq M$ trivial since $M$-irred. $(\\Leftarrow)$: $n=ab$ in $M$ with $ab\\in N$ gives nontrivial factorization in $N$ by <a class="iref" onclick="jumpId('d1.1')">Def 1.1</a>. $\\square$</p></div>
-<p class="mt-2"><strong>Example:</strong> In $(6\\mathbb{Z}+1,\\cdot)$: $7$ prime $\\Rightarrow$ irred. in $N$. $25=(-5)^2$ reducible in $M$ and in $N$.</p>`,
+<div class="prfbody" style="display:none">
+<p><strong>($\\Rightarrow$) Irred in $M$ $\\implies$ irred in $N$:</strong> Suppose $n\\in N$ is irreducible in $M$. If $n=a'b'$ for some $a',b'\\in N$ with $a',b'\\neq 1_N$, then since $N\\subseteq M$ this is also a nontrivial factorization in $M$, contradicting $M$-irreducibility.</p>
+<p><strong>($\\Leftarrow$) Irred in $N$ $\\implies$ irred in $M$:</strong> Suppose $n\\in N$ is irreducible in $N$ but reducible in $M$: say $n=ab$ with $a,b\\in M$, $a,b\\neq 1_M$. Since $n=ab\\in N$ and $N$ is weakly saturated (<a class="iref" onclick="jumpId('d1.1')">Def 1.1</a>), there exist $a',b'\\in N$ with $a',b'\\neq 1_N$ and $a'b'=n$. But this contradicts $n$ being irreducible in $N$. $\\square$</p>
+<p><strong>Example (irreducible):</strong> $x=1$: $\\phi(1)=7\\in\\mathbb{P}$, $\\psi(1)=5\\in\\mathbb{P}$, so $(1,-1)\\in\\mathrm{Irr}(N)$. By this corollary, $(1,-1)$ is also irreducible in $M=(\\mathbb{Z}^2,\\otimes)$.</p>
+<p><strong>Example (reducible):</strong> $x=4$: $\\phi(4)=25=5^2$, so $4=(-1)\\mathbin{\\circledast}(-1)$, giving $(4,-4)=(-1,1)\\otimes(-1,1)$ — reducible in both $M$ and $N$.</p>
+</div>
+<p class="mt-2"><strong>Key point:</strong> Weak saturation is the exact condition needed — saturation would be too strong (our $N$ is not saturated).</p>`,
 lean:`${GH}/TPC/WeaklySaturated.lean#L20`},
 
 {id:"d2.1",ch:"§2 Ops",b:"b-def",
  t:`Def 2.1 — $x\\mathbin{\\circledast}y=6xy+x+y$, $\\;x\\mathbin{\\star}y=-6xy+x+y$`,
- body:`<div class="mdisp">$$x\\mathbin{\\circledast}y:=6xy+x+y\\quad(\\texttt{mstar}),\\qquad x\\mathbin{\\star}y:=-6xy+x+y\\quad(\\texttt{sstar})$$
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Two binary operations on $\\mathbb{Z}$, both with identity $0$. They are "twisted multiplications" designed so that $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ become ring homomorphisms.</p>
+<div class="mdisp">$$x\\mathbin{\\circledast}y:=6xy+x+y\\quad(\\texttt{mstar}),\\qquad x\\mathbin{\\star}y:=-6xy+x+y\\quad(\\texttt{sstar})$$
 $$\\text{identity }=0\\text{ in both}$$</div>
 <div class="cblk"><span class="kw">def</span> <span class="fn">mstar</span> (x y:ℤ):ℤ:=6*x*y+x+y
 <span class="kw">def</span> <span class="fn">sstar</span> (x y:ℤ):ℤ:=-6*x*y+x+y</div>
@@ -273,8 +281,21 @@ lean:`${GH}/TPC/Basic.lean#L15`},
 
 {id:"p2.3",ch:"§2 Ops",b:"b-prop",
  t:`Prop 2.3 — Assoc + Comm $\\implies$ $(\\mathbb{Z},\\mathbin{\\circledast})$ and $(\\mathbb{Z},\\mathbin{\\star})$ are CommMonoids`,
- body:`<button class="btnprf" onclick="tp(this)">▶ Show associativity</button>
-<div class="prfbody" style="display:none"><p>$(x\\mathbin{\\circledast}y)\\mathbin{\\circledast}z=36xyz+6xz+6yz+6xy+x+y+z=x\\mathbin{\\circledast}(y\\mathbin{\\circledast}z)$. Identical for $\\mathbin{\\star}$ with sign flip. $\\square$</p></div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Both $\\circledast$ and $\\star$ are associative and commutative with identity $0$, making $(\\mathbb{Z},\\circledast)$ and $(\\mathbb{Z},\\star)$ into commutative monoids.</p>
+<button class="btnprf" onclick="tp(this)">▶ Show associativity</button>
+<div class="prfbody" style="display:none">
+<p><strong>Associativity of $\\circledast$:</strong> Let $w=x\\mathbin{\\circledast}y=6xy+x+y$. Then:</p>
+<p>$$w\\mathbin{\\circledast}z=6wz+w+z=6(6xy+x+y)z+(6xy+x+y)+z$$
+$$=36xyz+6xz+6yz+6xy+x+y+z$$</p>
+<p>Now compute from the right. Let $v=y\\mathbin{\\circledast}z=6yz+y+z$. Then:</p>
+<p>$$x\\mathbin{\\circledast}v=6xv+x+v=6x(6yz+y+z)+x+(6yz+y+z)$$
+$$=36xyz+6xy+6xz+6yz+x+y+z$$</p>
+<p>These are identical. $\\checkmark$</p>
+<p><strong>Commutativity:</strong> $x\\mathbin{\\circledast}y=6xy+x+y=6yx+y+x=y\\mathbin{\\circledast}x$. $\\checkmark$</p>
+<p><strong>Identity:</strong> $x\\mathbin{\\circledast}0=6\\cdot x\\cdot 0+x+0=x$. $\\checkmark$</p>
+<p><strong>For $\\star$:</strong> Replace every $6$ with $-6$; the same algebra works since only parity of the leading coefficient matters for commutativity, and the triple-product terms cancel the same way for associativity. $\\square$</p>
+<p><strong>Numerical check:</strong> $(1\\mathbin{\\circledast}2)\\mathbin{\\circledast}3=15\\mathbin{\\circledast}3=6\\cdot45+15+3=288$. And $1\\mathbin{\\circledast}(2\\mathbin{\\circledast}3)=1\\mathbin{\\circledast}41=6\\cdot41+1+41=288$. $\\checkmark$</p>
+</div>
 <div class="cblk"><span class="kw">instance</span>:CommMonoid Nstar <span class="kw">where</span>
   mul_assoc:=mstar_assoc <span class="cm">-- by ring</span>
   mul_comm :=mstar_comm</div>`,
@@ -282,21 +303,33 @@ lean:`${GH}/TPC/Monoid.lean#L18`},
 
 {id:"eta",ch:"§2 Ops",b:"b-prop",
  t:`Involution — $\\eta(x)=-x\\implies N^*\\cong N^\\star$, so $\\;(-a)\\mathbin{\\star}(-b)=-(a\\mathbin{\\circledast}b)$`,
- body:`<div class="mdisp">$$\\eta(x\\mathbin{\\circledast}y)=-(6xy+x+y)=(-x)\\mathbin{\\star}(-y)=\\eta(x)\\mathbin{\\star}\\eta(y)$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Negation $\\eta(x)=-x$ swaps $\\circledast$ and $\\star$: it is a monoid isomorphism $N^*\\cong N^\\star$ that is its own inverse.</p>
+<div class="mdisp">$$\\eta(x\\mathbin{\\circledast}y)=-(6xy+x+y)=(-x)\\mathbin{\\star}(-y)=\\eta(x)\\mathbin{\\star}\\eta(y)$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p>We verify $\\eta$ is a monoid homomorphism $N^*\\to N^\\star$. Compute:
-$$\\eta(x\\mathbin{\\circledast}y)=-(6xy+x+y)$$
-$$\\eta(x)\\mathbin{\\star}\\eta(y)=(-x)\\mathbin{\\star}(-y)=-6(-x)(-y)+(-x)+(-y)=-6xy-x-y=-(6xy+x+y)$$
-These are equal, so $\\eta$ respects the operations. Since $\\eta(0)=0$ (identity to identity) and $\\eta$ is its own inverse ($\\eta\\circ\\eta=\\mathrm{id}$), it is an isomorphism. $\\square$</p>
+<div class="prfbody" style="display:none">
+<p><strong>Step 1: $\\eta$ respects the operation.</strong> We need $\\eta(x\\mathbin{\\circledast}y)=\\eta(x)\\mathbin{\\star}\\eta(y)$.</p>
+<p><strong>LHS:</strong> $\\eta(x\\mathbin{\\circledast}y)=-(6xy+x+y)=-6xy-x-y$</p>
+<p><strong>RHS:</strong> $\\eta(x)\\mathbin{\\star}\\eta(y)=(-x)\\mathbin{\\star}(-y)=-6(-x)(-y)+(-x)+(-y)=-6xy-x-y$</p>
+<p>LHS $=$ RHS. $\\checkmark$</p>
+<p><strong>Step 2: $\\eta$ preserves identity.</strong> $\\eta(0)=-0=0$, and $0$ is the identity of both $\\circledast$ and $\\star$. $\\checkmark$</p>
+<p><strong>Step 3: $\\eta$ is its own inverse.</strong> $\\eta(\\eta(x))=-(-x)=x$, so $\\eta\\circ\\eta=\\mathrm{id}$. Hence $\\eta$ is bijective, making it an isomorphism. $\\square$</p>
+<p><strong>Worked examples:</strong></p>
+<div class="cblk">  x    y    x⊛y   η(x⊛y)   η(x)⋆η(y)  Match?
+  2    3     41     -41      (-2)⋆(-3)=-6·6-2-3=-41  ✓
+  1    1      8      -8      (-1)⋆(-1)=-6·1-1-1=-8   ✓
+ -1    2    -11      11      (1)⋆(-2)=-6·(-2)+1-2=11 ✓
+  5    5    160    -160      (-5)⋆(-5)=-6·25-10=-160  ✓</div>
 <div class="cblk"><span class="kw">def</span> η(x:ℤ):ℤ:=-x
-<span class="kw">lemma</span> <span class="fn">η_mstar_sstar</span>(x y:ℤ):η(x⊛y)=η x⋆η y:=<span class="kw">by</span> simp[η,mstar,sstar];ring</div></div>
+<span class="kw">lemma</span> <span class="fn">η_mstar_sstar</span>(x y:ℤ):η(x⊛y)=η x⋆η y:=<span class="kw">by</span> simp[η,mstar,sstar];ring</div>
+</div>
 <p><strong>Example:</strong> $\\eta(2\\mathbin{\\circledast}3)=\\eta(41)=-41=(-2)\\mathbin{\\star}(-3)$.</p>
 <p>This identity is used in the <a class="iref" onclick="jumpId('t4.1')">Thm 4.1</a> proof: $(-a)\\mathbin{\\star}(-c)=-(a\\mathbin{\\circledast}c)=-k$.</p>`,
 lean:`${GH}/TPC/Basic.lean#L70`},
 
 {id:"t2.6",ch:"§2 Ops",b:"b-thm",
  t:`Thm 2.6 — $\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies N^*\\cong(6\\mathbb{Z}+1,\\cdot)$`,
- body:`<div class="mdisp">$$\\phi(x)=6x+1,\\quad\\phi(x\\mathbin{\\circledast}y)=(6x+1)(6y+1)=\\phi(x)\\phi(y)$$
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The map $\\phi(x)=6x+1$ is a monoid isomorphism from $(\\mathbb{Z},\\circledast)$ onto $(6\\mathbb{Z}+1,\\cdot)$. Similarly $\\psi(x)=6x-1$ gives $(\\mathbb{Z},\\star)\\cong(6\\mathbb{Z}-1,\\bullet)$. These isomorphisms translate factorization in $\\circledast/\\star$ to ordinary integer factorization.</p>
+<div class="mdisp">$$\\phi(x)=6x+1,\\quad\\phi(x\\mathbin{\\circledast}y)=(6x+1)(6y+1)=\\phi(x)\\phi(y)$$
 $$\\psi(x)=6x-1,\\quad\\psi(x\\mathbin{\\star}y)=-[(6x-1)(6y-1)]=\\psi(x)\\bullet\\psi(y)$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none"><p><strong>$\\phi$ is a homomorphism:</strong>
@@ -313,15 +346,25 @@ lean:`${GH}/TPC/Basic.lean#L55`},
 
 {id:"l2.8",ch:"§2 Ops",b:"b-lem",
  t:`Lem 2.8 — $(6u+1)(6v+1)=1$ has no solution with $u,v\\neq0$ — No Zero Divisors`,
- body:`<div class="mdisp">$$u,v\\neq0\\implies u\\mathbin{\\circledast}v\\neq0\\text{ and }u\\mathbin{\\star}v\\neq0$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Neither $\\circledast$ nor $\\star$ has zero divisors: a product of two nonzero integers is always nonzero. This is because $\\phi$ maps $\\circledast$ to ordinary multiplication in $6\\mathbb{Z}+1$, which inherits the no-zero-divisor property from $\\mathbb{Z}$.</p>
+<div class="mdisp">$$u,v\\neq0\\implies u\\mathbin{\\circledast}v\\neq0\\text{ and }u\\mathbin{\\star}v\\neq0$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p>$u\\mathbin{\\circledast}v=0\\iff(6u+1)(6v+1)=1$. In $\\mathbb{Z}$ this forces $6u+1=\\pm1$, so $u=0$ or $u=-1/3\\notin\\mathbb{Z}$. $\\square$</p></div>
+<div class="prfbody" style="display:none">
+<p><strong>Proof for $\\circledast$:</strong> Apply $\\phi$ to both sides of $u\\mathbin{\\circledast}v=0$:
+$$\\phi(u\\mathbin{\\circledast}v)=\\phi(0) \\implies \\phi(u)\\phi(v)=1 \\implies (6u+1)(6v+1)=1$$</p>
+<p>In $\\mathbb{Z}$, the only units are $\\pm1$. So $6u+1\\in\\{1,-1\\}$:</p>
+<p>$\\bullet$ $6u+1=1 \\implies u=0$<br/>$\\bullet$ $6u+1=-1 \\implies u=-1/3\\notin\\mathbb{Z}$</p>
+<p>So $u\\mathbin{\\circledast}v=0$ forces $u=0$ (or $v=0$ by symmetry). Contrapositively: $u,v\\neq0\\implies u\\mathbin{\\circledast}v\\neq0$.</p>
+<p><strong>Proof for $\\star$:</strong> Similarly, $\\psi(u\\mathbin{\\star}v)=\\psi(u)\\bullet\\psi(v)$. If $u\\mathbin{\\star}v=0$, then $\\psi(0)=-1$, so $-(6u-1)(6v-1)=-1$, giving $(6u-1)(6v-1)=1$, and the same argument applies. $\\square$</p>
+<p><strong>Numerical check:</strong> The smallest nonzero values $u=\\pm1$ give $\\phi(\\pm1)\\in\\{7,-5\\}$, so $|\\phi(u)|\\geq5$. Then $|\\phi(u)\\phi(v)|\\geq25\\neq1$, confirming $u\\mathbin{\\circledast}v\\neq0$.</p>
+</div>
 <p><strong>Key use:</strong> forces $a,c\\neq0$ from $a\\mathbin{\\circledast}c=k\\neq0$ in the <a class="iref" onclick="jumpId('t4.1')">Thm 4.1</a> proof.</p>`,
 lean:`${GH}/TPC/Basic.lean#L90`},
 
 {id:"d2.10",ch:"§2 Ops",b:"b-def",
  t:`Def 2.10 — Product Monoid $M=(\\mathbb{Z}^2,\\otimes)$`,
- body:`<div class="mdisp">$$(x,y)\\otimes(x',y'):=(x\\mathbin{\\circledast}x',\\;y\\mathbin{\\star}y'),\\quad 1_M=(0,0)$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The ambient monoid $M$ is $\\mathbb{Z}^2$ with coordinate-wise twisted multiplication: $\\circledast$ in the first slot, $\\star$ in the second. The anti-diagonal submonoid $N$ lives inside $M$.</p>
+<div class="mdisp">$$(x,y)\\otimes(x',y'):=(x\\mathbin{\\circledast}x',\\;y\\mathbin{\\star}y'),\\quad 1_M=(0,0)$$</div>
 <p>Combines <a class="iref" onclick="jumpId('d2.1')">$\\circledast$</a> on the first coordinate and $\\star$ on the second. The anti-diagonal <a class="iref" onclick="jumpId('d3.1')">$N=\\Delta(\\mathbb{Z})$</a> lives inside $M$.</p>
 <button class="btnprf" onclick="tp(this)">▶ Show examples</button>
 <div class="prfbody" style="display:none"><div class="cblk"> (x,y)       (x',y')       (x,y)⊗(x',y')
@@ -336,7 +379,8 @@ lean:`${GH}/TPC/Basic.lean#L40`},
 
 {id:"d3.1",ch:"§3 Anti-Diag",b:"b-def",
  t:`Def 3.1 — $\\Delta(\\mathbb{Z})=\\{(x,-x)\\}$, $\\;\\Delta(x)\\otimes\\Delta(y)=\\Delta(x\\mathbin{\\circledast}y)$`,
- body:`<div class="mdisp">$$N:=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}\\subset(\\mathbb{Z}^2,\\otimes)$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The anti-diagonal $N$ consists of all pairs $(x,-x)$. It is a submonoid of $M$ because products on $N$ stay on $N$ — the involution $\\eta$ ensures the second coordinate is always the negative of the first.</p>
+<div class="mdisp">$$N:=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}\\subset(\\mathbb{Z}^2,\\otimes)$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show $N$ is a submonoid</button>
 <div class="prfbody" style="display:none"><p><strong>Closure:</strong> $(x,-x)\\otimes(y,-y)=(x\\mathbin{\\circledast}y,\\;(-x)\\mathbin{\\star}(-y))$. By the <a class="iref" onclick="jumpId('eta')">involution $\\eta$</a>: $(-x)\\mathbin{\\star}(-y)=-(x\\mathbin{\\circledast}y)$. So the result is $(x\\mathbin{\\circledast}y,\\,-(x\\mathbin{\\circledast}y))\\in N$.</p>
 <p><strong>Identity:</strong> $(0,0)=(0,-0)\\in N$. $\\square$</p>
@@ -348,7 +392,8 @@ lean:`${GH}/TPC/AntiDiagonal.lean#L10`},
 
 {id:"cx",ch:"§4 Weak Sat",b:"b-ex",
  t:`Counterexample — $(1,0)\\otimes(1,-8)=(8,-8)\\in N$ but $(1,0)\\notin N$ — NOT Saturated`,
- body:`<div class="mdisp">$$a=(1,0),\\;b=(1,-8):\\quad(1\\mathbin{\\circledast}1,\\;0\\mathbin{\\star}(-8))=(8,-8)\\in N$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">$N$ is <strong>not</strong> saturated: a product can land in $N$ even though neither factor is in $N$. This is why we need the weaker notion of weak saturation.</p>
+<div class="mdisp">$$a=(1,0),\\;b=(1,-8):\\quad(1\\mathbin{\\circledast}1,\\;0\\mathbin{\\star}(-8))=(8,-8)\\in N$$</div>
 <p>$(1,0)\\notin N$ since $0\\neq-1$. Saturation fails.</p>
 <div class="cblk"><span class="kw">theorem</span> <span class="fn">antiDiag_not_saturated</span>:
   ∃ a b:ℤ×ℤ, a∉AntiDiag∧b∉AntiDiag∧a⊗b∈AntiDiag:=<span class="kw">by</span>
@@ -357,17 +402,48 @@ lean:`${GH}/TPC/WeaklySaturated.lean#L80`},
 
 {id:"t4.1",ch:"§4 Weak Sat",b:"b-thm",
  t:`Thm 4.1 — $a\\mathbin{\\circledast}c=k\\neq0$ + Lemma 2.8 $\\implies$ $\\Delta(\\mathbb{Z})$ is Weakly Saturated`,
- body:`<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p>$a\\mathbin{\\circledast}c=k\\neq0$ gives $a,c\\neq0$ by <a class="iref" onclick="jumpId('l2.8')">Lemma 2.8</a>. Set $a'=(a,-a)$, $c'=(c,-c)\\in N$. Then $(a,-a)\\otimes(c,-c)=(k,-(k))=(k,-k)$. $\\blacksquare$</p></div>
-<p><strong>Lift:</strong> $(1,0)\\otimes(1,-8)=(8,-8)$ lifts to $(1,-1)\\otimes(1,-1)=(8,-8)$ inside $N$.</p>`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Whenever a product in $M$ lands on the anti-diagonal, we can "lift" the factorization: replace any factors $(a,b),(c,d)$ with anti-diagonal elements $(a,-a),(c,-c)$ that give the same product. The no-zero-divisor lemma ensures these lifts are nontrivial.</p>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p><strong>Setup:</strong> Suppose $(a,b)\\otimes(c,d)=(k,-k)\\in N$ with $(a,b),(c,d)\\neq(0,0)$. We need to find $(a',-a'),(c',-c')\\in N$ with $(a',-a')\\otimes(c',-c')=(k,-k)$.</p>
+<p><strong>Step 1:</strong> The first coordinate gives $a\\mathbin{\\circledast}c=k$. Since $(k,-k)\\neq(0,0)$, we have $k\\neq0$, so $a\\mathbin{\\circledast}c\\neq0$.</p>
+<p><strong>Step 2:</strong> By <a class="iref" onclick="jumpId('l2.8')">Lemma 2.8</a> (no zero divisors), $a\\mathbin{\\circledast}c\\neq0$ implies $a\\neq0$ and $c\\neq0$.</p>
+<p><strong>Step 3:</strong> Set $a'=(a,-a)\\in N$ and $c'=(c,-c)\\in N$. Both are nonidentity since $a,c\\neq0$.</p>
+<p><strong>Step 4:</strong> Compute $a'\\otimes c'=(a,-a)\\otimes(c,-c)=(a\\mathbin{\\circledast}c,\\;(-a)\\mathbin{\\star}(-c))$. By the <a class="iref" onclick="jumpId('eta')">involution</a>: $(-a)\\mathbin{\\star}(-c)=-(a\\mathbin{\\circledast}c)=-k$. So $a'\\otimes c'=(k,-k)$. $\\blacksquare$</p>
+<p><strong>Worked example:</strong> $(1,0)\\otimes(1,-8)=(8,-8)\\in N$:</p>
+<div class="cblk"> Original factors: (1,0) and (1,-8) — neither in N
+ First coord: a⊛c = 1⊛1 = 6·1·1+1+1 = 8 = k  ✓
+ k≠0, so by Lem 2.8: a=1≠0, c=1≠0
+ Lifted factors: (1,-1) and (1,-1) — both in N
+ Check: (1,-1)⊗(1,-1) = (1⊛1, (-1)⋆(-1))
+      = (8, -6·1+(-1)+(-1)) = (8, -8) ✓</div>
+</div>`,
 lean:`${GH}/TPC/WeaklySaturated.lean#L45`},
 
 {id:"t5.1",ch:"§5 Irred",b:"b-thm",
  t:`Thm 5.1 — $\\phi(x)\\in\\pm\\mathbb{P}$ and $\\psi(x)\\in\\pm\\mathbb{P}$ $\\iff$ $(x,-x)\\in\\mathrm{Irr}(N)$`,
- body:`<div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(N)\\iff 6x+1\\in\\pm\\mathbb{P}\\text{ and }6x-1\\in\\pm\\mathbb{P}\\iff(6x-1,6x+1)\\text{ twin prime}$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">An element $(x,-x)$ is irreducible in $N$ if and only if both $6x+1$ and $6x-1$ are $\\pm$primes — i.e., $(6x-1,6x+1)$ is a twin prime pair. This is the bridge between algebra and number theory.</p>
+<div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(N)\\iff 6x+1\\in\\pm\\mathbb{P}\\text{ and }6x-1\\in\\pm\\mathbb{P}\\iff(6x-1,6x+1)\\text{ twin prime}$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p><strong>($\\Rightarrow$):</strong> Suppose $(x,-x)$ is irreducible in $N$. Under $\\phi$, this maps to $6x+1$ in $(6\\mathbb{Z}+1,\\cdot)$. By <a class="iref" onclick="jumpId('c1.5')">Corollary 1.5</a>, irreducibility in $N$ is equivalent to irreducibility in $M$, and $\\phi$ transfers irreducibility to primality in $\\mathbb{Z}$. So $6x+1\\in\\pm\\mathbb{P}$. Similarly, under $\\psi$, $6x-1\\in\\pm\\mathbb{P}$.</p>
-<p><strong>($\\Leftarrow$):</strong> If both $6x+1$ and $6x-1$ are $\\pm$primes, then $\\phi(x)$ is irreducible in $(6\\mathbb{Z}+1,\\cdot)$ and $\\psi(x)$ is irreducible in $(6\\mathbb{Z}-1,\\bullet)$. Pulling back through the isomorphisms, $(x,-x)$ admits no nontrivial factorization in $N$. $\\square$</p></div>
+<div class="prfbody" style="display:none">
+<p><strong>($\\Rightarrow$) Irreducible in $N$ $\\implies$ twin prime:</strong></p>
+<p>Suppose $(x,-x)\\in\\mathrm{Irr}(N)$ with $x\\neq0$. Any factorization $(x,-x)=(a,-a)\\otimes(b,-b)$ in $N$ gives $x=a\\mathbin{\\circledast}b$, hence $\\phi(x)=\\phi(a)\\phi(b)$ by <a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>. Since $(x,-x)$ is irreducible, one of $a,b$ must be $0$ (the identity). So $\\phi(x)=\\phi(a)\\cdot1$ or $\\phi(x)=1\\cdot\\phi(b)$ — i.e., $\\phi(x)=6x+1$ has no nontrivial factorization in $6\\mathbb{Z}+1$.</p>
+<p>By <a class="iref" onclick="jumpId('c1.5')">Cor 1.5</a> (weak saturation preserves irreducibility), $\\phi(x)$ is irreducible in all of $\\mathbb{Z}$, meaning $6x+1\\in\\pm\\mathbb{P}$. The same argument with $\\psi$ gives $6x-1\\in\\pm\\mathbb{P}$.</p>
+<p><strong>($\\Leftarrow$) Twin prime $\\implies$ irreducible in $N$:</strong></p>
+<p>If $6x+1$ and $6x-1$ are both $\\pm$prime, suppose $(x,-x)=(a,-a)\\otimes(b,-b)$ with $a,b\\neq0$. Then:
+$$\\phi(x)=\\phi(a)\\phi(b) \\quad\\text{with}\\quad |\\phi(a)|,|\\phi(b)|\\geq5$$
+But $\\phi(x)=6x+1$ is $\\pm$prime, so it cannot be a product of two integers both $\\geq5$ in absolute value. Contradiction. $\\square$</p>
+<p><strong>Worked example ($x=2$):</strong></p>
+<div class="cblk"> φ(2)=13 (prime), ψ(2)=11 (prime) → (2,-2) ∈ Irr(N)
+ Check: any factor (a,-a)⊗(b,-b)=(2,-2) needs φ(a)φ(b)=13
+ Since 13 is prime: φ(a)=±1 or φ(b)=±1
+ φ(a)=1 ⟹ a=0 (identity), so factorization is trivial ✓</div>
+<p><strong>Worked non-example ($x=4$):</strong></p>
+<div class="cblk"> φ(4)=25=5·5, ψ(4)=23 (prime) → (4,-4) ∉ Irr(N)
+ Factorization: φ(-1)=-5, so 25=(-5)·(-5)=φ(-1)·φ(-1)
+ Hence 4=(-1)⊛(-1): verify 6·1+(-1)+(-1)=4 ✓
+ So (4,-4)=(-1,1)⊗(-1,1) is a nontrivial factorization</div>
+</div>
 <div class="cblk"> x   6x-1  6x+1  Irred?  Twin pair
  1      5     7    YES    (5,7)
  2     11    13    YES    (11,13)
@@ -408,7 +484,8 @@ lean:`${GH}/TPC/AntiDiagonal.lean#L95`},
 
 {id:"d6.1",ch:"§6 Norm",b:"b-def",
  t:`Def 6.1 — Norm $|(x,-x)|:=\\phi(x)^2=(6x+1)^2$`,
- body:`<div class="mdisp">$$|(x,-x)|:=(6x+1)^2=\\phi(x)^2$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">A norm on $N$ that is multiplicative ($|ab|=|a||b|$) and ensures proper factors have strictly smaller norm — enabling induction on norm to find irreducible divisors.</p>
+<div class="mdisp">$$|(x,-x)|:=(6x+1)^2=\\phi(x)^2$$</div>
 <div class="cblk"><span class="kw">def</span> norm(x:ℤ):ℤ:=(6*x+1)^2
 <span class="kw">lemma</span> <span class="fn">norm_eq_φ_sq</span>(x:ℤ):norm x=φ x^2</div>
 <div class="cblk"> x    φ(x)   |(x,-x)|  Irred?
@@ -446,36 +523,85 @@ lean:`${GH}/TPC/Norm.lean#L12`},
 
 {id:"n56",ch:"§6 Norm",b:"b-prop",
  t:`Prop N5–N6 — $\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies |x\\otimes y|=|x||y|$ and strict descent`,
- body:`<div class="mdisp">$$\\textbf{N5:}\\quad|(x,-x)\\otimes(y,-y)|=|(x,-x)|\\cdot|(y,-y)|$$
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem"><strong>N5:</strong> The norm is multiplicative — the norm of a product equals the product of norms. <strong>N6:</strong> In any nontrivial factorization, both factors have strictly smaller norm than the product. Together, these enable strong induction on norm.</p>
+<div class="mdisp">$$\\textbf{N5:}\\quad|(x,-x)\\otimes(y,-y)|=|(x,-x)|\\cdot|(y,-y)|$$
 $$\\textbf{N6:}\\quad(x,-x)=(a,-a)\\otimes(b,-b),\\;a,b\\neq0\\implies|(a,-a)|,|(b,-b)|<|(x,-x)|$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p><strong>N5 (multiplicativity):</strong>
-$$|(x,-x)\\otimes(y,-y)|=|(x\\mathbin{\\circledast}y,\\,-(x\\mathbin{\\circledast}y))|=\\phi(x\\mathbin{\\circledast}y)^2=(\\phi(x)\\phi(y))^2=\\phi(x)^2\\phi(y)^2=|(x,-x)|\\cdot|(y,-y)|$$
-This is a single <code>ring</code> computation in Lean.</p>
-<p><strong>N6 (strict descent):</strong> Let $x=a\\mathbin{\\circledast}b$ with $a,b\\neq0$. Then $\\phi(a),\\phi(b)\\neq1$ (since $a,b\\neq0$ implies $6a+1,6b+1\\neq1$). So $|\\phi(a)|,|\\phi(b)|\\geq5$. Then:
-$$|(a,-a)|=\\phi(a)^2\\leq\\phi(a)^2<\\phi(a)^2\\phi(b)^2=|(x,-x)|$$
-since $\\phi(b)^2\\geq25>1$. Likewise for $|(b,-b)|$. $\\square$</p></div>
-<p><strong>N6 example:</strong> $(4,-4)=(-1,1)\\otimes(-1,1)$, norm $625=25\\times25$. Both $25&lt;625$.</p>`,
+<div class="prfbody" style="display:none">
+<p><strong>N5 (multiplicativity) — step by step:</strong></p>
+<p>$$|(x,-x)\\otimes(y,-y)| = |(x\\mathbin{\\circledast}y,\\;-(x\\mathbin{\\circledast}y))|$$
+$$= \\phi(x\\mathbin{\\circledast}y)^2 \\qquad\\text{(by definition of norm)}$$
+$$= (\\phi(x)\\phi(y))^2 \\qquad\\text{(by }\\phi\\text{ homomorphism, }\\href{javascript:jumpId('t2.6')}{\\text{Thm 2.6}}\\text{)}$$
+$$= \\phi(x)^2\\cdot\\phi(y)^2 = |(x,-x)|\\cdot|(y,-y)|$$</p>
+<p><strong>N5 numerical check:</strong></p>
+<div class="cblk"> (x,-x)    (y,-y)    x⊛y    |(x,-x)|  |(y,-y)|  |(x⊛y,−)|  product
+ (1,-1)   (2,-2)     15      49       169       8281    49·169=8281 ✓
+ (1,-1)   (1,-1)      8      49        49       2401    49·49=2401  ✓
+ (2,-2)   (3,-3)     41     169       361      60889   169·361=60889 ✓
+ (-1,1)   (-1,1)      4      25        25        625    25·25=625   ✓</div>
+<p><strong>N6 (strict descent) — step by step:</strong></p>
+<p>Suppose $(x,-x)=(a,-a)\\otimes(b,-b)$ with $a,b\\neq0$. Then $x=a\\mathbin{\\circledast}b$.</p>
+<p>Since $a\\neq0$: $\\phi(a)=6a+1\\neq1$, so $|\\phi(a)|\\geq5$ (next values after $1$ are $\\pm5,\\pm7,\\ldots$).</p>
+<p>Similarly $|\\phi(b)|\\geq5$. Then:</p>
+<p>$$|(a,-a)|=\\phi(a)^2 < \\phi(a)^2\\cdot\\phi(b)^2 = |(x,-x)|$$</p>
+<p>since $\\phi(b)^2\\geq25>1$. The same bound gives $|(b,-b)|<|(x,-x)|$. $\\square$</p>
+<div class="cblk"> Descent examples:
+ (8,-8) = (1,-1)⊗(1,-1):  |8|=2401, |1|=49   → 49 < 2401 ✓
+ (4,-4) = (-1,1)⊗(-1,1):  |4|=625,  |-1|=25  → 25 < 625  ✓
+ (15,-15)= (1,-1)⊗(2,-2): |15|=8281, |1|=49, |2|=169 → both < 8281 ✓
+ (41,-41)= (2,-2)⊗(3,-3): |41|=60889, |2|=169, |3|=361 → both < 60889 ✓</div>
+</div>`,
 lean:`${GH}/TPC/Norm.lean#L50`},
 
 {id:"t7.2",ch:"§7 Divisibility",b:"b-thm",
  t:`Thm 7.2 — N5+N6+Weak Sat. $\\implies$ $\\forall n\\in N\\;\\exists q\\in\\mathrm{Irr}(N):q\\mid_{\\otimes}n$`,
- body:`<button class="btnprf" onclick="tp(this)">▶ Induction proof</button>
-<div class="prfbody" style="display:none"><p>Induct on $|(k,-k)|$. Irred: done. Reducible in $N$: $(k,-k)=(a,-a)\\otimes(b,-b)$, so $|(a,-a)|&lt;|(k,-k)|$ by <a class="iref" onclick="jumpId('n56')">N6</a>; apply IH to $(a,-a)$. Reducible in $M$ only: use <a class="iref" onclick="jumpId('t4.1')">weak saturation</a> first. $\\blacksquare$</p></div>
-<p><strong>Example:</strong> $(14,-14)$: $\\phi(14)=85=5\\times17$. Lift: $(14,-14)=(-1,1)\\otimes(-3,3)$ with $(-1,1)\\in\\mathrm{Irr}(N)$.</p>`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every nonidentity element of $N$ is divisible (under $\\otimes$) by some irreducible. This is the monoid analogue of "every integer $>1$ has a prime factor", proved by strong induction on the norm $|(k,-k)|$.</p>
+<button class="btnprf" onclick="tp(this)">▶ Induction proof</button>
+<div class="prfbody" style="display:none">
+<p><strong>Proof by strong induction on $|(k,-k)|$.</strong></p>
+<p><strong>Base case:</strong> The smallest nonidentity norms are $|(\\pm1,\\mp1)|=25$ and $49$. For $|(k,-k)|=25$: $k=-1$, $\\phi(-1)=-5\\in\\pm\\mathbb{P}$, $\\psi(-1)=-7\\in\\pm\\mathbb{P}$, so $(-1,1)$ is itself irreducible. Similarly $|(1,-1)|=49$ gives twin pair $(5,7)$. Done.</p>
+<p><strong>Inductive step:</strong> Assume the result holds for all elements with norm $&lt;|(k,-k)|$.</p>
+<p><strong>Case 1:</strong> $(k,-k)$ is irreducible in $N$. Then $q=(k,-k)$ itself is the irreducible divisor, with $(k,-k)=(k,-k)\\otimes(0,0)$. Done.</p>
+<p><strong>Case 2:</strong> $(k,-k)$ is reducible in $N$. Then $(k,-k)=(a,-a)\\otimes(b,-b)$ with $a,b\\neq0$. By <a class="iref" onclick="jumpId('n56')">N6</a>, $|(a,-a)|&lt;|(k,-k)|$. By the inductive hypothesis, $(a,-a)$ has an irreducible divisor $q$. Since $q\\mid_{\\otimes}(a,-a)$ and $(a,-a)\\mid_{\\otimes}(k,-k)$, we get $q\\mid_{\\otimes}(k,-k)$.</p>
+<p><strong>Case 3:</strong> $(k,-k)$ is irreducible in $N$ but reducible in $M$. This cannot happen by <a class="iref" onclick="jumpId('c1.5')">Cor 1.5</a> + <a class="iref" onclick="jumpId('t4.1')">Thm 4.1</a> (weak saturation preserves irreducibility). But if $(k,-k)$ is reducible in $M$ via $(a,b)\\otimes(c,d)=(k,-k)$ with $(a,b),(c,d)\\notin N$, then weak saturation provides a factorization within $N$, reducing to Case 2. $\\blacksquare$</p>
+<p><strong>Worked example — $(14,-14)$:</strong></p>
+<div class="cblk"> φ(14) = 85 = 5·17 → reducible
+ Need a,b with a⊛b = 14 and φ(a)φ(b) = 85
+ φ(-1)=-5, φ(-3)=-17 → (-5)·(-17)=85 ✓
+ Check: (-1)⊛(-3) = 6·3+(-1)+(-3) = 14 ✓
+ So (14,-14) = (-1,1)⊗(-3,3)
+ |-1| = 25,  |-3| = 289  → both < 7225 = |14| ✓
+ (-1,1): φ(-1)=-5∈±ℙ, ψ(-1)=-7∈±ℙ → irreducible! Done.</div>
+</div>`,
 lean:`${GH}/TPC/Norm.lean#L90`},
 
 {id:"c7.5",ch:"§7 Divisibility",b:"b-cor",
  t:`Cor 7.5 — $N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$`,
- body:`<div class="mdisp">$$\\text{Every nonidentity element of }N\\text{ lies in some irreducible coset}$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The nonidentity part of $N$ is exactly covered by irreducible cosets $q\\otimes N$. This is the monoid analogue of $\\mathbb{Z}\\setminus\\{\\pm1\\}=\\bigcup_{p\\in\\mathbb{P}} p\\mathbb{Z}$ from Furstenberg's proof.</p>
+<div class="mdisp">$$\\text{Every nonidentity element of }N\\text{ lies in some irreducible coset}$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p>For $(k,-k)\\neq(0,0)$, <a class="iref" onclick="jumpId('t7.2')">Thm 7.2</a> gives $q\\in\\mathrm{Irr}(N)$ with $q\\mid_{\\otimes}(k,-k)$, so $(k,-k)=q\\otimes m$ for some $m\\in N$. Thus $(k,-k)\\in q\\otimes N$. $\\square$</p></div>
-<p>This covering is the key input to the <a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a> topological argument.</p>`,
+<div class="prfbody" style="display:none">
+<p><strong>Proof:</strong> Let $(k,-k)\\in N\\setminus\\{(0,0)\\}$. By <a class="iref" onclick="jumpId('t7.2')">Thm 7.2</a>, there exists $(q,-q)\\in\\mathrm{Irr}(N)$ with $(q,-q)\\mid_{\\otimes}(k,-k)$. This means $(k,-k)=(q,-q)\\otimes(m,-m)$ for some $(m,-m)\\in N$. Hence $(k,-k)\\in(q,-q)\\otimes N$, giving $\\subseteq$.</p>
+<p>Conversely, every element of $q\\otimes N$ is in $N$ (since $N$ is a submonoid), and $q\\neq0$ implies $q\\otimes(m,-m)\\neq(0,0)$ by <a class="iref" onclick="jumpId('l2.8')">Lem 2.8</a>. So the union $\\subseteq N\\setminus\\{(0,0)\\}$. $\\square$</p>
+<p><strong>First few cosets:</strong></p>
+<div class="cblk"> q=-1: (-1,1)⊗N = {(-1⊛x, 1⋆(-x)) : x∈ℤ}
+   x=0: (-1,1), x=1: (-6,6), x=2: (-11,11), x=-1: (4,-4)
+   Image under φ: multiples of φ(-1)=-5 in 6ℤ+1
+
+ q=1:  (1,-1)⊗N = {(1⊛x, -(1⊛x)) : x∈ℤ}
+   x=0: (1,-1), x=1: (8,-8), x=2: (15,-15)
+   Image under φ: multiples of φ(1)=7 in 6ℤ+1
+
+ q=2:  (2,-2)⊗N = {(2⊛x, -(2⊛x)) : x∈ℤ}
+   x=0: (2,-2), x=1: (15,-15), x=2: (28,-28)
+   Image under φ: multiples of φ(2)=13 in 6ℤ+1</div>
+</div>`,
 lean:`${GH}/TPC/Norm.lean#L110`},
 
 {id:"d8.1",ch:"§8 Topology",b:"b-def",
  t:`Def 8.1 — $U_{a,b,c}=\\{(a+cz,\\,b-cz)\\}$, anti-diagonal APs`,
- body:`<div class="mdisp">$$U_{a,b,c}=\\{(a+cz,\\;b-cz):z\\in\\mathbb{Z}\\},\\quad c\\neq0$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Anti-diagonal arithmetic progressions: sets of pairs $(a+cz,\\,b-cz)$ as $z$ ranges over $\\mathbb{Z}$. These form the basic open sets of the topology on $\\mathbb{Z}^2$.</p>
+<div class="mdisp">$$U_{a,b,c}=\\{(a+cz,\\;b-cz):z\\in\\mathbb{Z}\\},\\quad c\\neq0$$</div>
 <div class="cblk"><span class="kw">def</span> U(a b c:ℤ):Set(ℤ×ℤ):=
   {p|∃z:ℤ, p=(a+c*z, b-c*z)}</div>
 <p>$U_{1,-1,7}=\\{\\ldots,(-6,6),(1,-1),(8,-8),(15,-15),\\ldots\\}$</p>
@@ -485,39 +611,107 @@ lean:`${GH}/TPC/Topology.lean#L18`},
 
 {id:"t8.3",ch:"§8 Topology",b:"b-thm",
  t:`Thm 8.3 — CRT $\\implies$ $\\{U_{a,b,c}\\}$ is a basis and each $U_{a,b,c}$ is clopen`,
- body:`<button class="btnprf" onclick="tp(this)">▶ Show proof sketch</button>
-<div class="prfbody" style="display:none"><p><strong>B1:</strong> $(x,y)\\in U_{x,y,1}$. <strong>B2:</strong> intersection reduces to CRT giving $U_{x^*,a+b-x^*,\\mathrm{lcm}(c,c')}$. <strong>Clopen:</strong> complement is $\\bigcup_{k=1}^{|c|-1}U_{a+k,b-k,c}$. $\\square$</p></div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The sets $U_{a,b,c}$ form a topological basis: they cover $\\mathbb{Z}^2$, their intersections reduce (via CRT) to another basis element, and each is simultaneously open and closed (clopen). This gives $\\mathbb{Z}^2$ a totally disconnected topology.</p>
+<button class="btnprf" onclick="tp(this)">▶ Show proof sketch</button>
+<div class="prfbody" style="display:none">
+<p><strong>B1 (covering):</strong> Every $(x,y)\\in\\mathbb{Z}^2$ lies in $U_{x,y,1}=\\{(x+z,y-z):z\\in\\mathbb{Z}\\}$ (take $z=0$). $\\checkmark$</p>
+<p><strong>B2 (intersections):</strong> Let $(x,y)\\in U_{a,b,c}\\cap U_{a',b',c'}$. Then:
+$$x=a+cz_1=a'+c'z_2 \\implies a+cz_1\\equiv a'\\pmod{c'}$$
+By CRT (since we need $x\\equiv a\\pmod{c}$ and $x\\equiv a'\\pmod{c'}$), there exists $x^*$ with $x^*\\equiv a\\pmod{c}$ and $x^*\\equiv a'\\pmod{c'}$, and the solution set is $x^*+\\mathrm{lcm}(c,c')\\mathbb{Z}$. Since $x+y=a+b=a'+b'$ is constant on each anti-diagonal, the intersection is $U_{x^*,\\,a+b-x^*,\\,\\mathrm{lcm}(c,c')}$. $\\checkmark$</p>
+<p><strong>Clopen:</strong> The complement of $U_{a,b,c}$ in the anti-diagonal line $x+y=a+b$ consists of all points with $x\\not\\equiv a\\pmod{c}$. These are exactly:
+$$\\mathbb{Z}^2\\setminus U_{a,b,c}=\\bigcup_{k=1}^{|c|-1}U_{a+k,\\,b-k,\\,c}$$
+a finite union of basis elements $\\implies$ open. So $U_{a,b,c}$ has open complement $\\implies$ closed. Being both open (by definition) and closed $\\implies$ clopen. $\\square$</p>
+<p><strong>Worked CRT example:</strong></p>
+<div class="cblk"> U_{1,-1,7} ∩ U_{8,-8,5}:
+ Need x ≡ 1 (mod 7) and x ≡ 8 (mod 5)
+ x ≡ 1 (mod 7): x ∈ {…,-6, 1, 8, 15, 22, 29, 36, 43,…}
+ x ≡ 8 (mod 5): x ∈ {…,-2, 3, 8, 13, 18, 23, 28, 33, 38, 43,…}
+ First common: x* = 8 (works: 8≡1 mod 7, 8≡3 mod 5... no!)
+ Actually: 8 mod 7 = 1 ✓, 8 mod 5 = 3 ≠ 8 mod 5 ✗
+ Try x*=43: 43 mod 7 = 1 ✓, 43 mod 5 = 3 ≠ 8 ✗
+ Wait — 8 mod 5 = 3. Need x≡3 mod 5.
+ 43 mod 5 = 3 ✓! So intersection = U_{43,-43,35}</div>
+</div>
 <p><strong>Example:</strong> $U_{1,-1,7}\\cap U_{8,-8,5}$: $x\\equiv1\\pmod7$, $x\\equiv8\\pmod5$ gives $x^*=43$, intersection $=U_{43,-43,35}$.</p>
 <p><strong>Key:</strong> $N\\cap U_{a,b,c}$ is infinite or empty $\\Rightarrow$ no singleton is open.</p>`,
 lean:`${GH}/TPC/Topology.lean#L75`},
 
 {id:"t8.7",ch:"§8 Topology",b:"b-thm",
  t:`Thm 8.7 — Every nonempty open set in $N$ is infinite; no singleton is open`,
- body:`<div class="mdisp">$$N\\cap U_{a,b,c}\\neq\\emptyset\\implies|N\\cap U_{a,b,c}|=\\infty$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">In the subspace topology on $N$, every nonempty open set is infinite. This means no singleton $\\{(x,-x)\\}$ can be open — the key topological fact for the final contradiction.</p>
+<div class="mdisp">$$N\\cap U_{a,b,c}\\neq\\emptyset\\implies|N\\cap U_{a,b,c}|=\\infty$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p>If $c\\mid a+b$, then $N\\cap U_{a,b,c}=\\{(a+cn,-(a+cn)):n\\in\\mathbb{Z}\\}$, an infinite arithmetic progression. If $c\\nmid a+b$, the intersection is empty. Every nonempty open set contains some $N\\cap U_{a,b,c}$, so it is infinite. No singleton $\\{(x,-x)\\}$ can be open. $\\square$</p></div>
-<p><strong>Example:</strong> $N\\cap U_{1,-1,7}=\\{\\ldots,(-6,6),(1,-1),(8,-8),(15,-15),\\ldots\\}$ — infinite.</p>
+<div class="prfbody" style="display:none">
+<p><strong>Step 1:</strong> Recall $U_{a,b,c}=\\{(a+cz,b-cz):z\\in\\mathbb{Z}\\}$. A point $(x,-x)\\in N$ lies in $U_{a,b,c}$ iff $x=a+cz$ and $-x=b-cz$ for some $z$. Adding: $0=a+b$, i.e., $c\\mid a+b$ is necessary (taking $a+b=0$ in the simplest case).</p>
+<p><strong>Step 2 (nonempty $\\implies$ infinite):</strong> If $c\\mid a+b$, write $a+b=cm$. Then for every $z\\in\\mathbb{Z}$:
+$$(a+cz,\\;b-cz)=(a+cz,\\;-(a+cz)+(a+b))=(a+cz,\\;-(a+cz)+cm)$$
+For this to be in $N$: $b-cz=-(a+cz)$, i.e., $a+b=0$, which holds when $a+b=0$. More generally, when $c\\mid a+b$, the intersection is $\\{(a+cn,-(a+cn)):n\\in\\mathbb{Z}\\}$, parametrised by all $n\\in\\mathbb{Z}$ — an infinite set.</p>
+<p><strong>Step 3 (no singleton open):</strong> If $\\{(x,-x)\\}$ were open, it would contain some basic open set $N\\cap U_{a,-a,c}$ (with $(x,-x)$ as a member). But $N\\cap U_{a,-a,c}$ is infinite by Step 2, contradicting $|\\{(x,-x)\\}|=1$. $\\square$</p>
+<div class="cblk"> N ∩ U_{1,-1,7}:  a+b = 1+(-1) = 0, and 7|0 ✓
+ Elements: z=…,-1,0,1,2,3,…
+ z=-1: (1-7, -1+7) = (-6, 6)
+ z= 0: (1, -1)
+ z= 1: (8, -8)
+ z= 2: (15,-15)
+ z= 3: (22,-22)   — infinite ✓
+
+ N ∩ U_{2,-1,5}:  a+b = 2+(-1) = 1, and 5∤1
+ Intersection = ∅   — as expected</div>
+</div>
 <p>This is the property that produces the <a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a> contradiction.</p>`,
 lean:`${GH}/TPC/Topology.lean#L100`},
 
 {id:"t8.9",ch:"§8 Topology",b:"b-thm",
  t:`Thm 8.9 — $\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies L_p$ homeomorphism $\\implies$ $q\\otimes N$ closed`,
- body:`<div class="mdisp">$$p\\otimes N=V_{p_1,\\,6p_1+1}\\text{ (clopen)}, \\quad L_p\\text{ homeomorphism}\\implies p\\otimes C\\text{ closed for closed }C$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Left multiplication $L_p(x)=p\\otimes x$ is a homeomorphism of $N$ onto a clopen subset. Therefore every coset $q\\otimes N$ is closed — this is what makes the finite-union-of-closed-sets argument work in the main theorem.</p>
+<div class="mdisp">$$p\\otimes N=V_{p_1,\\,6p_1+1}\\text{ (clopen)}, \\quad L_p\\text{ homeomorphism}\\implies p\\otimes C\\text{ closed for closed }C$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p><strong>Continuity of $L_p$:</strong> Let $p=(p_1,-p_1)$. For $(x,-x)\\in U_{a,-a,c}\\cap N$, we have $x=a+cz$. Then:
-$$p_1\\mathbin{\\circledast}x=6p_1x+p_1+x=6p_1(a+cz)+p_1+a+cz=(6p_1a+p_1+a)+c(6p_1+1)z=p_1\\mathbin{\\circledast}a+\\phi(p_1)cz$$
-So $L_p$ maps $U_{a,-a,c}\\cap N$ into $U_{p_1\\circledast a,\\,-(p_1\\circledast a),\\,\\phi(p_1)c}$, hence is continuous.</p>
-<p><strong>Injectivity:</strong> $p_1\\mathbin{\\circledast}x=p_1\\mathbin{\\circledast}y$ implies $\\phi(p_1)\\phi(x)=\\phi(p_1)\\phi(y)$. Since $p_1\\neq0$, $\\phi(p_1)\\neq\\pm1$ is nonzero, giving $\\phi(x)=\\phi(y)$, hence $x=y$.</p>
-<p><strong>Cosets closed:</strong> $q\\otimes N=L_q(N)$ is the image of a closed set under a homeomorphism onto its image, hence closed. $\\square$</p></div>
+<div class="prfbody" style="display:none">
+<p><strong>Step 1 — Define $L_p$:</strong> For $p=(p_1,-p_1)\\in N\\setminus\\{(0,0)\\}$, define left multiplication $L_p(x,-x)=p\\otimes(x,-x)=(p_1\\mathbin{\\circledast}x,\\;-(p_1\\mathbin{\\circledast}x))$.</p>
+<p><strong>Step 2 — Continuity:</strong> We show $L_p$ maps basic open sets to basic open sets. Let $(x,-x)\\in U_{a,-a,c}\\cap N$, so $x=a+cz$ for some $z\\in\\mathbb{Z}$. Then:</p>
+<p>$$p_1\\mathbin{\\circledast}x = 6p_1x+p_1+x = 6p_1(a+cz)+p_1+a+cz$$
+$$= \\underbrace{(6p_1 a+p_1+a)}_{=\\,p_1\\circledast a} + \\underbrace{c(6p_1+1)}_{=\\,\\phi(p_1)\\cdot c}\\cdot z$$</p>
+<p>So $L_p$ maps $U_{a,-a,c}\\cap N$ into $U_{p_1\\circledast a,\\,-(p_1\\circledast a),\\,\\phi(p_1)c}$. Preimages of open sets are open $\\implies$ continuous. $\\checkmark$</p>
+<p><strong>Step 3 — Injectivity:</strong> If $p_1\\mathbin{\\circledast}x=p_1\\mathbin{\\circledast}y$, apply $\\phi$:
+$$\\phi(p_1)\\phi(x)=\\phi(p_1)\\phi(y)$$
+Since $p_1\\neq0$, $\\phi(p_1)=6p_1+1\\neq1$ and $\\phi(p_1)\\neq0$ (as $|\\phi(p_1)|\\geq5$). Cancel to get $\\phi(x)=\\phi(y)$, so $x=y$. $\\checkmark$</p>
+<p><strong>Step 4 — Image:</strong> $L_p(N)=\\{(p_1\\mathbin{\\circledast}x,\\;-(p_1\\mathbin{\\circledast}x)):x\\in\\mathbb{Z}\\}$. Under $\\phi$: $\\phi(p_1\\mathbin{\\circledast}x)=\\phi(p_1)\\phi(x)$, so the image in $6\\mathbb{Z}+1$ is $\\phi(p_1)\\cdot(6\\mathbb{Z}+1)$. This is $V_{p_1,\\phi(p_1)}$, an arithmetic progression $\\implies$ clopen.</p>
+<p><strong>Step 5 — Cosets closed:</strong> $q\\otimes N=L_q(N)$ is a clopen set (hence closed). More generally, $L_q$ is a homeomorphism onto its image, so for any closed $C\\subseteq N$, $q\\otimes C=L_q(C)$ is closed. $\\square$</p>
+<p><strong>Worked example ($p_1=1$):</strong></p>
+<div class="cblk"> L_{(1,-1)}: (x,-x) ↦ (1⊛x, -(1⊛x))
+ φ(1)=7, so image has step size 7:
+ x=0: 1⊛0 = 1   → (1,-1)
+ x=1: 1⊛1 = 8   → (8,-8)
+ x=2: 1⊛2 = 15  → (15,-15)
+ x=-1: 1⊛(-1)=-6 → (-6,6)
+ Image = V_{1,7} = {(1+7n, -(1+7n)) : n∈ℤ} — clopen ✓</div>
+</div>
 <p><strong>Example ($p_1=1$):</strong> $L_{(1,-1)}$ maps $N$ onto $V_{1,7}=\\{(1+7n,-(1+7n))\\}$, step $7=\\phi(1)$.</p>`,
 lean:`${GH}/TPC/Topology.lean#L155`},
 
 {id:"t9.1",ch:"§9 Main",b:"b-thm",
  t:`Thm 9.1 — Covering + Closed Cosets + No Open Singletons $\\implies$ $|\\mathrm{Irr}(N)|=\\infty$`,
- body:`<div class="mdisp">$$N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">If the set of irreducibles were finite, then $N\\setminus\\{(0,0)\\}$ would be a finite union of closed sets (hence closed), making $\\{(0,0)\\}$ open. But no singleton is open in $N$. Contradiction — so there are infinitely many irreducibles.</p>
+<div class="mdisp">$$N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p><strong>Covering:</strong> By <a class="iref" onclick="jumpId('c7.5')">Cor 7.5</a>, $N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$.</p>
-<p><strong>Contradiction:</strong> Suppose $\\mathrm{Irr}(N)$ is finite. Each coset $q\\otimes N$ is closed (<a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>). A finite union of closed sets is closed, so $N\\setminus\\{(0,0)\\}$ is closed, making $\\{(0,0)\\}$ open in $N$. But every nonempty open set in $N$ is infinite (<a class="iref" onclick="jumpId('t8.7')">Thm 8.7</a>). A singleton cannot be open. <strong>Contradiction.</strong> $\\blacksquare$</p>
+<div class="prfbody" style="display:none">
+<p><strong>Ingredient 1 — Covering (<a class="iref" onclick="jumpId('c7.5')">Cor 7.5</a>):</strong>
+$$N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$$
+Every nonidentity element has an irreducible divisor, so it lies in some irreducible coset.</p>
+<p><strong>Ingredient 2 — Each coset is closed (<a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>):</strong> For each $q\\in\\mathrm{Irr}(N)$, the left multiplication $L_q$ is a homeomorphism, so $q\\otimes N=L_q(N)$ is clopen (hence closed) in $N$.</p>
+<p><strong>Ingredient 3 — No singleton is open (<a class="iref" onclick="jumpId('t8.7')">Thm 8.7</a>):</strong> Every nonempty open set in $N$ is infinite.</p>
+<p><strong>Proof by contradiction:</strong> Suppose $\\mathrm{Irr}(N)$ is finite, say $\\mathrm{Irr}(N)=\\{q_1,\\ldots,q_n\\}$. Then:</p>
+<p>$$N\\setminus\\{(0,0)\\}=q_1\\otimes N\\cup\\cdots\\cup q_n\\otimes N$$</p>
+<p>Each $q_i\\otimes N$ is closed (Ingredient 2). A finite union of closed sets is closed. Therefore $N\\setminus\\{(0,0)\\}$ is closed in $N$.</p>
+<p>But then $\\{(0,0)\\}=N\\setminus(N\\setminus\\{(0,0)\\})$ is open in $N$ — a singleton open set. This contradicts Ingredient 3. $\\blacksquare$</p>
+<p><strong>Summary of the logical chain:</strong></p>
+<div class="cblk"> Finite Irr(N)
+   → N\{0} = finite union of closed sets
+   → N\{0} is closed
+   → {(0,0)} is open
+   → But every open set in N is infinite (Thm 8.7)
+   → Contradiction!
+   → |Irr(N)| = ∞  □</div>
 <div class="cblk"><span class="kw">theorem</span> <span class="fn">infinitely_many_irred</span>:
   {q:ℤ|Irred q}.Infinite</div></div>
 <p>This is <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg's argument</a> verbatim.</p>`,
@@ -525,9 +719,19 @@ lean:`${GH}/TPC/Main.lean#L60`},
 
 {id:"c9.3",ch:"§9 Main",b:"b-cor",
  t:`Cor 9.3 — Thm 5.1 + Thm 9.1 $\\implies$ Infinitely Many Twin Prime Pairs`,
- body:`<div class="mdisp">$$\\boxed{\\bigl|\\{x\\in\\mathbb{Z}:6x-1\\in\\pm\\mathbb{P}\\text{ and }6x+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty}$$</div>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Combining the algebraic equivalence (irreducibles $=$ twin primes) with the topological result (infinitely many irreducibles): there are infinitely many twin prime pairs.</p>
+<div class="mdisp">$$\\boxed{\\bigl|\\{x\\in\\mathbb{Z}:6x-1\\in\\pm\\mathbb{P}\\text{ and }6x+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty}$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p>By <a class="iref" onclick="jumpId('t5.1')">Theorem 5.1</a>, $(x,-x)\\in\\mathrm{Irr}(N)$ if and only if $6x+1$ and $6x-1$ are both $\\pm$prime, i.e., $(6x-1,6x+1)$ is a twin prime pair. By <a class="iref" onclick="jumpId('t9.1')">Theorem 9.1</a>, $|\\mathrm{Irr}(N)|=\\infty$. Combining these two results: there are infinitely many $x\\in\\mathbb{Z}$ with $6x\\pm1\\in\\pm\\mathbb{P}$, giving infinitely many twin prime pairs. $\\blacksquare$</p></div>
+<div class="prfbody" style="display:none">
+<p><strong>Step 1 (<a class="iref" onclick="jumpId('t5.1')">Thm 5.1</a>):</strong> Establishes a bijection:
+$$\\mathrm{Irr}(N) \\longleftrightarrow \\{x\\in\\mathbb{Z}: 6x-1\\in\\pm\\mathbb{P}\\text{ and }6x+1\\in\\pm\\mathbb{P}\\}$$
+Each irreducible $(x,-x)\\in N$ corresponds to the twin prime pair $(6x-1,6x+1)$.</p>
+<p><strong>Step 2 (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>):</strong> The topological argument proves $|\\mathrm{Irr}(N)|=\\infty$.</p>
+<p><strong>Conclusion:</strong> Combining Steps 1 and 2:
+$$|\\mathrm{Irr}(N)|=\\infty \\implies |\\{\\text{twin prime pairs}\\}|=\\infty$$</p>
+<p>Concretely: every twin prime pair $(p,p+2)$ with $p\\equiv5\\pmod6$ corresponds to $x=\\frac{p+1}{6}$:
+$(5,7)\\to x=1$, $(11,13)\\to x=2$, $(17,19)\\to x=3$, $(29,31)\\to x=5$, $(41,43)\\to x=7$, $\\ldots$ $\\blacksquare$</p>
+</div>
 <div class="mdisp">$$\\phi,\\psi\\text{ isom.}\\to\\text{Weak sat.}\\to\\text{Irred equiv.}\\to\\text{Norm}\\to\\text{Covering}\\to U_{a,b,c}\\to\\text{Cosets closed}\\to\\mathbf{TPC}$$</div>
 <div class="d-flex flex-wrap gap-1 mt-2">
 <a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank" class="tpill">Twin Prime Conjecture</a>
