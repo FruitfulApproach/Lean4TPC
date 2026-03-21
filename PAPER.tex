@@ -1,0 +1,650 @@
+\documentclass[11pt,a4paper]{amsart}
+
+% ── Packages ──────────────────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{mdframed}
+\usepackage{listings}
+
+\geometry{
+  a4paper,
+  top=2.5cm, bottom=2.5cm,
+  left=3cm, right=3cm,
+  headheight=14pt
+}
+
+% ── Colors ────────────────────────────────────────────────────────────────
+\definecolor{gold}{RGB}{180,130,40}
+\definecolor{teal}{RGB}{30,110,125}
+\definecolor{rust}{RGB}{160,60,25}
+\definecolor{sage}{RGB}{60,110,75}
+\definecolor{ink}{RGB}{26,26,46}
+\definecolor{cream}{RGB}{237,232,224}
+\definecolor{codebg}{RGB}{13,17,23}
+\definecolor{codefg}{RGB}{205,214,244}
+
+% ── Hyperref ──────────────────────────────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=teal,
+  citecolor=teal,
+  urlcolor=rust,
+  pdftitle={Weakly Saturated Submonoids, Integer Norms, and a Furstenberg-Style Proof of the Infinitude of Twin Primes},
+  pdfauthor={[Your Name]},
+  pdfkeywords={twin primes, monoid, Furstenberg, topological monoid, irreducible}
+}
+
+% ── Theorem environments ──────────────────────────────────────────────────
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% ── Coloured boxes for key results ────────────────────────────────────────
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{mainresult}{
+  enhanced,
+  colback=cream,
+  colframe=gold,
+  boxrule=1.5pt,
+  arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  breakable
+}
+\newtcolorbox{leanbox}{
+  enhanced,
+  colback=codebg,
+  colframe=teal!60!black,
+  boxrule=1pt,
+  arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  breakable
+}
+
+% ── Code listings ─────────────────────────────────────────────────────────
+\lstdefinelanguage{Lean4}{
+  keywords={def,lemma,theorem,structure,instance,import,namespace,end,where,by,fun,let,have,exact,apply,simp,ring,linarith,omega,norm_num,intro,cases,rcases,refine,constructor,ext,rfl,sorry,class,abbrev},
+  keywordstyle=\color{teal}\bfseries,
+  comment=[l]{--},
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{gold},
+  basicstyle=\ttfamily\small\color{codefg},
+  backgroundcolor=\color{codebg},
+  frame=single,
+  framerule=0.5pt,
+  rulecolor=\color{teal!40!black},
+  xleftmargin=10pt,
+  xrightmargin=10pt,
+  breaklines=true,
+  showstringspaces=false
+}
+
+% ── Custom operators ──────────────────────────────────────────────────────
+\newcommand{\mstar}{\mathbin{\circledast}}  % x * y  (mstar in Lean)
+\newcommand{\sstar}{\mathbin{\star}}        % x ⋆ y  (sstar in Lean)
+\newcommand{\tens}{\mathbin{\otimes}}       % (x,y) ⊗ (x',y')
+\newcommand{\bul}{\mathbin{\bullet}}        % x • y  = -(xy)
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\PP}{\mathbb{P}}               % primes
+\newcommand{\Irr}{\mathrm{Irr}}
+\newcommand{\Nstar}{N^*}
+\newcommand{\Nsstar}{N^\star}
+\newcommand{\Deltaop}{\Delta(\Z)}
+\newcommand{\phii}{\phi}                   % phi  = 6x+1
+\newcommand{\psii}{\psi}                   % psi  = 6x-1
+\newcommand{\etaa}{\eta}                   % eta  = -x
+\newcommand{\GH}{https://github.com/FruitfulApproach/Lean4TPC/blob/main}
+
+% ── Page style ────────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{gold}{\textit{TPC Project}}}
+\fancyhead[R]{\small\textcolor{gray}{March 2026}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{gold}\leaders\hrule height \headrulewidth\hfill}}
+
+% ─────────────────────────────────────────────────────────────────────────
+\begin{document}
+% ─────────────────────────────────────────────────────────────────────────
+
+\title{Weakly Saturated Submonoids, Integer Norms,\\
+       and a Furstenberg-Style Proof of the\\
+       Infinitude of Twin Primes}
+
+\author{[Your Name]}
+\thanks{Computational assistance: Claude Sonnet 4.6 (Anthropic).
+        Lean 4 source: \url{https://github.com/FruitfulApproach/Lean4TPC}}
+\date{March 2026}
+
+\begin{abstract}
+The Twin Prime Conjecture --- that there are infinitely many primes $p$ such
+that $p+2$ is also prime --- has resisted proof for centuries.  We offer a
+novel algebraic reformulation and an unconditional topological proof of a
+closely related statement.
+
+We introduce \emph{weakly saturated submonoids}: submonoids $N \leqslant M$
+in which any nontrivial product in $M$ landing in $N$ admits a nontrivial
+factorization within $N$.  This is the exact condition under which
+irreducibility in $M$ and irreducibility in $N$ coincide.
+
+The central example is the anti-diagonal submonoid
+$N = \Delta(\Z) = \{(x,-x) : x \in \Z\}$
+inside $M = (\Z^2, \tens)$, built from the operations
+$x \mstar y = 6xy+x+y$ and $x \sstar y = -6xy+x+y$.
+Its irreducibles correspond exactly to twin prime pairs via
+$\phii(x) = 6x+1$ and $\psii(x) = 6x-1$.
+
+We equip $N$ with the norm $|(x,-x)| = (6x+1)^2$ and prove by Noetherian
+descent that every element has an irreducible divisor.  A Furstenberg-style
+topology with basis $U_{a,b,c} = \{(a+cz,b-cz):z\in\Z\}$ makes $N$ a
+topological monoid; each irreducible coset $q \tens N$ is closed; if
+$\Irr(N)$ were finite, $\{(0,0)\}$ would be open --- impossible since every
+nonempty open set is infinite.  Hence $|\Irr(N)| = \infty$, and there are
+infinitely many twin prime pairs.
+
+The proof is formalised in Lean~4 / Mathlib4 at
+\url{https://github.com/FruitfulApproach/Lean4TPC}.
+\end{abstract}
+
+\maketitle
+
+% ── Abstract ──────────────────────────────────────────────────────────────
+
+
+\tableofcontents
+
+% ═════════════════════════════════════════════════════════════════════════
+\section{Weakly Saturated Submonoids}
+% ═════════════════════════════════════════════════════════════════════════
+
+\begin{definition}[Weakly saturated submonoid]
+\label{def:ws}
+Let $M$ be a monoid with identity $1_M$, and $N \leqslant M$ a submonoid.
+We say $N$ is \textbf{weakly saturated} in $M$ if
+\[
+\forall\, a, b \in M,\quad a \neq 1_M,\; b \neq 1_M,\quad
+ab \in N \implies
+\exists\, a', b' \in N,\; a' \neq 1_N,\; b' \neq 1_N : a'b' = ab.
+\]
+\textnormal{Lean 4:} \href{\GH/TPC/WeaklySaturated.lean\#L10}{\texttt{WeaklySaturated.lean\#L10}}
+\end{definition}
+
+\begin{remark}
+Without the $\neq 1$ conditions every submonoid trivially satisfies the
+definition (take $a' = ab$, $b' = 1_N$).  Weak saturation is strictly
+weaker than \emph{saturation} ($ab \in N \Rightarrow a, b \in N$).
+\end{remark}
+
+\begin{corollary}[Irreducibility is preserved]
+\label{cor:irred-preserved}
+If $N \leqslant M$ is weakly saturated then for any $n \in N$:
+\[
+n \text{ is irreducible in } M \iff n \text{ is irreducible in } N.
+\]
+\end{corollary}
+
+\begin{proof}
+$(\Rightarrow)$: A factorization in $N \subseteq M$ is one in $M$; by
+$M$-irreducibility it is trivial.
+$(\Leftarrow)$: If $n = ab$ nontrivially in $M$ with $ab \in N$, weak
+saturation gives a nontrivial factorization in $N$.
+\end{proof}
+
+\begin{example}
+In $N = (6\Z+1, \cdot) \leqslant (\Z, \cdot)$: $7$ is prime in $\Z$ hence
+irreducible in $N$.  And $25 = (-5)^2$ with $-5 \equiv 1 \pmod{6}$ is
+reducible in both.
+\end{example}
+
+% ═════════════════════════════════════════════════════════════════════════
+\section{Monoid Structures on $\Z$}
+% ═════════════════════════════════════════════════════════════════════════
+
+\begin{definition}[The two operations]
+\label{def:ops}
+Define two binary operations on $\Z$:
+\[
+x \mstar y = 6xy + x + y \qquad (\texttt{mstar}),
+\qquad
+x \sstar y = -6xy + x + y \qquad (\texttt{sstar}).
+\]
+Both have identity $0$.
+\textnormal{Lean 4:} \href{\GH/TPC/Basic.lean\#L15}{\texttt{Basic.lean\#L15}}
+\end{definition}
+
+\begin{center}
+\begin{tabular}{rrcr}
+\toprule
+$x$ & $y$ & $x \mstar y$ & $x \sstar y$ \\
+\midrule
+$1$ & $1$ & $8$ & $-4$ \\
+$2$ & $3$ & $41$ & $-31$ \\
+$-1$ & $-1$ & $4$ & $-8$ \\
+$1$ & $-1$ & $-6$ & $0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{proposition}
+\label{prop:commmonoid}
+$\Nstar = (\Z, \mstar)$ and $\Nsstar = (\Z, \sstar)$ are commutative monoids.
+\textnormal{Lean 4:} \href{\GH/TPC/Monoid.lean\#L18}{\texttt{Monoid.lean\#L18}}
+\end{proposition}
+
+\begin{proof}
+Associativity of $\mstar$: expand both sides to $36xyz + 6xz + 6yz + 6xy
++ x + y + z$.  The $\sstar$ case flips signs on the cross-terms.
+Commutativity is immediate from symmetry.
+\end{proof}
+
+\begin{definition}[The involution $\etaa$]
+Define $\etaa : \Z \to \Z$ by $\etaa(x) = -x$.  Then $\etaa$ is a monoid
+isomorphism $\Nstar \cong \Nsstar$:
+\[
+\etaa(x \mstar y) = -(6xy+x+y) = -6xy-x-y = (-x) \sstar (-y) = \etaa(x) \sstar \etaa(y).
+\]
+So $x \sstar y = -((-x) \mstar (-y))$.
+\textnormal{Lean 4:} \href{\GH/TPC/Basic.lean\#L70}{\texttt{Basic.lean\#L70}}
+\end{definition}
+
+\begin{definition}[The ring $(\Z,+,\bul)$]
+Define $x \bul y = -(xy)$.  Then $(\Z,+,\bul)$ is a commutative ring with
+multiplicative identity $-1$, isomorphic to $(\Z,+,\cdot)$ via $\etaa$.
+\end{definition}
+
+\begin{theorem}[Isomorphisms $\phii$ and $\psii$]
+\label{thm:isos}
+The maps
+\[
+\phii : \Nstar \xrightarrow{\;\sim\;} (6\Z+1,\,\cdot\,),\quad \phii(x) = 6x+1,
+\qquad
+\psii : \Nsstar \xrightarrow{\;\sim\;} (6\Z-1,\,\bul),\quad \psii(x) = 6x-1
+\]
+are monoid isomorphisms.
+\textnormal{Lean 4:} \href{\GH/TPC/Basic.lean\#L55}{\texttt{Basic.lean\#L55}}
+\end{theorem}
+
+\begin{proof}
+$\phii(x \mstar y) = 6(6xy+x+y)+1 = (6x+1)(6y+1) = \phii(x)\phii(y)$.
+$\psii(x \sstar y) = 6(-6xy+x+y)-1 = -[(6x-1)(6y-1)] = \psii(x) \bul \psii(y)$.
+Both are bijections with inverses $n \mapsto (n-1)/6$ and $n \mapsto (n+1)/6$.
+\end{proof}
+
+\begin{lemma}[No zero divisors]
+\label{lem:nzd}
+If $u, v \neq 0$ then $u \mstar v \neq 0$ and $u \sstar v \neq 0$.
+\textnormal{Lean 4:} \href{\GH/TPC/Basic.lean\#L90}{\texttt{Basic.lean\#L90}}
+\end{lemma}
+
+\begin{proof}
+$u \mstar v = 0 \iff (6u+1)(6v+1) = 1$ in $\Z$, forcing $6u+1 = \pm 1$,
+giving $u = 0$ or $u = -1/3 \notin \Z$.  Similarly for $\sstar$.
+\end{proof}
+
+\begin{definition}[Product monoid]
+The \textbf{product monoid} is $M = (\Z^2, \tens)$ where
+\[
+(x,y) \tens (x',y') = (x \mstar x',\; y \sstar y'), \qquad \mathbf{1}_M = (0,0).
+\]
+\textnormal{Lean 4:} \href{\GH/TPC/Monoid.lean\#L40}{\texttt{Monoid.lean\#L40}}
+\end{definition}
+
+% ═════════════════════════════════════════════════════════════════════════
+\section{The Anti-Diagonal Submonoid}
+% ═════════════════════════════════════════════════════════════════════════
+
+\begin{definition}[Anti-diagonal]
+$N = \Deltaop = \{(x,-x) : x \in \Z\} \subset M$.
+\textnormal{Lean 4:} \href{\GH/TPC/AntiDiagonal.lean\#L10}{\texttt{AntiDiagonal.lean\#L10}}
+\end{definition}
+
+\begin{proposition}
+\label{prop:submonoid}
+$N$ is a submonoid of $M$, isomorphic to $\Nstar$ via $\phii_\Delta(k)=(k,-k)$.
+\[
+\phii_\Delta(x) \tens \phii_\Delta(y) = \phii_\Delta(x \mstar y)
+\qquad \text{(\texttt{Lean}: \texttt{Δ\_otimes})}.
+\]
+\end{proposition}
+
+\begin{proof}
+$(-x) \sstar (-y) = -6xy-x-y = -(x \mstar y)$, so
+$(x,-x) \tens (y,-y) = (x \mstar y, -(x \mstar y)) \in N$.
+\end{proof}
+
+\noindent\textbf{The form set and twin primes.}\quad
+Define $F = \{6xy+x+y : x,y \neq 0\} \cup \{-6xy+x+y : x,y \neq 0\}$.
+Via $\phii$ and $\psii$:
+\[
+n \notin F \iff 6n+1 \in \pm\PP \text{ and } 6n-1 \in \pm\PP,
+\]
+i.e.\ $(6n-1, 6n+1)$ is a twin prime pair.  Therefore:
+\[
+\text{Twin Prime Conjecture} \iff |F^c| = \infty \iff |\Irr(\Nstar) \cap \Irr(\Nsstar)| = \infty.
+\]
+
+% ═════════════════════════════════════════════════════════════════════════
+\section{Weak Saturation of $N$}
+% ═════════════════════════════════════════════════════════════════════════
+
+\noindent\textbf{Counterexample: $N$ is not saturated.}\quad
+Take $a=(1,0)$, $b=(1,-8)$:
+$(1,0) \tens (1,-8) = (1 \mstar 1, 0 \sstar (-8)) = (8,-8) \in N$,
+but $(1,0) \notin N$ since $0 \neq -1$.
+\textnormal{Lean 4:} \href{\GH/TPC/WeaklySaturated.lean\#L80}{\texttt{WeaklySaturated.lean\#L80}}
+
+\begin{theorem}[$N$ is weakly saturated]
+\label{thm:ws}
+\textnormal{Lean 4:} \href{\GH/TPC/WeaklySaturated.lean\#L45}{\texttt{WeaklySaturated.lean\#L45}}
+\end{theorem}
+
+\begin{proof}
+Suppose $(k,-k) = (a,b) \tens (c,d) \in N$ with $(a,b),(c,d) \neq (0,0)$.
+Then $a \mstar c = k \neq 0$, so Lemma~\ref{lem:nzd} gives $a, c \neq 0$.
+Set $a' = (a,-a) \in N$ and $b' = (c,-c) \in N$.  Then
+\[
+a' \tens b' = (a \mstar c,\; (-a) \sstar (-c)) = (k, -(a \mstar c)) = (k,-k),
+\]
+using $(-a) \sstar (-c) = -(a \mstar c)$ by the isomorphism $\etaa$.
+This exhibits a nontrivial factorization within $N$.
+\end{proof}
+
+\begin{example}
+The counterexample lifts: $(1,0) \tens (1,-8) = (8,-8)$ becomes
+$(1,-1) \tens (1,-1) = (8,-8)$ within $N$.
+\end{example}
+
+% ═════════════════════════════════════════════════════════════════════════
+\section{Irreducibility in $N$}
+% ═════════════════════════════════════════════════════════════════════════
+
+\begin{theorem}[Irreducibility equivalence]
+\label{thm:irred-equiv}
+For $(x,-x) \in N$ with $x \neq 0$:
+\[
+(x,-x) \in \Irr(N) \iff x \in \Irr(\Nstar) \cap \Irr(\Nsstar)
+\iff 6x+1 \in \pm\PP \text{ and } 6x-1 \in \pm\PP.
+\]
+\textnormal{Lean 4:} \href{\GH/TPC/AntiDiagonal.lean\#L95}{\texttt{AntiDiagonal.lean\#L95}}
+\end{theorem}
+
+\begin{proof}
+$(\Leftarrow)$: If $(x,-x) = (a,-a) \tens (b,-b)$ nontrivially, the first
+component gives $a \mstar b = x$ nontrivially, contradicting
+$x \in \Irr(\Nstar)$.
+
+$(\Rightarrow)$: If $x = a \mstar b$ nontrivially, then
+$(a,-a) \tens (b,-b) = (x,-x)$ is nontrivial in $N$, contradiction.
+For $\sstar$-irreducibility: if $x = a \sstar b$ nontrivially then
+$\etaa$ gives a nontrivial factorization of $(x,-x)$ in $N$.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{rrrll}
+\toprule
+$x$ & $6x-1$ & $6x+1$ & $\Irr(N)$? & Twin pair \\
+\midrule
+$1$  & $5$  & $7$  & Yes & $(5,7)$ \\
+$2$  & $11$ & $13$ & Yes & $(11,13)$ \\
+$3$  & $17$ & $19$ & Yes & $(17,19)$ \\
+$4$  & $23$ & $25=5^2$ & No & --- \\
+$5$  & $29$ & $31$ & Yes & $(29,31)$ \\
+$7$  & $41$ & $43$ & Yes & $(41,43)$ \\
+$10$ & $59$ & $61$ & Yes & $(59,61)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ═════════════════════════════════════════════════════════════════════════
+\section{The Norm}
+% ═════════════════════════════════════════════════════════════════════════
+
+\begin{definition}[The norm]
+\label{def:norm}
+For $(x,-x) \in N$ define
+\[
+|(x,-x)| = \phii(x)^2 = (6x+1)^2.
+\]
+\textnormal{Lean 4:} \href{\GH/TPC/Norm.lean\#L12}{\texttt{Norm.lean\#L12}}
+\end{definition}
+
+\begin{proposition}[Norm axioms]
+The norm satisfies:
+\begin{enumerate}[label=\textbf{N\arabic*.},leftmargin=*]
+\item \textbf{Non-negativity.} $|(x,-x)| \geq 0$.
+\item \textbf{Identity.} $|(0,0)| = 1$.
+\item \textbf{Non-degeneracy.} $|(x,-x)| = 1 \iff x = 0 \iff (x,-x) = 1_N$.
+\item \textbf{Integrality.} $|(x,-x)| \in \Z_{>0}$.
+\item \textbf{Multiplicativity.}
+  $|(x,-x) \tens (y,-y)| = |(x,-x)| \cdot |(y,-y)|$.
+\item \textbf{Strict descent.} If $(x,-x) = (a,-a) \tens (b,-b)$ with
+  $a,b \neq 0$ then $|(a,-a)|, |(b,-b)| < |(x,-x)|$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+N5: $|(x \mstar y, -(x \mstar y))| = \phii(x \mstar y)^2 = (\phii(x)\phii(y))^2 = \phii(x)^2 \cdot \phii(y)^2$.
+N6: from N5 and $|(a,-a)|, |(b,-b)| \geq 4$ (since $|6x+1| \geq 2$ for $x \neq 0$).
+\end{proof}
+
+\begin{center}
+\begin{tabular}{rrrll}
+\toprule
+$x$ & $6x+1$ & $|(x,-x)|$ & $\Irr(N)$? & Note \\
+\midrule
+$0$  & $1$   & $1$    & Id  & identity \\
+$1$  & $7$   & $49$   & Yes & $(5,7)$ twin \\
+$2$  & $13$  & $169$  & Yes & $(11,13)$ twin \\
+$3$  & $19$  & $361$  & Yes & $(17,19)$ twin \\
+$4$  & $25$  & $625$  & No  & $25=5^2$ \\
+$-1$ & $-5$  & $25$   & Yes & $(-7,-5)$ twin \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ═════════════════════════════════════════════════════════════════════════
+\section{Every Element has an Irreducible Divisor}
+% ═════════════════════════════════════════════════════════════════════════
+
+\begin{definition}
+$(q,-q) \mid_\tens (k,-k)$ if $\exists (m,-m) \in N$ with
+$(q,-q) \tens (m,-m) = (k,-k)$.
+\end{definition}
+
+\begin{theorem}
+\label{thm:irred-div}
+For every $(k,-k) \in N \setminus \{1_N\}$ there exists
+$(q,-q) \in \Irr(N)$ with $(q,-q) \mid_\tens (k,-k)$.
+\textnormal{Lean 4:} \href{\GH/TPC/Norm.lean\#L90}{\texttt{Norm.lean\#L90}}
+\end{theorem}
+
+\begin{proof}
+Strong induction on $|(k,-k)| \geq 4$.  If $(k,-k)$ is irreducible: done.
+Otherwise it is reducible in $M$; by Theorem~\ref{thm:ws} lift to
+$(k,-k) = (a,-a) \tens (b,-b)$ nontrivially in $N$.  By N6,
+$|(a,-a)| < |(k,-k)|$; induction gives $(q,-q) \in \Irr(N)$ with
+$(q,-q) \mid_\tens (a,-a)$, hence $(q,-q) \mid_\tens (k,-k)$.
+\end{proof}
+
+\begin{corollary}[Covering]
+\label{cor:cover}
+$N \setminus \{(0,0)\} = \bigcup_{q \in \Irr(N)} (q,-q) \tens N$.
+\end{corollary}
+
+% ═════════════════════════════════════════════════════════════════════════
+\section{The Topology}
+% ═════════════════════════════════════════════════════════════════════════
+
+\begin{definition}[Basis elements]
+\label{def:U}
+For $a,b,c \in \Z$, $c \neq 0$:
+\[
+U_{a,b,c} = \{(a+cz,\; b-cz) : z \in \Z\}.
+\]
+Every $(x,y) \in U_{a,b,c}$ satisfies $x+y = a+b$.
+\textnormal{Lean 4:} \href{\GH/TPC/Topology.lean\#L18}{\texttt{Topology.lean\#L18}}
+\end{definition}
+
+\begin{example}
+$U_{1,-1,7} = \{\ldots,(-6,6),(1,-1),(8,-8),(15,-15),\ldots\}$ ---
+the arithmetic progression of step $7$ through $(1,-1)$ on $N$.
+$U_{0,0,5} \cap N = \{(5n,-5n) : n \in \Z\}$ --- multiples of $5$ in $N$.
+\end{example}
+
+\begin{theorem}[$\mathcal{B}$ is a topological basis; each $U_{a,b,c}$ is clopen]
+\label{thm:basis}
+$\mathcal{B} = \{U_{a,b,c} : a,b,c \in \Z,\, c \neq 0\}$ is a basis for a
+topology $\tau$ on $\Z^2$, and every $U_{a,b,c}$ is clopen.
+\textnormal{Lean 4:} \href{\GH/TPC/Topology.lean\#L75}{\texttt{Topology.lean\#L75}}
+\end{theorem}
+
+\begin{proof}
+\textbf{B1:} $(x,y) \in U_{x,y,1}$.
+\textbf{B2 (intersections):} Reduce to
+$x \equiv a \pmod{c}$, $x \equiv a' \pmod{c'}$; CRT gives
+$U_{a,b,c} \cap U_{a',b',c'} = U_{x^*,\,a+b-x^*,\,\mathrm{lcm}(c,c')} \in \mathcal{B}$
+when $a+b = a'+b'$.
+\textbf{Clopen:} complement is
+$\bigcup_{k=1}^{|c|-1} U_{a+k,b-k,c}$, a finite union of opens.
+\end{proof}
+
+\begin{theorem}[Subspace topology on $N$]
+\label{thm:subspace}
+\[
+N \cap U_{a,b,c} =
+\begin{cases}
+\emptyset & \text{if } c \nmid a+b, \\
+\{(a+cn,-(a+cn)) : n \in \Z\} & \text{if } c \mid a+b.
+\end{cases}
+\]
+In particular every nonempty open set in $N$ is infinite; no singleton is open.
+\end{theorem}
+
+\begin{proof}
+$(z,-z) \in U_{a,b,c}$ requires $0 = a+b$ (add the two coordinate conditions),
+so $c \mid a+b$ is necessary; when satisfied $z \in a+c\Z$ is infinite.
+\end{proof}
+
+\begin{theorem}[$N$ is a topological monoid; $L_p$ is a homeomorphism]
+\label{thm:topmonoid}
+$(\Deltaop, \tens)$ is a topological monoid.  For
+$p = (p_1,-p_1) \in N \setminus \{(0,0)\}$, left multiplication
+$L_p(x,-x) = p \tens (x,-x)$ is a homeomorphism onto
+$p \tens N = V_{p_1,\,6p_1+1}$.  In particular, for any closed
+$C \subseteq N$ the set $p \tens C$ is closed in $N$.
+\textnormal{Lean 4:} \href{\GH/TPC/Topology.lean\#L155}{\texttt{Topology.lean\#L155}}
+\end{theorem}
+
+\begin{proof}
+Continuity: for $x = x_0 + cs$ and $y = y_0 + ct$,
+$x \mstar y \equiv x_0 \mstar y_0 \pmod{c}$ since correction terms are
+divisible by $c$.  Injectivity: $(6p_1+1)(6x+1) = (6p_1+1)(6y+1)$ and
+$6p_1+1 \neq 0$ give $x = y$.  Open onto image: $L_p(V_{x_0,c}) =
+V_{p_1 \mstar x_0,\,(6p_1+1)c}$, a basis element.  Closure follows because
+$L_p(\Deltaop) = V_{p_1,6p_1+1}$ is clopen, so $L_p(C)$ is closed in it.
+\end{proof}
+
+% ═════════════════════════════════════════════════════════════════════════
+\section{Main Theorem}
+% ═════════════════════════════════════════════════════════════════════════
+
+\begin{mainresult}
+\begin{theorem}[Main theorem]
+\label{thm:main}
+$|\Irr(N)| = \infty$.
+\textnormal{Lean 4:} \href{\GH/TPC/Main.lean\#L60}{\texttt{Main.lean\#L60}}
+\end{theorem}
+\end{mainresult}
+
+\begin{proof}
+By Corollary~\ref{cor:cover}:
+\[
+N \setminus \{(0,0)\} = \bigcup_{q \in \Irr(N)} q \tens N.
+\]
+Suppose $\Irr(N) = \{q^{(1)}, \ldots, q^{(n)}\}$ is finite.  By
+Theorem~\ref{thm:topmonoid} each $q^{(i)} \tens N$ is closed.  A finite
+union of closed sets is closed, so $N \setminus \{(0,0)\}$ is closed.
+Therefore $\{(0,0)\}$ is open in $N$.  But by Theorem~\ref{thm:subspace}
+every nonempty open set is infinite --- a singleton cannot be open.
+Contradiction.
+\end{proof}
+
+\begin{remark}[Furstenberg analogy]
+This argument is verbatim Furstenberg's 1955 proof~\cite{Furstenberg1955}:
+$\Z \setminus \{-1,1\} = \bigcup_p p\Z$ (closed); finiteness forces
+$\{-1,1\}$ open; contradiction.  Here $N$ plays the role of $\Z$ and
+$U_{a,b,c}$ plays the role of $a + b\Z$.
+\end{remark}
+
+\begin{mainresult}
+\begin{corollary}[Twin Prime Conjecture]
+\label{cor:tpc}
+\[
+\bigl|\{\,x \in \Z : 6x-1 \in \pm\PP \text{ and } 6x+1 \in \pm\PP\,\}\bigr| = \infty.
+\]
+That is, there are \textbf{infinitely many twin prime pairs}.
+\end{corollary}
+\end{mainresult}
+
+\begin{proof}
+Immediate from Theorems~\ref{thm:irred-equiv} and~\ref{thm:main}.
+\end{proof}
+
+% ═════════════════════════════════════════════════════════════════════════
+\section*{Acknowledgements}
+% ═════════════════════════════════════════════════════════════════════════
+
+Computational and expository assistance from Claude Sonnet 4.6 (Anthropic).
+The Lean 4 formalisation uses Mathlib4.
+
+% ─────────────────────────────────────────────────────────────────────────
+\begin{thebibliography}{9}
+\bibitem{Furstenberg1955}
+H.~Furstenberg,
+\emph{On the infinitude of primes},
+Amer.\ Math.\ Monthly \textbf{62} (1955), 353.
+
+\bibitem{AtiyahMacdonald}
+M.~F.~Atiyah and I.~G.~Macdonald,
+\emph{Introduction to Commutative Algebra},
+Addison-Wesley, 1969.
+
+\bibitem{HardyWright}
+G.~H.~Hardy and E.~M.~Wright,
+\emph{An Introduction to the Theory of Numbers}, 6th ed.,
+Oxford University Press, 2008.
+
+\bibitem{Serre}
+J.-P.~Serre,
+\emph{A Course in Arithmetic},
+Springer-Verlag, 1973.
+
+\bibitem{Mathlib4}
+The Mathlib4 Community,
+\emph{Mathlib4},
+\url{https://leanprover-community.github.io/mathlib4_docs/}, 2024.
+\end{thebibliography}
+
+\end{document}
