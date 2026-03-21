@@ -21,8 +21,8 @@ def mstar (x y : ℤ) : ℤ := 6 * x * y + x + y
 def sstar (x y : ℤ) : ℤ := -6 * x * y + x + y
 
 -- Notation
-notation:70 x " ⊛ " y => mstar x y
-notation:70 x " ⋆ " y => sstar x y
+infixl:70 " ⊛ " => mstar
+infixl:70 " ⋆ " => sstar
 
 -- ============================================================
 -- Section 2: Basic algebraic identities
@@ -111,33 +111,32 @@ lemma neg_sstar_neg (x y : ℤ) : (-x) ⋆ (-y) = -(x ⊛ y) := by
 
 /-- ⊛ has no zero divisors: if u ⊛ v = 0 and u ≠ 0 then v = 0 -/
 lemma mstar_no_zero_div (u v : ℤ) (hu : u ≠ 0) (hv : u ⊛ v = 0) : v = 0 := by
-  -- u ⊛ v = 0 iff (6u+1)(6v+1) = 1
+  -- Step 1: u ⊛ v = 0 implies φ(u) * φ(v) = 1
   have hphi : φ u * φ v = 1 := by
-    have := φ_mul u v
-    simp [mstar, φ] at this ⊢
-    linarith [hv.symm ▸ this]
-  -- In ℤ, ab = 1 implies a = b = 1 or a = b = -1
-  have := Int.eq_one_or_neg_one_of_mul_eq_one' hphi
-  simp [φ] at this
-  cases this with
-  | inl h =>
-    obtain ⟨h1, h2⟩ := h
+    have h := φ_mul u v   -- h : φ (u ⊛ v) = φ u * φ v
+    rw [hv, φ_zero] at h  -- h : 1 = φ u * φ v
     linarith
-  | inr h =>
-    obtain ⟨h1, h2⟩ := h
-    have : u = -1/3 := by linarith
-    norm_num at this
+  -- Step 2: units of ℤ are exactly ±1
+  have hunit : φ u = 1 ∨ φ u = -1 :=
+    Int.isUnit_iff.mp (IsUnit.of_mul_eq_one (φ v) hphi)
+  -- Step 3: unfold φ(u) = 6u+1 and derive contradiction
+  -- Case 1: 6u+1 = 1  →  u = 0, contradicts hu
+  -- Case 2: 6u+1 = -1 →  6u = -2, no integer solution
+  simp only [φ] at hunit
+  rcases hunit with h | h <;> omega
 
 /-- ⋆ has no zero divisors -/
 lemma sstar_no_zero_div (u v : ℤ) (hu : u ≠ 0) (hv : u ⋆ v = 0) : v = 0 := by
-  -- u ⋆ v = 0 iff (6u-1)(6v-1) = 0
-  have hpsi : ψ u * ψ v = 0 := by
-    have := ψ_mul u v
-    simp [sstar, ψ] at this ⊢
-    linarith [hv.symm ▸ (show -(ψ u * ψ v) = 0 from by linarith)]
-  rcases Int.mul_eq_zero.mp hpsi with h | h
-  · simp [ψ] at h; linarith
-  · simp [ψ] at h; linarith
+  have hpsi : ψ u * ψ v = 1 := by
+    have h := ψ_mul u v   -- h : ψ (u ⋆ v) = -(ψ u * ψ v)
+    rw [hv, ψ_zero] at h  -- h : -1 = -(ψ u * ψ v)
+    linarith
+  have hunit : ψ u = 1 ∨ ψ u = -1 :=
+    Int.isUnit_iff.mp (IsUnit.of_mul_eq_one (ψ v) hpsi)
+  -- Case 1: 6u-1 = 1  →  6u = 2, no integer solution
+  -- Case 2: 6u-1 = -1 →  u = 0, contradicts hu
+  simp only [ψ] at hunit
+  rcases hunit with h | h <;> omega
 
 -- ============================================================
 -- Section 6: Images of φ and ψ
@@ -145,10 +144,10 @@ lemma sstar_no_zero_div (u v : ℤ) (hu : u ≠ 0) (hv : u ⋆ v = 0) : v = 0 :=
 
 /-- φ(x) ≡ 1 (mod 6) -/
 lemma φ_mod_6 (x : ℤ) : φ x % 6 = 1 := by
-  simp [φ]; omega
+  simp [φ]
 
-/-- ψ(x) ≡ -1 (mod 6) -/  
+/-- ψ(x) ≡ -1 (mod 6) -/
 lemma ψ_mod_6 (x : ℤ) : ψ x % 6 = -1 % 6 := by
-  simp [ψ]; omega
+  simp [ψ]
 
 end TPC

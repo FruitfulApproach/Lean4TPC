@@ -48,7 +48,7 @@ instance : CommMonoid Nsstar where
 def otimes (p q : ℤ × ℤ) : ℤ × ℤ :=
   (mstar p.1 q.1, sstar p.2 q.2)
 
-notation:70 p " ⊗ " q => otimes p q
+infixl:70 " ⊗ " => otimes
 
 @[simp] lemma otimes_def (a b c d : ℤ) :
     (a, b) ⊗ (c, d) = (a ⊛ c, b ⋆ d) := rfl
@@ -62,11 +62,11 @@ notation:70 p " ⊗ " q => otimes p q
 
 /-- ⊗ is associative -/
 lemma otimes_assoc (p q r : ℤ × ℤ) : (p ⊗ q) ⊗ r = p ⊗ (q ⊗ r) := by
-  simp [otimes, mstar_assoc, sstar_assoc]
+  simp [otimes, mstar, sstar]; constructor <;> ring
 
 /-- ⊗ is commutative -/
 lemma otimes_comm (p q : ℤ × ℤ) : p ⊗ q = q ⊗ p := by
-  simp [otimes, mstar_comm, sstar_comm]
+  simp [otimes, mstar, sstar]; constructor <;> ring
 
 /-- M = (ℤ², ⊗) is a commutative monoid -/
 instance : CommMonoid (ℤ × ℤ) where

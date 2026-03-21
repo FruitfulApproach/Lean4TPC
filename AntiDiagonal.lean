@@ -114,7 +114,7 @@ def AntiDiagIrred (x : ℤ) : Prop :=
 
 /--
 
-If x is ⊛-irreducible and ⋆-irreducible, then Δ(x) is ⊗-irreducible -/
+lake exe cache getlake exe cache getlake exe cache getlake exe cache getlake exe cache getlake exe cache getlake exe cache getlake exe cache getlake exe cache getlake exe cache getlake exe cache getlake exe cache getlake exe cache getIf x is ⊛-irreducible and ⋆-irreducible, then Δ(x) is ⊗-irreducible -/
 theorem antiDiagIrred_of_both_irred (x : ℤ)
     (hm : MstarIrred x) (hs : SstarIrred x) : AntiDiagIrred x := by
   constructor
