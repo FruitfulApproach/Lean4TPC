@@ -107,6 +107,11 @@ body{font-family:var(--sans);background:var(--g50);color:var(--black);min-height
   background:var(--g100);border:1px solid var(--g200);border-radius:30px;
   padding:.14rem .52rem;text-decoration:none;transition:var(--t);white-space:nowrap}
 .srclink:hover{background:var(--blue);color:var(--white);border-color:var(--blue);box-shadow:var(--sh-btn)}
+.btn-copy{font-family:var(--mono);font-size:.6rem;color:#888;background:transparent;
+  border:1px solid #555;border-radius:30px;padding:.12rem .48rem;cursor:pointer;
+  transition:var(--t);white-space:nowrap;margin-left:auto}
+.btn-copy:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
+.btn-copy.copied{background:#2a9d5c;color:#fff;border-color:#2a9d5c}
 
 /* proof toggle */
 .btnprf{font-family:var(--mono);font-size:.71rem;font-weight:600;
@@ -680,16 +685,36 @@ lean:`${GH}/TPC/Topology.lean#L100`},
 <div class="mdisp">$$p\\otimes N=V_{p_1,\\,6p_1+1}\\text{ (clopen)}, \\quad L_p\\text{ homeomorphism}\\implies p\\otimes C\\text{ closed for closed }C$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>Step 1 — Define $L_p$:</strong> For $p=(p_1,-p_1)\\in N\\setminus\\{(0,0)\\}$, define left multiplication $L_p(x,-x)=p\\otimes(x,-x)=(p_1\\mathbin{\\circledast}x,\\;-(p_1\\mathbin{\\circledast}x))$.</p>
-<p><strong>Step 2 — Continuity:</strong> We show $L_p$ maps basic open sets to basic open sets. Let $(x,-x)\\in U_{a,-a,c}\\cap N$, so $x=a+cz$ for some $z\\in\\mathbb{Z}$. Then:</p>
-<p>$$p_1\\mathbin{\\circledast}x = 6p_1x+p_1+x = 6p_1(a+cz)+p_1+a+cz$$
-$$= \\underbrace{(6p_1 a+p_1+a)}_{=\\,p_1\\circledast a} + \\underbrace{c(6p_1+1)}_{=\\,\\phi(p_1)\\cdot c}\\cdot z$$</p>
-<p>So $L_p$ maps $U_{a,-a,c}\\cap N$ into $U_{p_1\\circledast a,\\,-(p_1\\circledast a),\\,\\phi(p_1)c}$. Preimages of open sets are open $\\implies$ continuous. $\\checkmark$</p>
-<p><strong>Step 3 — Injectivity:</strong> If $p_1\\mathbin{\\circledast}x=p_1\\mathbin{\\circledast}y$, apply $\\phi$:
-$$\\phi(p_1)\\phi(x)=\\phi(p_1)\\phi(y)$$
-Since $p_1\\neq0$, $\\phi(p_1)=6p_1+1\\neq1$ and $\\phi(p_1)\\neq0$ (as $|\\phi(p_1)|\\geq5$). Cancel to get $\\phi(x)=\\phi(y)$, so $x=y$. $\\checkmark$</p>
-<p><strong>Step 4 — Image:</strong> $L_p(N)=\\{(p_1\\mathbin{\\circledast}x,\\;-(p_1\\mathbin{\\circledast}x)):x\\in\\mathbb{Z}\\}$. Under $\\phi$: $\\phi(p_1\\mathbin{\\circledast}x)=\\phi(p_1)\\phi(x)$, so the image in $6\\mathbb{Z}+1$ is $\\phi(p_1)\\cdot(6\\mathbb{Z}+1)$. This is $V_{p_1,\\phi(p_1)}$, an arithmetic progression $\\implies$ clopen.</p>
-<p><strong>Step 5 — Cosets closed:</strong> $q\\otimes N=L_q(N)$ is a clopen set (hence closed). More generally, $L_q$ is a homeomorphism onto its image, so for any closed $C\\subseteq N$, $q\\otimes C=L_q(C)$ is closed. $\\square$</p>
+<p><strong>Step 1 — Define $L_p$:</strong> For $p=(p_1,-p_1)\\in N\\setminus\\{(0,0)\\}$, define left multiplication:</p>
+<p>$$L_p : N \\to N, \\quad L_p(x,-x) = p\\otimes(x,-x) = (p_1\\mathbin{\\circledast}x,\\;-(p_1\\mathbin{\\circledast}x))$$</p>
+<p>This is well-defined since $N=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}$ is closed under $\\otimes$ (<a class="iref" onclick="jumpId('d2.10')">Def 2.10</a>).</p>
+
+<p><strong>Step 2 — Continuity:</strong> $L_p = \\mu(p,\\,-)$ is continuous because it is the restriction of the multiplication map $\\mu: N\\times N\\to N$ to $\\{p\\}\\times N$, and $\\mu$ is continuous by <a class="iref" onclick="jumpId('t8.3')">Thm 8.3</a> ($N$ is a topological monoid). Concretely, $\\mu$ is continuous because for any basis element $V_{a,c} = N\\cap U_{a,-a,c}$ and any $(x_0,-x_0),(y_0,-y_0)\\in\\mu^{-1}(V_{a,c})$ (i.e., $x_0\\mathbin{\\circledast}y_0\\equiv a\\pmod{c}$), the product $V_{x_0,c}\\otimes V_{y_0,c}\\subseteq V_{a,c}$, since for $x=x_0+cs$, $y=y_0+ct$:</p>
+<p>$$x\\mathbin{\\circledast}y = 6xy+x+y = 6(x_0+cs)(y_0+ct)+(x_0+cs)+(y_0+ct)$$
+$$= 6x_0 y_0 + x_0 + y_0 + c\\bigl(6x_0 t + 6y_0 s + 6cst + s + t\\bigr)$$
+$$= \\underbrace{x_0\\mathbin{\\circledast}y_0}_{\\equiv\\,a\\,(\\mathrm{mod}\\,c)} + c\\bigl((6x_0+1)t + (6y_0+1)s + 6cst\\bigr) \\;\\equiv\\; a \\pmod{c} \\;\\checkmark$$</p>
+
+<p><strong>Step 3 — Open map (basis elements $\\to$ basis elements):</strong> We show $L_p$ maps each basis element of $N$ to another basis element, which proves $L_p$ is an open map onto its image. Take a basis element $V_{x_0,c}=\\{(x_0+cn,\\,-(x_0+cn)):n\\in\\mathbb{Z}\\}$. For each $n$:</p>
+<p>$$p_1\\mathbin{\\circledast}(x_0+cn) = 6p_1(x_0+cn)+p_1+(x_0+cn)$$</p>
+<p>Expand the first term:</p>
+<p>$$= 6p_1 x_0 + 6p_1 cn + p_1 + x_0 + cn$$</p>
+<p>Group the constant part and the $n$-dependent part:</p>
+<p>$$= \\underbrace{(6p_1 x_0 + p_1 + x_0)}_{=\\,p_1\\,\\circledast\\, x_0} \\;+\\; \\underbrace{(6p_1 + 1)}_{=\\,\\phi(p_1)} \\cdot c \\cdot n$$</p>
+<p>Therefore:</p>
+<p>$$L_p(V_{x_0,c}) = \\{(p_1\\mathbin{\\circledast}x_0 + \\phi(p_1)\\,c\\,n,\\; -(p_1\\mathbin{\\circledast}x_0 + \\phi(p_1)\\,c\\,n)) : n\\in\\mathbb{Z}\\} = V_{p_1\\,\\circledast\\, x_0,\\;\\phi(p_1)\\,c}$$</p>
+<p>This is a basis element of $N$ with starting point $p_1\\mathbin{\\circledast}x_0$ and step size $\\phi(p_1)\\cdot c$. Since $L_p$ maps every basis element to a basis element, $L_p$ is an open map onto its image. $\\checkmark$</p>
+
+<p><strong>Step 4 — Injectivity:</strong> Suppose $p_1\\mathbin{\\circledast}x=p_1\\mathbin{\\circledast}y$. Recall from <a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a> that $\\phi$ is a monoid isomorphism with $\\phi(a\\mathbin{\\circledast}b)=\\phi(a)\\phi(b)$. Applying $\\phi$ to both sides:</p>
+<p>$$\\phi(p_1)\\,\\phi(x) = \\phi(p_1)\\,\\phi(y)$$</p>
+<p>Now $p_1\\neq 0$ implies $\\phi(p_1)=6p_1+1\\neq 1$, and more critically $\\phi(p_1)\\neq 0$ (since $6p_1+1=0$ would require $p_1=-\\tfrac{1}{6}\\notin\\mathbb{Z}$). So we may cancel $\\phi(p_1)$ to get $\\phi(x)=\\phi(y)$, hence $x=y$ by injectivity of $\\phi$. $\\checkmark$</p>
+
+<p><strong>Step 5 — Image is clopen:</strong> As $x$ ranges over $\\mathbb{Z}$, $\\phi(x)=6x+1$ ranges over all of $6\\mathbb{Z}+1$. So:</p>
+<p>$$\\phi(L_p(N)) = \\{\\phi(p_1)\\,\\phi(x) : x\\in\\mathbb{Z}\\} = \\phi(p_1)\\cdot(6\\mathbb{Z}+1)$$</p>
+<p>Pulling back through $\\phi^{-1}$: $L_p(N) = V_{p_1,\\,\\phi(p_1)}$, the arithmetic progression $\\{(p_1+\\phi(p_1)\\,n,\\;-(p_1+\\phi(p_1)\\,n)):n\\in\\mathbb{Z}\\}$. This is a basis element, hence clopen in $N$. $\\checkmark$</p>
+
+<p><strong>Step 6 — $L_p$ is a homeomorphism:</strong> Steps 2–5 show $L_p$ is continuous, open, and injective with clopen image $V_{p_1,\\,\\phi(p_1)}$. A continuous open bijection onto its image is a homeomorphism. $\\checkmark$</p>
+
+<p><strong>Step 7 — Cosets are closed:</strong> For any $q\\in\\mathrm{Irr}(N)$, we have $q\\otimes N = L_q(N) = V_{q_1,\\,\\phi(q_1)}$, which is clopen (hence closed) by Step 5. More generally, for any closed $C\\subseteq N$: $L_q(C)$ is closed in $L_q(N)$ (since $L_q$ is a homeomorphism), and $L_q(N)$ is clopen in $N$, so a closed subset of a clopen set is closed in the ambient space. Therefore $q\\otimes C$ is closed in $N$. $\\square$</p>
 <p><strong>Worked example ($p_1=1$):</strong></p>
 <div class="cblk"> L_{(1,-1)}: (x,-x) ↦ (1⊛x, -(1⊛x))
  φ(1)=7, so image has step size 7:
@@ -759,13 +784,15 @@ let cur=0;
 
 function render(){
   const c=cards[cur];
-  const src=c.lean?`<a href="${c.lean}" target="_blank" class="srclink ms-auto"><i class="bi bi-code-slash"></i> Lean4</a>`:"";
+  const src=c.lean?`<a href="${c.lean}" target="_blank" class="srclink"><i class="bi bi-code-slash"></i> Lean4</a>`:"";
+  history.replaceState(null,"","#"+c.id);
   document.getElementById("mc").innerHTML=`
     <div class="ctop">
       <div class="badge-row">
         <span class="tbadge ${c.b}">${c.b.replace("b-","")}</span>
         <span style="font-family:var(--mono);font-size:.62rem;color:#555">${cur+1}/${cards.length}</span>
         ${src}
+        <button class="btn-copy" onclick="copyLink(this)" title="Copy link to this card"><i class="bi bi-link-45deg"></i> Link</button>
       </div>
       <div class="eq-title">${c.t}</div>
     </div>
@@ -816,10 +843,21 @@ document.addEventListener("keydown",e=>{
   if(e.key==="ArrowRight"||e.key==="ArrowDown")go(1);
   if(e.key==="ArrowLeft"||e.key==="ArrowUp")go(-1);
 });
+// Deep link via hash (e.g. #t8.9)
+const _hash = location.hash.replace('#','');
+if (_hash) { const hi = cards.findIndex(c=>c.id===_hash); if(hi>=0) cur=hi; }
 // Read jump target from index.html via sessionStorage
 const _saved = sessionStorage.getItem('tpcCard');
 if (_saved !== null) { cur = Math.min(parseInt(_saved,10), cards.length-1); sessionStorage.removeItem('tpcCard'); }
 render();
+function copyLink(btn){
+  const url = location.origin + location.pathname + '#' + cards[cur].id;
+  navigator.clipboard.writeText(url).then(()=>{
+    btn.classList.add('copied');
+    btn.innerHTML='<i class="bi bi-check2"></i> Copied!';
+    setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML='<i class="bi bi-link-45deg"></i> Link';},1800);
+  });
+}
 
 /* ── Dependency Graph ── */
 let cyInst=null;
