@@ -207,8 +207,8 @@ lean:`${GH}/TPC/WeaklySaturated.lean#L10`},
 lean:`${GH}/TPC/WeaklySaturated.lean#L20`},
 
 {id:"d2.1",ch:"§2 Ops",b:"b-def",
- t:`Def 2.1 — $x\\mathbin{\\oast}y=6xy+x+y$, $\\;x\\mathbin{\\star}y=-6xy+x+y$`,
- body:`<div class="mdisp">$$x\\mathbin{\\oast}y:=6xy+x+y\\quad(\\texttt{mstar}),\\qquad x\\mathbin{\\star}y:=-6xy+x+y\\quad(\\texttt{sstar})$$
+ t:`Def 2.1 — $x\\mathbin{\\circledast}y=6xy+x+y$, $\\;x\\mathbin{\\star}y=-6xy+x+y$`,
+ body:`<div class="mdisp">$$x\\mathbin{\\circledast}y:=6xy+x+y\\quad(\\texttt{mstar}),\\qquad x\\mathbin{\\star}y:=-6xy+x+y\\quad(\\texttt{sstar})$$
 $$\\text{identity }=0\\text{ in both}$$</div>
 <div class="cblk"><span class="kw">def</span> <span class="fn">mstar</span> (x y:ℤ):ℤ:=6*x*y+x+y
 <span class="kw">def</span> <span class="fn">sstar</span> (x y:ℤ):ℤ:=-6*x*y+x+y</div>
@@ -220,52 +220,52 @@ $$\\text{identity }=0\\text{ in both}$$</div>
 lean:`${GH}/TPC/Basic.lean#L15`},
 
 {id:"p2.3",ch:"§2 Ops",b:"b-prop",
- t:`Assoc + Comm $\\implies$ $(\\mathbb{Z},\\mathbin{\\oast})$ and $(\\mathbb{Z},\\mathbin{\\star})$ are CommMonoids`,
+ t:`Assoc + Comm $\\implies$ $(\\mathbb{Z},\\mathbin{\\circledast})$ and $(\\mathbb{Z},\\mathbin{\\star})$ are CommMonoids`,
  body:`<button class="btnprf" onclick="tp(this)">▶ Show associativity</button>
-<div class="prfbody" style="display:none"><p>$(x\\mathbin{\\oast}y)\\mathbin{\\oast}z=36xyz+6xz+6yz+6xy+x+y+z=x\\mathbin{\\oast}(y\\mathbin{\\oast}z)$. Identical for $\\mathbin{\\star}$ with sign flip. $\\square$</p></div>
+<div class="prfbody" style="display:none"><p>$(x\\mathbin{\\circledast}y)\\mathbin{\\circledast}z=36xyz+6xz+6yz+6xy+x+y+z=x\\mathbin{\\circledast}(y\\mathbin{\\circledast}z)$. Identical for $\\mathbin{\\star}$ with sign flip. $\\square$</p></div>
 <div class="cblk"><span class="kw">instance</span>:CommMonoid Nstar <span class="kw">where</span>
   mul_assoc:=mstar_assoc <span class="cm">-- by ring</span>
   mul_comm :=mstar_comm</div>`,
 lean:`${GH}/TPC/Monoid.lean#L18`},
 
 {id:"eta",ch:"§2 Ops",b:"b-prop",
- t:`$\\eta(x)=-x\\implies N^*\\cong N^\\star$, so $\\;(-a)\\mathbin{\\star}(-b)=-(a\\mathbin{\\oast}b)$`,
- body:`<div class="mdisp">$$\\eta(x\\mathbin{\\oast}y)=-(6xy+x+y)=(-x)\\mathbin{\\star}(-y)=\\eta(x)\\mathbin{\\star}\\eta(y)$$</div>
+ t:`$\\eta(x)=-x\\implies N^*\\cong N^\\star$, so $\\;(-a)\\mathbin{\\star}(-b)=-(a\\mathbin{\\circledast}b)$`,
+ body:`<div class="mdisp">$$\\eta(x\\mathbin{\\circledast}y)=-(6xy+x+y)=(-x)\\mathbin{\\star}(-y)=\\eta(x)\\mathbin{\\star}\\eta(y)$$</div>
 <div class="cblk"><span class="kw">def</span> η(x:ℤ):ℤ:=-x
 <span class="kw">lemma</span> <span class="fn">η_mstar_sstar</span>(x y:ℤ):η(x⊛y)=η x⋆η y:=<span class="kw">by</span> simp[η,mstar,sstar];ring</div>
-<p><strong>Example:</strong> $\\eta(2\\mathbin{\\oast}3)=\\eta(41)=-41=(-2)\\mathbin{\\star}(-3)$.</p>
-<p>This identity is used in the weak saturation proof: $(-a)\\mathbin{\\star}(-c)=-(a\\mathbin{\\oast}c)=-k$.</p>`,
+<p><strong>Example:</strong> $\\eta(2\\mathbin{\\circledast}3)=\\eta(41)=-41=(-2)\\mathbin{\\star}(-3)$.</p>
+<p>This identity is used in the weak saturation proof: $(-a)\\mathbin{\\star}(-c)=-(a\\mathbin{\\circledast}c)=-k$.</p>`,
 lean:`${GH}/TPC/Basic.lean#L70`},
 
 {id:"t2.6",ch:"§2 Ops",b:"b-thm",
- t:`$\\phi(x\\mathbin{\\oast}y)=\\phi(x)\\phi(y)\\implies N^*\\cong(6\\mathbb{Z}+1,\\cdot)$`,
- body:`<div class="mdisp">$$\\phi(x)=6x+1,\\quad\\phi(x\\mathbin{\\oast}y)=(6x+1)(6y+1)=\\phi(x)\\phi(y)$$
+ t:`$\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies N^*\\cong(6\\mathbb{Z}+1,\\cdot)$`,
+ body:`<div class="mdisp">$$\\phi(x)=6x+1,\\quad\\phi(x\\mathbin{\\circledast}y)=(6x+1)(6y+1)=\\phi(x)\\phi(y)$$
 $$\\psi(x)=6x-1,\\quad\\psi(x\\mathbin{\\star}y)=-[(6x-1)(6y-1)]=\\psi(x)\\bullet\\psi(y)$$</div>
 <div class="cblk"><span class="kw">def</span> φ(x:ℤ):ℤ:=6*x+1
 <span class="kw">lemma</span> <span class="fn">φ_mul</span>(x y:ℤ):φ(x⊛y)=φ x*φ y:=<span class="kw">by</span> simp[φ,mstar];ring</div>
-<p><strong>Example:</strong> $\\phi(2\\mathbin{\\oast}3)=\\phi(41)=247=13\\times19=\\phi(2)\\phi(3)$.</p>`,
+<p><strong>Example:</strong> $\\phi(2\\mathbin{\\circledast}3)=\\phi(41)=247=13\\times19=\\phi(2)\\phi(3)$.</p>`,
 lean:`${GH}/TPC/Basic.lean#L55`},
 
 {id:"l2.8",ch:"§2 Ops",b:"b-lem",
  t:`$(6u+1)(6v+1)=1$ has no solution with $u,v\\neq0$ — No Zero Divisors`,
- body:`<div class="mdisp">$$u,v\\neq0\\implies u\\mathbin{\\oast}v\\neq0\\text{ and }u\\mathbin{\\star}v\\neq0$$</div>
+ body:`<div class="mdisp">$$u,v\\neq0\\implies u\\mathbin{\\circledast}v\\neq0\\text{ and }u\\mathbin{\\star}v\\neq0$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p>$u\\mathbin{\\oast}v=0\\iff(6u+1)(6v+1)=1$. In $\\mathbb{Z}$ this forces $6u+1=\\pm1$, so $u=0$ or $u=-1/3\\notin\\mathbb{Z}$. $\\square$</p></div>
-<p><strong>Key use:</strong> forces $a,c\\neq0$ from $a\\mathbin{\\oast}c=k\\neq0$ in the weak saturation proof.</p>`,
+<div class="prfbody" style="display:none"><p>$u\\mathbin{\\circledast}v=0\\iff(6u+1)(6v+1)=1$. In $\\mathbb{Z}$ this forces $6u+1=\\pm1$, so $u=0$ or $u=-1/3\\notin\\mathbb{Z}$. $\\square$</p></div>
+<p><strong>Key use:</strong> forces $a,c\\neq0$ from $a\\mathbin{\\circledast}c=k\\neq0$ in the weak saturation proof.</p>`,
 lean:`${GH}/TPC/Basic.lean#L90`},
 
 {id:"d3.1",ch:"§3 Anti-Diag",b:"b-def",
- t:`Def 3.1 — $\\Delta(\\mathbb{Z})=\\{(x,-x)\\}$, $\\;\\Delta(x)\\otimes\\Delta(y)=\\Delta(x\\mathbin{\\oast}y)$`,
+ t:`Def 3.1 — $\\Delta(\\mathbb{Z})=\\{(x,-x)\\}$, $\\;\\Delta(x)\\otimes\\Delta(y)=\\Delta(x\\mathbin{\\circledast}y)$`,
  body:`<div class="mdisp">$$N:=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}\\subset(\\mathbb{Z}^2,\\otimes)$$</div>
 <div class="cblk"><span class="kw">def</span> AntiDiag:Set(ℤ×ℤ):={p|p.2=-p.1}
 <span class="kw">def</span> Δ(x:ℤ):ℤ×ℤ:=(x,-x)
 <span class="kw">lemma</span> <span class="fn">Δ_otimes</span>(x y:ℤ):Δ x⊗Δ y=Δ(x⊛y):=<span class="kw">by</span> simp[Δ,otimes,neg_sstar_neg]</div>
-<p><strong>Example:</strong> $(1,-1)\\otimes(2,-2)=(1\\mathbin{\\oast}2,-(1\\mathbin{\\oast}2))=(15,-15)\\in N$.</p>`,
+<p><strong>Example:</strong> $(1,-1)\\otimes(2,-2)=(1\\mathbin{\\circledast}2,-(1\\mathbin{\\circledast}2))=(15,-15)\\in N$.</p>`,
 lean:`${GH}/TPC/AntiDiagonal.lean#L10`},
 
 {id:"cx",ch:"§4 Weak Sat",b:"b-ex",
  t:`$(1,0)\\otimes(1,-8)=(8,-8)\\in N$ but $(1,0)\\notin N$ — NOT Saturated`,
- body:`<div class="mdisp">$$a=(1,0),\\;b=(1,-8):\\quad(1\\mathbin{\\oast}1,\\;0\\mathbin{\\star}(-8))=(8,-8)\\in N$$</div>
+ body:`<div class="mdisp">$$a=(1,0),\\;b=(1,-8):\\quad(1\\mathbin{\\circledast}1,\\;0\\mathbin{\\star}(-8))=(8,-8)\\in N$$</div>
 <p>$(1,0)\\notin N$ since $0\\neq-1$. Saturation fails.</p>
 <div class="cblk"><span class="kw">theorem</span> <span class="fn">antiDiag_not_saturated</span>:
   ∃ a b:ℤ×ℤ, a∉AntiDiag∧b∉AntiDiag∧a⊗b∈AntiDiag:=<span class="kw">by</span>
@@ -273,9 +273,9 @@ lean:`${GH}/TPC/AntiDiagonal.lean#L10`},
 lean:`${GH}/TPC/WeaklySaturated.lean#L80`},
 
 {id:"t4.1",ch:"§4 Weak Sat",b:"b-thm",
- t:`$a\\mathbin{\\oast}c=k\\neq0$ + Lemma 2.8 $\\implies$ $\\Delta(\\mathbb{Z})$ is Weakly Saturated`,
+ t:`$a\\mathbin{\\circledast}c=k\\neq0$ + Lemma 2.8 $\\implies$ $\\Delta(\\mathbb{Z})$ is Weakly Saturated`,
  body:`<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p>$a\\mathbin{\\oast}c=k\\neq0$ gives $a,c\\neq0$ by Lemma 2.8. Set $a'=(a,-a)$, $c'=(c,-c)\\in N$. Then $(a,-a)\\otimes(c,-c)=(k,-(k))=(k,-k)$. $\\blacksquare$</p></div>
+<div class="prfbody" style="display:none"><p>$a\\mathbin{\\circledast}c=k\\neq0$ gives $a,c\\neq0$ by Lemma 2.8. Set $a'=(a,-a)$, $c'=(c,-c)\\in N$. Then $(a,-a)\\otimes(c,-c)=(k,-(k))=(k,-k)$. $\\blacksquare$</p></div>
 <p><strong>Lift:</strong> $(1,0)\\otimes(1,-8)=(8,-8)$ lifts to $(1,-1)\\otimes(1,-1)=(8,-8)$ inside $N$.</p>`,
 lean:`${GH}/TPC/WeaklySaturated.lean#L45`},
 
@@ -305,10 +305,10 @@ lean:`${GH}/TPC/AntiDiagonal.lean#L95`},
 lean:`${GH}/TPC/Norm.lean#L12`},
 
 {id:"n56",ch:"§6 Norm",b:"b-prop",
- t:`$\\phi(x\\mathbin{\\oast}y)=\\phi(x)\\phi(y)\\implies$ N5: $|x\\otimes y|=|x||y|$ and N6: strict descent`,
+ t:`$\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies$ N5: $|x\\otimes y|=|x||y|$ and N6: strict descent`,
  body:`<div class="mdisp">$$\\textbf{N5:}\\quad|(x,-x)\\otimes(y,-y)|=|(x,-x)|\\cdot|(y,-y)|$$
 $$\\textbf{N6:}\\quad(x,-x)=(a,-a)\\otimes(b,-b),\\;a,b\\neq0\\implies|(a,-a)|,|(b,-b)|<|(x,-x)|$$</div>
-<p><strong>N5:</strong> $\\phi(x\\mathbin{\\oast}y)^2=(\\phi(x)\\phi(y))^2=\\phi(x)^2\\phi(y)^2$. One <code>ring</code> call.</p>
+<p><strong>N5:</strong> $\\phi(x\\mathbin{\\circledast}y)^2=(\\phi(x)\\phi(y))^2=\\phi(x)^2\\phi(y)^2$. One <code>ring</code> call.</p>
 <p><strong>N6 example:</strong> $(4,-4)=(-1,1)\\otimes(-1,1)$, norm $625=25\\times25$. Both $25&lt;625$.</p>`,
 lean:`${GH}/TPC/Norm.lean#L50`},
 
@@ -338,9 +338,9 @@ lean:`${GH}/TPC/Topology.lean#L18`},
 lean:`${GH}/TPC/Topology.lean#L75`},
 
 {id:"t8.9",ch:"§8 Topology",b:"b-thm",
- t:`$\\phi(x\\mathbin{\\oast}y)=\\phi(x)\\phi(y)\\implies L_p$ homeomorphism $\\implies$ $q\\otimes N$ closed`,
+ t:`$\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies L_p$ homeomorphism $\\implies$ $q\\otimes N$ closed`,
  body:`<div class="mdisp">$$p\\otimes N=V_{p_1,\\,6p_1+1}\\text{ (clopen)}, \\quad L_p\\text{ homeomorphism}\\implies p\\otimes C\\text{ closed for closed }C$$</div>
-<p><strong>Continuity:</strong> $x=x_0+cs\\Rightarrow x\\mathbin{\\oast}y\\equiv x_0\\mathbin{\\oast}y_0\\pmod c$ since corrections $\\equiv0\\pmod c$.</p>
+<p><strong>Continuity:</strong> $x=x_0+cs\\Rightarrow x\\mathbin{\\circledast}y\\equiv x_0\\mathbin{\\circledast}y_0\\pmod c$ since corrections $\\equiv0\\pmod c$.</p>
 <p><strong>Injectivity:</strong> $\\phi(p_1)\\phi(x)=\\phi(p_1)\\phi(y)$ and $\\phi(p_1)\\neq0\\Rightarrow x=y$.</p>
 <p><strong>Example ($p_1=1$):</strong> $L_{(1,-1)}$ maps $N$ onto $V_{1,7}=\\{(1+7n,-(1+7n))\\}$, step $7=\\phi(1)$.</p>`,
 lean:`${GH}/TPC/Topology.lean#L155`},
