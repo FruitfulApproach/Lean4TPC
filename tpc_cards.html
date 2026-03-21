@@ -478,35 +478,24 @@ lean:`${GH}/TPC/WeaklySaturated.lean#L45`},
 <div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(N)\\iff 6x+1\\in\\pm\\mathbb{P}\\text{ and }6x-1\\in\\pm\\mathbb{P}\\iff(6x-1,6x+1)\\text{ twin prime}$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>($\\Rightarrow$) Irreducible in $N$ $\\implies$ twin prime:</strong></p>
+<p><strong>Key observation:</strong> The product in $N$ is componentwise: $(a,-a)\\otimes(b,-b)=(a\\mathbin{\\circledast}b,\\;(-a)\\star(-b))$. So a factorization in $N$ is simultaneously a factorization in $(\\mathbb{Z},\\circledast)$ (first component) and in $(\\mathbb{Z},\\star)$ (second component). This means:</p>
+<div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; x\\in\\mathrm{Irr}(\\mathbb{Z},\\circledast) \\;\\wedge\\; x\\in\\mathrm{Irr}(\\mathbb{Z},\\star)$$</div>
+<p>(If $x$ were reducible in either operation alone — say $x=a\\mathbin{\\circledast}b$ nontrivially — then $(x,-x)=(a,-a)\\otimes(b,-b)$ would be a nontrivial factorization in $N$, since $(-a)\\star(-b)=-x$ follows from the involution (<a class="iref" onclick="jumpId('eta')">Involution</a>). Conversely, any nontrivial factorization of $(x,-x)$ in $N$ projects to a nontrivial factorization of $x$ in both $\\circledast$ and $\\star$.)</p>
 
-<p><em>Setup:</em> Suppose $(x,-x)\\in\\mathrm{Irr}(N)$ with $x\\neq0$. We must show $6x+1$ and $6x-1$ are both $\\pm$prime.</p>
+<p>Now we use the isomorphisms $\\phi:(\\mathbb{Z},\\circledast)\\xrightarrow{\\sim}(6\\mathbb{Z}+1,\\cdot)$ and $\\psi:(\\mathbb{Z},\\star)\\xrightarrow{\\sim}(6\\mathbb{Z}-1,\\cdot)$ from <a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>. Since isomorphisms preserve irreducibility:</p>
+<p>$$x\\in\\mathrm{Irr}(\\mathbb{Z},\\circledast) \\;\\iff\\; \\phi(x)=6x+1\\in\\mathrm{Irr}(6\\mathbb{Z}+1,\\cdot)$$
+$$x\\in\\mathrm{Irr}(\\mathbb{Z},\\star) \\;\\iff\\; \\psi(x)=6x-1\\in\\mathrm{Irr}(6\\mathbb{Z}-1,\\cdot)$$</p>
 
-<p><em>Step 1 — Transfer from $N$ to $M$:</em> Since $N$ is weakly saturated in $M$ (<a class="iref" onclick="jumpId('t4.1')">Thm 4.1</a>), <a class="iref" onclick="jumpId('c1.5')">Cor 1.5</a> tells us that $(x,-x)$ is also irreducible in $M=(\\mathbb{Z}^2,\\otimes)$.</p>
+<p>It remains to show: <em>$n$ is irreducible in $(6\\mathbb{Z}+1,\\cdot)$ iff $|n|$ is prime</em> (and likewise for $6\\mathbb{Z}-1$).</p>
 
-<p><em>Step 2 — What irreducibility in $M$ means:</em> In $M$, the product is componentwise: $(a,b)\\otimes(a',b')=(a\\mathbin{\\circledast}a',\\,b\\star b')$. Apply the isomorphism $\\Phi:M\\to(6\\mathbb{Z}+1)\\times(6\\mathbb{Z}-1)$ given by $\\Phi(a,b)=(\\phi(a),\\psi(b))$ (<a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>). Under $\\Phi$, multiplication becomes ordinary coordinate-wise multiplication:</p>
-<p>$$\\Phi(x,-x)=(\\phi(x),\\,\\psi(-x))=(6x+1,\\,-(6x-1))$$</p>
-<p>Since isomorphisms preserve irreducibility, $(6x+1,\\,-(6x-1))$ is irreducible in $(6\\mathbb{Z}+1)\\times(6\\mathbb{Z}-1)$ under ordinary multiplication.</p>
+<p><strong>Irreducible in $(6\\mathbb{Z}+1,\\cdot)$ $\\iff$ $\\pm$prime:</strong></p>
 
-<p><em>Step 3 — Component-wise irreducibility:</em> In a product of monoids, $(u,v)$ is irreducible only if each component is irreducible in its own monoid (otherwise a nontrivial factorization of one component, paired with trivial in the other, gives a nontrivial factorization of $(u,v)$). So:</p>
-<p>$$6x+1 \\text{ is irreducible in }(6\\mathbb{Z}+1,\\,\\cdot\\,) \\quad\\text{and}\\quad -(6x-1) \\text{ is irreducible in }(6\\mathbb{Z}-1,\\,\\cdot\\,)$$</p>
+<p><em>($\\Leftarrow$)</em> If $|n|$ is prime and $n=ab$ with $a,b\\in 6\\mathbb{Z}+1$, then $|n|=|a|\\cdot|b|$. Since $|n|$ is prime, one of $|a|,|b|$ equals $1$, meaning one factor is $\\pm1$ (the units of $6\\mathbb{Z}+1$). So $n$ is irreducible.</p>
 
-<p><em>Step 4 — Irreducible in $6\\mathbb{Z}+1$ means $\\pm$prime:</em> The elements of $6\\mathbb{Z}+1$ are $\\{\\ldots,-11,-5,1,7,13,19,\\ldots\\}$. An integer $n\\in 6\\mathbb{Z}+1$ is irreducible there iff it cannot be written as a product of two elements of $6\\mathbb{Z}+1$ that are both $\\neq\\pm1$. Since every prime $p\\equiv1\\pmod{6}$ has this property (its only factorizations involving $6\\mathbb{Z}+1$ elements are $p\\cdot1$ or $(-p)\\cdot(-1)$), and conversely a composite $n=ab$ with $a,b\\equiv1\\pmod6$ gives a nontrivial factorization, irreducibility in $6\\mathbb{Z}+1$ is equivalent to $|6x+1|$ being prime. The same holds for $6\\mathbb{Z}-1$.</p>
+<p><em>($\\Rightarrow$)</em> If $|n|$ is composite, write $|n|=p_1 p_2 \\cdots p_k$ with $k\\geq2$. Every prime $p$ satisfies $p\\equiv 1$ or $5\\pmod{6}$, and $5\\equiv-1\\pmod{6}$. Group the prime factors so that each group is $\\equiv1\\pmod{6}$: since $n\\in6\\mathbb{Z}+1$, the product of all factors is $\\equiv1\\pmod6$, so an even number of them are $\\equiv-1\\pmod6$. Pair these up (and $(-1)(-1)=1\\equiv1\\pmod6$) to obtain a nontrivial factorization $n=a\\cdot b$ with $a,b\\in6\\mathbb{Z}+1$ and $|a|,|b|>1$. So $n$ is reducible.</p>
 
-<p>Therefore $6x+1\\in\\pm\\mathbb{P}$ and $6x-1\\in\\pm\\mathbb{P}$, so $(6x-1,\\,6x+1)$ is a twin prime pair (up to sign). $\\checkmark$</p>
-
-<p><strong>($\\Leftarrow$) Twin prime $\\implies$ irreducible in $N$:</strong></p>
-
-<p><em>Setup:</em> Suppose $6x+1$ and $6x-1$ are both $\\pm$prime. We must show $(x,-x)$ is irreducible in $N$.</p>
-
-<p><em>Step 1 — Assume a factorization exists:</em> Suppose for contradiction that $(x,-x)=(a,-a)\\otimes(b,-b)$ with $a,b\\neq0$ (i.e., a nontrivial factorization in $N$). The first component gives $x=a\\mathbin{\\circledast}b$.</p>
-
-<p><em>Step 2 — Apply $\\phi$:</em> By <a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>, $\\phi(a\\mathbin{\\circledast}b)=\\phi(a)\\phi(b)$, so:</p>
-<p>$$6x+1 = \\phi(x) = \\phi(a)\\cdot\\phi(b) = (6a+1)(6b+1)$$</p>
-
-<p><em>Step 3 — Size constraint:</em> Since $a\\neq0$ and $b\\neq0$, both $|\\phi(a)|=|6a+1|\\geq5$ and $|\\phi(b)|=|6b+1|\\geq5$ (the smallest nonidentity values are $\\phi(\\pm1)=7,-5$). So $6x+1$ is a product of two integers each $\\geq5$ in absolute value.</p>
-
-<p><em>Step 4 — Contradiction:</em> But $6x+1$ is $\\pm$prime by hypothesis. A prime cannot be written as a product of two integers both $\\geq5$ in absolute value (such a product would have absolute value $\\geq25$, and no prime $p$ satisfies $p=|ab|$ with $|a|,|b|\\geq5$ unless one factor is $\\pm1$). Contradiction. $\\square$</p>
+<p><strong>Conclusion:</strong> Combining all three equivalences:</p>
+<p>$$(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; 6x+1\\in\\pm\\mathbb{P}\\;\\wedge\\;6x-1\\in\\pm\\mathbb{P} \\;\\iff\\; (6x-1,6x+1)\\text{ is a twin prime pair}\\quad\\square$$</p>
 <p><strong>Worked example ($x=2$):</strong></p>
 <div class="cblk"> φ(2)=13 (prime), ψ(2)=11 (prime) → (2,-2) ∈ Irr(N)
  Check: any factor (a,-a)⊗(b,-b)=(2,-2) needs φ(a)φ(b)=13
