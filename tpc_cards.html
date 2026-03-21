@@ -689,10 +689,14 @@ lean:`${GH}/TPC/Topology.lean#L100`},
 <p>$$L_p : N \\to N, \\quad L_p(x,-x) = p\\otimes(x,-x) = (p_1\\mathbin{\\circledast}x,\\;-(p_1\\mathbin{\\circledast}x))$$</p>
 <p>This is well-defined since $N=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}$ is closed under $\\otimes$ (<a class="iref" onclick="jumpId('d2.10')">Def 2.10</a>).</p>
 
-<p><strong>Step 2 — Continuity:</strong> $L_p = \\mu(p,\\,-)$ is continuous because it is the restriction of the multiplication map $\\mu: N\\times N\\to N$ to $\\{p\\}\\times N$, and $\\mu$ is continuous by <a class="iref" onclick="jumpId('t8.3')">Thm 8.3</a> ($N$ is a topological monoid). Concretely, $\\mu$ is continuous because for any basis element $V_{a,c} = N\\cap U_{a,-a,c}$ and any $(x_0,-x_0),(y_0,-y_0)\\in\\mu^{-1}(V_{a,c})$ (i.e., $x_0\\mathbin{\\circledast}y_0\\equiv a\\pmod{c}$), the product $V_{x_0,c}\\otimes V_{y_0,c}\\subseteq V_{a,c}$, since for $x=x_0+cs$, $y=y_0+ct$:</p>
-<p>$$x\\mathbin{\\circledast}y = 6xy+x+y = 6(x_0+cs)(y_0+ct)+(x_0+cs)+(y_0+ct)$$
-$$= 6x_0 y_0 + x_0 + y_0 + c\\bigl(6x_0 t + 6y_0 s + 6cst + s + t\\bigr)$$
-$$= \\underbrace{x_0\\mathbin{\\circledast}y_0}_{\\equiv\\,a\\,(\\mathrm{mod}\\,c)} + c\\bigl((6x_0+1)t + (6y_0+1)s + 6cst\\bigr) \\;\\equiv\\; a \\pmod{c} \\;\\checkmark$$</p>
+<p><strong>Step 2 — Continuity:</strong> We must show that for every basis element $V_{a,c}$ of $N$, the preimage $L_p^{-1}(V_{a,c})$ is open. We have $(x,-x)\\in L_p^{-1}(V_{a,c})$ iff $p_1\\mathbin{\\circledast}x\\equiv a\\pmod{c}$. Expanding:</p>
+<p>$$p_1\\mathbin{\\circledast}x = 6p_1 x + p_1 + x = (6p_1+1)x + p_1 = \\phi(p_1)\\,x + p_1$$</p>
+<p>So the condition becomes $\\phi(p_1)\\,x \\equiv a - p_1 \\pmod{c}$. Let $d=\\gcd(\\phi(p_1),\\,c)$.</p>
+<p><em>Case 1:</em> $d\\nmid(a-p_1)$. Then the congruence has no solution, so $L_p^{-1}(V_{a,c})=\\emptyset$, which is open. $\\checkmark$</p>
+<p><em>Case 2:</em> $d\\mid(a-p_1)$. Then by the theory of linear congruences, the solutions are $x\\equiv x_0\\pmod{c/d}$ for some fixed $x_0$. Therefore:</p>
+<p>$$L_p^{-1}(V_{a,c})=\\{(x_0+\\tfrac{c}{d}\\,n,\\;-(x_0+\\tfrac{c}{d}\\,n)):n\\in\\mathbb{Z}\\}=V_{x_0,\\,c/d}$$</p>
+<p>a basis element of $N$, hence open. $\\checkmark$</p>
+<p>In both cases, preimages of basis elements are open, so $L_p$ is continuous. $\\checkmark$</p>
 
 <p><strong>Step 3 — Open map (basis elements $\\to$ basis elements):</strong> We show $L_p$ maps each basis element of $N$ to another basis element, which proves $L_p$ is an open map onto its image. Take a basis element $V_{x_0,c}=\\{(x_0+cn,\\,-(x_0+cn)):n\\in\\mathbb{Z}\\}$. For each $n$:</p>
 <p>$$p_1\\mathbin{\\circledast}(x_0+cn) = 6p_1(x_0+cn)+p_1+(x_0+cn)$$</p>
