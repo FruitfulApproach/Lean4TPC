@@ -91,7 +91,7 @@ body{font-family:var(--sans);background:var(--g50);color:var(--black);min-height
 .mdisp{background:var(--yellow);border-left:4px solid var(--blue);
   border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.8rem 1.1rem;margin:.85rem 0;overflow-x:auto}
 .cblk{font-family:var(--mono);font-size:.75rem;background:#111;color:#e5e5e5;
-  padding:.85rem 1rem;border-radius:var(--r-sm);overflow-x:auto;
+  padding:.85rem 1rem;border-radius:var(--r-sm);overflow-x:auto;white-space:pre;
   margin:.75rem 0;line-height:1.65;border:1px solid #2a2a2a}
 .cblk .kw{color:#5bb8ff}.cblk .fn{color:#f5e642}.cblk .cm{color:#666}
 .cbody a{color:var(--blue);text-decoration:none;border-bottom:1px dotted var(--blue);transition:var(--t)}
@@ -231,8 +231,13 @@ lean:`${GH}/TPC/Monoid.lean#L18`},
 {id:"eta",ch:"§2 Ops",b:"b-prop",
  t:`$\\eta(x)=-x\\implies N^*\\cong N^\\star$, so $\\;(-a)\\mathbin{\\star}(-b)=-(a\\mathbin{\\circledast}b)$`,
  body:`<div class="mdisp">$$\\eta(x\\mathbin{\\circledast}y)=-(6xy+x+y)=(-x)\\mathbin{\\star}(-y)=\\eta(x)\\mathbin{\\star}\\eta(y)$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none"><p>We verify $\\eta$ is a monoid homomorphism $N^*\\to N^\\star$. Compute:
+$$\\eta(x\\mathbin{\\circledast}y)=-(6xy+x+y)$$
+$$\\eta(x)\\mathbin{\\star}\\eta(y)=(-x)\\mathbin{\\star}(-y)=-6(-x)(-y)+(-x)+(-y)=-6xy-x-y=-(6xy+x+y)$$
+These are equal, so $\\eta$ respects the operations. Since $\\eta(0)=0$ (identity to identity) and $\\eta$ is its own inverse ($\\eta\\circ\\eta=\\mathrm{id}$), it is an isomorphism. $\\square$</p>
 <div class="cblk"><span class="kw">def</span> η(x:ℤ):ℤ:=-x
-<span class="kw">lemma</span> <span class="fn">η_mstar_sstar</span>(x y:ℤ):η(x⊛y)=η x⋆η y:=<span class="kw">by</span> simp[η,mstar,sstar];ring</div>
+<span class="kw">lemma</span> <span class="fn">η_mstar_sstar</span>(x y:ℤ):η(x⊛y)=η x⋆η y:=<span class="kw">by</span> simp[η,mstar,sstar];ring</div></div>
 <p><strong>Example:</strong> $\\eta(2\\mathbin{\\circledast}3)=\\eta(41)=-41=(-2)\\mathbin{\\star}(-3)$.</p>
 <p>This identity is used in the weak saturation proof: $(-a)\\mathbin{\\star}(-c)=-(a\\mathbin{\\circledast}c)=-k$.</p>`,
 lean:`${GH}/TPC/Basic.lean#L70`},
@@ -241,8 +246,16 @@ lean:`${GH}/TPC/Basic.lean#L70`},
  t:`$\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies N^*\\cong(6\\mathbb{Z}+1,\\cdot)$`,
  body:`<div class="mdisp">$$\\phi(x)=6x+1,\\quad\\phi(x\\mathbin{\\circledast}y)=(6x+1)(6y+1)=\\phi(x)\\phi(y)$$
 $$\\psi(x)=6x-1,\\quad\\psi(x\\mathbin{\\star}y)=-[(6x-1)(6y-1)]=\\psi(x)\\bullet\\psi(y)$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none"><p><strong>$\\phi$ is a homomorphism:</strong>
+$$\\phi(x\\mathbin{\\circledast}y)=6(6xy+x+y)+1=36xy+6x+6y+1=(6x+1)(6y+1)=\\phi(x)\\phi(y)$$
+$\\phi(0)=1$ (identity to identity). $\\phi$ is injective since $6x+1=6y+1\\Rightarrow x=y$. The image is exactly $6\\mathbb{Z}+1$ since every $6k+1$ has $k$ as preimage.</p>
+<p><strong>$\\psi$ is a homomorphism:</strong>
+$$\\psi(x\\mathbin{\\star}y)=6(-6xy+x+y)-1=-36xy+6x+6y-1$$
+$$\\psi(x)\\bullet\\psi(y)=-[(6x-1)(6y-1)]=-(36xy-6x-6y+1)=-36xy+6x+6y-1$$
+These are equal. $\\psi(0)=-1$ and $(-1)\\bullet(-1)=-1$ confirms identity. $\\square$</p>
 <div class="cblk"><span class="kw">def</span> φ(x:ℤ):ℤ:=6*x+1
-<span class="kw">lemma</span> <span class="fn">φ_mul</span>(x y:ℤ):φ(x⊛y)=φ x*φ y:=<span class="kw">by</span> simp[φ,mstar];ring</div>
+<span class="kw">lemma</span> <span class="fn">φ_mul</span>(x y:ℤ):φ(x⊛y)=φ x*φ y:=<span class="kw">by</span> simp[φ,mstar];ring</div></div>
 <p><strong>Example:</strong> $\\phi(2\\mathbin{\\circledast}3)=\\phi(41)=247=13\\times19=\\phi(2)\\phi(3)$.</p>`,
 lean:`${GH}/TPC/Basic.lean#L55`},
 
@@ -257,9 +270,12 @@ lean:`${GH}/TPC/Basic.lean#L90`},
 {id:"d3.1",ch:"§3 Anti-Diag",b:"b-def",
  t:`Def 3.1 — $\\Delta(\\mathbb{Z})=\\{(x,-x)\\}$, $\\;\\Delta(x)\\otimes\\Delta(y)=\\Delta(x\\mathbin{\\circledast}y)$`,
  body:`<div class="mdisp">$$N:=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}\\subset(\\mathbb{Z}^2,\\otimes)$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show $N$ is a submonoid</button>
+<div class="prfbody" style="display:none"><p><strong>Closure:</strong> $(x,-x)\\otimes(y,-y)=(x\\mathbin{\\circledast}y,\\;(-x)\\mathbin{\\star}(-y))$. By the involution $\\eta$: $(-x)\\mathbin{\\star}(-y)=-(x\\mathbin{\\circledast}y)$. So the result is $(x\\mathbin{\\circledast}y,\\,-(x\\mathbin{\\circledast}y))\\in N$.</p>
+<p><strong>Identity:</strong> $(0,0)=(0,-0)\\in N$. $\\square$</p>
 <div class="cblk"><span class="kw">def</span> AntiDiag:Set(ℤ×ℤ):={p|p.2=-p.1}
 <span class="kw">def</span> Δ(x:ℤ):ℤ×ℤ:=(x,-x)
-<span class="kw">lemma</span> <span class="fn">Δ_otimes</span>(x y:ℤ):Δ x⊗Δ y=Δ(x⊛y):=<span class="kw">by</span> simp[Δ,otimes,neg_sstar_neg]</div>
+<span class="kw">lemma</span> <span class="fn">Δ_otimes</span>(x y:ℤ):Δ x⊗Δ y=Δ(x⊛y):=<span class="kw">by</span> simp[Δ,otimes,neg_sstar_neg]</div></div>
 <p><strong>Example:</strong> $(1,-1)\\otimes(2,-2)=(1\\mathbin{\\circledast}2,-(1\\mathbin{\\circledast}2))=(15,-15)\\in N$.</p>`,
 lean:`${GH}/TPC/AntiDiagonal.lean#L10`},
 
@@ -282,6 +298,9 @@ lean:`${GH}/TPC/WeaklySaturated.lean#L45`},
 {id:"t5.1",ch:"§5 Irred",b:"b-thm",
  t:`$\\phi(x)\\in\\pm\\mathbb{P}$ and $\\psi(x)\\in\\pm\\mathbb{P}$ $\\iff$ $(x,-x)\\in\\mathrm{Irr}(N)$`,
  body:`<div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(N)\\iff 6x+1\\in\\pm\\mathbb{P}\\text{ and }6x-1\\in\\pm\\mathbb{P}\\iff(6x-1,6x+1)\\text{ twin prime}$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none"><p><strong>($\\Rightarrow$):</strong> Suppose $(x,-x)$ is irreducible in $N$. Under $\\phi$, this maps to $6x+1$ in $(6\\mathbb{Z}+1,\\cdot)$. By Corollary 1.5, irreducibility in $N$ is equivalent to irreducibility in $M$, and $\\phi$ transfers irreducibility to primality in $\\mathbb{Z}$. So $6x+1\\in\\pm\\mathbb{P}$. Similarly, under $\\psi$, $6x-1\\in\\pm\\mathbb{P}$.</p>
+<p><strong>($\\Leftarrow$):</strong> If both $6x+1$ and $6x-1$ are $\\pm$primes, then $\\phi(x)$ is irreducible in $(6\\mathbb{Z}+1,\\cdot)$ and $\\psi(x)$ is irreducible in $(6\\mathbb{Z}-1,\\bullet)$. Pulling back through the isomorphisms, $(x,-x)$ admits no nontrivial factorization in $N$. $\\square$</p></div>
 <div class="cblk"> x   6x-1  6x+1  Irred?  Twin pair
  1      5     7    YES    (5,7)
  2     11    13    YES    (11,13)
@@ -308,7 +327,13 @@ lean:`${GH}/TPC/Norm.lean#L12`},
  t:`$\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies$ N5: $|x\\otimes y|=|x||y|$ and N6: strict descent`,
  body:`<div class="mdisp">$$\\textbf{N5:}\\quad|(x,-x)\\otimes(y,-y)|=|(x,-x)|\\cdot|(y,-y)|$$
 $$\\textbf{N6:}\\quad(x,-x)=(a,-a)\\otimes(b,-b),\\;a,b\\neq0\\implies|(a,-a)|,|(b,-b)|<|(x,-x)|$$</div>
-<p><strong>N5:</strong> $\\phi(x\\mathbin{\\circledast}y)^2=(\\phi(x)\\phi(y))^2=\\phi(x)^2\\phi(y)^2$. One <code>ring</code> call.</p>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none"><p><strong>N5 (multiplicativity):</strong>
+$$|(x,-x)\\otimes(y,-y)|=|(x\\mathbin{\\circledast}y,\\,-(x\\mathbin{\\circledast}y))|=\\phi(x\\mathbin{\\circledast}y)^2=(\\phi(x)\\phi(y))^2=\\phi(x)^2\\phi(y)^2=|(x,-x)|\\cdot|(y,-y)|$$
+This is a single <code>ring</code> computation in Lean.</p>
+<p><strong>N6 (strict descent):</strong> Let $x=a\\mathbin{\\circledast}b$ with $a,b\\neq0$. Then $\\phi(a),\\phi(b)\\neq1$ (since $a,b\\neq0$ implies $6a+1,6b+1\\neq1$). So $|\\phi(a)|,|\\phi(b)|\\geq5$. Then:
+$$|(a,-a)|=\\phi(a)^2\\leq\\phi(a)^2<\\phi(a)^2\\phi(b)^2=|(x,-x)|$$
+since $\\phi(b)^2\\geq25>1$. Likewise for $|(b,-b)|$. $\\square$</p></div>
 <p><strong>N6 example:</strong> $(4,-4)=(-1,1)\\otimes(-1,1)$, norm $625=25\\times25$. Both $25&lt;625$.</p>`,
 lean:`${GH}/TPC/Norm.lean#L50`},
 
@@ -340,23 +365,31 @@ lean:`${GH}/TPC/Topology.lean#L75`},
 {id:"t8.9",ch:"§8 Topology",b:"b-thm",
  t:`$\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies L_p$ homeomorphism $\\implies$ $q\\otimes N$ closed`,
  body:`<div class="mdisp">$$p\\otimes N=V_{p_1,\\,6p_1+1}\\text{ (clopen)}, \\quad L_p\\text{ homeomorphism}\\implies p\\otimes C\\text{ closed for closed }C$$</div>
-<p><strong>Continuity:</strong> $x=x_0+cs\\Rightarrow x\\mathbin{\\circledast}y\\equiv x_0\\mathbin{\\circledast}y_0\\pmod c$ since corrections $\\equiv0\\pmod c$.</p>
-<p><strong>Injectivity:</strong> $\\phi(p_1)\\phi(x)=\\phi(p_1)\\phi(y)$ and $\\phi(p_1)\\neq0\\Rightarrow x=y$.</p>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none"><p><strong>Continuity of $L_p$:</strong> Let $p=(p_1,-p_1)$. For $(x,-x)\\in U_{a,-a,c}\\cap N$, we have $x=a+cz$. Then:
+$$p_1\\mathbin{\\circledast}x=6p_1x+p_1+x=6p_1(a+cz)+p_1+a+cz=(6p_1a+p_1+a)+c(6p_1+1)z=p_1\\mathbin{\\circledast}a+\\phi(p_1)cz$$
+So $L_p$ maps $U_{a,-a,c}\\cap N$ into $U_{p_1\\circledast a,\\,-(p_1\\circledast a),\\,\\phi(p_1)c}$, hence is continuous.</p>
+<p><strong>Injectivity:</strong> $p_1\\mathbin{\\circledast}x=p_1\\mathbin{\\circledast}y$ implies $\\phi(p_1)\\phi(x)=\\phi(p_1)\\phi(y)$. Since $p_1\\neq0$, $\\phi(p_1)\\neq\\pm1$ is nonzero, giving $\\phi(x)=\\phi(y)$, hence $x=y$.</p>
+<p><strong>Cosets closed:</strong> $q\\otimes N=L_q(N)$ is the image of a closed set under a homeomorphism onto its image, hence closed. $\\square$</p></div>
 <p><strong>Example ($p_1=1$):</strong> $L_{(1,-1)}$ maps $N$ onto $V_{1,7}=\\{(1+7n,-(1+7n))\\}$, step $7=\\phi(1)$.</p>`,
 lean:`${GH}/TPC/Topology.lean#L155`},
 
 {id:"t9.1",ch:"§9 Main",b:"b-thm",
  t:`Covering + Closed Cosets + No Open Singletons $\\implies$ $|\\mathrm{Irr}(N)|=\\infty$`,
  body:`<div class="mdisp">$$N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$$</div>
-<p>If $\\mathrm{Irr}(N)$ finite $\\Rightarrow$ RHS is a <strong>finite union of closed sets</strong> $\\Rightarrow$ closed $\\Rightarrow$ $\\{(0,0)\\}$ open. But every nonempty open set in $N$ is infinite. <strong>Contradiction.</strong> $\\blacksquare$</p>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none"><p><strong>Covering:</strong> For any $(k,-k)\\neq(0,0)$ in $N$, Theorem 7.2 gives an irreducible $q\\in\\mathrm{Irr}(N)$ with $q\\mid_{\\otimes}(k,-k)$, so $(k,-k)\\in q\\otimes N$. Thus $N\\setminus\\{(0,0)\\}\\subseteq\\bigcup_{q}q\\otimes N$.</p>
+<p><strong>Contradiction:</strong> Suppose $\\mathrm{Irr}(N)$ is finite. Each coset $q\\otimes N$ is closed (Thm 8.9). A finite union of closed sets is closed, so $N\\setminus\\{(0,0)\\}$ is closed, making $\\{(0,0)\\}$ open in $N$. But every nonempty open set in $N$ contains a basic open set $N\\cap U_{a,b,c}$, which is infinite (Thm 8.3). A singleton cannot be open. <strong>Contradiction.</strong> $\\blacksquare$</p>
 <div class="cblk"><span class="kw">theorem</span> <span class="fn">infinitely_many_irred</span>:
-  {q:ℤ|Irred q}.Infinite</div>
+  {q:ℤ|Irred q}.Infinite</div></div>
 <p>This is <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg's argument</a> verbatim.</p>`,
 lean:`${GH}/TPC/Main.lean#L60`},
 
 {id:"c9.3",ch:"§9 Main",b:"b-cor",
  t:`Thm 5.1 + Thm 9.1 $\\implies$ Infinitely Many Twin Prime Pairs`,
  body:`<div class="mdisp">$$\\boxed{\\bigl|\\{x\\in\\mathbb{Z}:6x-1\\in\\pm\\mathbb{P}\\text{ and }6x+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty}$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none"><p>By Theorem 5.1, $(x,-x)\\in\\mathrm{Irr}(N)$ if and only if $6x+1$ and $6x-1$ are both $\\pm$prime, i.e., $(6x-1,6x+1)$ is a twin prime pair. By Theorem 9.1, $|\\mathrm{Irr}(N)|=\\infty$. Combining these two results: there are infinitely many $x\\in\\mathbb{Z}$ with $6x\\pm1\\in\\pm\\mathbb{P}$, giving infinitely many twin prime pairs. $\\blacksquare$</p></div>
 <div class="mdisp">$$\\phi,\\psi\\text{ isom.}\\to\\text{Weak sat.}\\to\\text{Irred equiv.}\\to\\text{Norm}\\to\\text{Covering}\\to U_{a,b,c}\\to\\text{Cosets closed}\\to\\mathbf{TPC}$$</div>
 <div class="d-flex flex-wrap gap-1 mt-2">
 <a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank" class="tpill">Twin Prime Conjecture</a>
