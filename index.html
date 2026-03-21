@@ -152,7 +152,7 @@ footer a:hover{color:var(--gold-light);}
     <div class="section-label">at a glance</div>
     <div class="section-title">The Project in Numbers</div>
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-num">20</div><div class="stat-label">Proof Cards</div></div>
+      <div class="stat-card"><div class="stat-num">23</div><div class="stat-label">Proof Cards</div></div>
       <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Lean 4 Files</div></div>
       <div class="stat-card"><div class="stat-num">9</div><div class="stat-label">Paper Sections</div></div>
       <div class="stat-card"><div class="stat-num">$\infty$</div><div class="stat-label">Twin Primes (proved)</div></div>
@@ -162,8 +162,44 @@ footer a:hover{color:var(--gold-light);}
   </div>
 </section>
 
-<!-- FLOW GRID -->
+<!-- KEY IDEA -->
 <section class="section">
+  <div class="section-inner">
+    <div class="section-label">key idea</div>
+    <div class="section-title">Furstenberg's Argument, Generalised to Monoids</div>
+    <div style="max-width:700px;line-height:1.85;color:#444;margin-bottom:1.5rem;">
+      <p style="margin-bottom:1rem;">
+        In Furstenberg's 1955 proof of the infinitude of primes, the core observation is that
+        $\mathbb{Z}\setminus\{\pm1\} = \bigcup_{p\,\in\,\mathrm{Irr}^{\times}(\mathbb{Z})} p\mathbb{Z}$
+        — every nonunit integer is divisible by some prime. Notice that $\mathbb{Z}$ here is only used as a
+        <em>multiplicative monoid</em>: the cosets $p\mathbb{Z}$ are monoid cosets, and the topology is defined
+        by arithmetic progressions. The additive group structure plays no role.
+      </p>
+      <p style="margin-bottom:1rem;">
+        We apply exactly this pattern to a different monoid. The challenge is: <strong>find a monoid whose irreducibles
+        correspond to twin prime averages</strong> — i.e., to integers $x$ where $6x+1$ and $6x-1$ are both $\pm$prime,
+        so that $(6x-1,\,6x+1)$ is a twin prime pair.
+      </p>
+      <p style="margin-bottom:1rem;">
+        The answer is the anti-diagonal submonoid $N = \Delta(\mathbb{Z}) \subset (\mathbb{Z}^2,\otimes)$, where
+        $\otimes$ is built from the operations $\circledast$ and $\star$. The isomorphisms $\phi(x)=6x+1$ and
+        $\psi(x)=6x-1$ transfer irreducibility in $N$ to primality of both $6x\pm1$, establishing the
+        bijection $\mathrm{Irr}(N) \leftrightarrow \{\text{twin prime pairs}\}$.
+      </p>
+      <p>
+        With this monoid in hand, the Furstenberg argument applies verbatim:
+        cover $N\setminus\{1_N\}$ by irreducible cosets, equip $N$ with a coset topology where each coset is closed and
+        every nonempty open set is infinite, and conclude $|\mathrm{Irr}(N)|=\infty$ by contradiction.
+      </p>
+    </div>
+    <div style="background:rgba(201,168,76,.08);border-left:4px solid var(--gold);border-radius:0 4px 4px 0;padding:1rem 1.4rem;max-width:700px;overflow-x:auto;">
+      $$\underbrace{\mathbb{Z}\setminus\{\pm1\}=\bigcup_{p\in\mathbb{P}} p\mathbb{Z}}_{\text{Furstenberg (primes)}} \qquad\longrightarrow\qquad \underbrace{N\setminus\{1_N\}=\bigcup_{q\in\mathrm{Irr}(N)} q\otimes N}_{\text{This paper (twin primes)}}$$
+    </div>
+  </div>
+</section>
+
+<!-- FLOW GRID -->
+<section class="section" style="background:var(--paper);">
   <div class="section-inner">
     <div class="section-label">interactive</div>
     <div class="section-title">Browse the Proof — One Card at a Time</div>

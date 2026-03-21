@@ -7,6 +7,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
   onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
@@ -147,6 +148,21 @@ body{font-family:var(--sans);background:var(--g50);color:var(--black);min-height
 .mmdot.active{background:var(--blue);border-color:var(--blue);transform:scale(1.5)}
 .mmdot:hover{background:var(--blue);transform:scale(1.4)}
 @media(max-width:860px){.mmap{display:none}}
+
+/* graph overlay */
+.graph-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);
+  display:none;flex-direction:column}
+.graph-overlay.active{display:flex}
+.graph-hdr{display:flex;align-items:center;justify-content:space-between;
+  padding:.7rem 1.2rem;border-bottom:1px solid #333}
+.graph-hdr h2{font-family:var(--mono);font-size:.9rem;color:var(--white);font-weight:600}
+.graph-hdr h2 span{color:var(--blue)}
+.graph-close{font-size:1.4rem;color:#888;cursor:pointer;background:none;border:none;
+  transition:var(--t);padding:.2rem .5rem;border-radius:6px}
+.graph-close:hover{color:var(--white);background:#333}
+.graph-hint{font-family:var(--mono);font-size:.6rem;color:#666;padding:0 1.2rem .3rem;
+  border-bottom:1px solid #222}
+#cy{flex:1;width:100%}
 </style>
 </head>
 <body>
@@ -157,6 +173,7 @@ body{font-family:var(--sans);background:var(--g50);color:var(--black);min-height
     <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="srclink"><i class="bi bi-github"></i> Lean4TPC</a>
     <a href="PAPER.md" target="_blank" class="srclink"><i class="bi bi-file-text"></i> PAPER.md</a>
     <a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank" class="srclink"><i class="bi bi-book"></i> Mathlib4</a>
+    <button class="srclink" onclick="toggleGraph()" style="cursor:pointer"><i class="bi bi-diagram-3"></i> Proof Tree</button>
   </div>
 </header>
 
@@ -168,6 +185,15 @@ body{font-family:var(--sans);background:var(--g50);color:var(--black);min-height
 
 <main class="stage"><div class="pcard" id="mc"></div></main>
 <div class="mmap" id="mm"></div>
+
+<div class="graph-overlay" id="graphOverlay">
+  <div class="graph-hdr">
+    <h2><span><i class="bi bi-diagram-3"></i></span> Proof Dependency Tree</h2>
+    <button class="graph-close" onclick="toggleGraph()">&times;</button>
+  </div>
+  <div class="graph-hint">Scroll to zoom · Drag to pan · Click a node to jump to its card</div>
+  <div id="cy"></div>
+</div>
 
 <footer class="ftr">
   <button class="btnav" id="bp" onclick="go(-1)" disabled>
@@ -218,7 +244,31 @@ $$\\text{identity }=0\\text{ in both}$$</div>
  1    1      8      -4
  2    3     41     -31
 -1   -1      4      -8
- 1   -1     -6       6</div>`,
+ 1   -1     -6       6</div>
+<button class="btnprf" onclick="tp(this)">▶ Show extended table</button>
+<div class="prfbody" style="display:none"><div class="cblk">  x    y      x⊛y       x⋆y       φ(x⊛y)
+  0    0        0         0          1  ← identity
+  0    5        5         5         31  ← 0 is identity
+  1    1        8        -4         49  = 7·7
+  1    2       15        -9         91  = 7·13
+  1    3       22       -14        133  = 7·19
+  1    4       29       -19        175  = 7·25
+  1    5       36       -24        217  = 7·31
+  2    2       28       -20        169  = 13·13
+  2    3       41       -31        247  = 13·19
+  2    5       67       -53        403  = 13·31
+  3    3       60       -48        361  = 19·19
+  3    5       98       -82        589  = 19·31
+  5    5      160      -140        961  = 31·31
+ -1   -1        4        -8        25  = (-5)·(-5)
+ -1    1       -6         6       -35  = (-5)·7
+ -1    2      -11        13       -65  = (-5)·13
+ -2   -2       20       -28       121  = (-11)·(-11)
+ -2    3      -35        37      -209  = (-11)·19
+ -3   -3       48       -60       289  = (-17)·(-17)
+ 10    1       71       -49       427  = 61·7
+ 10    2      132       -108      793  = 61·13</div>
+<p>Note: $\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)$ is visible in the last column.</p></div>`,
 lean:`${GH}/TPC/Basic.lean#L15`},
 
 {id:"p2.3",ch:"§2 Ops",b:"b-prop",
@@ -269,6 +319,21 @@ lean:`${GH}/TPC/Basic.lean#L55`},
 <p><strong>Key use:</strong> forces $a,c\\neq0$ from $a\\mathbin{\\circledast}c=k\\neq0$ in the <a class="iref" onclick="jumpId('t4.1')">Thm 4.1</a> proof.</p>`,
 lean:`${GH}/TPC/Basic.lean#L90`},
 
+{id:"d2.10",ch:"§2 Ops",b:"b-def",
+ t:`Def 2.10 — Product Monoid $M=(\\mathbb{Z}^2,\\otimes)$`,
+ body:`<div class="mdisp">$$(x,y)\\otimes(x',y'):=(x\\mathbin{\\circledast}x',\\;y\\mathbin{\\star}y'),\\quad 1_M=(0,0)$$</div>
+<p>Combines <a class="iref" onclick="jumpId('d2.1')">$\\circledast$</a> on the first coordinate and $\\star$ on the second. The anti-diagonal <a class="iref" onclick="jumpId('d3.1')">$N=\\Delta(\\mathbb{Z})$</a> lives inside $M$.</p>
+<button class="btnprf" onclick="tp(this)">▶ Show examples</button>
+<div class="prfbody" style="display:none"><div class="cblk"> (x,y)       (x',y')       (x,y)⊗(x',y')
+ (1, 0)      (1,-8)        (1⊛1,  0⋆(-8))  = ( 8, -8)
+ (1,-1)      (2,-2)        (1⊛2,(-1)⋆(-2)) = (15,-15)
+ (0, 0)      (x, y)        (0⊛x,  0⋆y)     = ( x,  y)
+ (1,-1)      (1,-1)        (1⊛1,(-1)⋆(-1)) = ( 8, -8)
+ (2,-2)      (3,-3)        (2⊛3,(-2)⋆(-3)) = (41,-41)
+ (1, 0)      (0,-1)        (1⊛0,  0⋆(-1))  = ( 1, -1)</div></div>
+<div class="cblk"><span class="kw">def</span> otimes(a b:ℤ×ℤ):ℤ×ℤ:=(mstar a.1 b.1, sstar a.2 b.2)</div>`,
+lean:`${GH}/TPC/Basic.lean#L40`},
+
 {id:"d3.1",ch:"§3 Anti-Diag",b:"b-def",
  t:`Def 3.1 — $\\Delta(\\mathbb{Z})=\\{(x,-x)\\}$, $\\;\\Delta(x)\\otimes\\Delta(y)=\\Delta(x\\mathbin{\\circledast}y)$`,
  body:`<div class="mdisp">$$N:=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}\\subset(\\mathbb{Z}^2,\\otimes)$$</div>
@@ -308,7 +373,37 @@ lean:`${GH}/TPC/WeaklySaturated.lean#L45`},
  2     11    13    YES    (11,13)
  4     23    25     NO    25=5²
  5     29    31    YES    (29,31)
-10     59    61    YES    (59,61)</div>`,
+10     59    61    YES    (59,61)</div>
+<button class="btnprf" onclick="tp(this)">▶ Show full table</button>
+<div class="prfbody" style="display:none"><div class="cblk">  x   6x-1   6x+1  Irred?  Note
+  1      5      7    YES    (5,7) twin primes
+  2     11     13    YES    (11,13) twin primes
+  3     17     19    YES    (17,19) twin primes
+  4     23     25     NO    25 = 5²
+  5     29     31    YES    (29,31) twin primes
+  6     35     37     NO    35 = 5·7
+  7     41     43    YES    (41,43) twin primes
+  8     47     49     NO    49 = 7²
+  9     53     55     NO    55 = 5·11
+ 10     59     61    YES    (59,61) twin primes
+ 11     65     67     NO    65 = 5·13
+ 12     71     73    YES    (71,73) twin primes
+ 13     77     79     NO    77 = 7·11
+ 14     83     85     NO    85 = 5·17
+ 15     89     91     NO    91 = 7·13
+ 16     95     97     NO    95 = 5·19
+ 17    101    103    YES    (101,103) twin primes
+ 18    107    109    YES    (107,109) twin primes
+ ─── negative x ───
+ -1     -7     -5    YES    (-7,-5) ±primes
+ -2    -13    -11    YES    (-13,-11) ±primes
+ -3    -19    -17    YES    (-19,-17) ±primes
+ -4    -25    -23     NO    -25 = (-5)²
+ -5    -31    -29    YES    (-31,-29) ±primes
+ -7    -43    -41    YES    (-43,-41) ±primes
+-10    -61    -59    YES    (-61,-59) ±primes
+-12    -73    -71    YES    (-73,-71) ±primes</div>
+<p>Every twin prime pair $(p,p+2)$ with $p\\equiv5\\pmod6$ gives $x=(p+1)/6$.</p></div>`,
 lean:`${GH}/TPC/AntiDiagonal.lean#L95`},
 
 {id:"d6.1",ch:"§6 Norm",b:"b-def",
@@ -322,7 +417,31 @@ lean:`${GH}/TPC/AntiDiagonal.lean#L95`},
  2      13        169  YES
  4      25        625  NO
  5      31        961  YES
--1      -5         25  YES</div>`,
+-1      -5         25  YES</div>
+<button class="btnprf" onclick="tp(this)">▶ Show full norm table</button>
+<div class="prfbody" style="display:none"><div class="cblk">  x    φ(x)   |(x,-x)|  Irred?  Factorization
+  0       1          1  ident.  —
+  1       7         49  YES     (5,7)
+  2      13        169  YES     (11,13)
+  3      19        361  YES     (17,19)
+  4      25        625  NO      25=5², (4,-4)=(-1,1)⊗(-1,1)
+  5      31        961  YES     (29,31)
+  6      37       1369  NO      35=5·7
+  7      43       1849  YES     (41,43)
+  8      49       2401  NO      49=7², (8,-8)=(1,-1)⊗(1,-1)
+  9      55       3025  NO      55=5·11
+ 10      61       3721  YES     (59,61)
+ 12      73       5329  YES     (71,73)
+ 14      85       7225  NO      85=5·17
+ 17     103      10609  YES     (101,103)
+ 18     109      11881  YES     (107,109)
+ -1      -5         25  YES     (-7,-5)
+ -2     -11        121  YES     (-13,-11)
+ -3     -17        289  YES     (-19,-17)
+ -4     -23        529  NO      -25=(-5)²
+ -5     -29        841  YES     (-31,-29)
+ -7     -41       1681  YES     (-43,-41)</div>
+<p><strong>N5 check:</strong> $|(1,-1)\\otimes(2,-2)|=|(15,-15)|=91^2=8281=49\\cdot169=|(1,-1)|\\cdot|(2,-2)|$. $\\checkmark$</p></div>`,
 lean:`${GH}/TPC/Norm.lean#L12`},
 
 {id:"n56",ch:"§6 Norm",b:"b-prop",
@@ -346,6 +465,14 @@ lean:`${GH}/TPC/Norm.lean#L50`},
 <p><strong>Example:</strong> $(14,-14)$: $\\phi(14)=85=5\\times17$. Lift: $(14,-14)=(-1,1)\\otimes(-3,3)$ with $(-1,1)\\in\\mathrm{Irr}(N)$.</p>`,
 lean:`${GH}/TPC/Norm.lean#L90`},
 
+{id:"c7.5",ch:"§7 Divisibility",b:"b-cor",
+ t:`Cor 7.5 — $N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$`,
+ body:`<div class="mdisp">$$\\text{Every nonidentity element of }N\\text{ lies in some irreducible coset}$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none"><p>For $(k,-k)\\neq(0,0)$, <a class="iref" onclick="jumpId('t7.2')">Thm 7.2</a> gives $q\\in\\mathrm{Irr}(N)$ with $q\\mid_{\\otimes}(k,-k)$, so $(k,-k)=q\\otimes m$ for some $m\\in N$. Thus $(k,-k)\\in q\\otimes N$. $\\square$</p></div>
+<p>This covering is the key input to the <a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a> topological argument.</p>`,
+lean:`${GH}/TPC/Norm.lean#L110`},
+
 {id:"d8.1",ch:"§8 Topology",b:"b-def",
  t:`Def 8.1 — $U_{a,b,c}=\\{(a+cz,\\,b-cz)\\}$, anti-diagonal APs`,
  body:`<div class="mdisp">$$U_{a,b,c}=\\{(a+cz,\\;b-cz):z\\in\\mathbb{Z}\\},\\quad c\\neq0$$</div>
@@ -364,6 +491,15 @@ lean:`${GH}/TPC/Topology.lean#L18`},
 <p><strong>Key:</strong> $N\\cap U_{a,b,c}$ is infinite or empty $\\Rightarrow$ no singleton is open.</p>`,
 lean:`${GH}/TPC/Topology.lean#L75`},
 
+{id:"t8.7",ch:"§8 Topology",b:"b-thm",
+ t:`Thm 8.7 — Every nonempty open set in $N$ is infinite; no singleton is open`,
+ body:`<div class="mdisp">$$N\\cap U_{a,b,c}\\neq\\emptyset\\implies|N\\cap U_{a,b,c}|=\\infty$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none"><p>If $c\\mid a+b$, then $N\\cap U_{a,b,c}=\\{(a+cn,-(a+cn)):n\\in\\mathbb{Z}\\}$, an infinite arithmetic progression. If $c\\nmid a+b$, the intersection is empty. Every nonempty open set contains some $N\\cap U_{a,b,c}$, so it is infinite. No singleton $\\{(x,-x)\\}$ can be open. $\\square$</p></div>
+<p><strong>Example:</strong> $N\\cap U_{1,-1,7}=\\{\\ldots,(-6,6),(1,-1),(8,-8),(15,-15),\\ldots\\}$ — infinite.</p>
+<p>This is the property that produces the <a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a> contradiction.</p>`,
+lean:`${GH}/TPC/Topology.lean#L100`},
+
 {id:"t8.9",ch:"§8 Topology",b:"b-thm",
  t:`Thm 8.9 — $\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies L_p$ homeomorphism $\\implies$ $q\\otimes N$ closed`,
  body:`<div class="mdisp">$$p\\otimes N=V_{p_1,\\,6p_1+1}\\text{ (clopen)}, \\quad L_p\\text{ homeomorphism}\\implies p\\otimes C\\text{ closed for closed }C$$</div>
@@ -380,8 +516,8 @@ lean:`${GH}/TPC/Topology.lean#L155`},
  t:`Thm 9.1 — Covering + Closed Cosets + No Open Singletons $\\implies$ $|\\mathrm{Irr}(N)|=\\infty$`,
  body:`<div class="mdisp">$$N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p><strong>Covering:</strong> For any $(k,-k)\\neq(0,0)$ in $N$, <a class="iref" onclick="jumpId('t7.2')">Theorem 7.2</a> gives an irreducible $q\\in\\mathrm{Irr}(N)$ with $q\\mid_{\\otimes}(k,-k)$, so $(k,-k)\\in q\\otimes N$. Thus $N\\setminus\\{(0,0)\\}\\subseteq\\bigcup_{q}q\\otimes N$.</p>
-<p><strong>Contradiction:</strong> Suppose $\\mathrm{Irr}(N)$ is finite. Each coset $q\\otimes N$ is closed (<a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>). A finite union of closed sets is closed, so $N\\setminus\\{(0,0)\\}$ is closed, making $\\{(0,0)\\}$ open in $N$. But every nonempty open set in $N$ contains a basic open set $N\\cap U_{a,b,c}$, which is infinite (<a class="iref" onclick="jumpId('t8.3')">Thm 8.3</a>). A singleton cannot be open. <strong>Contradiction.</strong> $\\blacksquare$</p>
+<div class="prfbody" style="display:none"><p><strong>Covering:</strong> By <a class="iref" onclick="jumpId('c7.5')">Cor 7.5</a>, $N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$.</p>
+<p><strong>Contradiction:</strong> Suppose $\\mathrm{Irr}(N)$ is finite. Each coset $q\\otimes N$ is closed (<a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>). A finite union of closed sets is closed, so $N\\setminus\\{(0,0)\\}$ is closed, making $\\{(0,0)\\}$ open in $N$. But every nonempty open set in $N$ is infinite (<a class="iref" onclick="jumpId('t8.7')">Thm 8.7</a>). A singleton cannot be open. <strong>Contradiction.</strong> $\\blacksquare$</p>
 <div class="cblk"><span class="kw">theorem</span> <span class="fn">infinitely_many_irred</span>:
   {q:ℤ|Irred q}.Infinite</div></div>
 <p>This is <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg's argument</a> verbatim.</p>`,
@@ -467,6 +603,109 @@ document.addEventListener("keydown",e=>{
 const _saved = sessionStorage.getItem('tpcCard');
 if (_saved !== null) { cur = Math.min(parseInt(_saved,10), cards.length-1); sessionStorage.removeItem('tpcCard'); }
 render();
+
+/* ── Dependency Graph ── */
+let cyInst=null;
+function toggleGraph(){
+  const ov=document.getElementById("graphOverlay");
+  ov.classList.toggle("active");
+  if(ov.classList.contains("active")&&!cyInst) initGraph();
+  if(cyInst) setTimeout(()=>cyInst.resize().fit(null,40),100);
+}
+function initGraph(){
+  const N=[
+    {id:"d1.1", l:"Def 1.1\nWeak Sat.", t:"def"},
+    {id:"c1.5", l:"Cor 1.5\nIrred ⇔", t:"cor"},
+    {id:"d2.1", l:"Def 2.1\n⊛ and ⋆", t:"def"},
+    {id:"p2.3", l:"Prop 2.3\nCommMonoid", t:"prop"},
+    {id:"eta",  l:"Involution\nη(x)=−x", t:"prop"},
+    {id:"t2.6", l:"Thm 2.6\nφ, ψ isom.", t:"thm"},
+    {id:"l2.8", l:"Lem 2.8\nNo 0-div", t:"lem"},
+    {id:"d2.10",l:"Def 2.10\nM=(ℤ²,⊗)", t:"def"},
+    {id:"d3.1", l:"Def 3.1\nΔ(ℤ)⊂M", t:"def"},
+    {id:"cx",   l:"Cex\nNot Sat.", t:"ex"},
+    {id:"t4.1", l:"Thm 4.1\nWeak Sat.", t:"thm"},
+    {id:"t5.1", l:"Thm 5.1\nIrred⇔Twin", t:"thm"},
+    {id:"d6.1", l:"Def 6.1\nNorm", t:"def"},
+    {id:"n56",  l:"Prop N5–N6\nMult+Desc", t:"prop"},
+    {id:"t7.2", l:"Thm 7.2\nIrred Div", t:"thm"},
+    {id:"c7.5", l:"Cor 7.5\nCovering", t:"cor"},
+    {id:"d8.1", l:"Def 8.1\nU_{a,b,c}", t:"def"},
+    {id:"t8.3", l:"Thm 8.3\nBasis+Clopen", t:"thm"},
+    {id:"t8.7", l:"Thm 8.7\nNo Open {pt}", t:"thm"},
+    {id:"t8.9", l:"Thm 8.9\nCosets Closed", t:"thm"},
+    {id:"t9.1", l:"Thm 9.1\n|Irr|=∞", t:"thm"},
+    {id:"c9.3", l:"Cor 9.3\n∞ Twin Primes", t:"cor"}
+  ];
+  const E=[
+    ["d1.1","c1.5"],["d1.1","t4.1"],
+    ["d2.1","p2.3"],["d2.1","eta"],["d2.1","t2.6"],["d2.1","l2.8"],["d2.1","d2.10"],
+    ["p2.3","t2.6"],
+    ["eta","d2.10"],["eta","d3.1"],
+    ["d2.10","d3.1"],
+    ["d3.1","cx"],["d3.1","t4.1"],
+    ["l2.8","t4.1"],
+    ["c1.5","t5.1"],["t2.6","t5.1"],["t4.1","t5.1"],
+    ["t2.6","d6.1"],
+    ["t2.6","n56"],["d6.1","n56"],
+    ["n56","t7.2"],["t4.1","t7.2"],
+    ["t7.2","c7.5"],
+    ["d8.1","t8.3"],
+    ["t8.3","t8.7"],
+    ["t2.6","t8.9"],["t8.3","t8.9"],["d8.1","t8.9"],
+    ["c7.5","t9.1"],["t8.9","t9.1"],["t8.7","t9.1"],
+    ["t5.1","c9.3"],["t9.1","c9.3"]
+  ];
+  const colors={def:"#1e90ff",thm:"#f5e642",prop:"#aaa",lem:"#666",cor:"#7ec8e3",ex:"#555"};
+  cyInst=cytoscape({
+    container:document.getElementById("cy"),
+    elements:[
+      ...N.map(n=>({data:{id:n.id,label:n.l,ntype:n.t}})),
+      ...E.map(([s,t])=>({data:{source:s,target:t}}))
+    ],
+    style:[
+      {selector:"node",style:{
+        "label":"data(label)","text-wrap":"wrap","text-valign":"center","text-halign":"center",
+        "font-family":"'IBM Plex Mono',monospace","font-size":"9px","color":"#111",
+        "text-max-width":"90px",
+        "width":100,"height":44,"shape":"round-rectangle",
+        "background-color":"mapData(ntype,0,1,#1e90ff,#1e90ff)",
+        "border-width":2,"border-color":"#333",
+        "padding":"6px","text-margin-y":0
+      }},
+      {selector:"node[ntype='def']",style:{"background-color":"#1e90ff","color":"#fff","border-color":"#0d6efd"}},
+      {selector:"node[ntype='thm']",style:{"background-color":"#f5e642","color":"#111","border-color":"#c4b000"}},
+      {selector:"node[ntype='prop']",style:{"background-color":"#ddd","color":"#333","border-color":"#999"}},
+      {selector:"node[ntype='lem']",style:{"background-color":"#555","color":"#fff","border-color":"#333"}},
+      {selector:"node[ntype='cor']",style:{"background-color":"#d0eaff","color":"#0d6efd","border-color":"#1e90ff"}},
+      {selector:"node[ntype='ex']",style:{"background-color":"#2a2a2a","color":"#aaa","border-color":"#555"}},
+      {selector:"edge",style:{
+        "width":2,"line-color":"#555","target-arrow-color":"#888",
+        "target-arrow-shape":"triangle","curve-style":"bezier",
+        "arrow-scale":0.8,"opacity":0.7
+      }},
+      {selector:"node:active",style:{"overlay-opacity":0}},
+      {selector:"node.hover",style:{"border-width":3,"border-color":"#1e90ff","z-index":999}}
+    ],
+    layout:{
+      name:"breadthfirst",directed:true,
+      spacingFactor:1.2,avoidOverlap:true,
+      roots:["d1.1","d2.1","d8.1"]
+    },
+    minZoom:0.3,maxZoom:3,wheelSensitivity:0.3,
+    boxSelectionEnabled:false
+  });
+  cyInst.on("tap","node",function(evt){
+    const id=evt.target.id();
+    toggleGraph();
+    jumpId(id);
+  });
+  cyInst.on("mouseover","node",function(e){e.target.addClass("hover");document.getElementById("cy").style.cursor="pointer";});
+  cyInst.on("mouseout","node",function(e){e.target.removeClass("hover");document.getElementById("cy").style.cursor="default";});
+}
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape"&&document.getElementById("graphOverlay").classList.contains("active")) toggleGraph();
+});
 </script>
 </body>
 </html>
