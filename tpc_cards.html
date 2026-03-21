@@ -8,6 +8,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
   onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
@@ -162,7 +164,10 @@ body{font-family:var(--sans);background:var(--g50);color:var(--black);min-height
 .graph-close:hover{color:var(--white);background:#333}
 .graph-hint{font-family:var(--mono);font-size:.6rem;color:#666;padding:0 1.2rem .3rem;
   border-bottom:1px solid #222}
-#cy{flex:1;width:100%}
+#cy{flex:1;width:100%;background:radial-gradient(ellipse at center,#1a1a24 0%,#0d0d14 100%)}
+.graph-legend{display:flex;gap:1rem;padding:.3rem 1.2rem .5rem;flex-wrap:wrap}
+.graph-legend-item{display:flex;align-items:center;gap:.35rem;font-family:var(--mono);font-size:.58rem;color:#888}
+.graph-legend-swatch{width:12px;height:12px;border-radius:3px;border:1px solid rgba(255,255,255,.15)}
 </style>
 </head>
 <body>
@@ -191,7 +196,15 @@ body{font-family:var(--sans);background:var(--g50);color:var(--black);min-height
     <h2><span><i class="bi bi-diagram-3"></i></span> Proof Dependency Tree</h2>
     <button class="graph-close" onclick="toggleGraph()">&times;</button>
   </div>
-  <div class="graph-hint">Scroll to zoom · Drag to pan · Click a node to jump to its card</div>
+  <div class="graph-hint">Scroll to zoom · Drag to pan · Click a node to jump to its card · Hover to highlight dependencies</div>
+  <div class="graph-legend">
+    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#1a6dd4"></div>Definition</div>
+    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#f0dd30"></div>Theorem</div>
+    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#c8c8c8"></div>Proposition</div>
+    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#4a4a5a"></div>Lemma</div>
+    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#b8ddf5"></div>Corollary</div>
+    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#2a2a2a;border-color:#555"></div>Counterexample</div>
+  </div>
   <div id="cy"></div>
 </div>
 
@@ -870,31 +883,42 @@ function initGraph(){
     style:[
       {selector:"node",style:{
         "label":"data(label)","text-wrap":"wrap","text-valign":"center","text-halign":"center",
-        "font-family":"'IBM Plex Mono',monospace","font-size":"9px","color":"#111",
-        "text-max-width":"90px",
-        "width":100,"height":44,"shape":"round-rectangle",
-        "background-color":"mapData(ntype,0,1,#1e90ff,#1e90ff)",
-        "border-width":2,"border-color":"#333",
-        "padding":"6px","text-margin-y":0
+        "font-family":"'IBM Plex Mono',monospace","font-size":"10px","color":"#111",
+        "text-max-width":"100px",
+        "width":110,"height":48,"shape":"round-rectangle",
+        "background-color":"#1e90ff","background-opacity":0.95,
+        "border-width":2,"border-color":"#333","border-opacity":0.8,
+        "padding":"8px","text-margin-y":0,
+        "shadow-blur":8,"shadow-color":"rgba(0,0,0,0.4)","shadow-offset-x":0,"shadow-offset-y":2,"shadow-opacity":0.5
       }},
-      {selector:"node[ntype='def']",style:{"background-color":"#1e90ff","color":"#fff","border-color":"#0d6efd"}},
-      {selector:"node[ntype='thm']",style:{"background-color":"#f5e642","color":"#111","border-color":"#c4b000"}},
-      {selector:"node[ntype='prop']",style:{"background-color":"#ddd","color":"#333","border-color":"#999"}},
-      {selector:"node[ntype='lem']",style:{"background-color":"#555","color":"#fff","border-color":"#333"}},
-      {selector:"node[ntype='cor']",style:{"background-color":"#d0eaff","color":"#0d6efd","border-color":"#1e90ff"}},
-      {selector:"node[ntype='ex']",style:{"background-color":"#2a2a2a","color":"#aaa","border-color":"#555"}},
+      {selector:"node[ntype='def']",style:{"background-color":"#1a6dd4","color":"#fff","border-color":"#0d5bbd"}},
+      {selector:"node[ntype='thm']",style:{"background-color":"#f0dd30","color":"#1a1a1a","border-color":"#b8a800","font-weight":"bold"}},
+      {selector:"node[ntype='prop']",style:{"background-color":"#c8c8c8","color":"#222","border-color":"#888"}},
+      {selector:"node[ntype='lem']",style:{"background-color":"#4a4a5a","color":"#e8e8e8","border-color":"#333"}},
+      {selector:"node[ntype='cor']",style:{"background-color":"#b8ddf5","color":"#0a4f8a","border-color":"#3a9ad9"}},
+      {selector:"node[ntype='ex']",style:{"background-color":"#2a2a2a","color":"#999","border-color":"#444"}},
       {selector:"edge",style:{
-        "width":2,"line-color":"#555","target-arrow-color":"#888",
-        "target-arrow-shape":"triangle","curve-style":"bezier",
-        "arrow-scale":0.8,"opacity":0.7
+        "width":2,"line-color":"#556","target-arrow-color":"#99a",
+        "target-arrow-shape":"triangle-backcurve",
+        "curve-style":"unbundled-bezier",
+        "control-point-distances":[20],"control-point-weights":[0.5],
+        "arrow-scale":0.9,"opacity":0.65,
+        "line-cap":"round"
       }},
+      {selector:"edge.highlighted",style:{"line-color":"#1e90ff","target-arrow-color":"#1e90ff","opacity":1,"width":3,"z-index":999}},
       {selector:"node:active",style:{"overlay-opacity":0}},
-      {selector:"node.hover",style:{"border-width":3,"border-color":"#1e90ff","z-index":999}}
+      {selector:"node.hover",style:{"border-width":3,"border-color":"#fff","z-index":999,"shadow-blur":16,"shadow-color":"rgba(30,144,255,0.6)"}},
+      {selector:"node.dimmed",style:{"opacity":0.25}},
+      {selector:"edge.dimmed",style:{"opacity":0.1}}
     ],
     layout:{
-      name:"breadthfirst",directed:true,
-      spacingFactor:1.2,avoidOverlap:true,
-      roots:["d1.1","d2.1","d8.1"]
+      name:"dagre",
+      rankDir:"TB",
+      nodeSep:40,
+      rankSep:70,
+      edgeSep:20,
+      ranker:"network-simplex",
+      spacingFactor:1.05
     },
     minZoom:0.3,maxZoom:3,wheelSensitivity:0.3,
     boxSelectionEnabled:false
@@ -904,8 +928,20 @@ function initGraph(){
     toggleGraph();
     jumpId(id);
   });
-  cyInst.on("mouseover","node",function(e){e.target.addClass("hover");document.getElementById("cy").style.cursor="pointer";});
-  cyInst.on("mouseout","node",function(e){e.target.removeClass("hover");document.getElementById("cy").style.cursor="default";});
+  cyInst.on("mouseover","node",function(e){
+    var n=e.target;
+    n.addClass("hover");
+    var conn=n.connectedEdges();
+    var neighbors=conn.connectedNodes();
+    cyInst.elements().not(neighbors).not(conn).not(n).addClass("dimmed");
+    conn.addClass("highlighted");
+    document.getElementById("cy").style.cursor="pointer";
+  });
+  cyInst.on("mouseout","node",function(e){
+    e.target.removeClass("hover");
+    cyInst.elements().removeClass("dimmed highlighted");
+    document.getElementById("cy").style.cursor="default";
+  });
 }
 document.addEventListener("keydown",function(e){
   if(e.key==="Escape"&&document.getElementById("graphOverlay").classList.contains("active")) toggleGraph();
