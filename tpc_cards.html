@@ -291,14 +291,14 @@ const cards=[
 <div class="mdisp">$$G = \\bigl\\{(k,k) : 6k+1\\in\\pm\\mathbb{P}\\text{ and }6k-1\\in\\pm\\mathbb{P}\\bigr\\}$$</div>
 <p>and the generated submonoid $N=\\langle G\\rangle^{\\otimes}$, which sits inside the diagonal $\\{(x,x)\\}\\subset\\mathbb{Z}^2$. We prove $\\mathrm{Irr}(N)=G$: the irreducibles of $N$ are precisely the twin-prime generators.</p>
 
-<p><strong>The topology.</strong> We equip $N$ with the subspace topology from the <em>product Furstenberg topology</em> on $\\mathbb{Z}^2$ and verify the three Furstenberg hypotheses:</p>
+<p><strong>The topology.</strong> We equip $N$ with the <em>coarsest topology making every translate $a\\otimes N$ closed</em>. In this intrinsic topology:</p>
 <div class="mdisp">
 $$\\textbf{(H1)}\\;N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in G}q\\otimes N \\qquad
-\\textbf{(H2)}\\;q\\otimes N\\text{ clopen} \\qquad
+\\textbf{(H2)}\\;q\\otimes N\\text{ closed (by def.)} \\qquad
 \\textbf{(H3)}\\;\\{(0,0)\\}\\text{ not open}$$
 </div>
 
-<p><strong>The punchline.</strong> If $G$ were finite, $N\\setminus\\{(0,0)\\}$ would be a finite union of closed sets, making $\\{(0,0)\\}$ open — contradicting (H3). Therefore $|G|=\\infty$, and there are <strong>infinitely many twin prime pairs</strong>.</p>
+<p><strong>The punchline.</strong> (H3) is equivalent to $|G|=\\infty$: if $G$ were finite, $N\\setminus\\{(0,0)\\}$ would be a finite union of closed sets, making $\\{(0,0)\\}$ open. Conversely, any finite covering forces every generator to be one of the covering elements (by the primality of $\\phi(k)$). The Furstenberg framework reduces TPC to a single algebraic statement.</p>
 
 <div class="mdisp" style="background:linear-gradient(135deg,#ede9fe,#dbeafe);border-left-color:#7c3aed">
 <strong>Standing notation:</strong>
@@ -311,7 +311,7 @@ $$G=\\{(k,k):6k\\pm1\\in\\pm\\mathbb{P}\\}, \\quad N=\\langle G\\rangle^{\\otime
 <div class="d-flex flex-wrap gap-1 mt-2">
 <a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tpill">Twin Primes (Wikipedia)</a>
 <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof</a>
-<a href="https://en.wikipedia.org/wiki/Euler%27s_theorem" target="_blank" class="tpill">Euler's Theorem</a>
+<a href="https://en.wikipedia.org/wiki/Topological_space" target="_blank" class="tpill">Topology</a>
 <a href="https://leanprover-community.github.io/" target="_blank" class="tpill">Lean 4</a>
 <a href="https://en.wikipedia.org/wiki/Monoid" target="_blank" class="tpill">Monoid theory</a>
 </div>`,lean:null},
@@ -597,26 +597,29 @@ lean:null},
 // ═══════════════════════════════════════════════════════════════
 
 {id:"d7.1",ch:"§7 Topology",b:"b-def",
- t:`Def 7.1 — Product Furstenberg Topology on $\\mathbb{Z}^2$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The product Furstenberg topology on $\\mathbb{Z}^2$: the product of two copies of the Furstenberg topology on $\\mathbb{Z}$, whose basis consists of two-sided arithmetic progressions.</p>
-<div class="mdisp">$$\\text{Basis on }\\mathbb{Z}:\\quad a+d\\mathbb{Z} = \\{a+dn : n\\in\\mathbb{Z}\\},\\quad d\\geq 1$$</div>
-<div class="mdisp">$$\\text{Basis on }\\mathbb{Z}^2:\\quad (a+d\\mathbb{Z})\\times(b+e\\mathbb{Z}),\\quad a,b\\in\\mathbb{Z},\\; d,e\\geq 1$$</div>
-<p>We give $N$ the <strong>subspace topology</strong> inherited from $\\mathbb{Z}^2$. A basis for the topology on $N$ consists of:</p>
-<div class="mdisp">$$N\\cap\\bigl((a+d\\mathbb{Z})\\times(b+e\\mathbb{Z})\\bigr)$$</div>
-<p>Each set $a+d\\mathbb{Z}$ is clopen in the Furstenberg topology (its complement is $\\bigcup_{j=1}^{d-1}(a+j)+d\\mathbb{Z}$, a finite union of open sets). So basis sets in $\\mathbb{Z}^2$ are clopen, and their intersections with $N$ are clopen in $N$.</p>`,
+ t:`Def 7.1 — Coarsest Coset-Closed Topology on $N$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">We equip $N$ with the coarsest topology making every translate $a\\otimes N$ a closed set. This is intrinsic to $N$ — no ambient space needed.</p>
+<div class="mdisp">$$\\tau_N := \\text{coarsest topology on }N\\text{ such that }a\\otimes N\\text{ is closed for every }a\\in N$$</div>
+<p>Equivalently, the <strong>sub-basic open sets</strong> are the complements $N\\setminus(a\\otimes N)$ for $a\\in N\\setminus\\{(0,0)\\}$. General open sets are arbitrary unions of finite intersections of these.</p>
+<p>Note: $(0,0)\\otimes N = N$, so requiring $(0,0)\\otimes N$ closed is vacuous. For $a\\neq (0,0)$: $(0,0)\\notin a\\otimes N$ (since $a\\otimes r = (0,0)\\Rightarrow a=(0,0)$ by injectivity of $\\phi$). So every sub-basic open set contains $(0,0)$.</p>
+<p><strong>Analogy with Furstenberg.</strong> In Furstenberg's proof, primes $p$ give closed cosets $p\\mathbb{Z}$. Here generators $q\\in G$ give closed cosets $q\\otimes N$. But our topology makes <em>all</em> translates closed, not just generator cosets — this gives (H2) for free.</p>`,
 lean:null},
 
 // ═══════════════════════════════════════════════════════════════
 // §8  CLOPEN COSETS (H2)
 // ═══════════════════════════════════════════════════════════════
 
-{id:"t8.1",ch:"§8 Clopen Cosets",b:"b-thm",
- t:`Thm 8.1 (H2) — For each $q=(k,k)\\in G$, the coset $q\\otimes N$ is clopen in $N$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every irreducible coset is simultaneously open and closed in $N$. This is hypothesis (H2) of the Furstenberg criterion.</p>
-<div class="mdisp">$$q\\otimes N = N\\cap\\bigl(\\{x\\equiv k\\!\\pmod{6k+1}\\}\\times\\mathbb{Z}\\bigr) \\quad\\text{is clopen in }N$$</div>
+{id:"t8.1",ch:"§8 Closed Cosets",b:"b-thm",
+ t:`Thm 8.1 (H2) — For each $q\\in G$, the coset $q\\otimes N$ is closed in $N$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every irreducible coset is closed. In the coarsest coset-closed topology, this is <strong>immediate by definition</strong>.</p>
+<div class="mdisp">$$q\\otimes N \\text{ is closed in }(N,\\tau_N) \\quad\\text{for every }q\\in G$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p>Fix a generator $q=(k,k)\\in G$, so $p:=6k+1$ is prime. We prove:</p>
+<p>$\\tau_N$ is defined as the coarsest topology on $N$ making $a\\otimes N$ closed for every $a\\in N$. In particular, each generator $q\\in G\\subseteq N$ has $q\\otimes N$ closed. $\\square$</p>
+</div>
+<p><strong>Remark.</strong> In the previous (product Furstenberg) approach, proving clopenness required the congruence $k\\circledast r\\equiv k\\pmod{6k+1}$, unique factorization, and subspace topology arguments. With the coarsest coset-closed topology, (H2) is a definitional tautology.</p>
+
+<p><strong>The congruence identity is still interesting</strong> in its own right and gives a concrete characterisation of the coset:</p>
 <div class="mdisp">$$q\\otimes N \\;=\\; N \\;\\cap\\; \\bigl(\\{a\\in\\mathbb{Z}: a\\equiv k\\!\\!\\pmod{p}\\}\\times\\mathbb{Z}\\bigr)$$</div>
 
 <p><strong>Step 1 — Key congruence identity.</strong> For any $r\\in\\mathbb{Z}$:</p>
@@ -643,16 +646,7 @@ lean:null},
 <div class="mdisp">$$(a,a') = (k,k)\\otimes(\\text{remaining generators}) \\;\\in\\; q\\otimes N \\quad\\checkmark$$</div>
 
 <p><strong>Step 4 — Why the second component is unconstrained.</strong></p>
-<p>Elements of $N$ are products of generators $(g_i,g_i)$. Once we know the multiset of generators (determined by the first component via unique factorization), the second component $a'=g_1\\star\\cdots\\star g_m$ is <em>forced</em>. So membership in $N$ + first-component congruence already pins down the second component. Writing $\\times\\,\\mathbb{Z}$ just means we impose no <em>additional</em> topological constraint there — $N$-membership does the work.</p>
-
-<p><strong>Step 5 — Clopenness.</strong></p>
-<p>In the Furstenberg topology on $\\mathbb{Z}$, every arithmetic progression $a+d\\mathbb{Z}$ ($d\\geq 1$) is clopen (its complement is $\\bigcup_{j=1}^{d-1}(a+j)+d\\mathbb{Z}$, a finite union of open sets, hence open). So:</p>
-<ul>
-<li>$\\{x\\equiv k\\pmod{p}\\}=k+p\\mathbb{Z}$ is clopen in $\\mathbb{Z}$.</li>
-<li>$\\mathbb{Z}$ is clopen in $\\mathbb{Z}$.</li>
-<li>$(k+p\\mathbb{Z})\\times\\mathbb{Z}$ is clopen in $\\mathbb{Z}^2$ (product of clopens).</li>
-<li>$N\\cap\\bigl((k+p\\mathbb{Z})\\times\\mathbb{Z}\\bigr) = q\\otimes N$ is clopen in $N$ (subspace of a clopen set). $\\square$</li>
-</ul>
+<p>Elements of $N$ are products of generators $(g_i,g_i)$. Once we know the multiset of generators (determined by the first component via unique factorization), the second component $a'=g_1\\star\\cdots\\star g_m$ is <em>forced</em>. So membership in $N$ + first-component congruence already pins down the coset. $\\square$</p>
 </div>
 
 <div class="cblk"> Generator (k,k)   φ(k)=6k+1   Coset condition on first coord
@@ -668,37 +662,33 @@ lean:null},
 // ═══════════════════════════════════════════════════════════════
 
 {id:"t9.1",ch:"§9 No Singletons",b:"b-thm",
- t:`Thm 9.1 (H3) — $\\{(0,0)\\}$ is not open in $N$ (unconditional)`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">No singleton of $N$ is open. The proof uses only <strong>Euler's theorem</strong> and the existence of the single twin prime pair $(5,7)$ — it does not assume infinitely many twin primes.</p>
-<div class="mdisp">$$\\{(0,0)\\}\\text{ is not open in }N \\subseteq \\mathbb{Z}^2$$</div>
+ t:`Thm 9.1 (H3) — $\\{(0,0)\\}$ is not open in $(N,\\tau_N)$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The identity cannot be isolated by finitely many cosets. In the coarsest coset-closed topology, this is a purely algebraic statement.</p>
+<div class="mdisp">$$\\{(0,0)\\}\\text{ is not open in }(N,\\tau_N)$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p>Suppose $\\{(0,0)\\}$ is open in $N$. Then there exist $d,e\\geq 1$ such that:</p>
-<div class="mdisp">$$N\\cap\\bigl(d\\mathbb{Z}\\times e\\mathbb{Z}\\bigr) = \\{(0,0)\\}$$</div>
-<p>We produce a nonzero element of $N\\cap(d\\mathbb{Z}\\times e\\mathbb{Z})$ using powers of the generator $(1,1)\\in G$ (which exists since $(5,7)$ is a twin prime pair).</p>
+<p><strong>What "open" means in $\\tau_N$.</strong> The sub-basic open sets are $N\\setminus(a\\otimes N)$ for $a\\neq (0,0)$. So $\\{(0,0)\\}$ is open iff:</p>
+<div class="mdisp">$$N\\setminus\\{(0,0)\\} \\;=\\; \\bigcup_{i=1}^{k} a_i\\otimes N \\quad\\text{for some finite } \\{a_1,\\ldots,a_k\\}\\subseteq N\\setminus\\{(0,0)\\}$$</div>
 
-<p><strong>Powers of $(1,1)$.</strong> Write $(1,1)^{\\otimes n}=(s_n,t_n)\\in N$. Under $\\phi$:</p>
-<div class="mdisp">$$\\phi(s_n) = \\phi(1)^n = 7^n \\quad\\implies\\quad s_n = \\frac{7^n - 1}{6}$$</div>
-<p>Under $\\psi$ for the second component: $\\psi(t_n) = (\\psi(1))^{\\bullet n} = (-1)^{n-1}\\cdot 5^n$. For even $n$:</p>
-<div class="mdisp">$$\\psi(t_n) = -5^n \\quad\\implies\\quad t_n = \\frac{-5^n + 1}{6} = \\frac{1-5^n}{6}$$</div>
+<p><strong>Key algebraic lemma.</strong> <em>If such a finite covering exists, then every generator $g\\in G$ must be one of the $a_i$.</em></p>
 
-<p><strong>Finding $n$ with $d\\mid s_n$ and $e\\mid t_n$.</strong></p>
-<p>We need $d\\mid\\frac{7^n-1}{6}$ and $e\\mid\\frac{1-5^n}{6}$, i.e., $7^n\\equiv 1\\pmod{6d}$ and $5^n\\equiv 1\\pmod{6e}$ (for even $n$).</p>
-<p>By <strong>Euler's theorem</strong>: $\\gcd(7,6d)=1$ and $\\gcd(5,6e)=1$, so $7^{\\varphi(6d)}\\equiv 1\\pmod{6d}$ and $5^{\\varphi(6e)}\\equiv 1\\pmod{6e}$.</p>
-<p>Take $n = 2\\cdot\\mathrm{lcm}(\\varphi(6d),\\varphi(6e))$, which is even. Then:</p>
-<div class="mdisp">$$7^n\\equiv 1\\pmod{6d}\\quad\\text{and}\\quad 5^n\\equiv 1\\pmod{6e}$$</div>
-<p>So $(s_n,t_n)\\in N\\cap(d\\mathbb{Z}\\times e\\mathbb{Z})$ with $s_n = \\frac{7^n-1}{6}\\neq 0$ (since $7^n > 1$ for $n\\geq 1$). This contradicts $N\\cap(d\\mathbb{Z}\\times e\\mathbb{Z})=\\{(0,0)\\}$. $\\square$</p>
+<p><strong>Proof of lemma.</strong> Take any generator $g=(m,m)\\in G$. Since $g\\neq(0,0)$, we have $g\\in a_j\\otimes N$ for some $j$. So $g = a_j\\otimes r$ for some $r\\in N$. Apply $\\phi$ to the first component:</p>
+<div class="mdisp">$$\\phi(m) \\;=\\; \\phi(a_{j,1})\\cdot\\phi(r_1)$$</div>
+<p>Now $\\phi(m) = 6m+1$ is $\\pm$prime (since $m$ is a twin-prime generator). We analyse both factors:</p>
+<ul>
+<li>$a_j\\neq(0,0)$ and no-zero-component (<a class="iref" onclick="jumpId('l5.1')">Lem 5.1</a>) give $a_{j,1}\\neq 0$, so $|\\phi(a_{j,1})| = |6a_{j,1}+1| \\geq 5$.</li>
+<li>If $r\\neq(0,0)$: by no-zero-component $r_1\\neq 0$, so $|\\phi(r_1)|\\geq 5$. Then $|\\phi(m)| = |\\phi(a_{j,1})|\\cdot|\\phi(r_1)| \\geq 25$. But $|\\phi(m)|$ is prime, and the only way to factor a prime as a product of two integers $\\geq 5$ is impossible. Contradiction.</li>
+<li>If $r=(0,0)$: then $\\phi(r_1) = \\phi(0) = 1$, so $g = a_j\\otimes(0,0) = a_j$. $\\checkmark$</li>
+</ul>
+<p>So $r=(0,0)$ is forced, and $g = a_j$. Since $g\\in G$ was arbitrary: $G\\subseteq\\{a_1,\\ldots,a_k\\}$, hence $|G|\\leq k$.</p>
 
-<p><strong>Worked example ($d=e=1$):</strong></p>
-<div class="cblk"> n=2: (1,1)⊗(1,1) = (1⊛1, 1⋆1) = (8, -4)
-   s₂ = (49-1)/6 = 8,  t₂ = (1-25)/6 = -4
-   8 ∈ 1·ℤ ✓,  -4 ∈ 1·ℤ ✓  → (8,-4) ∈ N ∩ (ℤ×ℤ), nonzero ✓
+<p>In other words: <strong>if $\\{(0,0)\\}$ is open, then $G$ is finite.</strong> Equivalently:</p>
+<div class="mdisp">$$|G|=\\infty \\;\\implies\\; \\{(0,0)\\}\\text{ is not open}$$</div>
 
- n=4: s₄ = (7⁴-1)/6 = 2400/6 = 400
-       t₄ = (1-5⁴)/6 = -624/6 = -104
-       (400,-104) ∈ N, nonzero ✓</div>
+<p><strong>Status.</strong> This shows that (H3) is <em>equivalent</em> to $|G|=\\infty$ (the Twin Prime Conjecture). The Furstenberg framework gives a clean algebraic reformulation: <em>the identity of $N$ cannot be isolated by finitely many cosets</em>. $\\square$</p>
 </div>
-<p><strong>Key:</strong> This argument is <em>unconditional</em> — it uses only Euler's theorem and the single twin prime pair $(5,7)$.</p>`,
+
+<p><strong>Equivalence.</strong> (H3) $\\Longleftrightarrow$ $|G|=\\infty$ $\\Longleftrightarrow$ infinitely many twin primes. The topological framework reduces TPC to a single algebraic property of the generated diagonal submonoid.</p>`,
 lean:null},
 
 // ═══════════════════════════════════════════════════════════════
@@ -706,36 +696,40 @@ lean:null},
 // ═══════════════════════════════════════════════════════════════
 
 {id:"t10.1",ch:"§10 Main",b:"b-thm",
- t:`Thm 10.1 — $|\\mathrm{Irr}(N)|=\\infty$: Infinitely Many Twin Prime Pairs`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The Furstenberg punchline. Combining (H1), (H2), (H3) yields infinitely many irreducibles in $N$, hence infinitely many twin prime pairs.</p>
+ t:`Thm 10.1 — TPC $\\Longleftrightarrow$ the identity of $N$ cannot be isolated by finitely many cosets`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The Furstenberg-style punchline. The Twin Prime Conjecture is equivalent to a single algebraic property of the generated diagonal submonoid.</p>
 <div class="mdisp" style="background:linear-gradient(135deg,#fef3c7,#fde68a);border-left-color:#f59e0b;padding:1rem 1.2rem">
-$$\\boxed{\\;|\\mathrm{Irr}(N)| = |G| = \\infty\\;}$$
+$$\\boxed{\\;|G|=\\infty \\;\\Longleftrightarrow\\; \\{(0,0)\\}\\text{ is not open in }(N,\\tau_N)\\;}$$
 </div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p>Suppose for contradiction that $\\mathrm{Irr}(N)=G$ is finite: $G=\\{q_1,\\ldots,q_n\\}$.</p>
+<p><strong>($\\Rightarrow$)</strong> If $|G|=\\infty$, then $\\{(0,0)\\}$ is not open, by <a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>. (Any finite covering of $N\\setminus\\{(0,0)\\}$ by cosets forces $G$ to be finite.)</p>
+
+<p><strong>($\\Leftarrow$)</strong> Suppose $G$ is finite: $G=\\{q_1,\\ldots,q_n\\}$.</p>
 <p><strong>(H1)</strong> (<a class="iref" onclick="jumpId('t6.1')">Thm 6.1</a>): $N\\setminus\\{(0,0)\\}=q_1\\otimes N\\cup\\cdots\\cup q_n\\otimes N$.</p>
-<p><strong>(H2)</strong> (<a class="iref" onclick="jumpId('t8.1')">Thm 8.1</a>): Each $q_i\\otimes N$ is closed in $N$.</p>
-<p>A finite union of closed sets is closed. Therefore $N\\setminus\\{(0,0)\\}$ is closed, making $\\{(0,0)\\}$ open.</p>
-<p><strong>(H3)</strong> (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>): $\\{(0,0)\\}$ is not open in $N$.</p>
-<p>Contradiction. $\\blacksquare$</p>
+<p><strong>(H2)</strong> (<a class="iref" onclick="jumpId('t8.1')">Thm 8.1</a>): Each $q_i\\otimes N$ is closed in $(N,\\tau_N)$.</p>
+<p>A finite union of closed sets is closed. Therefore $N\\setminus\\{(0,0)\\}$ is closed, making $\\{(0,0)\\}$ open. $\\blacksquare$</p>
 </div>
 
 <p>Since $\\mathrm{Irr}(N)=G=\\{(k,k):(6k-1,6k+1)\\in\\pm\\mathbb{P}^2\\}$:</p>
 <div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-left-color:#10b981;padding:1rem 1.2rem">
-<strong>Corollary (Twin Prime Conjecture).</strong>
-$$|G|=\\infty \\implies |\\{(p,p+2) : p,p+2\\in\\mathbb{P}\\}| = \\infty$$
+<strong>Equivalence (Twin Prime Conjecture).</strong>
+$$|\\{(p,p+2) : p,p+2\\in\\mathbb{P}\\}| = \\infty \\;\\Longleftrightarrow\\; N\\setminus\\{(0,0)\\}\\neq\\bigcup_{i=1}^{k}a_i\\otimes N\\text{ for any finite }\\{a_i\\}$$
 </div>
 
-<div class="cblk"> Finite G
-   → N\\{0} = finite union of closed sets
-   → N\\{0} is closed
-   → {(0,0)} is open
-   → But (0,0) has nonzero elements in every neighbourhood
-     (powers of (1,1) via Euler's theorem)
-   → Contradiction!
-   → |G| = ∞
-   → infinitely many twin primes  □</div>
+<div class="cblk"> TPC ⟺ H3: {(0,0)} not open in (N, τ_N)
+
+ (⇐)  Finite G = {q₁,…,qₙ}
+   → N\\{0} = q₁⊗N ∪ ··· ∪ qₙ⊗N    (H1, by generation)
+   → N\\{0} = finite union of closed   (H2, by topology def)
+   → N\\{0} is closed → {(0,0)} open
+   → ¬H3: contradiction
+
+ (⇒)  Any finite cover N\\{0} = ⋃ aᵢ⊗N
+   → each generator g ∈ G must equal some aᵢ
+      (because φ(g) is prime and can't factor as
+       φ(aᵢ)·φ(r) with both |factors| ≥ 5)
+   → |G| ≤ k: contradiction with |G| = ∞</div>
 
 <div class="d-flex flex-wrap gap-1 mt-2">
 <a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank" class="tpill">Twin Prime Conjecture</a>
@@ -751,32 +745,28 @@ lean:`${GH}/TPC/Main.lean#L60`},
 // ═══════════════════════════════════════════════════════════════
 
 {id:"gen",ch:"§11 General",b:"b-thm",
- t:`General Furstenberg Theorem — Topological Monoids with Irreducible Covering have $|\\mathrm{Irr}|=\\infty$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The argument is an instance of a general theorem about topological monoids.</p>
+ t:`General Furstenberg Criterion — Coset-Closed Topologies on Generated Monoids`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The argument is an instance of a general criterion for generated monoids.</p>
 
-<p><strong>Theorem (General Furstenberg Criterion).</strong> Let $(N,\\cdot)$ be a commutative monoid equipped with a topology satisfying:</p>
+<p><strong>Theorem (General Furstenberg Criterion).</strong> Let $(N,\\cdot,1_N)$ be a commutative monoid with $N=\\langle \\mathrm{Irr}\\rangle$ (generated by its irreducibles). Equip $N$ with the coarsest topology making every translate $a\\cdot N$ closed. Then:</p>
 
 <div class="mdisp">
-$$\\textbf{(H1)}\\quad N\\setminus\\{1_N\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)} q\\cdot N$$
+$$|\\mathrm{Irr}|=\\infty \\;\\Longleftrightarrow\\; \\{1_N\\}\\text{ is not open}$$
 </div>
-<div class="mdisp">
-$$\\textbf{(H2)}\\quad\\text{For every }q\\in\\mathrm{Irr}(N),\\; q\\cdot N\\text{ is closed in }N$$
-</div>
-<div class="mdisp">
-$$\\textbf{(H3)}\\quad\\text{No singleton of }N\\text{ is open}$$
-</div>
-
-<p>Then $|\\mathrm{Irr}(N)|=\\infty$.</p>
 
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p>If $\\mathrm{Irr}(N)=\\{q_1,\\ldots,q_n\\}$ were finite, then $N\\setminus\\{1_N\\}=\\bigcup q_i\\cdot N$ is a finite union of closed sets, hence closed. So $\\{1_N\\}$ is open, contradicting (H3). $\\blacksquare$</p>
+<p><strong>($\\Leftarrow$)</strong> If $\\mathrm{Irr}=\\{q_1,\\ldots,q_n\\}$ were finite, then $N\\setminus\\{1_N\\}=\\bigcup q_i\\cdot N$ (by generation) is a finite union of closed sets, hence closed. So $\\{1_N\\}$ is open. Contrapositive: $\\{1_N\\}$ not open $\\Rightarrow$ $|\\mathrm{Irr}|=\\infty$.</p>
+<p><strong>($\\Rightarrow$)</strong> If $|\\mathrm{Irr}|=\\infty$: suppose $\\{1_N\\}$ is open, i.e., $N\\setminus\\{1_N\\}=\\bigcup_{i=1}^{k}a_i\\cdot N$ for finitely many $a_i$. Each irreducible $q$ must equal some $a_i$ (since $q\\in a_j\\cdot N$ forces $q = a_j\\cdot r$, and irreducibility of $q$ forces $r=1_N$, so $q=a_j$). Hence $|\\mathrm{Irr}|\\leq k$, contradicting $|\\mathrm{Irr}|=\\infty$. $\\blacksquare$</p>
 </div>
 
-<p><strong>Application to twin primes.</strong> We verify (H1)–(H3) for the generated diagonal submonoid $N=\\langle G\\rangle^{\\otimes}\\subseteq(\\mathbb{Z}^2,\\otimes)$:</p>
-<p><strong>(H1)</strong>: immediate from generation (<a class="iref" onclick="jumpId('t6.1')">Thm 6.1</a>).</p>
-<p><strong>(H2)</strong>: $q\\otimes N$ is clopen via unique factorization and distinct prime $\\phi$-values (<a class="iref" onclick="jumpId('t8.1')">Thm 8.1</a>).</p>
-<p><strong>(H3)</strong>: powers of $(1,1)$ via Euler's theorem, unconditional (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>).</p>
+<p><strong>Furstenberg's original proof (1955).</strong> Take $N=(\\mathbb{Z},\\cdot)$ with $\\mathrm{Irr}=\\{\\text{primes}\\}$. In the coarsest topology making $p\\mathbb{Z}$ closed, $\\{1\\}$ is not open because any finite covering $\\mathbb{Z}\\setminus\\{\\pm 1\\}=\\bigcup p_i\\mathbb{Z}$ would force every prime to be some $p_i$ — giving finitely many primes. (In Furstenberg's formulation, "not open" is proved via the stronger Furstenberg/AP topology where every open set is infinite.)</p>
+
+<p><strong>Our extension.</strong> Take $N=\\langle G\\rangle^{\\otimes}$ with $\\mathrm{Irr}=G$:</p>
+<p><strong>(H1)</strong>: $N\\setminus\\{(0,0)\\}=\\bigcup_{g\\in G}g\\otimes N$, immediate from generation (<a class="iref" onclick="jumpId('t6.1')">Thm 6.1</a>).</p>
+<p><strong>(H2)</strong>: $g\\otimes N$ closed by definition of $\\tau_N$ (<a class="iref" onclick="jumpId('t8.1')">Thm 8.1</a>).</p>
+<p><strong>(H3)</strong>: $\\{(0,0)\\}$ not open $\\Longleftrightarrow$ $|G|=\\infty$ $\\Longleftrightarrow$ TPC (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>).</p>
+<p>The framework reduces TPC to the algebraic statement: <em>the identity of $N$ cannot be isolated by finitely many translate-cosets</em>.</p>
 
 <div class="d-flex flex-wrap gap-1 mt-2">
 <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof (Wikipedia)</a>
@@ -817,9 +807,9 @@ lean:null},
 <ul style="font-size:.9rem;line-height:1.8;color:var(--g600)">
 <li>H. Furstenberg, <em>On the infinitude of primes</em>, Amer. Math. Monthly <strong>62</strong> (1955), 353.</li>
 <li>The twin prime conjecture: $(p,\\,p+2)$ are both prime for infinitely many $p$.</li>
-<li>Euler's theorem: $\\gcd(a,n)=1\\implies a^{\\varphi(n)}\\equiv 1\\pmod n$.</li>
+<li>Coarsest-topology approach: equip $N$ with the coarsest topology making translates $a\\otimes N$ closed.</li>
 </ul>
-<p style="margin-top:1rem;font-size:.82rem;color:var(--g400)">This deck presents the construction and proof for peer review. The argument hinges on: (1) the irreducibility characterisation $\\mathrm{Irr}(N)=G$, (2) clopenness of cosets via unique factorisation in $N$, and (3) the unconditional density argument using Euler's theorem. Errors and feedback welcome.</p>
+<p style="margin-top:1rem;font-size:.82rem;color:var(--g400)">This deck presents the construction for peer review. The Furstenberg framework (coarsest coset-closed topology) provides a clean equivalence: TPC $\\Longleftrightarrow$ the identity of $N$ cannot be isolated by finitely many cosets. The key ingredients are: (1) the irreducibility characterisation $\\mathrm{Irr}(N)=G$, (2) the no-zero-component lemma, and (3) injectivity of $\\phi$. Errors and feedback welcome.</p>
 
 <div class="d-flex flex-wrap gap-1 mt-2">
 <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="tpill"><i class="bi bi-github"></i> Lean4TPC</a>
@@ -935,7 +925,7 @@ function initGraph(){
     {id:"l5.1", l:"Lem 5.1\nNo 0-comp", t:"lem"},
     {id:"p5.2", l:"Prop 5.2\nFree monoid", t:"prop"},
     {id:"t6.1", l:"Thm 6.1\n(H1) Covering", t:"thm"},
-    {id:"d7.1", l:"Def 7.1\nProd Furst.", t:"def"},
+    {id:"d7.1", l:"Def 7.1\nCoset-closed τ", t:"def"},
     {id:"t8.1", l:"Thm 8.1\n(H2) Clopen", t:"thm"},
     {id:"t9.1", l:"Thm 9.1\n(H3) No sgltn", t:"thm"},
     {id:"t10.1",l:"Thm 10.1\n∞ Twin Primes", t:"thm"},
