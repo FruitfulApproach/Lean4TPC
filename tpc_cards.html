@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Furstenberg Topology on Monoids gives Twin Prime Infinitude — Proof Cards</title>
+<title>Furstenberg Topologies on Monoids & Twin Primes — Proof Cards</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" rel="stylesheet"/>
@@ -223,7 +223,7 @@ body{font-family:var(--sans);background:var(--g50);color:var(--g900);min-height:
 <body>
 
 <header class="hdr">
-  <h1><span>TPC</span> · Furstenberg Topology on Monoids gives Twin Prime Infinitude</h1>
+  <h1><span>TPC</span> · Furstenberg Topologies on Monoids &amp; Twin Primes</h1>
   <div class="hdr-links">
     <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="srclink"><i class="bi bi-github"></i> Lean4TPC</a>
     <a href="PAPER.md" target="_blank" class="srclink"><i class="bi bi-file-text"></i> PAPER.md</a>
@@ -273,20 +273,18 @@ body{font-family:var(--sans);background:var(--g50);color:var(--g900);min-height:
 const GH="https://github.com/FruitfulApproach/Lean4TPC/blob/main";
 const cards=[
 {id:"abs",ch:"Abstract",b:"b-abs",
- t:`Twin Primes $\\iff$ $|\\mathrm{Irr}(\\Delta(\\mathbb{Z}))| = \\infty$`,
- body:`<p>The <strong>Twin Prime Conjecture</strong> — that there are infinitely many primes $p$ such that $p+2$ is also prime — is one of the oldest and most celebrated open problems in number theory. Pairs like $(5,7)$, $(11,13)$, $(29,31)$, and $(41,43)$ have been observed since antiquity, and extensive computation shows they persist far into the billions, but a proof of their infinitude has eluded mathematicians for over two thousand years.</p>
+ t:`Primes $\\equiv\\pm1\\pmod6$ via $|\\mathrm{Irr}(\\Delta(\\mathbb{Z}))| = \\infty$`,
+ body:`<p>This paper offers a <strong>novel algebraic construction</strong> and an <strong>unconditional topological proof</strong> that there are infinitely many primes $p\\equiv\\pm1\\pmod6$. The core insight is that the classical Furstenberg argument — which proves the infinitude of primes by topologising $\\mathbb{Z}$ and observing that $\\mathbb{Z}\\setminus\\{\\pm1\\}=\\bigcup_{p\\,\\text{prime}} p\\mathbb{Z}$ cannot be a <em>finite</em> union of closed sets — can be <strong>generalised to monoids</strong>. In Furstenberg's original proof, $\\mathbb{Z}$ is viewed only as a multiplicative monoid, and the cosets $p\\mathbb{Z}$ are cosets of a submonoid. The topology is defined by arithmetic progressions, and the key properties are: (1) every element has an irreducible divisor, (2) irreducible cosets are closed, and (3) no singleton is open. These properties are purely monoid-theoretic — they do not depend on the additive structure of $\\mathbb{Z}$.</p>
 
-<p>This paper offers a <strong>novel algebraic reformulation</strong> and an <strong>unconditional topological proof</strong>. The core insight is that the classical Furstenberg argument — which proves the infinitude of primes by topologising $\\mathbb{Z}$ and observing that $\\mathbb{Z}\\setminus\\{\\pm1\\}=\\bigcup_{p\\,\\text{prime}} p\\mathbb{Z}$ cannot be a <em>finite</em> union of closed sets — can be <strong>generalised to monoids</strong>. In Furstenberg's original proof, $\\mathbb{Z}$ is viewed only as a multiplicative monoid, and the cosets $p\\mathbb{Z}$ are cosets of a submonoid. The topology is defined by arithmetic progressions, and the key properties are: (1) every element has an irreducible divisor, (2) irreducible cosets are closed, and (3) no singleton is open. These properties are purely monoid-theoretic — they do not depend on the additive structure of $\\mathbb{Z}$.</p>
-
-<p>We construct a new monoid that plays the role $\\mathbb{Z}$ played for ordinary primes, but whose irreducibles encode <em>twin</em> primes instead:</p>
+<p>We construct a new monoid that plays the role $\\mathbb{Z}$ played for ordinary primes, but whose irreducibles encode primes $\\equiv\\pm1\\pmod6$:</p>
 
 <p><strong>The operations.</strong> On $\\mathbb{Z}$, define two binary operations:</p>
 <div class="mdisp">$$x\\mathbin{\\circledast}y = 6xy+x+y \\qquad\\text{and}\\qquad x\\star y = -6xy+x+y$$</div>
-<p>Both make $(\\mathbb{Z},\\mathbin{\\circledast})$ and $(\\mathbb{Z},\\star)$ into commutative monoids with identity $0$. The maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ are isomorphisms onto the multiplicative monoids $(6\\mathbb{Z}+1,\\,\\cdot\\,)$ and $(6\\mathbb{Z}-1,\\,\\cdot\\,)$ respectively (<a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>).</p>
+<p>Both make $(\\mathbb{Z},\\mathbin{\\circledast})$ and $(\\mathbb{Z},\\star)$ into commutative monoids with identity $0$. The maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ are isomorphisms onto the multiplicative monoids $(6\\mathbb{Z}+1,\\,\\cdot\\,)$ and $(6\\mathbb{Z}-1,\\,\\bullet\\,)$ respectively (<a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>), where $a\\,\\bullet\\,b:=-ab$ is negated multiplication.</p>
 
 <p><strong>The product monoid.</strong> Form $M=(\\mathbb{Z}^2,\\,\\otimes)$ where $(x,y)\\otimes(x',y')=(x\\mathbin{\\circledast}x',\\;y\\star y')$. Inside $M$, the <strong>anti-diagonal</strong> $N=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}$ is a submonoid (<a class="iref" onclick="jumpId('d2.10')">Def 2.10</a>, <a class="iref" onclick="jumpId('d3.1')">Def 3.1</a>).</p>
 
-<p><strong>Twin primes $\\boldsymbol{=}$ irreducibles.</strong> An element $(x,-x)\\in N$ is irreducible if and only if both $6x+1$ and $6x-1$ are prime — i.e., $(6x-1,\\,6x+1)$ is a twin prime pair (<a class="iref" onclick="jumpId('t5.4')">Thm 5.4</a>). For example, $x=1$ gives $(5,7)$; $x=2$ gives $(11,13)$; $x=5$ gives $(29,31)$.</p>
+<p><strong>Irreducibles $\\boldsymbol{=}$ primes $\\boldsymbol{\\equiv\\pm1\\pmod6}$.</strong> The identity $(-a)\\star(-b)=-(a\\circledast b)$ collapses the product structure on $N$ so that irreducibility depends <em>only</em> on $\\circledast$, not on $\\star$ (<a class="iref" onclick="jumpId('p5.1')">Prop 5.1</a>). An element $(x,-x)\\in N$ is irreducible if and only if $6x+1\\in\\pm\\mathbb{P}$ (<a class="iref" onclick="jumpId('t5.4')">Thm 5.4</a>). For example, $x=1$ gives $\\phi(1)=7$; $x=2$ gives $\\phi(2)=13$; $x=6$ gives $\\phi(6)=37$ (prime, hence irreducible — even though $\\psi(6)=35$ is composite).</p>
 
 <p><strong>Weak saturation.</strong> We introduce the notion of a <em>weakly saturated</em> submonoid (<a class="iref" onclick="jumpId('d1.1')">Def 1.1</a>): if a nontrivial product in $M$ lands in $N$, it can be re-factored nontrivially <em>within</em> $N$. This is strictly weaker than classical saturation, yet sufficient to guarantee that irreducibility in $N$ and irreducibility in $M$ coincide (<a class="iref" onclick="jumpId('c1.5')">Cor 1.5</a>). We prove $N$ is weakly saturated in $M$ (<a class="iref" onclick="jumpId('t4.1')">Thm 4.1</a>).</p>
 
@@ -296,9 +294,11 @@ const cards=[
 
 <p><strong>The punchline.</strong> Suppose for contradiction that $\\mathrm{Irr}(N)$ is finite. Then:</p>
 <div class="mdisp">$$N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)} q\\otimes N = \\text{finite union of closed sets} = \\text{closed}$$</div>
-<p>This would make $\\{(0,0)\\}$ open — but no singleton is open. Contradiction. Therefore $|\\mathrm{Irr}(N)|=\\infty$, and there are <strong>infinitely many twin prime pairs</strong> (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>, <a class="iref" onclick="jumpId('c9.3')">Cor 9.3</a>).</p>
+<p>This would make $\\{(0,0)\\}$ open — but no singleton is open. Contradiction. Therefore $|\\mathrm{Irr}(N)|=\\infty$, and there are <strong>infinitely many primes $p\\equiv\\pm1\\pmod6$</strong> (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>, <a class="iref" onclick="jumpId('c9.3')">Cor 9.3</a>).</p>
 
-<p>The proof uses no sieve theory, no analytic number theory, and no bounds on prime gaps. It is purely algebraic and topological — a direct generalisation of Furstenberg's 1955 proof to a carefully constructed monoid whose irreducibles happen to be twin primes. Every step is being formalised in <a href="https://leanprover-community.github.io/" target="_blank">Lean 4</a> + Mathlib.</p>
+<p>The proof uses no sieve theory, no analytic number theory, and no bounds on prime gaps. It is purely algebraic and topological — a direct generalisation of Furstenberg's 1955 proof to a carefully constructed monoid whose irreducibles correspond to primes in the residue classes $\\pm1\\pmod6$. Every step is being formalised in <a href="https://leanprover-community.github.io/" target="_blank">Lean 4</a> + Mathlib.</p>
+
+<p><strong>Status of the twin-prime connection:</strong> The original formulation aimed to show irreducibles of $N$ correspond to twin prime pairs $(6x-1,6x+1)$. This would have required <em>both</em> $\\circledast$- and $\\star$-irreducibility. However, the identity $(-a)\\star(-b)=-(a\\circledast b)$ collapses the product on $N$ so that only $\\circledast$ matters (<a class="iref" onclick="jumpId('p5.1')">Prop 5.1</a>). The corrected result establishes infinitely many primes $\\equiv\\pm1\\pmod6$ — already known from <a href="https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions" target="_blank">Dirichlet's theorem</a>, but derived here by a purely topological-algebraic method. <strong>Open question:</strong> Can the monoid construction be modified so that irreducibles genuinely encode twin primes?</p>
 
 <div class="mdisp" style="background:linear-gradient(135deg,#ede9fe,#dbeafe);border-left-color:#7c3aed">
 <strong>Standing notation used throughout this deck:</strong>
@@ -306,12 +306,13 @@ $$\\mathbin{\\circledast}:\\; x\\mathbin{\\circledast}y = 6xy+x+y, \\qquad \\sta
 $$\\phi(x)=6x+1, \\qquad \\psi(x)=6x-1$$
 $$M = (\\mathbb{Z}^2,\\,\\otimes), \\quad (x,y)\\otimes(x',y')=(x\\mathbin{\\circledast}x',\\; y\\star y')$$
 $$N = \\Delta(\\mathbb{Z}) = \\{(x,-x) : x\\in\\mathbb{Z}\\} \\;\\leqslant\\; M$$
-$$\\mathrm{Irr}(N) = \\{(x,-x)\\in N : 6x+1\\text{ and }6x-1\\text{ are both prime}\\} \\;\\longleftrightarrow\\; \\text{twin prime pairs}$$
+$$\\mathrm{Irr}(N) = \\{(x,-x)\\in N : 6x+1\\in\\pm\\mathbb{P}\\} \\;\\longleftrightarrow\\; \\text{primes }\\equiv\\pm1\\!\\!\\pmod6$$
 </div>
 
 <div class="d-flex flex-wrap gap-1 mt-2">
 <a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tpill">Twin Primes (Wikipedia)</a>
 <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof</a>
+<a href="https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions" target="_blank" class="tpill">Dirichlet's Theorem</a>
 <a href="https://leanprover-community.github.io/" target="_blank" class="tpill">Lean 4</a>
 <a href="https://en.wikipedia.org/wiki/Monoid" target="_blank" class="tpill">Monoid theory</a>
 </div>`,lean:null},
@@ -587,14 +588,14 @@ lean:`${GH}/TPC/Irreducible.lean#L10`},
 <div class="prfbody" style="display:none">
 <p><strong>Setup:</strong> Recall from <a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a> that $\\psi:(\\mathbb{Z},\\star)\\to(6\\mathbb{Z}-1,\\,\\bullet\\,)$ is a monoid isomorphism with $\\psi(x)=6x-1$ and $\\psi(a\\star b)=-\\psi(a)\\psi(b)=\\psi(a)\\,\\bullet\\,\\psi(b)$. The identity of $\\star$ is $0$, and $\\psi(0)=-1$ (the identity of $\\bullet$).</p>
 
-<p><strong>($\\Rightarrow$) Decomposable $\\implies$ composite:</strong></p>
+<p><strong>($\\Rightarrow$) $\\star$-decomposable in $\\mathbb{Z}\\setminus\\{0\\}$ implies $6x-1$ composite:</strong></p>
 
 <p>Suppose $x = a\\star b$ with $a,b\\neq0$. Then:</p>
 <p>$$\\psi(x) = \\psi(a)\\,\\bullet\\,\\psi(b) = -(6a-1)(6b-1)$$</p>
 <p>Rewrite as a product in $\\mathbb{Z}$: $\\psi(x) = (6a-1)\\cdot(-(6b-1)) = (6a-1)(6(-b)+1)$.</p>
 <p>Since $a\\neq0$: $\\psi(a)=6a-1\\neq-1$, and $6a-1=1\\implies a=\\tfrac{1}{3}\\notin\\mathbb{Z}$, so $|6a-1|\\geq5$. Since $b\\neq0$: $|6(-b)+1|=|-6b+1|\\geq5$. Therefore $|\\psi(x)|\\geq25$, so $6x-1$ is composite. $\\checkmark$</p>
 
-<p><strong>($\\Leftarrow$) Composite $\\implies$ decomposable:</strong></p>
+<p><strong>($\\Leftarrow$) $6x-1$ composite implies $\\star$-decomposable in $\\mathbb{Z}\\setminus\\{0\\}$:</strong></p>
 
 <p>Suppose $n=6x-1$ is composite. We must find $a,b\\neq0$ with $a\\star b=x$.</p>
 
@@ -633,24 +634,29 @@ lean:`${GH}/TPC/Irreducible.lean#L10`},
 lean:`${GH}/TPC/Irreducible.lean#L10`},
 
 {id:"p5.1",ch:"§5 Irred",b:"b-prop",
- t:`Prop 5.1 — $(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; x\\in\\mathrm{Irr}(\\circledast)\\;\\wedge\\; x\\in\\mathrm{Irr}(\\star)$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Irreducibility in the anti-diagonal $N$ decomposes into two independent conditions: $n$ must be irreducible under both monoid operations $\\circledast$ and $\\star$. Write $\\widehat{n}:=(n,-n)$.</p>
-<div class="mdisp">$$\\widehat{n}\\in\\mathrm{Irr}(N) \\;\\iff\\; n\\in\\mathrm{Irr}(N_{\\circledast}) \\;\\wedge\\; n\\in\\mathrm{Irr}(N_{\\star})$$</div>
-<p>where $N_{\\circledast}=(\\mathbb{Z},\\circledast)$ and $N_{\\star}=(\\mathbb{Z},\\star)$.</p>
+ t:`Prop 5.1 — $\\widehat{n}\\in\\mathrm{Irr}(N) \\;\\iff\\; n\\in\\mathrm{Irr}(N_{\\circledast})$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Irreducibility in the anti-diagonal $N$ is determined entirely by $\\circledast$-irreducibility. The $\\star$ operation plays no independent role, because the involution identity $(-a)\\star(-b)=-(a\\mathbin{\\circledast}b)$ forces the second component of any factorization in $N$ to be determined by the first. Write $\\widehat{n}:=(n,-n)$.</p>
+<div class="mdisp">$$\\widehat{n}\\in\\mathrm{Irr}(N) \\;\\iff\\; n\\in\\mathrm{Irr}(N_{\\circledast})$$</div>
+<p>where $N_{\\circledast}=(\\mathbb{Z},\\circledast)$.</p>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>($\\Rightarrow$) $\\widehat{n}$ irreducible in $N$ $\\implies$ $n$ irreducible in both $N_{\\circledast}$ and $N_{\\star}$:</strong></p>
-<p>Suppose $\\widehat{n}\\in\\mathrm{Irr}(N)$ with $\\widehat{n}\\neq 1_N=(0,0)$. Assume for contradiction that $n = u\\mathbin{\\circledast}v$ for some nonzero $u,v$. By the isomorphism $\\eta:N_{\\circledast}\\to N_{\\star}$ given by $\\eta(x)=-x$ (<a class="iref" onclick="jumpId('eta')">Involution</a>), we have $-u,-v\\neq0$ and:</p>
-<p>$$-n = -(u\\mathbin{\\circledast}v) = (-u)\\star(-v)$$</p>
-<p>Therefore:</p>
-<p>$$\\widehat{n} = (n,\\,-n) = (u\\mathbin{\\circledast}v,\\;(-u)\\star(-v)) = (u,-u)\\otimes(v,-v) = \\widehat{u}\\otimes\\widehat{v}$$</p>
-<p>with $u,v\\neq0$, hence $\\widehat{u},\\widehat{v}\\neq\\widehat{0}=1_N$. This is a nontrivial factorization in $N$, contradicting $\\widehat{n}\\in\\mathrm{Irr}(N)$. So $n\\in\\mathrm{Irr}(N_{\\circledast})$. $\\checkmark$</p>
-<p>An identical argument (applying $\\eta^{-1}$ to a $\\star$-factorization) shows $n\\in\\mathrm{Irr}(N_{\\star})$. $\\checkmark$</p>
+<p><strong>Key identity:</strong> By the <a class="iref" onclick="jumpId('eta')">Involution</a> $\\eta(x)=-x:N_{\\circledast}\\to N_{\\star}$, for any $a,b\\in\\mathbb{Z}$:</p>
+<p>$$(-a)\\star(-b) = \\eta(a\\mathbin{\\circledast}b) = -(a\\mathbin{\\circledast}b)$$</p>
+<p>Therefore every product in $N$ takes the form:</p>
+<p>$$(a,-a)\\otimes(b,-b) = (a\\mathbin{\\circledast}b,\\;(-a)\\star(-b)) = (a\\mathbin{\\circledast}b,\\;-(a\\mathbin{\\circledast}b)) = \\widehat{a\\mathbin{\\circledast}b}$$</p>
+<p>The second component is <em>completely determined</em> by the first. In particular:</p>
+<p>$$\\widehat{n} = \\widehat{u}\\otimes\\widehat{v} \\;\\iff\\; n = u\\mathbin{\\circledast}v$$</p>
 
-<p><strong>($\\Leftarrow$) $n$ irreducible in both $N_{\\circledast}$ and $N_{\\star}$ $\\implies$ $\\widehat{n}$ irreducible in $N$:</strong></p>
-<p>Suppose $n\\in\\mathrm{Irr}(N_{\\circledast})\\cap\\mathrm{Irr}(N_{\\star})$. Choose either condition, say $n\\in\\mathrm{Irr}(N_{\\circledast})$. If $\\widehat{n}=(x,-x)\\otimes(y,-y)$ nontrivially, then $x,y\\neq0$ and the first component gives $n=x\\mathbin{\\circledast}y$ — a nontrivial $\\circledast$-factorization, contradicting $n\\in\\mathrm{Irr}(N_{\\circledast})$. $\\square$</p>
+<p><strong>($\\Rightarrow$) $\\widehat{n}$ irreducible $\\implies$ $n\\in\\mathrm{Irr}(N_{\\circledast})$:</strong></p>
+<p>If $n = u\\mathbin{\\circledast}v$ with $u,v\\neq0$, then $\\widehat{n} = \\widehat{u}\\otimes\\widehat{v}$ with $\\widehat{u},\\widehat{v}\\neq1_N$, contradicting irreducibility. $\\checkmark$</p>
+
+<p><strong>($\\Leftarrow$) $n\\in\\mathrm{Irr}(N_{\\circledast})$ $\\implies$ $\\widehat{n}$ irreducible:</strong></p>
+<p>If $\\widehat{n}=(x,-x)\\otimes(y,-y)$ nontrivially, then $x,y\\neq0$ and $n=x\\mathbin{\\circledast}y$, contradicting $n\\in\\mathrm{Irr}(N_{\\circledast})$. $\\square$</p>
+
+<p><strong>Why $N_{\\star}$-irreducibility is NOT required:</strong> A $\\star$-factorization $n=u\\star v$ does <em>not</em> yield a factorization of $\\widehat{n}=(n,-n)$ in $N$. It would give $(-u,u)\\otimes(-v,v) = ((-u)\\mathbin{\\circledast}(-v),\\;u\\star v) = (-(u\\star v),\\;u\\star v) = (-n,\\,n)$, which is a factorization of $(-n,n)\\neq\\widehat{n}$. Moreover, $\\eta_N:\\widehat{k}\\mapsto(-k,k)$ is <em>not</em> a monoid automorphism of $(N,\\otimes)$, so irreducibility of $\\widehat{n}$ does not transfer to $(-n,n)$.</p>
+<p><strong>Counterexample:</strong> $n=6$: $\\phi(6)=37\\in\\mathbb{P}$, so $\\widehat{6}=(6,-6)\\in\\mathrm{Irr}(N)$. But $\\psi(6)=35=5\\cdot7$ is composite, so $6\\notin\\mathrm{Irr}(N_{\\star})$ (indeed $6=1\\star(-1)$). Irreducibility in $N$ does <em>not</em> imply $\\star$-irreducibility.</p>
 </div>
-<p><strong>Key point:</strong> The ($\\Rightarrow$) direction uses the <a class="iref" onclick="jumpId('eta')">Involution</a> $\\eta(x)=-x$ to convert a $\\circledast$-factorization of $n$ into matching $\\star$-components, building a full factorization in $N$.</p>`,
+<p><strong>Key point:</strong> The monoid $(N,\\otimes)$ is isomorphic to $(\\mathbb{Z},\\circledast)$ via $n\\mapsto\\widehat{n}$, because $(-a)\\star(-b)=-(a\\circledast b)$ collapses the second component. The $\\star$ operation is structurally present in $M$ but contributes nothing to $N$.</p>`,
 lean:`${GH}/TPC/AntiDiagonal.lean#L95`},
 
 {id:"p5.2",ch:"§5 Irred",b:"b-prop",
@@ -703,65 +709,69 @@ lean:`${GH}/TPC/Irreducible.lean#L10`},
 lean:`${GH}/TPC/Irreducible.lean#L10`},
 
 {id:"t5.4",ch:"§5 Irred",b:"b-thm",
- t:`Thm 5.4 — $(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; 6x\\pm1\\in\\pm\\mathbb{P} \\;\\iff\\;$ twin prime pair`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Combining Props 5.1–5.3: irreducibility in $N$ is equivalent to $6x+1$ and $6x-1$ both being $\\pm$primes — i.e., $(6x-1,6x+1)$ is a twin prime pair. This is the bridge between algebra and number theory.</p>
-<div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(N)\\;\\iff\\; 6x+1\\in\\pm\\mathbb{P}\\;\\wedge\\;6x-1\\in\\pm\\mathbb{P}\\;\\iff\\;(6x-1,6x+1)\\text{ twin prime pair}$$</div>
+ t:`Thm 5.4 — $(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; 6x+1\\in\\pm\\mathbb{P}$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Combining Props 5.1 and 5.2: irreducibility in $N$ is equivalent to $6x+1$ being $\\pm$prime. The $\\star$ operation and $6x-1$ play no role — this is a consequence of the identity $(-a)\\star(-b)=-(a\\circledast b)$ collapsing the product structure of $N$ to depend only on $\\circledast$.</p>
+<div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(N)\\;\\iff\\; 6x+1\\in\\pm\\mathbb{P}$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p>Chain the three propositions:</p>
-<p><strong>Step 1 (<a class="iref" onclick="jumpId('p5.1')">Prop 5.1</a>):</strong> $\\widehat{x}=(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; x\\in\\mathrm{Irr}(N_{\\circledast})\\,\\wedge\\,x\\in\\mathrm{Irr}(N_{\\star})$.</p>
+<p>Chain two propositions:</p>
+<p><strong>Step 1 (<a class="iref" onclick="jumpId('p5.1')">Prop 5.1</a>):</strong> $\\widehat{x}=(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; x\\in\\mathrm{Irr}(N_{\\circledast})$. (The $N_{\\star}$ condition is not needed because $(-a)\\star(-b)=-(a\\circledast b)$ makes every factorization in $N$ depend only on $\\circledast$.)</p>
 <p><strong>Step 2 (<a class="iref" onclick="jumpId('p5.2')">Prop 5.2</a>):</strong> $x\\in\\mathrm{Irr}(N_{\\circledast})\\iff 6x+1\\in\\pm\\mathbb{P}$, via residue-class analysis of composites in $6\\mathbb{Z}+1$ (two forms).</p>
-<p><strong>Step 3 (<a class="iref" onclick="jumpId('p5.3')">Prop 5.3</a>):</strong> $x\\in\\mathrm{Irr}(N_{\\star})\\iff 6x-1\\in\\pm\\mathbb{P}$, via residue-class analysis of composites in $6\\mathbb{Z}-1$ (single form), accounting for the negated-multiplication operation $\\bullet$ on $(6\\mathbb{Z}-1,\\,\\bullet\\,)$.</p>
-<p>Composing: $(x,-x)\\in\\mathrm{Irr}(N)\\iff 6x+1\\in\\pm\\mathbb{P}\\wedge 6x-1\\in\\pm\\mathbb{P}$. $\\square$</p>
+<p>Composing: $(x,-x)\\in\\mathrm{Irr}(N)\\iff 6x+1\\in\\pm\\mathbb{P}$. $\\square$</p>
+<p><strong>Note:</strong> <a class="iref" onclick="jumpId('p5.3')">Prop 5.3</a> ($N_{\\star}$-irreducibility $\\iff$ $6x-1\\in\\pm\\mathbb{P}$) is a valid independent result, but it does not enter the characterization of irreducibles of $N$.</p>
 </div>
 <p><strong>Worked example ($x=2$):</strong></p>
-<div class="cblk"> φ(2)=13 (prime), ψ(2)=11 (prime) → (2,-2) ∈ Irr(N)
- Prop 5.1: (2,-2) irred in N ⟺ 2 ∈ Irr(N⊛) ∧ 2 ∈ Irr(N⋆)
- Prop 5.2: 2 ∉ N⊛·N⊛ ⟺ φ(2)=13 ∈ ±ℙ  ✓
- Prop 5.3: 2 ∉ N⋆·N⋆ ⟺ ψ(2)=11 ∈ ±ℙ  ✓</div>
+<div class="cblk"> φ(2)=13 (prime) → (2,-2) ∈ Irr(N)
+ Prop 5.1: (2,-2) irred in N ⟺ 2 ∈ Irr(N⊛)
+ Prop 5.2: 2 ∉ N⊛·N⊛ ⟺ φ(2)=13 ∈ ±ℙ  ✓</div>
 <p><strong>Worked non-example ($x=4$):</strong></p>
-<div class="cblk"> φ(4)=25, ψ(4)=23
- 25 is composite: 25 = 5·5, and 5 ≡ -1 (mod 6)
- Prop 5.2, Form 2: 5=6(1)-1, 5=6(1)-1
-   negate: (-5)(-5)=25, with -5=6(-1)+1 ∈ 6ℤ+1
-   so 4 = (-1)⊛(-1) ∈ N⊛·N⊛ → 4 ∉ Irr(N⊛)
- Hence (4,-4) ∉ Irr(N), even though ψ(4)=23 is prime</div>
-<div class="cblk"> x   6x-1  6x+1  Irred?  Twin pair
- 1      5     7    YES    (5,7)
- 2     11    13    YES    (11,13)
- 4     23    25     NO    25=5²
- 5     29    31    YES    (29,31)
-10     59    61    YES    (59,61)</div>
+<div class="cblk"> φ(4)=25 (composite) → (4,-4) ∉ Irr(N)
+ 25 = 5·5, and 5 ≡ -1 (mod 6)
+ Prop 5.2, Form 2: negate both: (-5)(-5)=25, -5 ∈ 6ℤ+1
+ so 4 = (-1)⊛(-1) ∈ N⊛·N⊛ → 4 ∉ Irr(N⊛) → (4,-4) ∉ Irr(N)</div>
+<p><strong>Worked example showing $\\star$ is irrelevant ($x=6$):</strong></p>
+<div class="cblk"> φ(6)=37 (prime) → (6,-6) ∈ Irr(N)  ✓
+ Even though ψ(6)=35=5·7 is composite (6 is ⋆-reducible),
+ this does NOT affect irreducibility in N.
+ Any factorization in N: (a,-a)⊗(b,-b) = (a⊛b, -(a⊛b))
+ needs a⊛b=6, which is impossible since 37 is prime.</div>
+<div class="cblk"> x   6x+1  Irred?  Note
+ 1      7    YES    7 prime
+ 2     13    YES    13 prime
+ 4     25     NO    25=5²
+ 5     31    YES    31 prime
+ 6     37    YES    37 prime (even though 6x−1=35 composite)
+10     61    YES    61 prime</div>
 <button class="btnprf" onclick="tp(this)">▶ Show full table</button>
-<div class="prfbody" style="display:none"><div class="cblk">  x   6x-1   6x+1  Irred?  Note
-  1      5      7    YES    (5,7) twin primes
-  2     11     13    YES    (11,13) twin primes
-  3     17     19    YES    (17,19) twin primes
-  4     23     25     NO    25 = 5²
-  5     29     31    YES    (29,31) twin primes
-  6     35     37     NO    35 = 5·7
-  7     41     43    YES    (41,43) twin primes
-  8     47     49     NO    49 = 7²
-  9     53     55     NO    55 = 5·11
- 10     59     61    YES    (59,61) twin primes
- 11     65     67     NO    65 = 5·13
- 12     71     73    YES    (71,73) twin primes
- 13     77     79     NO    77 = 7·11
- 14     83     85     NO    85 = 5·17
- 15     89     91     NO    91 = 7·13
- 16     95     97     NO    95 = 5·19
- 17    101    103    YES    (101,103) twin primes
- 18    107    109    YES    (107,109) twin primes
+<div class="prfbody" style="display:none"><div class="cblk">  x    6x+1  Irred?  Note
+  1       7    YES    7 prime
+  2      13    YES    13 prime
+  3      19    YES    19 prime
+  4      25     NO    25 = 5²
+  5      31    YES    31 prime
+  6      37    YES    37 prime (6x−1=35 composite — irrelevant)
+  7      43    YES    43 prime
+  8      49     NO    49 = 7²
+  9      55     NO    55 = 5·11
+ 10      61    YES    61 prime
+ 11      67    YES    67 prime (6x−1=65 composite — irrelevant)
+ 12      73    YES    73 prime
+ 13      79    YES    79 prime (6x−1=77 composite — irrelevant)
+ 14      85     NO    85 = 5·17
+ 15      91     NO    91 = 7·13
+ 16      97    YES    97 prime (6x−1=95 composite — irrelevant)
+ 17     103    YES    103 prime
+ 18     109    YES    109 prime
  ─── negative x ───
- -1     -7     -5    YES    (-7,-5) ±primes
- -2    -13    -11    YES    (-13,-11) ±primes
- -3    -19    -17    YES    (-19,-17) ±primes
- -4    -25    -23     NO    -25 = (-5)²
- -5    -31    -29    YES    (-31,-29) ±primes
- -7    -43    -41    YES    (-43,-41) ±primes
--10    -61    -59    YES    (-61,-59) ±primes
--12    -73    -71    YES    (-73,-71) ±primes</div>
-<p>Every twin prime pair $(p,p+2)$ with $p\\equiv5\\pmod6$ gives $x=(p+1)/6$.</p></div>`,
+ -1      -5    YES    -5 ∈ ±ℙ
+ -2     -11    YES    -11 ∈ ±ℙ
+ -3     -17    YES    -17 ∈ ±ℙ
+ -4     -23    YES    -23 ∈ ±ℙ (6x−1=−25 composite — irrelevant)
+ -5     -29    YES    -29 ∈ ±ℙ
+ -7     -41    YES    -41 ∈ ±ℙ
+-10     -59    YES    -59 ∈ ±ℙ
+-12     -71    YES    -71 ∈ ±ℙ</div>
+<p>$(x,-x)\\in\\mathrm{Irr}(N)$ iff $6x+1\\in\\pm\\mathbb{P}$. For positive $x$: $x=(p-1)/6$ where $p=6x+1$ is prime.</p></div>`,
 lean:`${GH}/TPC/AntiDiagonal.lean#L95`},
 
 {id:"d6.1",ch:"§6 Norm",b:"b-def",
@@ -1081,22 +1091,22 @@ Every nonidentity element has an irreducible divisor, so it lies in some irreduc
 lean:`${GH}/TPC/Main.lean#L60`},
 
 {id:"c9.3",ch:"§9 Main",b:"b-cor",
- t:`Cor 9.3 — Thm 5.4 + Thm 9.1 $\\implies$ Infinitely Many Twin Prime Pairs`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Combining the algebraic equivalence (irreducibles $=$ twin primes) with the topological result (infinitely many irreducibles): there are infinitely many twin prime pairs.</p>
-<div class="mdisp">$$\\boxed{\\bigl|\\{x\\in\\mathbb{Z}:6x-1\\in\\pm\\mathbb{P}\\text{ and }6x+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty}$$</div>
+ t:`Cor 9.3 — Thm 5.4 + Thm 9.1 $\\implies$ Infinitely Many Primes $\\equiv\\pm1\\pmod6$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Combining the corrected algebraic equivalence (irreducibles of $N$ $\\longleftrightarrow$ primes $\\equiv\\pm1\\pmod6$) with the topological result (infinitely many irreducibles): there are infinitely many primes in $6\\mathbb{Z}+1$.</p>
+<div class="mdisp">$$\\boxed{\\bigl|\\{x\\in\\mathbb{Z}:6x+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty}$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
 <p><strong>Step 1 (<a class="iref" onclick="jumpId('t5.4')">Thm 5.4</a>):</strong> Establishes a bijection:
-$$\\mathrm{Irr}(N) \\longleftrightarrow \\{x\\in\\mathbb{Z}: 6x-1\\in\\pm\\mathbb{P}\\text{ and }6x+1\\in\\pm\\mathbb{P}\\}$$
-Each irreducible $(x,-x)\\in N$ corresponds to the twin prime pair $(6x-1,6x+1)$.</p>
+$$\\mathrm{Irr}(N) \\longleftrightarrow \\{x\\in\\mathbb{Z}: 6x+1\\in\\pm\\mathbb{P}\\}$$
+Each irreducible $(x,-x)\\in N$ corresponds to a prime $p=6x+1\\equiv1\\pmod6$ (or a negative prime $-p\\equiv1\\pmod6$).</p>
 <p><strong>Step 2 (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>):</strong> The topological argument proves $|\\mathrm{Irr}(N)|=\\infty$.</p>
 <p><strong>Conclusion:</strong> Combining Steps 1 and 2:
-$$|\\mathrm{Irr}(N)|=\\infty \\implies |\\{\\text{twin prime pairs}\\}|=\\infty$$</p>
-<p>Concretely: every twin prime pair $(p,p+2)$ with $p\\equiv5\\pmod6$ corresponds to $x=\\frac{p+1}{6}$:
-$(5,7)\\to x=1$, $(11,13)\\to x=2$, $(17,19)\\to x=3$, $(29,31)\\to x=5$, $(41,43)\\to x=7$, $\\ldots$ $\\blacksquare$</p>
+$$|\\mathrm{Irr}(N)|=\\infty \\implies |\\{p\\in\\mathbb{P}:p\\equiv\\pm1\\pmod6\\}|=\\infty$$</p>
 </div>
-<div class="mdisp">$$\\phi,\\psi\\text{ isom.}\\to\\text{Weak sat.}\\to\\text{Irred equiv.}\\to\\text{Norm}\\to\\text{Covering}\\to U_{a,b,c}\\to\\text{Cosets closed}\\to\\mathbf{TPC}$$</div>
+<p><strong>Status of the twin-prime claim:</strong> The original formulation claimed irreducibles of $N$ correspond to twin prime pairs $(6x-1,6x+1)$. This required $\\star$-irreducibility in addition to $\\circledast$-irreducibility. However, as shown in <a class="iref" onclick="jumpId('p5.1')">Prop 5.1</a>, the identity $(-a)\\star(-b)=-(a\\circledast b)$ collapses the product on $N$ so that only $\\circledast$ matters. The corrected Cor 9.3 establishes infinitely many primes $\\equiv\\pm1\\pmod6$ — a result already known from <a href="https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions" target="_blank">Dirichlet's theorem</a>, but derived here by a purely topological-algebraic method.</p>
+<p><strong>Open question:</strong> Can the monoid construction be modified (e.g., a different product on $M$, or a different submonoid) so that irreducibles genuinely encode twin primes?</p>
 <div class="d-flex flex-wrap gap-1 mt-2">
+<a href="https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions" target="_blank" class="tpill">Dirichlet's Theorem</a>
 <a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank" class="tpill">Twin Prime Conjecture</a>
 <a href="${GH}/TPC/Main.lean" target="_blank" class="tpill"><i class="bi bi-code-slash"></i> Main.lean</a>
 <a href="${GH}/PAPER.md" target="_blank" class="tpill"><i class="bi bi-file-text"></i> PAPER.md</a>
@@ -1105,7 +1115,7 @@ $(5,7)\\to x=1$, $(11,13)\\to x=2$, $(17,19)\\to x=3$, $(29,31)\\to x=5$, $(41,4
 
 {id:"gen",ch:"§10 General",b:"b-thm",
  t:`General Furstenberg Theorem — Topological Monoids with Irreducible Covering have $|\\mathrm{Irr}|=\\infty$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The argument used to prove the Twin Prime Conjecture is not specific to $\\Delta(\\mathbb{Z})$. It is an instance of a general theorem about topological monoids. Any commutative monoid satisfying the hypotheses below must have infinitely many irreducibles.</p>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The argument used to prove $|\\mathrm{Irr}(\\Delta(\\mathbb{Z}))|=\\infty$ is not specific to $\\Delta(\\mathbb{Z})$. It is an instance of a general theorem about topological monoids. Any commutative monoid satisfying the hypotheses below must have infinitely many irreducibles.</p>
 
 <p><strong>Theorem (General Furstenberg Criterion).</strong> Let $(N,\\cdot)$ be a commutative monoid equipped with a topology satisfying:</p>
 
@@ -1135,7 +1145,7 @@ $$\\textbf{(H3)}\\quad\\text{No singleton of } N \\text{ is open (equivalently, 
 <p><strong>(H1)</strong> follows from Noetherian descent on the multiplicative norm $|(x,-x)|=(6x+1)^2$ (<a class="iref" onclick="jumpId('t7.2')">Thm 7.2</a>, <a class="iref" onclick="jumpId('c7.5')">Cor 7.5</a>). Because the norm is multiplicative and strictly decreases under proper division, every nonidentity element eventually factors down to an irreducible divisor.</p>
 <p><strong>(H2)</strong> follows from the fact that left multiplication $L_q$ is a topological embedding with clopen image (<a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>, <a class="iref" onclick="jumpId('l8.13')">Lem 8.13</a>). The key ingredients are continuity and injectivity of $L_q$ (which uses the no-zero-divisor property of $\\circledast$ established in <a class="iref" onclick="jumpId('l2.8')">Lem 2.8</a>), together with the fact that images of clopen sets under $L_q$ remain clopen.</p>
 <p><strong>(H3)</strong> follows from the structure of the basis sets $U_{a,b,c}=\\{(a+cz,\\,b-cz):z\\in\\mathbb{Z}\\}$, each of which is an infinite arithmetic-progression-like set (<a class="iref" onclick="jumpId('d8.1')">Def 8.1</a>, <a class="iref" onclick="jumpId('t8.7')">Thm 8.7</a>). Since every nonempty open set contains a basis element, no singleton can be open.</p>
-<p>The general theorem then immediately yields $|\\mathrm{Irr}(N)|=\\infty$ (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>), and the algebraic equivalence between irreducibles of $N$ and twin prime pairs (<a class="iref" onclick="jumpId('t5.4')">Thm 5.4</a>) completes the proof that there are infinitely many twin primes (<a class="iref" onclick="jumpId('c9.3')">Cor 9.3</a>).</p>
+<p>The general theorem then immediately yields $|\\mathrm{Irr}(N)|=\\infty$ (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>), and the algebraic equivalence between irreducibles of $N$ and primes $\\equiv\\pm1\\pmod6$ (<a class="iref" onclick="jumpId('t5.4')">Thm 5.4</a>) gives infinitely many such primes (<a class="iref" onclick="jumpId('c9.3')">Cor 9.3</a>).</p>
 
 <div class="d-flex flex-wrap gap-1 mt-2">
 <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof (Wikipedia)</a>
@@ -1249,7 +1259,7 @@ function initGraph(){
     {id:"t4.1", l:"Thm 4.1\nWeak Sat.", t:"thm"},
     {id:"l4.5", l:"Lem 4.5\n⊛-decomp⇔comp", t:"lem"},
     {id:"l4.6", l:"Lem 4.6\n⋆-decomp⇔comp", t:"lem"},
-    {id:"p5.1", l:"Prop 5.1\nIrred⇔⊛∧⋆", t:"prop"},
+    {id:"p5.1", l:"Prop 5.1\nIrred⇔⊛only", t:"prop"},
     {id:"p5.2", l:"Prop 5.2\n⊛-irred⇔±ℙ", t:"prop"},
     {id:"p5.3", l:"Prop 5.3\n⋆-irred⇔±ℙ", t:"prop"},
     {id:"t5.4", l:"Thm 5.4\nIrred⇔Twin", t:"thm"},
@@ -1266,7 +1276,7 @@ function initGraph(){
     {id:"t8.9", l:"Thm 8.9\nLp homeo.", t:"thm"},
     {id:"l8.13",l:"Lem 8.13\nq⊗C closed", t:"lem"},
     {id:"t9.1", l:"Thm 9.1\n|Irr|=∞", t:"thm"},
-    {id:"c9.3", l:"Cor 9.3\n∞ Twin Primes", t:"cor"},
+    {id:"c9.3", l:"Cor 9.3\n∞ Primes ±1(6)", t:"cor"},
     {id:"gen",  l:"General\nFurstenberg", t:"thm"}
   ];
   const E=[
