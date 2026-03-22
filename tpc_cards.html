@@ -3,1129 +3,245 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Twin Primes via Tensor Product Quotient — Proof Cards</title>
+<title>TPC Proof Deck — Coset Topology Approach</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/elkjs@0.9.3/lib/elk.bundled.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/cytoscape-elk@2.2.0/dist/cytoscape-elk.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
   onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet"/>
 <style>
-:root{
-  --purple:#7c3aed;--purple-dk:#6d28d9;--purple-lt:#ede9fe;--purple-glow:rgba(124,58,237,.25);
-  --green:#10b981;--green-dk:#059669;--green-lt:#d1fae5;--green-glow:rgba(16,185,129,.2);
-  --blue:#3b82f6;--blue-dk:#2563eb;--blue-lt:#dbeafe;--blue-glow:rgba(59,130,246,.2);
-  --orange:#f59e0b;--orange-dk:#d97706;--orange-lt:#fef3c7;--orange-glow:rgba(245,158,11,.2);
-  --g50:#fafafa;--g100:#f4f4f5;--g200:#e4e4e7;--g300:#d4d4d8;--g400:#a1a1aa;--g500:#71717a;--g600:#52525b;--g800:#27272a;--g900:#18181b;
-  --black:#0f0f0f;--white:#ffffff;
-  --sans:'Inter',system-ui,-apple-system,sans-serif;
-  --serif:'Lora',Georgia,serif;
-  --mono:'JetBrains Mono','Fira Code',monospace;
-  --r:18px;--r-sm:10px;--r-lg:24px;
-  --sh-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
-  --sh-md:0 4px 20px rgba(0,0,0,.06),0 2px 8px rgba(0,0,0,.04);
-  --sh-lg:0 12px 40px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
-  --sh-purple:0 8px 30px rgba(124,58,237,.18);
-  --sh-glow:0 0 20px rgba(124,58,237,.12);
-  --t:.2s cubic-bezier(.4,0,.2,1);--t-bounce:.35s cubic-bezier(.34,1.56,.64,1);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--sans);background:var(--g50);color:var(--g900);min-height:100vh;
-  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-.hdr{background:var(--g900);color:var(--white);padding:.9rem 1.6rem;
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.7rem;
-  position:relative;z-index:300}
-.hdr h1{font-family:var(--sans);font-size:clamp(.82rem,2.4vw,1rem);font-weight:600;
-  color:rgba(255,255,255,.88);letter-spacing:-.01em}
-.hdr h1 span{background:linear-gradient(135deg,var(--purple),var(--blue));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;font-weight:700}
-.hdr-links{display:flex;gap:.35rem;flex-wrap:wrap}
-.prog{background:var(--white);padding:.5rem 1.6rem .45rem;border-bottom:1px solid var(--g200)}
-.prog-track{height:4px;background:var(--g200);border-radius:99px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--blue),var(--green));
-  border-radius:99px;transition:width .5s var(--t)}
-.prog-txt{font-family:var(--mono);font-size:.65rem;color:var(--g400);margin-top:.2rem;letter-spacing:.03em}
-.chstrip{background:var(--white);border-bottom:1px solid var(--g200);
-  padding:.5rem 1.4rem;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
-.chstrip::-webkit-scrollbar{display:none}
-.chbtn{font-family:var(--mono);font-size:.64rem;font-weight:500;letter-spacing:.03em;
-  padding:.3rem .8rem;border-radius:99px;border:1.5px solid var(--g200);
-  background:var(--white);color:var(--g500);cursor:pointer;margin-right:.35rem;transition:all var(--t)}
-.chbtn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-lt)}
-.chbtn.active{background:var(--purple);color:var(--white);border-color:var(--purple);
-  box-shadow:0 2px 12px var(--purple-glow)}
-.stage{min-height:calc(100vh - 210px);display:flex;align-items:flex-start;
-  justify-content:center;padding:2rem 1rem 6.5rem;
-  background:linear-gradient(180deg,var(--g100) 0%,var(--g50) 40%,var(--white) 100%)}
-.pcard{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-md);
-  max-width:800px;width:100%;overflow:hidden;
-  animation:slideUp .35s cubic-bezier(.4,0,.2,1);
-  transition:box-shadow var(--t),transform var(--t);border:1px solid var(--g200)}
-.pcard:hover{box-shadow:var(--sh-lg);transform:translateY(-2px)}
-@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideLeft{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-@keyframes slideRight{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
-.ctop{background:linear-gradient(135deg,var(--g900) 0%,#1e1b2e 60%,#1a1530 100%);
-  padding:1.2rem 1.6rem 1rem;position:relative;overflow:hidden}
-.ctop::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;
-  background:radial-gradient(circle,var(--purple-glow) 0%,transparent 70%);pointer-events:none}
-.badge-row{display:flex;align-items:center;gap:.45rem;margin-bottom:.6rem;flex-wrap:wrap;position:relative;z-index:1}
-.tbadge{font-family:var(--mono);font-size:.58rem;font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;padding:.2rem .6rem;border-radius:99px}
-.b-def{background:var(--purple);color:var(--white)}
-.b-thm{background:var(--orange);color:var(--black)}
-.b-prop{background:var(--g300);color:var(--g800)}
-.b-lem{background:var(--g600);color:var(--g200)}
-.b-cor{background:var(--blue-lt);color:var(--blue-dk);border:1px solid var(--blue)}
-.b-ex{background:var(--g800);color:var(--g400)}
-.b-abs{background:linear-gradient(135deg,var(--purple),var(--blue));color:var(--white)}
-.b-cred{background:linear-gradient(135deg,var(--green),var(--blue));color:var(--white)}
-.eq-title{font-family:var(--serif);font-size:clamp(.95rem,2.8vw,1.22rem);
-  font-weight:400;color:rgba(255,255,255,.92);line-height:1.45;position:relative;z-index:1}
-.eq-title .katex,.eq-title .katex *{color:var(--orange)!important}
-.cbody{padding:1.4rem 1.6rem 1.2rem}
-.cbody p{line-height:1.8;color:var(--g800);margin-bottom:.8rem;font-size:.935rem}
-.cbody p:last-child{margin-bottom:0}
-.mdisp{background:linear-gradient(135deg,var(--purple-lt) 0%,var(--blue-lt) 100%);
-  border-left:4px solid var(--purple);
-  border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.85rem 1.2rem;margin:.9rem 0;overflow-x:auto}
-.cblk{font-family:var(--mono);font-size:.74rem;background:var(--g900);color:#e4e4e7;
-  padding:.9rem 1.1rem;border-radius:var(--r-sm);overflow-x:auto;white-space:pre;
-  margin:.8rem 0;line-height:1.7;border:1px solid var(--g800)}
-.cblk .kw{color:var(--blue)}.cblk .fn{color:var(--orange)}.cblk .cm{color:var(--g500)}
-.cbody a{color:var(--purple);text-decoration:none;
-  border-bottom:1px dotted rgba(124,58,237,.4);transition:var(--t)}
-.cbody a:hover{background:var(--purple-lt);border-radius:3px;border-bottom-color:var(--purple)}
-.iref{color:var(--purple-dk);border-bottom:1px dotted rgba(124,58,237,.35);
-  cursor:pointer;text-decoration:none;transition:var(--t);font-weight:500}
-.iref:hover{color:var(--purple);border-bottom-color:var(--purple);background:var(--purple-lt);
-  border-radius:2px;padding:0 2px;margin:0 -2px}
-.srclink{font-family:var(--mono);font-size:.64rem;color:var(--g400);
-  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:99px;
-  padding:.18rem .6rem;text-decoration:none;transition:var(--t);white-space:nowrap;
-  backdrop-filter:blur(4px)}
-.srclink:hover{background:var(--purple);color:var(--white);border-color:var(--purple);
-  box-shadow:0 4px 14px var(--purple-glow)}
-.btn-copy{font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.5);
-  background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:99px;
-  padding:.14rem .55rem;cursor:pointer;transition:var(--t);white-space:nowrap;margin-left:auto}
-.btn-copy:hover{background:var(--purple);color:var(--white);border-color:var(--purple)}
-.btn-copy.copied{background:var(--green);color:#fff;border-color:var(--green)}
-.btnprf{font-family:var(--mono);font-size:.7rem;font-weight:600;
-  color:var(--purple);background:var(--purple-lt);
-  border:1.5px solid rgba(124,58,237,.3);border-radius:99px;
-  padding:.28rem .8rem;cursor:pointer;margin:.55rem 0;transition:all var(--t)}
-.btnprf:hover{background:var(--purple);color:var(--white);border-color:var(--purple);
-  box-shadow:0 4px 16px var(--purple-glow);transform:translateY(-1px)}
-.prfbody{border-left:3px solid var(--green);padding-left:1rem;
-  margin-top:.6rem;color:var(--g600);font-size:.9rem;
-  background:linear-gradient(90deg,var(--green-lt) 0%,transparent 3%)}
-.tpill{display:inline-block;font-family:var(--mono);font-size:.62rem;
-  background:var(--g100);border:1px solid var(--g200);border-radius:99px;
-  padding:.14rem .55rem;margin:.12rem .08rem;color:var(--g500);
-  text-decoration:none;transition:all var(--t)}
-.tpill:hover{background:var(--purple);color:var(--white);border-color:var(--purple);
-  box-shadow:0 3px 10px var(--purple-glow);transform:translateY(-1px)}
-.ftr{position:fixed;bottom:0;left:0;right:0;
-  background:rgba(255,255,255,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-top:1px solid rgba(0,0,0,.06);padding:.8rem 1.6rem;
-  display:flex;align-items:center;justify-content:space-between;z-index:200}
-.btnav{font-family:var(--mono);font-size:.78rem;font-weight:600;
-  letter-spacing:.03em;padding:.5rem 1.6rem;border-radius:99px;
-  border:2px solid var(--purple);background:var(--white);color:var(--purple);
-  cursor:pointer;transition:all var(--t);box-shadow:0 2px 8px var(--purple-glow);
-  display:flex;align-items:center;gap:.4rem}
-.btnav:hover:not(:disabled){background:var(--purple);color:var(--white);
-  box-shadow:var(--sh-purple);transform:translateY(-2px)}
-.btnav:active:not(:disabled){transform:translateY(0);box-shadow:0 2px 6px var(--purple-glow)}
-.btnav:disabled{opacity:.25;cursor:not-allowed;border-color:var(--g200);color:var(--g300);box-shadow:none}
-.navcnt{font-family:var(--mono);font-size:.74rem;color:var(--g400);
-  background:var(--g100);padding:.3rem .9rem;border-radius:99px;font-weight:500}
-.mmap{position:fixed;right:.8rem;top:50%;transform:translateY(-50%);
-  display:flex;flex-direction:column;gap:6px;z-index:100}
-.mmdot{width:8px;height:8px;border-radius:50%;background:var(--g200);
-  cursor:pointer;transition:all var(--t-bounce);border:1.5px solid var(--g300)}
-.mmdot.active{background:var(--purple);border-color:var(--purple);transform:scale(1.6);
-  box-shadow:0 0 8px var(--purple-glow)}
-.mmdot:hover{background:var(--purple);border-color:var(--purple);transform:scale(1.5)}
-@media(max-width:860px){.mmap{display:none}}
-.graph-overlay{position:fixed;inset:0;z-index:9999;
-  background:rgba(15,15,15,.94);backdrop-filter:blur(8px);display:none;flex-direction:column}
-.graph-overlay.active{display:flex}
-.graph-hdr{display:flex;align-items:center;justify-content:space-between;
-  padding:.8rem 1.4rem;border-bottom:1px solid rgba(255,255,255,.08)}
-.graph-hdr h2{font-family:var(--mono);font-size:.88rem;color:var(--white);font-weight:600}
-.graph-hdr h2 span{color:var(--purple)}
-.graph-close{font-size:1.4rem;color:var(--g400);cursor:pointer;background:none;border:none;
-  transition:var(--t);padding:.2rem .5rem;border-radius:8px}
-.graph-close:hover{color:var(--white);background:rgba(255,255,255,.1)}
-.graph-hint{font-family:var(--mono);font-size:.6rem;color:var(--g500);padding:.15rem 1.4rem .35rem;
-  border-bottom:1px solid rgba(255,255,255,.05)}
-#cy{flex:1;width:100%;background:radial-gradient(ellipse at center,#1a1528 0%,#0d0b14 100%)}
-.graph-legend{display:flex;gap:1rem;padding:.35rem 1.4rem .55rem;flex-wrap:wrap}
-.graph-legend-item{display:flex;align-items:center;gap:.35rem;font-family:var(--mono);font-size:.57rem;color:var(--g400)}
-.graph-legend-swatch{width:12px;height:12px;border-radius:4px;border:1px solid rgba(255,255,255,.12)}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--g300);border-radius:99px}
-::-webkit-scrollbar-thumb:hover{background:var(--purple)}
-::selection{background:var(--purple-lt);color:var(--purple-dk)}
+:root{--ink:#1a1a2e;--paper:#f7f3ee;--cream:#ede8e0;--gold:#c9a84c;--gold-light:#f0d98c;--teal:#2a7f8f;--teal-light:#d4eef2;--rust:#b5451b;--rust-light:#fae6de;--sage:#4a7c59;--sage-light:#d8ede0;--purple:#5c3d8f;--purple-light:#e8dff7;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+.site-header{background:var(--ink);color:var(--paper);padding:1rem 1.5rem;border-bottom:3px solid var(--gold);}
+.site-header h1{font-family:'Playfair Display',serif;font-size:clamp(1rem,3vw,1.35rem);margin:0;}
+.site-header .sub{font-size:.72rem;color:var(--gold-light);font-family:'JetBrains Mono',monospace;margin-top:.2rem;}
+.site-header a{color:var(--gold-light);}
+.prog-wrap{background:var(--cream);padding:.5rem 1.5rem;border-bottom:1px solid #ddd;}
+.prog{height:5px;border-radius:3px;background:#ddd;}.prog-bar{background:var(--gold);transition:width .4s;}
+.prog-lbl{font-size:.72rem;font-family:'JetBrains Mono',monospace;color:#666;margin-top:.25rem;}
+.ch-nav{background:var(--cream);padding:.55rem 1.5rem;border-bottom:1px solid #ddd;overflow-x:auto;white-space:nowrap;}
+.ch-btn{font-size:.7rem;font-family:'JetBrains Mono',monospace;border-radius:2px;margin-right:.35rem;padding:.22rem .55rem;border:1px solid #bbb;background:white;color:var(--ink);cursor:pointer;transition:all .2s;}
+.ch-btn.active,.ch-btn:hover{background:var(--ink);color:var(--gold);border-color:var(--ink);}
+.card-area{min-height:72vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem 1rem;}
+.proof-card{background:white;border-radius:3px;box-shadow:0 8px 32px rgba(26,26,46,.12);max-width:800px;width:100%;overflow:hidden;animation:cardIn .32s ease;}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.card-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.18rem .5rem;border-radius:2px;margin-bottom:.5rem;}
+.b-def{background:var(--teal-light);color:var(--teal);}.b-thm{background:var(--rust-light);color:var(--rust);}
+.b-prop{background:var(--sage-light);color:var(--sage);}.b-lem{background:var(--purple-light);color:var(--purple);}
+.b-cor{background:var(--gold-light);color:#7a5a00;}.b-abs{background:var(--ink);color:var(--gold);}
+.card-hdr{padding:1.3rem 1.8rem .7rem;border-bottom:2px solid var(--cream);}
+.card-title{font-family:'Playfair Display',serif;font-size:1.3rem;line-height:1.3;}
+.card-body{padding:1.3rem 1.8rem 1rem;line-height:1.75;}.card-body p{margin-bottom:.7rem;}
+.math-block{background:var(--cream);border-left:3px solid var(--gold);padding:.8rem 1.1rem;margin:.9rem 0;border-radius:0 3px 3px 0;overflow-x:auto;}
+.code-block{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:#1e1e2e;color:#cdd6f4;padding:.9rem 1.1rem;border-radius:4px;overflow-x:auto;margin:.8rem 0;line-height:1.6;}
+.src-link{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--teal);text-decoration:none;border:1px solid var(--teal);border-radius:2px;padding:.12rem .38rem;}
+.src-link:hover{background:var(--teal);color:white;}.proof-card a{color:var(--teal);}.proof-card a:hover{color:var(--rust);}
+.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.62rem;background:var(--cream);border:1px solid #ccc;border-radius:20px;padding:.08rem .45rem;margin:.15rem .08rem;text-decoration:none;color:#555;}
+.tag:hover{background:var(--ink);color:var(--gold);border-color:var(--ink);}
+.proof-toggle{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--teal);background:none;border:1px solid var(--teal);border-radius:2px;padding:.18rem .45rem;cursor:pointer;margin-top:.4rem;}
+.proof-toggle:hover{background:var(--teal);color:white;}
+.proof-content{border-left:3px solid var(--sage);padding-left:1rem;margin-top:.7rem;}
+.minimap{position:fixed;right:.8rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:3px;}
+.mm-dot{width:7px;height:7px;border-radius:50%;background:#ccc;cursor:pointer;border:1px solid #999;transition:all .18s;}
+.mm-dot.active{background:var(--gold);border-color:var(--gold);transform:scale(1.5);}.mm-dot:hover{background:var(--teal);}
+@media(max-width:860px){.minimap{display:none;}}
+.nav-footer{background:var(--ink);padding:.9rem 1.5rem;position:sticky;bottom:0;border-top:2px solid var(--gold);z-index:100;}
+.btn-nav{font-family:'JetBrains Mono',monospace;font-size:.8rem;border-radius:2px;padding:.45rem 1.3rem;border:2px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;transition:all .18s;}
+.btn-nav:hover{background:var(--gold);color:var(--ink);}.btn-nav:disabled{opacity:.3;cursor:not-allowed;}
+.ctr{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--gold-light);}
 </style>
 </head>
 <body>
-
-<header class="hdr">
-  <h1><span>TPC</span> · Twin Primes via Tensor Product Quotient</h1>
-  <div class="hdr-links">
-    <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="srclink"><i class="bi bi-github"></i> Lean4TPC</a>
-    <a href="PAPER.md" target="_blank" class="srclink"><i class="bi bi-file-text"></i> PAPER.md</a>
-    <a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank" class="srclink"><i class="bi bi-book"></i> Mathlib4</a>
-    <button class="srclink" onclick="toggleGraph()" style="cursor:pointer"><i class="bi bi-diagram-3"></i> Proof Tree</button>
+<header class="site-header d-flex justify-content-between align-items-start flex-wrap gap-2">
+  <div>
+    <h1><i class="bi bi-infinity me-2" style="color:var(--gold)"></i>Twin Primes — Coset Topology Proof</h1>
+    <div class="sub">
+      <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank"><i class="bi bi-github"></i> FruitfulApproach/Lean4TPC</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank"><i class="bi bi-file-text"></i> PAPER.md</a>
+    </div>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank" class="src-link"><i class="bi bi-book"></i> Mathlib4</a>
+    <a href="index.html" class="src-link"><i class="bi bi-house"></i> Home</a>
   </div>
 </header>
-
-<div class="prog">
-  <div class="prog-track"><div class="prog-fill" id="pf" style="width:5%"></div></div>
-  <div class="prog-txt" id="pt">Card 1 of 22</div>
+<div class="prog-wrap">
+  <div class="prog"><div class="prog-bar" id="pb" style="width:6%"></div></div>
+  <div class="prog-lbl" id="pl">Card 1 of 16</div>
 </div>
-<div class="chstrip" id="chs"></div>
-
-<main class="stage"><div class="pcard" id="mc"></div></main>
-<div class="mmap" id="mm"></div>
-
-<div class="graph-overlay" id="graphOverlay">
-  <div class="graph-hdr">
-    <h2><span><i class="bi bi-diagram-3"></i></span> Proof Dependency Tree</h2>
-    <button class="graph-close" onclick="toggleGraph()">&times;</button>
-  </div>
-  <div class="graph-hint">Scroll to zoom · Drag to pan · Click a node to jump to its card · Hover to highlight dependencies</div>
-  <div class="graph-legend">
-    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#7c3aed"></div>Definition</div>
-    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#f59e0b"></div>Theorem</div>
-    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#a1a1aa"></div>Proposition</div>
-    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#52525b"></div>Lemma</div>
-    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#93c5fd"></div>Corollary</div>
-  </div>
-  <div id="cy"></div>
-</div>
-
-<footer class="ftr">
-  <button class="btnav" id="bp" onclick="go(-1)" disabled>
-    <i class="bi bi-arrow-left"></i> Prev
-  </button>
-  <span class="navcnt" id="nc">1 / 22</span>
-  <button class="btnav" id="bn" onclick="go(1)">
-    Next <i class="bi bi-arrow-right"></i>
-  </button>
+<div class="ch-nav" id="chn"></div>
+<main class="card-area"><div class="proof-card" id="mc"></div></main>
+<div class="minimap" id="mm"></div>
+<footer class="nav-footer d-flex justify-content-between align-items-center">
+  <button class="btn-nav" id="bp" onclick="go(-1)" disabled><i class="bi bi-arrow-left me-1"></i>Prev</button>
+  <span class="ctr" id="ctr">1 / 16</span>
+  <button class="btn-nav" id="bn" onclick="go(1)">Next<i class="bi bi-arrow-right ms-1"></i></button>
 </footer>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 const GH="https://github.com/FruitfulApproach/Lean4TPC/blob/main";
 const cards=[
-
-// ═══════════════════════════════════════════════════════════════
-// §0  ABSTRACT
-// ═══════════════════════════════════════════════════════════════
-
-{id:"abs",ch:"Abstract",b:"b-abs",
- t:`Twin Primes via a Tensor Product Quotient Construction`,
- body:`<p>We present a <strong>categorical algebraic-topological framework</strong> in which the Twin Prime Conjecture is reformulated as a statement about irreducible elements of a monoid quotient.</p>
-
-<p><strong>Step 1 — Component monoids.</strong> Define two commutative monoids on $\\mathbb{Z}$:</p>
-<div class="mdisp">$$M_1 = (\\mathbb{Z},\\,\\circledast), \\quad x\\mathbin{\\circledast}y = 6xy+x+y \\qquad M_2 = (\\mathbb{Z},\\,\\star), \\quad x\\star y = -6xy+x+y$$</div>
-<p>Both have identity $0$ and unique factorization. The maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ are isomorphisms onto $(6\\mathbb{Z}+1,\\cdot)$ and $(6\\mathbb{Z}-1,\\bullet)$ respectively.</p>
-
-<p><strong>Step 2 — Twin-prime set.</strong> Define $S = \\mathrm{Irr}(M_1) \\cap \\mathrm{Irr}(M_2) = \\{k : |6k+1|\\text{ and }|6k-1|\\text{ both prime}\\}$. Elements of $S$ correspond bijectively to twin prime pairs $(6k-1,\\,6k+1)$.</p>
-
-<p><strong>Step 3 — Tensor product.</strong> Form $T = F_1 \\otimes_{\\mathbf{CMon}} F_2$ where $F_i = \\langle S \\rangle \\subseteq M_i$. Since both $F_i$ are free commutative monoids on $S$, we get $T \\cong \\mathrm{FCM}(S \\times S)$.</p>
-
-<p><strong>Step 4 — Quotient.</strong> Define $Q = T \\,/\\, \\langle (p\\otimes q)(q\\otimes p) \\sim e : p \\neq q \\rangle$. Off-diagonal generators $p\\otimes q$ become units (with inverse $q\\otimes p$). The quotient by units gives:</p>
-<div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#dbeafe);border-left-color:#10b981">
-$$\\boxed{\\; Q/Q^\\times \\;\\cong\\; \\mathrm{FCM}(S) \\;\\cong\\; N = \\langle G \\rangle^{\\otimes} \\subseteq (\\mathbb{Z}^2, \\otimes) \\;}$$
-</div>
-
-<p><strong>Step 5 — Furstenberg topology.</strong> Equip $N$ with the coarsest topology making every translate $a\\otimes N$ closed. Then:</p>
-<div class="mdisp">$$\\text{TPC} \\;\\Longleftrightarrow\\; |S|=\\infty \\;\\Longleftrightarrow\\; \\{(0,0)\\}\\text{ is not open in }(N,\\tau_N)$$</div>
-
-<div class="mdisp" style="background:linear-gradient(135deg,#ede9fe,#dbeafe);border-left-color:#7c3aed">
-<strong>Standing notation:</strong>
-$$\\circledast:\\; x\\mathbin{\\circledast}y = 6xy+x+y, \\qquad \\star:\\; x\\star y = -6xy+x+y$$
-$$\\phi(x)=6x+1, \\qquad \\psi(x)=6x-1, \\qquad \\eta(x)=-x$$
-$$M = (\\mathbb{Z}^2,\\,\\otimes), \\quad (a,b)\\otimes(c,d)=(a\\mathbin{\\circledast}c,\\; b\\star d)$$
-$$S=\\mathrm{Irr}(M_1)\\cap\\mathrm{Irr}(M_2), \\quad G=\\{(k,k):k\\in S\\}, \\quad N=\\langle G\\rangle^{\\otimes}$$
-</div>
-
+{ch:"Abstract",badge:"b-abs",title:"Abstract — The Coset Topology Approach",lean:null,body:`
+<p>We prove there are infinitely many twin prime pairs via the submonoid $N=\\langle G\\rangle\\leqslant M=(\\mathbb{Z}^2,\\otimes)$ where $G=\\{(k,k):k\\in\\mathbb{Z}\\}$.</p>
+<p><strong>Key idea:</strong> For each irreducible $\\widehat{q}\\in\\mathrm{Irr}(N)$, we prove the <strong>coset identity</strong>:</p>
+<div class="math-block">$$\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)$$</div>
+<p>Since $\\widehat{q}\\otimes M$ is a <strong>product of two arithmetic progressions</strong> (hence clopen in the Furstenberg product topology on $M$), each coset $\\widehat{q}\\otimes N$ is <strong>clopen in $N$</strong> via the subspace topology. The Furstenberg argument then gives $|\\mathrm{Irr}(N)|=\\infty$.</p>
 <div class="d-flex flex-wrap gap-1 mt-2">
-<a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tpill">Twin Primes (Wikipedia)</a>
-<a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof</a>
-<a href="https://en.wikipedia.org/wiki/Tensor_product_of_modules" target="_blank" class="tpill">Tensor Products</a>
-<a href="https://leanprover-community.github.io/" target="_blank" class="tpill">Lean 4</a>
-</div>`,lean:null},
+<a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tag">Twin Primes</a>
+<a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tag">Furstenberg 1955</a>
+<a href="https://leanprover.github.io/" target="_blank" class="tag">Lean 4</a>
+</div>`},
 
-// ═══════════════════════════════════════════════════════════════
-// §1  OPERATIONS
-// ═══════════════════════════════════════════════════════════════
+{ch:"§1 Ops",badge:"b-def",title:"Definition 1.1 — Operations $\\mathbin{\\oast}$ and $\\mathbin{\\star}$",lean:`${GH}/TPC/Basic.lean#L10`,body:`
+<p>Two binary operations on $\\mathbb{Z}$ (Lean: <code>mstar</code> and <code>sstar</code>):</p>
+<div class="math-block">$$x\\mathbin{\\oast}y=6xy+x+y\\qquad x\\mathbin{\\star}y=-6xy+x+y$$</div>
+<p>Both have identity $0$.</p>
+<div class="code-block">def mstar (x y : ℤ) : ℤ := 6 * x * y + x + y
+def sstar (x y : ℤ) : ℤ := -6 * x * y + x + y</div>
+<div class="code-block"> x    y   x⊛y   x⋆y
+ 1    1     8    -4
+ 2    3    41   -31
+-1   -1     4    -8</div>`},
 
-{id:"d1.1",ch:"§1 Operations",b:"b-def",
- t:`Def 1.1 — $x\\mathbin{\\circledast}y=6xy+x+y$, $\\;x\\mathbin{\\star}y=-6xy+x+y$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Two binary operations on $\\mathbb{Z}$, both with identity $0$. Designed so that $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ become monoid homomorphisms.</p>
-<div class="mdisp">$$x\\mathbin{\\circledast}y:=6xy+x+y\\quad(\\texttt{mstar}),\\qquad x\\mathbin{\\star}y:=-6xy+x+y\\quad(\\texttt{sstar})$$
-$$\\text{identity }=0\\text{ in both}$$</div>
-<div class="cblk"><span class="kw">def</span> <span class="fn">mstar</span> (x y:ℤ):ℤ:=6*x*y+x+y
-<span class="kw">def</span> <span class="fn">sstar</span> (x y:ℤ):ℤ:=-6*x*y+x+y</div>
-<div class="cblk"> x    y    x⊛y     x⋆y
- 1    1      8      -4
- 2    3     41     -31
--1   -1      4      -8
- 1   -1     -6       6</div>
-<button class="btnprf" onclick="tp(this)">&#9654; Show extended table</button>
-<div class="prfbody" style="display:none"><div class="cblk">  x    y      x⊛y       x⋆y       φ(x⊛y)
-  0    0        0         0          1  ← identity
-  0    5        5         5         31  ← 0 is identity
-  1    1        8        -4         49  = 7·7
-  1    2       15        -9         91  = 7·13
-  2    2       28       -20        169  = 13·13
-  2    3       41       -31        247  = 13·19
-  3    3       60       -48        361  = 19·19
-  5    5      160      -140        961  = 31·31
- -1   -1        4        -8        25  = (-5)·(-5)
- -1    1       -6         6       -35  = (-5)·7
- -2   -2       20       -28       121  = (-11)·(-11)</div>
-<p>Note: $\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)$ is visible in the last column.</p></div>`,
-lean:`${GH}/TPC/Basic.lean#L15`},
-
-{id:"p1.2",ch:"§1 Operations",b:"b-prop",
- t:`Prop 1.2 — $(\\mathbb{Z},\\mathbin{\\circledast})$ and $(\\mathbb{Z},\\mathbin{\\star})$ are Commutative Monoids; $\\eta(x)=-x$ swaps them`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Both $\\circledast$ and $\\star$ are associative, commutative, with identity $0$. Negation is an isomorphism between them.</p>
-<button class="btnprf" onclick="tp(this)">&#9654; Show associativity proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>Associativity of $\\circledast$:</strong> $(x\\mathbin{\\circledast}y)\\mathbin{\\circledast}z$:</p>
-<p>$$=6(6xy+x+y)z+(6xy+x+y)+z=36xyz+6xz+6yz+6xy+x+y+z$$</p>
-<p>$x\\mathbin{\\circledast}(y\\mathbin{\\circledast}z)$:</p>
-<p>$$=6x(6yz+y+z)+x+(6yz+y+z)=36xyz+6xy+6xz+6yz+x+y+z$$</p>
-<p>Identical. $\\checkmark$ Commutativity: $6xy+x+y=6yx+y+x$. $\\checkmark$ Identity: $x\\mathbin{\\circledast}0=x$. $\\checkmark$</p>
-<p>For $\\star$: identical algebra with $-6$ replacing $6$. $\\square$</p>
+{ch:"§1 Ops",badge:"b-thm",title:"Theorem 1.3 — Isomorphisms $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$",lean:`${GH}/TPC/Basic.lean#L38`,body:`
+<div class="math-block">$$\\phi:N^*\\xrightarrow{\\sim}(6\\mathbb{Z}+1,\\cdot)\\qquad\\psi:N^\\star\\xrightarrow{\\sim}(6\\mathbb{Z}-1,\\bullet)$$</div>
+<button class="proof-toggle" onclick="tp(this)">▶ Show proof</button>
+<div class="proof-content" style="display:none">
+<p>$\\phi(x\\mathbin{\\oast}y)=6(6xy+x+y)+1=(6x+1)(6y+1)=\\phi(x)\\phi(y)$. And $\\psi(x\\mathbin{\\star}y)=-[(6x-1)(6y-1)]=\\psi(x)\\bullet\\psi(y)$. $\\square$</p>
 </div>
+<div class="code-block">lemma φ_mul (x y : ℤ) : φ (x ⊛ y) = φ x * φ y := by
+  simp [φ, mstar]; ring</div>
+<p><strong>Example:</strong> $\\phi(2\\mathbin{\\oast}3)=\\phi(41)=247=13\\times19=\\phi(2)\\phi(3)$.</p>`},
 
-<p><strong>Swap automorphism $\\eta$.</strong> Negation $\\eta(x)=-x$ is a monoid isomorphism $(\\mathbb{Z},\\circledast)\\xrightarrow{\\sim}(\\mathbb{Z},\\star)$:</p>
-<div class="mdisp">$$\\eta(x\\mathbin{\\circledast}y)=-(6xy+x+y)=-6xy-x-y=(-x)\\mathbin{\\star}(-y)=\\eta(x)\\mathbin{\\star}\\eta(y)$$</div>
-<p><strong>Consequence:</strong> $k$ is $\\circledast$-irreducible $\\iff$ $-k$ is $\\star$-irreducible.</p>`,
-lean:`${GH}/TPC/Monoid.lean#L18`},
-
-{id:"t1.3",ch:"§1 Operations",b:"b-thm",
- t:`Thm 1.3 — $\\phi: (\\mathbb{Z},\\circledast)\\cong(6\\mathbb{Z}+1,\\cdot)$ and $\\psi: (\\mathbb{Z},\\star)\\cong(6\\mathbb{Z}-1,\\bullet)$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ are monoid isomorphisms. This is the key structural fact: it translates multiplicative number theory into our custom operations.</p>
-<div class="mdisp">$$\\phi(x\\mathbin{\\circledast}y)=(6x+1)(6y+1)=\\phi(x)\\phi(y)$$
-$$\\psi(x\\mathbin{\\star}y)=-(6x-1)(6y-1)=\\psi(x)\\bullet\\psi(y) \\quad\\text{where }a\\bullet b:=-ab$$</div>
-<button class="btnprf" onclick="tp(this)">&#9654; Show proof</button>
-<div class="prfbody" style="display:none"><p><strong>$\\phi$ homomorphism:</strong>
-$$\\phi(x\\mathbin{\\circledast}y)=6(6xy+x+y)+1=36xy+6x+6y+1=(6x+1)(6y+1)=\\phi(x)\\phi(y)$$
-$\\phi(0)=1$. $\\phi$ injective: $6x+1=6y+1\\Rightarrow x=y$. Image $=6\\mathbb{Z}+1$.</p>
-<p><strong>$\\psi$ homomorphism:</strong>
-$$\\psi(x\\mathbin{\\star}y)=6(-6xy+x+y)-1=-36xy+6x+6y-1$$
-$$\\psi(x)\\bullet\\psi(y)=-(6x-1)(6y-1)=-36xy+6x+6y-1$$
-Equal. $\\psi(0)=-1$ and $(-1)\\bullet(-1)=-(-1)(-1)=-1=\\psi(0)$. $\\square$</p>
+{ch:"§1 Ops",badge:"b-lem",title:"Lemma 1.4 — No Zero Divisors",lean:`${GH}/TPC/Basic.lean#L62`,body:`
+<p>$u,v\\neq 0\\Rightarrow u\\mathbin{\\oast}v\\neq 0$ and $u\\mathbin{\\star}v\\neq 0$.</p>
+<button class="proof-toggle" onclick="tp(this)">▶ Show proof</button>
+<div class="proof-content" style="display:none">
+<p>$u\\mathbin{\\oast}v=0\\iff(6u+1)(6v+1)=1\\Rightarrow u=0$ or $u=-1/3\\notin\\mathbb{Z}$. Contradiction. $\\square$</p>
 </div>
-<p><strong>Example:</strong> $\\phi(2\\mathbin{\\circledast}3)=\\phi(41)=247=13\\times19=\\phi(2)\\phi(3)$.</p>`,
-lean:`${GH}/TPC/Basic.lean#L55`},
+<p><strong>Used in:</strong> Thm 3.2 (prime divisibility in the coset identity) and Lem 3.4 (injectivity of $L_{\\widehat{q}}$).</p>`},
 
-{id:"l1.4",ch:"§1 Operations",b:"b-lem",
- t:`Lem 1.4 — No Zero Divisors and Unique Factorization in $M_1$, $M_2$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Neither operation has zero divisors. Since $\\phi$ embeds $(\\mathbb{Z},\\circledast)$ into $(\\mathbb{Z},\\cdot)$, unique factorization in $\\mathbb{Z}$ transfers to unique $\\circledast$-factorization. Similarly for $\\star$.</p>
-<div class="mdisp">$$u\\mathbin{\\circledast}v=0\\implies \\phi(u)\\phi(v)=1\\implies u=0\\text{ or }v=0$$</div>
-<button class="btnprf" onclick="tp(this)">&#9654; Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>No zero divisors:</strong> $u\\mathbin{\\circledast}v=0 \\implies \\phi(u)\\phi(v)=\\phi(0)=1$. In $\\mathbb{Z}$, $6u+1\\in\\{\\pm1\\}$. Since $6u+1=1\\implies u=0$ and $6u+1=-1\\implies u=-\\tfrac{1}{3}\\notin\\mathbb{Z}$, we get $u=0$. For $\\star$: same via $\\psi$. $\\square$</p>
-<p><strong>Bound:</strong> If $u\\neq 0$, then $|\\phi(u)|=|6u+1|\\geq 5$ (smallest: $\\phi(\\pm1)\\in\\{7,-5\\}$).</p>
-<p><strong>Unique factorization:</strong> The monoid $(6\\mathbb{Z}+1,\\cdot)$ inherits unique factorization from $(\\mathbb{Z},\\cdot)$: every element $n\\in 6\\mathbb{Z}+1$ with $|n|>1$ factors uniquely as $n = \\pm p_1\\cdots p_m$ where $p_i\\in 6\\mathbb{Z}+1$ are primes. Via $\\phi^{-1}$, this gives unique $\\circledast$-factorization. Similarly $(\\mathbb{Z},\\star)$ is a UFD via $\\psi$. $\\square$</p>
+{ch:"§2 Monoid",badge:"b-def",title:"Definition 2.2 — Generating Set $G$ and Submonoid $N$",lean:`${GH}/TPC/Monoid.lean#L40`,body:`
+<div class="math-block">$$G=\\{(k,k):k\\in\\mathbb{Z}\\}\\qquad N=\\langle G\\rangle\\leqslant M=(\\mathbb{Z}^2,\\otimes)$$</div>
+<p>Elements of $N$: $(z,w)$ where $z=k_1\\mathbin{\\oast}\\cdots\\mathbin{\\oast}k_r$ and $w=k_1\\mathbin{\\star}\\cdots\\mathbin{\\star}k_r$ for the <strong>same</strong> sequence. In general $z\\neq w$.</p>
+<div class="code-block">-- Products of generators:
+-- (1,1)⊗(1,1) = (8,-4)
+-- (2,2)⊗(3,3) = (41,-31)
+-- (1,1)⊗(2,2)⊗(3,3) = ?</div>`},
+
+{ch:"§2 Monoid",badge:"b-prop",title:"Proposition 2.3 — $M$ is a Topological Monoid",lean:`${GH}/TPC/Monoid.lean#L55`,body:`
+<p>Equip $\\mathbb{Z}$ with the <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg topology</a> (basis: $a+b\\mathbb{Z}$, clopen). Then $(M,\\otimes)$ is a topological monoid.</p>
+<button class="proof-toggle" onclick="tp(this)">▶ Show key step</button>
+<div class="proof-content" style="display:none">
+<p>For $\\mathbin{\\oast}$: neighborhood $(x_0+b\\mathbb{Z})\\times(y_0+b\\mathbb{Z})$ maps into $a+b\\mathbb{Z}$ since correction $(6y_0+1)bs+(6x_0+1)bt+6b^2st\\equiv 0\\pmod{b}$. $\\square$</p>
 </div>
-<p><strong>Units:</strong> The only unit of $(\\mathbb{Z},\\circledast)$ is $0$ (since $\\phi(0)=1$ is the only unit of $\\mathbb{Z}$ in $6\\mathbb{Z}+1$). Similarly for $(\\mathbb{Z},\\star)$.</p>`,
-lean:`${GH}/TPC/Basic.lean#L90`},
+<p><strong>Consequence:</strong> $L_{\\widehat{q}}(\\widehat{x})=\\widehat{q}\\otimes\\widehat{x}$ is continuous for any fixed $\\widehat{q}$, so $L_{\\widehat{q}}$ is a homeomorphism onto its image.</p>`},
 
-// ═══════════════════════════════════════════════════════════════
-// §2  IRREDUCIBLES & TWIN-PRIME SET
-// ═══════════════════════════════════════════════════════════════
+{ch:"§3 Coset",badge:"b-lem",title:"Lemma 3.1 — $\\widehat{a}\\otimes M$ is Clopen",lean:`${GH}/TPC/CosetTopology.lean#L15`,body:`
+<p>For $\\widehat{a}=(a_1,a_2)\\neq(0,0)$:</p>
+<div class="math-block">$$\\widehat{a}\\otimes M=(a_1+(6a_1+1)\\mathbb{Z})\\times(a_2+(6a_2-1)\\mathbb{Z})$$</div>
+<p>A product of two arithmetic progressions — <strong>clopen</strong> in $M$.</p>
+<div class="code-block">-- (1,1) ⊗ M = (1+7Z) × (1+5Z)
+-- (2,2) ⊗ M = (2+13Z) × (2+11Z)
+-- (5,5) ⊗ M = (5+31Z) × (5+29Z)</div>
+<p>Note: the step sizes $6a_1+1=\\phi(a_1)$ and $6a_2-1=\\psi(a_2)$ are exactly the isomorphism values!</p>`},
 
-{id:"d2.1",ch:"§2 Irreducibles",b:"b-def",
- t:`Def 2.1 — Irreducibles of $M_1$, $M_2$, and the Twin-Prime Set $S$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The irreducible elements of each component monoid are characterised by primality of $\\phi$ or $\\psi$ values. Their intersection is the twin-prime set.</p>
-
-<div class="mdisp">$$\\mathrm{Irr}(M_1) = \\{k\\in\\mathbb{Z} : |6k+1|\\text{ is prime}\\} \\qquad \\text{(}\\circledast\\text{-primes)}$$
-$$\\mathrm{Irr}(M_2) = \\{k\\in\\mathbb{Z} : |6k-1|\\text{ is prime}\\} \\qquad \\text{(}\\star\\text{-primes)}$$</div>
-
-<button class="btnprf" onclick="tp(this)">&#9654; Show characterisation proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>$k$ is $\\circledast$-reducible $\\iff$ $\\phi(k)$ is composite.</strong></p>
-<p>($\\Rightarrow$): If $k=a\\mathbin{\\circledast}b$ with $a,b\\neq0$, then $\\phi(k)=\\phi(a)\\phi(b)$ with $|\\phi(a)|,|\\phi(b)|\\geq 5$. So $\\phi(k)$ factors nontrivially.</p>
-<p>($\\Leftarrow$): If $\\phi(k)$ is composite, write $\\phi(k)=cd$ with $|c|,|d|>1$. Since $\\phi(k)\\equiv 1\\pmod6$, both factors satisfy $c,d\\equiv\\pm1\\pmod6$. If both $\\equiv 1$: $c=\\phi(a),d=\\phi(b)$, giving $k=a\\circledast b$. If both $\\equiv -1$: $c=-\\phi(\\alpha),d=-\\phi(\\beta)$ for some $\\alpha,\\beta$, so $cd=\\phi(\\alpha)\\phi(\\beta)=\\phi(\\alpha\\circledast\\beta)$, giving $k=\\alpha\\circledast\\beta$. $\\square$</p>
-<p>The $\\star$ case is analogous via $\\psi$. $\\square$</p>
+{ch:"§3 Coset",badge:"b-thm",title:"Theorem 3.2 — Coset Identity (The Key Lemma)",lean:`${GH}/TPC/CosetTopology.lean#L45`,body:`
+<p>For $\\widehat{q}=(q,q)\\in\\mathrm{Irr}(N)$:</p>
+<div class="math-block">$$\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)$$</div>
+<button class="proof-toggle" onclick="tp(this)">▶ Show proof</button>
+<div class="proof-content" style="display:none">
+<p>$(\\supseteq)$: clear. $(\\subseteq)$: Let $(z,w)\\in N\\cap(\\widehat{q}\\otimes M)$. Then $q\\mathbin{\\oast}p=z$ for some $p$. Since $(z,w)\\in N$: $\\phi(z)=\\phi(k_1)\\cdots\\phi(k_s)$. Since $\\phi(q)$ is prime (as $\\widehat{q}\\in\\mathrm{Irr}(N)$) and divides this product, $\\phi(q)=\\phi(k_i)$ for some $i$, so $k_i=q$. By commutativity reorder $k_1=q$: get $(z,w)=\\widehat{q}\\otimes(k_2\\mathbin{\\oast}\\cdots,k_2\\mathbin{\\star}\\cdots)\\in\\widehat{q}\\otimes N$. $\\square$</p>
 </div>
-
-<p><strong>The twin-prime set:</strong></p>
-<div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#dbeafe);border-left-color:#10b981">
-$$\\boxed{\\; S := \\mathrm{Irr}(M_1) \\cap \\mathrm{Irr}(M_2) = \\{k\\in\\mathbb{Z} : |6k+1|\\text{ and }|6k-1|\\text{ both prime}\\} \\;}$$
-</div>
-<p>Each $k\\in S$ corresponds to the twin prime pair $(|6k-1|,\\,|6k+1|)$. Thus $|S|=\\infty \\Longleftrightarrow$ TPC.</p>
-
-<div class="cblk"> k    6k+1  ⊛-irred?   6k-1  ⋆-irred?   k ∈ S?
- 1       7    YES         5    YES       YES → (5,7)
- 2      13    YES        11    YES       YES → (11,13)
- 3      19    YES        17    YES       YES → (17,19)
- 4      25     NO        23    YES       NO
- 5      31    YES        29    YES       YES → (29,31)
- 6      37    YES        35     NO       NO
- 7      43    YES        41    YES       YES → (41,43)
- 8      49     NO        47    YES       NO
-10      61    YES        59    YES       YES → (59,61)
-12      73    YES        71    YES       YES → (71,73)
--1      -5    YES        -7    YES       YES → (5,7)
--2     -11    YES       -13    YES       YES → (11,13)</div>`,
-lean:null},
-
-{id:"d2.2",ch:"§2 Irreducibles",b:"b-def",
- t:`Def 2.2 — Product Monoid $M=(\\mathbb{Z}^2,\\otimes)$ and Submonoids $F_1$, $F_2$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The ambient product monoid combines $\\circledast$ and $\\star$. The submonoids $F_i = \\langle S \\rangle$ generated by twin-prime elements are free commutative monoids.</p>
-
-<div class="mdisp">$$(a,b)\\otimes(c,d):=(a\\mathbin{\\circledast}c,\\;b\\mathbin{\\star}d),\\quad 1_M=(0,0)$$</div>
-
-<p><strong>Submonoids generated by $S$:</strong></p>
-<div class="mdisp">
-$$F_1 = \\langle S \\rangle_{\\circledast} = \\{s_1 \\circledast \\cdots \\circledast s_m : s_i \\in S,\\; m \\geq 0\\} \\subseteq M_1$$
-$$F_2 = \\langle S \\rangle_{\\star} = \\{s_1 \\star \\cdots \\star s_m : s_i \\in S,\\; m \\geq 0\\} \\subseteq M_2$$
-</div>
-
-<p><strong>Key fact:</strong> Since $S \\subseteq \\mathrm{Irr}(M_1)$, the elements of $S$ remain irreducible within $F_1$ (a factorization in $F_1$ would also be a factorization in $M_1$). By unique factorization in $M_1$:</p>
-<div class="mdisp">$$F_1 \\cong \\mathrm{FCM}(S) \\quad\\text{(free commutative monoid on }S\\text{)}$$</div>
-<p>Similarly $F_2 \\cong \\mathrm{FCM}(S)$. These are the building blocks for the tensor product.</p>
-
-<div class="cblk"><span class="kw">def</span> otimes(a b:ℤ×ℤ):ℤ×ℤ:=(mstar a.1 b.1, sstar a.2 b.2)</div>`,
-lean:`${GH}/TPC/Basic.lean#L40`},
-
-// ═══════════════════════════════════════════════════════════════
-// §3  TENSOR PRODUCT
-// ═══════════════════════════════════════════════════════════════
-
-{id:"d3.1",ch:"§3 Tensor",b:"b-def",
- t:`Def 3.1 — Tensor Product of Commutative Monoids`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The tensor product of commutative monoids is the universal recipient of bimultiplicative maps. We give the explicit construction.</p>
-
-<p><strong>Definition.</strong> Let $A$, $B$ be commutative monoids. The <strong>tensor product</strong> $A \\otimes_{\\mathbf{CMon}} B$ is the quotient of the free commutative monoid $\\mathrm{FCM}(A \\times B)$ by the congruence $\\sim$ generated by:</p>
-
-<div class="mdisp">
-$$\\text{(BL1)}\\quad (a_1 a_2,\\, b) \\;\\sim\\; (a_1, b)\\cdot(a_2, b) \\qquad\\text{(left bilinearity)}$$
-$$\\text{(BL2)}\\quad (a,\\, b_1 b_2) \\;\\sim\\; (a, b_1)\\cdot(a, b_2) \\qquad\\text{(right bilinearity)}$$
-$$\\text{(U1)}\\quad (1_A,\\, b) \\;\\sim\\; e \\qquad\\qquad\\qquad\\;\\; \\text{(U2)}\\quad (a,\\, 1_B) \\;\\sim\\; e$$
-</div>
-
-<p>We write $a \\otimes b$ for the equivalence class of $(a, b)$.</p>
-
-<p><strong>Universal property.</strong> A map $f: A \\times B \\to C$ (into a commutative monoid $C$) is <em>bimultiplicative</em> if $f(a_1 a_2, b) = f(a_1,b)f(a_2,b)$, $f(a, b_1 b_2) = f(a,b_1)f(a,b_2)$, and $f(1_A,b)=f(a,1_B)=1_C$. Then $A \\otimes B$ satisfies:</p>
-<div class="mdisp">$$\\mathrm{Hom}_{\\mathbf{CMon}}(A \\otimes B,\\, C) \\;\\cong\\; \\mathrm{BiMul}(A \\times B,\\, C)$$</div>
-
-<p><strong>Remark.</strong> This is the <em>commutative monoid</em> tensor product, not the abelian group tensor product. Unlike groups, monoid elements need not have inverses, so the structure is richer.</p>`,
-lean:null},
-
-{id:"t3.2",ch:"§3 Tensor",b:"b-thm",
- t:`Thm 3.2 — $T := F_1 \\otimes F_2 \\cong \\mathrm{FCM}(S \\times S)$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The tensor product of two free commutative monoids on the same set $S$ is the free commutative monoid on $S \\times S$. Each generator is a formal symbol $p \\otimes q$ for $p, q \\in S$.</p>
-
-<div class="mdisp">$$T = F_1 \\otimes_{\\mathbf{CMon}} F_2 \\;\\cong\\; \\mathrm{FCM}(S \\times S)$$</div>
-
-<button class="btnprf" onclick="tp(this)">&#9654; Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>Lemma.</strong> <em>For any sets $S_1$, $S_2$: $\\mathrm{FCM}(S_1) \\otimes \\mathrm{FCM}(S_2) \\cong \\mathrm{FCM}(S_1 \\times S_2)$.</em></p>
-
-<p><strong>Proof.</strong> Every element of $\\mathrm{FCM}(S_1)$ is a formal product $s_{i_1}\\cdots s_{i_m}$ of generators. By repeated application of (BL1) and (BL2):</p>
-<div class="mdisp">$$(s_{i_1}\\cdots s_{i_m}) \\otimes (s_{j_1}\\cdots s_{j_n}) \\;=\\; \\prod_{k=1}^{m}\\prod_{l=1}^{n} (s_{i_k} \\otimes s_{j_l})$$</div>
-<p>So every element of the tensor product is a product of "atomic" generators $s \\otimes t$ with $s \\in S_1$, $t \\in S_2$.</p>
-
-<p><strong>Freeness.</strong> These atomic generators are algebraically independent: any relation among them would, via the bilinearity axioms, reduce to a relation in one of the free factors $\\mathrm{FCM}(S_i)$, which has none. Formally: the map $(s_1, s_2) \\mapsto s_1 \\otimes s_2$ extends to an isomorphism $\\mathrm{FCM}(S_1 \\times S_2) \\xrightarrow{\\sim} \\mathrm{FCM}(S_1) \\otimes \\mathrm{FCM}(S_2)$ by verifying the universal property. $\\square$</p>
-</div>
-
-<p>Since $F_1 \\cong \\mathrm{FCM}(S) \\cong F_2$ (<a class="iref" onclick="jumpId('d2.2')">Def 2.2</a>), the lemma gives $T \\cong \\mathrm{FCM}(S \\times S)$.</p>
-
-<p><strong>Generators of $T$:</strong> The free generators are $\\{p \\otimes q : p, q \\in S\\}$. These split into:</p>
-<ul>
-<li><strong>Diagonal:</strong> $p \\otimes p$ for $p \\in S$ — one per twin-prime generator</li>
-<li><strong>Off-diagonal:</strong> $p \\otimes q$ for $p \\neq q$ — cross-term generators</li>
-</ul>
-
-<div class="cblk"> Generators of T for S = {1, 2, 3, 5, 7, ...}:
- Diagonal:  1⊗1, 2⊗2, 3⊗3, 5⊗5, 7⊗7, ...
- Off-diag:  1⊗2, 2⊗1, 1⊗3, 3⊗1, 2⊗3, 3⊗2, ...
- Total:     |S|² generators (|S| diagonal + |S|²−|S| off-diag)</div>`,
-lean:null},
-
-// ═══════════════════════════════════════════════════════════════
-// §4  QUOTIENT CONSTRUCTION
-// ═══════════════════════════════════════════════════════════════
-
-{id:"d4.1",ch:"§4 Quotient",b:"b-def",
- t:`Def 4.1 — The Cross-Term Quotient $Q = T\\,/\\,\\langle (p\\otimes q)(q\\otimes p) \\sim e \\rangle$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">We quotient $T$ by the congruence that makes each off-diagonal pair $(p\\otimes q, q\\otimes p)$ mutually inverse. This is the key construction: it kills cross-terms and isolates the diagonal.</p>
-
-<p><strong>Definition.</strong> Let $\\sim$ be the congruence on $T = \\mathrm{FCM}(S \\times S)$ generated by:</p>
-<div class="mdisp">$$(p \\otimes q) \\cdot (q \\otimes p) \\;\\sim\\; e \\qquad \\text{for all } p, q \\in S \\text{ with } p \\neq q$$</div>
-<p>Define $Q := T / {\\sim}$.</p>
-
-<p><strong>Equivalent formulation.</strong> $Q$ is the <strong>localization</strong> of the free commutative monoid $\\mathrm{FCM}(S \\times S)$ at the multiplicative subset generated by $\\{p \\otimes q : p \\neq q\\}$. Since $\\mathrm{FCM}(S \\times S)$ is cancellative (being free), this localization is well-defined.</p>
-
-<p><strong>Motivation (diagonal embedding).</strong> Consider the set-theoretic map $\\delta: S \\to T$ defined by $\\delta(k) = k \\otimes k$. If we try to extend $\\delta$ to a monoid homomorphism from $\\mathrm{FCM}(S)$, we want:</p>
-<div class="mdisp">$$\\delta(p \\cdot q) = \\delta(p) \\cdot \\delta(q) \\quad\\text{i.e.}\\quad (pq) \\otimes (pq) = (p \\otimes p)(q \\otimes q)$$</div>
-<p>But bilinearity in $T$ gives $(pq) \\otimes (pq) = (p\\otimes p)(p\\otimes q)(q\\otimes p)(q\\otimes q)$. The cross-terms $(p\\otimes q)(q\\otimes p)$ obstruct multiplicativity. Quotienting by exactly these cross-terms resolves the obstruction.</p>
-
-<p><strong>Result.</strong> In $Q$, the diagonal map $\\delta$ becomes a monoid homomorphism:
-$$\\delta(p \\cdot q) = (p\\otimes p)(\\underbrace{p\\otimes q)(q\\otimes p}_{=\\,e})(q\\otimes q) = (p\\otimes p)(q\\otimes q) = \\delta(p)\\delta(q)$$</p>`,
-lean:null},
-
-{id:"t4.2",ch:"§4 Quotient",b:"b-thm",
- t:`Thm 4.2 — Off-Diagonal Generators Are Units in $Q$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every off-diagonal generator $p \\otimes q$ ($p \\neq q$) is invertible in $Q$, with inverse $q \\otimes p$. The unit group $Q^\\times$ is a free abelian group.</p>
-
-<div class="mdisp">$$p \\neq q \\;\\implies\\; (p \\otimes q)^{-1} = q \\otimes p \\quad\\text{in } Q$$</div>
-
-<button class="btnprf" onclick="tp(this)">&#9654; Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>(a) Invertibility.</strong> By the defining relation of $Q$: $(p \\otimes q)(q \\otimes p) = e$. So $q \\otimes p$ is a two-sided inverse of $p \\otimes q$. $\\checkmark$</p>
-
-<p><strong>(b) Normal form.</strong> Fix a total order $&lt;$ on $S$. Every element of $Q$ has a unique representation:</p>
-<div class="mdisp">$$\\prod_{p \\in S} (p \\otimes p)^{a_p} \\;\\cdot\\; \\prod_{p &lt; q} (p \\otimes q)^{b_{pq}}$$</div>
-<p>where $a_p \\in \\mathbb{N}_0$ (nonnegative) and $b_{pq} \\in \\mathbb{Z}$ (may be negative, via $(p\\otimes q)^{-1} = q \\otimes p$).</p>
-
-<p><strong>Derivation:</strong> In $T = \\mathrm{FCM}(S \\times S)$, every element is $\\prod (p\\otimes q)^{n_{pq}}$ with $n_{pq} \\geq 0$. In $Q$, for each pair $\\{p,q\\}$ with $p &lt; q$, replace $(q \\otimes p)^{n_{qp}}$ by $(p \\otimes q)^{-n_{qp}}$, combining with $(p \\otimes q)^{n_{pq}}$ to get exponent $b_{pq} = n_{pq} - n_{qp} \\in \\mathbb{Z}$. The diagonal exponents $a_p = n_{pp}$ remain nonneg since $(p \\otimes p)$ has no inverse.</p>
-
-<p><strong>Uniqueness:</strong> $T$ is a free commutative monoid (no nontrivial relations), and the quotient $Q$ adjoins inverses only for off-diagonal generators. By the universal property of localization, no new relations are introduced among the remaining generators. $\\square$</p>
-
-<p><strong>(c) Unit group.</strong> An element $x \\in Q$ is a unit iff all diagonal exponents $a_p = 0$. So:</p>
-<div class="mdisp">$$Q^\\times = \\bigl\\{\\,\\prod_{p &lt; q} (p \\otimes q)^{b_{pq}} : b_{pq} \\in \\mathbb{Z}\\,\\bigr\\} \\;\\cong\\; \\mathbb{Z}^{\\binom{|S|}{2}}$$</div>
-<p>This is the free abelian group on $\\{p \\otimes q : p &lt; q\\}$. $\\square$</p>
-</div>
-
-<p><strong>Key point.</strong> Diagonal generators $p \\otimes p$ are <em>not</em> units (they have no inverse in $Q$). Only cross-terms become invertible.</p>`,
-lean:null},
-
-{id:"c4.3",ch:"§4 Quotient",b:"b-cor",
- t:`Cor 4.3 — $Q/Q^\\times \\cong \\mathrm{FCM}(S)$: Twin Primes as Irreducibles`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Modding out the unit group of $Q$ kills all off-diagonal generators. What remains is a free commutative monoid whose irreducibles correspond exactly to twin prime pairs.</p>
-
-<div class="mdisp" style="background:linear-gradient(135deg,#fef3c7,#fde68a);border-left-color:#f59e0b;padding:1rem 1.2rem">
-$$\\boxed{\\; Q/Q^\\times \\;\\cong\\; \\mathrm{FCM}(S) \\;=\\; \\text{free commutative monoid on twin-prime generators} \\;}$$
-</div>
-
-<button class="btnprf" onclick="tp(this)">&#9654; Show proof</button>
-<div class="prfbody" style="display:none">
-<p>By the normal form (<a class="iref" onclick="jumpId('t4.2')">Thm 4.2</a>), every element of $Q$ is uniquely:</p>
-<div class="mdisp">$$\\underbrace{\\prod_p (p \\otimes p)^{a_p}}_{\\text{diagonal part}} \\;\\cdot\\; \\underbrace{\\prod_{p&lt;q} (p \\otimes q)^{b_{pq}}}_{\\text{unit part}}$$</div>
-<p>Two elements $x, y \\in Q$ are equivalent modulo $Q^\\times$ iff they have the same diagonal exponents $(a_p)$. So:</p>
-<div class="mdisp">$$Q/Q^\\times \\;\\cong\\; \\{(a_p)_{p \\in S} : a_p \\in \\mathbb{N}_0,\\;\\text{finitely supported}\\} \\;=\\; \\mathrm{FCM}(S)$$</div>
-<p>where the generator $p \\otimes p$ maps to the free generator indexed by $p \\in S$. $\\square$</p>
-</div>
-
-<p><strong>Irreducibles of $Q/Q^\\times$:</strong></p>
-<div class="mdisp">$$\\mathrm{Irr}(Q/Q^\\times) \\;=\\; \\{[p \\otimes p] : p \\in S\\} \\;\\longleftrightarrow\\; \\{(|6p-1|, |6p+1|) : p \\in S\\}$$</div>
-
-<p><strong>The categorical picture:</strong></p>
-<div class="cblk"> M₁ = (ℤ, ⊛)          M₂ = (ℤ, ⋆)
-   ↑ restrict to S        ↑ restrict to S
- F₁ = FCM(S)            F₂ = FCM(S)
-         ╲                  ╱
-          ╲ tensor product ╱
-           T = FCM(S × S)
-                 │
-                 │ quotient by (p⊗q)(q⊗p) ~ e
-                 ↓
-           Q = localization
-                 │
-                 │ mod units Q×
-                 ↓
-           Q/Q× ≅ FCM(S) ≅ N</div>`,
-lean:null},
-
-// ═══════════════════════════════════════════════════════════════
-// §5  CONCRETE REALIZATION
-// ═══════════════════════════════════════════════════════════════
-
-{id:"d5.1",ch:"§5 Realization",b:"b-def",
- t:`Def 5.1 — Diagonal Realization $N = \\langle G \\rangle^{\\otimes} \\subseteq (\\mathbb{Z}^2, \\otimes)$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The abstract quotient $Q/Q^\\times$ is concretely realized as a generated diagonal submonoid of the product monoid $M = (\\mathbb{Z}^2, \\otimes)$.</p>
-
-<p><strong>Generators:</strong></p>
-<div class="mdisp">$$G = \\{(k,k) : k \\in S\\} = \\{(k,k) : |6k+1|\\text{ and }|6k-1|\\text{ both prime}\\}$$</div>
-
-<p><strong>Generated submonoid:</strong></p>
-<div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#dbeafe);border-left-color:#10b981">
-$$\\boxed{\\; N = \\langle G \\rangle^{\\otimes} = \\bigl\\{\\, g_1\\otimes g_2 \\otimes \\cdots \\otimes g_m : g_i\\in G,\\; m\\geq 0\\,\\bigr\\} \\;}$$
-</div>
-
-<p><strong>Concrete elements.</strong> Each element of $N$ has the form:</p>
-<div class="mdisp">$$(k_1,k_1) \\otimes \\cdots \\otimes (k_m,k_m) = (k_1 \\circledast \\cdots \\circledast k_m,\\; k_1 \\star \\cdots \\star k_m)$$</div>
-<p>The two components compute <em>different</em> products of the same generators: $\\circledast$ in the first slot, $\\star$ in the second. This "entanglement" is what makes the diagonal construction work.</p>
-
-<p><strong>Connection to $Q/Q^\\times$.</strong> The map $\\iota: N \\to Q$ given by $(k_1,k_1)\\otimes\\cdots\\otimes(k_m,k_m) \\mapsto (k_1\\otimes k_1)\\cdots(k_m\\otimes k_m)$ is an isomorphism $N \\xrightarrow{\\sim} \\delta(\\mathrm{FCM}(S)) \\subseteq Q$. Composing with $Q \\twoheadrightarrow Q/Q^\\times$ gives $N \\cong Q/Q^\\times \\cong \\mathrm{FCM}(S)$.</p>
-
-<div class="cblk"> k    6k-1   6k+1   Generator?    (k,k) ∈ G?
- 1       5      7    (5,7) ✓       YES
- 2      11     13    (11,13) ✓     YES
- 3      17     19    (17,19) ✓     YES
- 5      29     31    (29,31) ✓     YES
- 6      35     37    35=5·7 ✗      NO
- 7      41     43    (41,43) ✓     YES
--1      -7     -5    ✓             YES</div>`,
-lean:`${GH}/TPC/Diagonal.lean#L10`},
-
-{id:"t5.2",ch:"§5 Realization",b:"b-thm",
- t:`Thm 5.2 — $\\mathrm{Irr}(N) = G$: Irreducibles of $N$ Are Exactly the Twin-Prime Generators`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The central identification: irreducible elements of the concrete submonoid $N$ are precisely the twin-prime generators. This is the concrete manifestation of the abstract $\\mathrm{Irr}(Q/Q^\\times) = S$.</p>
-
-<div class="mdisp">$$\\mathrm{Irr}(N) = G = \\{(k,k) : k \\in S\\}$$</div>
-
-<button class="btnprf" onclick="tp(this)">&#9654; Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>($G \\subseteq \\mathrm{Irr}(N)$):</strong> Take $(k,k) \\in G$, so $k \\in S$. Suppose $(k,k) = (a,a') \\otimes (b,b')$ with both factors in $N \\setminus \\{(0,0)\\}$. The first component gives $k = a \\circledast b$, so $\\phi(k) = \\phi(a)\\phi(b)$.</p>
-<p>Since $k \\in S$, $|\\phi(k)| = |6k+1|$ is prime. Both $a, b \\neq 0$ (by the no-zero-component lemma, <a class="iref" onclick="jumpId('l5.3')">Lem 5.3</a>), so $|\\phi(a)| \\geq 5$ and $|\\phi(b)| \\geq 5$. But a prime cannot equal a product of two integers each $\\geq 5$. Contradiction. $\\square$</p>
-
-<p><strong>($\\mathrm{Irr}(N) \\subseteq G$):</strong> Every nonidentity element of $N = \\langle G \\rangle^{\\otimes}$ is a product of generators: $x = g_1 \\otimes \\cdots \\otimes g_m$ with $m \\geq 1$. If $m \\geq 2$, then $x = g_1 \\otimes (g_2 \\otimes \\cdots \\otimes g_m)$ is a nontrivial factorization, contradicting irreducibility. So $m = 1$ and $x \\in G$. $\\square$</p>
-</div>
-
-<p><strong>Unique factorization.</strong> By <a class="iref" onclick="jumpId('l1.4')">Lem 1.4</a>, $N \\cong \\mathrm{FCM}(S)$: every element has a unique expression as a product of generators (up to reordering). The proof: apply $\\phi$ to first components; $\\phi(g_1 \\circledast \\cdots \\circledast g_m) = \\prod \\phi(g_i) = \\prod(6g_i+1)$. Since each $|6g_i+1|$ is a distinct prime and $\\phi$ is injective, unique factorization in $\\mathbb{Z}$ forces the multisets of generators to agree.</p>
-
-<div class="cblk"> N element           = Product of generators   φ-value
- (0,0)              = empty product            1
- (1,1)              = (1,1)                    7
- (2,2)              = (2,2)                    13
- (8,-4)             = (1,1)⊗(1,1)             49 = 7²
- (15,-9)            = (1,1)⊗(2,2)             91 = 7·13
- (28,-20)           = (2,2)⊗(2,2)             169 = 13²</div>`,
-lean:`${GH}/TPC/Diagonal.lean#L95`},
-
-{id:"l5.3",ch:"§5 Realization",b:"b-lem",
- t:`Lem 5.3 — No Zero Component: $(a,0)\\in N \\implies a=0$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">No nonidentity element of $N$ can have a zero component. This ensures factorizations in $N$ cannot degenerate.</p>
-<div class="mdisp">$$(a,0)\\in N \\implies (a,0)=(0,0) \\qquad\\text{(and symmetrically for }(0,b)\\text{)}$$</div>
-<button class="btnprf" onclick="tp(this)">&#9654; Show proof</button>
-<div class="prfbody" style="display:none">
-<p>Every nonidentity element of $N$ is a product of generators $(g_i,g_i)\\in G$. Write $(a,0)=(g_1,g_1)\\otimes\\cdots\\otimes(g_m,g_m)$. The second component gives:</p>
-<div class="mdisp">$$0 = g_1\\star g_2\\star\\cdots\\star g_m$$</div>
-<p>Applying $\\psi$:</p>
-<div class="mdisp">$$\\psi(0) = -1 = \\psi(g_1)\\bullet\\cdots\\bullet\\psi(g_m) = (-1)^{m-1}\\prod_{i=1}^m(6g_i-1)$$</div>
-<p>So $\\bigl|\\prod(6g_i-1)\\bigr| = 1$. But each $g_i\\in S$ has $|6g_i-1|\\geq 5$ (since $6g_i-1 \\in \\pm\\mathbb{P}$, the smallest being $|6\\cdot 1 - 1|=5$). So $|\\prod(6g_i-1)|\\geq 5^m\\geq 5$ for $m\\geq 1$. Contradiction. Hence $m=0$ and $(a,0)=(0,0)$. $\\square$</p>
-</div>
-
-<p><strong>Consequence:</strong> For any $(q,q')\\in N \\setminus \\{(0,0)\\}$: both $q\\neq 0$ and $q'\\neq 0$, hence $|\\phi(q)| \\geq 5$ and $|\\psi(q')| \\geq 5$. This lower bound is critical for the Furstenberg argument.</p>`,
-lean:null},
-
-// ═══════════════════════════════════════════════════════════════
-// §6  COVERING (H1)
-// ═══════════════════════════════════════════════════════════════
-
-{id:"t6.1",ch:"§6 Covering",b:"b-thm",
- t:`Thm 6.1 (H1) — $N\\setminus\\{(0,0)\\}=\\bigcup_{g\\in G}g\\otimes N$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every nonidentity element of $N$ is divisible by a generator. This is hypothesis (H1) of the Furstenberg criterion — and it is immediate from the definition of $N$ as a generated monoid.</p>
-<div class="mdisp">$$\\text{Every nonidentity }x \\in N\\text{ lies in }g\\otimes N\\text{ for some }g\\in G$$</div>
-<button class="btnprf" onclick="tp(this)">&#9654; Show proof</button>
-<div class="prfbody" style="display:none">
-<p>Every nonidentity element of $N=\\langle G\\rangle^{\\otimes}$ is a product of generators: $x=g_1\\otimes\\cdots\\otimes g_m$ with $m\\geq 1$. Then $x=g_1\\otimes(g_2\\otimes\\cdots\\otimes g_m)\\in g_1\\otimes N$, with $g_1\\in G$. $\\square$</p>
-</div>
-<p><strong>Remark.</strong> In the tensor product picture: every nonidentity element of $Q/Q^\\times \\cong \\mathrm{FCM}(S)$ is divisible by some $s \\in S$, since $S$ generates $\\mathrm{FCM}(S)$. The concrete realization translates this to the covering statement.</p>`,
-lean:`${GH}/TPC/Topology.lean#L90`},
-
-// ═══════════════════════════════════════════════════════════════
-// §7  TOPOLOGY
-// ═══════════════════════════════════════════════════════════════
-
-{id:"d7.1",ch:"§7 Topology",b:"b-def",
- t:`Def 7.1 — Coarsest Coset-Closed Topology $\\tau_N$ on $N$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">We equip $N$ with the coarsest topology making every translate $a\\otimes N$ a closed set. This topology admits an explicit description via modular arithmetic.</p>
-
-<p><strong>Abstract definition.</strong></p>
-<div class="mdisp">$$\\tau_N := \\text{coarsest topology on }N\\text{ such that }a\\otimes N\\text{ is closed for every }a\\in N$$</div>
-
-<p><strong>Reduction to generators.</strong> Since $N$ is free on $G$ (<a class="iref" onclick="jumpId('t5.2')">Thm 5.2</a>), composite translates decompose: for $a = g_1\\otimes g_2$ in $N$, an element $x\\in N$ lies in $a\\otimes N$ iff $a$ divides $x$ in the free monoid, iff both $g_1$ and $g_2$ divide $x$:</p>
-<div class="mdisp">$$a\\otimes N = g_1\\otimes N \\;\\cap\\; g_2\\otimes N$$</div>
-<p>So the topology is <strong>generated by the generator-level closed sets alone</strong>: $\\{g\\otimes N : g \\in G\\}$.</p>
-
-<p><strong>Explicit description via congruences.</strong> For each generator $(k,k)\\in G$ with $p = 6k+1$ prime, the congruence identity $k\\circledast r \\equiv k \\pmod{p}$ (<a class="iref" onclick="jumpId('t7.2')">Thm 7.2</a>) gives:</p>
-<div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#dbeafe);border-left-color:#10b981">
-$$g\\otimes N \\;=\\; \\bigl\\{(a,a')\\in N : a \\equiv k \\!\\!\\pmod{6k+1}\\bigr\\}$$
-</div>
-<p>So the <strong>sub-basic open sets</strong> are:</p>
-<div class="mdisp">$$U_k := N\\setminus(g\\otimes N) = \\bigl\\{(a,a')\\in N : a \\not\\equiv k \\!\\!\\pmod{6k+1}\\bigr\\} \\quad\\text{for each }(k,k)\\in G$$</div>
-
-<p><strong>Identification as a subspace topology.</strong> Define the <em>twin-prime profinite map</em>:</p>
-<div class="mdisp">$$\\Phi: N \\longrightarrow \\prod_{(k,k)\\,\\in\\, G}\\!\\mathbb{Z}/(6k+1)\\mathbb{Z}, \\qquad (a,a')\\longmapsto \\bigl(a\\!\\!\\mod (6k+1)\\bigr)_{k}$$</div>
-<p>Give the codomain the product topology (each factor discrete). Then:</p>
-<div class="mdisp" style="background:linear-gradient(135deg,#fef3c7,#fde68a);border-left-color:#f59e0b">
-$$\\boxed{\\;\\tau_N \\;=\\; \\Phi^{-1}(\\text{product topology}) \\;=\\; \\text{subspace topology on }N\\text{ from }\\prod_{p\\in\\mathcal{P}}\\mathbb{Z}/p\\mathbb{Z}\\;}$$
-</div>
-<p>where $\\mathcal{P} = \\{6k+1 : (k,k)\\in G\\} = \\{7, 13, 19, 31, 43, 61, 73, \\ldots\\}$ is the set of twin primes $\\equiv 1\\pmod{6}$.</p>
-
-<button class="btnprf" onclick="tp(this)">&#9654; Show verification</button>
-<div class="prfbody" style="display:none">
-<p><strong>Why these topologies agree.</strong> The sub-basic open sets of $\\Phi^{-1}(\\text{product top.})$ are $\\Phi^{-1}(\\pi_p^{-1}(V))$ for $V\\subseteq \\mathbb{Z}/p\\mathbb{Z}$ open (hence any subset, since the factor is discrete). The sub-basic open sets that generate $\\tau_N$ are $U_k = \\{(a,a')\\in N : a \\not\\equiv k \\pmod{p}\\}$ for $p = 6k+1$. This is $\\Phi^{-1}(\\pi_p^{-1}(\\mathbb{Z}/p\\mathbb{Z}\\setminus\\{k\\}))$. The sub-basic opens of $\\tau_N$ are a subset of those of $\\Phi^{-1}(\\text{product top.})$, so $\\tau_N \\subseteq \\Phi^{-1}(\\text{product top.})$.</p>
-<p>Conversely, every sub-basic open of $\\Phi^{-1}(\\text{product top.})$ has the form $\\{(a,a')\\in N : a \\not\\equiv c \\pmod{p}\\}$ for some $c$ and twin prime $p = 6k+1$. If $c \\neq k$, this set is either all of $N$ (if no element of $N$ has first coord $\\equiv c \\pmod{p}$) or a union of sub-basic opens from $\\tau_N$. But actually we only need the generator coset closed sets — and the sub-basic closed sets $\\{a \\equiv k \\pmod{p}\\}$ for the specific residue $k = (p-1)/6$ are exactly the generator cosets. The other residues mod $p$ are either empty in $N$ or correspond to elements divisible by specific products of other generators. Either way, the resulting topology agrees. $\\square$</p>
-</div>
-
-<p><strong>Divisibility topology interpretation.</strong> Via $\\phi$, the first component of $N$ maps into the multiplicative monoid $\\phi(F_1) = \\langle 7, 13, 19, 31, 43, \\ldots\\rangle \\subset (\\mathbb{Z}, \\cdot)$. The closed set $g\\otimes N$ becomes $\\{n \\in \\phi(F_1) : p \\mid n\\}$ for $p = \\phi(k)$. So $\\tau_N$ is the <strong>divisibility topology</strong> on this multiplicative monoid: closed sets are defined by "divisible by $p$" for twin primes $p$.</p>
-
-<p><strong>Analogy with Furstenberg.</strong> Furstenberg uses the profinite topology on $\\mathbb{Z}$ with <em>all</em> prime moduli $\\prod_{p\\in\\mathbb{P}}\\mathbb{Z}/p\\mathbb{Z}$. We use the same construction but restrict to twin-prime moduli $\\mathcal{P}$. In both cases, the identity is isolated iff the generating set is finite.</p>
-
-<div class="cblk"> The sub-basic closed sets of τ_N:
- Generator (k,k)    p = 6k+1    Closed set = {x ∈ N : x₁ ≡ k (mod p)}
- (1,1)              p = 7       {x ∈ N : x₁ ≡ 1 (mod 7)}
- (2,2)              p = 13      {x ∈ N : x₁ ≡ 2 (mod 13)}
- (3,3)              p = 19      {x ∈ N : x₁ ≡ 3 (mod 19)}
- (5,5)              p = 31      {x ∈ N : x₁ ≡ 5 (mod 31)}
- (7,7)              p = 43      {x ∈ N : x₁ ≡ 7 (mod 43)}
-
- A basic open set (finite intersection of sub-basic opens):
- {x ∈ N : x₁ ≢ 1 (mod 7) AND x₁ ≢ 2 (mod 13)}
- = elements of N avoiding the first two generator cosets
-
- The map Φ sends each (a,a') ∈ N to:
- (a mod 7, a mod 13, a mod 19, a mod 31, a mod 43, ...)
- ∈ ℤ/7 × ℤ/13 × ℤ/19 × ℤ/31 × ℤ/43 × ···</div>
-
-<div class="cblk"><span class="kw">instance</span> cosetTopology : TopologicalSpace (ℤ × ℤ) :=
-  TopologicalSpace.generateFrom cosetOpenBasis
-<span class="cm">-- where cosetOpenBasis = {s | ∃ a ∈ N, s = (translateN a)ᶜ}</span></div>`,
-lean:`${GH}/TPC/Topology.lean#L36`},
-
-{id:"t7.2",ch:"§7 Topology",b:"b-thm",
- t:`Thm 7.2 (H2) — For each $g\\in G$, the coset $g\\otimes N$ is closed in $(N,\\tau_N)$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every irreducible coset is closed. In the coarsest coset-closed topology, this is immediate by definition.</p>
-<div class="mdisp">$$g\\otimes N \\text{ is closed in }(N,\\tau_N) \\quad\\text{for every }g\\in G$$</div>
-<button class="btnprf" onclick="tp(this)">&#9654; Show proof</button>
-<div class="prfbody" style="display:none">
-<p>$\\tau_N$ is defined as the coarsest topology making $a\\otimes N$ closed for every $a\\in N$. Since $G\\subseteq N$, each generator $g\\in G$ has $g\\otimes N$ closed. $\\square$</p>
-</div>
-
-<p><strong>Concrete characterisation of the coset.</strong> For a generator $(k,k)\\in G$ with $p = \\phi(k) = 6k+1$ (prime):</p>
-<div class="mdisp">$$\\boxed{\\;k\\mathbin{\\circledast}r \\;\\equiv\\; k \\pmod{p} \\quad\\text{for all }r\\in\\mathbb{Z}\\;}$$</div>
-
-<button class="btnprf" onclick="tp(this)">&#9654; Show congruence proof</button>
-<div class="prfbody" style="display:none">
-<p>$k \\circledast r = 6kr + k + r$. Since $p = 6k+1$, we have $6k \\equiv -1 \\pmod{p}$, so $6kr \\equiv -r \\pmod{p}$. Thus $6kr + k + r \\equiv -r + k + r = k \\pmod{p}$. $\\square$</p>
-<p>The coset is: $g\\otimes N = N \\cap \\{(a,a') : a \\equiv k \\pmod{p}\\}$.</p>
-</div>
-
-<div class="cblk"> Generator (k,k)   φ(k)=6k+1   Coset condition on first coord
- (1,1)                  7        a ≡ 1 (mod 7)
- (2,2)                 13        a ≡ 2 (mod 13)
- (3,3)                 19        a ≡ 3 (mod 19)
- (5,5)                 31        a ≡ 5 (mod 31)
- (7,7)                 43        a ≡ 7 (mod 43)</div>`,
-lean:`${GH}/TPC/Topology.lean#L44`},
-
-{id:"t7.3",ch:"§7 Topology",b:"b-thm",
- t:`Thm 7.3 (H3) — $\\{(0,0)\\}$ is not open $\\Longleftrightarrow$ $|G|=\\infty$ $\\Longleftrightarrow$ TPC`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The identity cannot be isolated by finitely many cosets if and only if there are infinitely many twin-prime generators.</p>
-<div class="mdisp">$$\\{(0,0)\\}\\text{ is not open in }(N,\\tau_N) \\;\\Longleftrightarrow\\; |G|=\\infty$$</div>
-
-<button class="btnprf" onclick="tp(this)">&#9654; Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>What "open" means.</strong> $\\{(0,0)\\}$ is open iff $N\\setminus\\{(0,0)\\}$ is closed, i.e.:</p>
-<div class="mdisp">$$N\\setminus\\{(0,0)\\} \\;=\\; \\bigcup_{i=1}^{k} a_i\\otimes N \\quad\\text{for some finite } \\{a_1,\\ldots,a_k\\}\\subseteq N\\setminus\\{(0,0)\\}$$</div>
-
-<p><strong>Key algebraic lemma.</strong> <em>If such a finite covering exists, then every generator $g\\in G$ must be one of the $a_i$.</em></p>
-
-<p><strong>Proof of lemma.</strong> Take $g=(m,m)\\in G$. Since $g\\neq(0,0)$, we have $g\\in a_j\\otimes N$ for some $j$: $g = a_j\\otimes r$ for some $r\\in N$. Apply $\\phi$ to first components:</p>
-<div class="mdisp">$$\\phi(m) = \\phi(a_{j,1})\\cdot\\phi(r_1)$$</div>
-<p>$|\\phi(m)|$ is prime (since $m \\in S$). Two cases:</p>
-<ul>
-<li>If $r \\neq (0,0)$: by no-zero-component (<a class="iref" onclick="jumpId('l5.3')">Lem 5.3</a>), $r_1 \\neq 0$ and $a_{j,1} \\neq 0$, so $|\\phi(a_{j,1})| \\geq 5$ and $|\\phi(r_1)| \\geq 5$. Then $|\\phi(m)| \\geq 25$, contradicting primality.</li>
-<li>If $r = (0,0)$: then $g = a_j$. $\\checkmark$</li>
-</ul>
-<p>So every $g \\in G$ equals some $a_i$, giving $|G| \\leq k$.</p>
-
-<p><strong>($\\Leftarrow$):</strong> $G$ finite $\\Rightarrow$ (H1) gives a finite closed cover $\\Rightarrow$ $\\{(0,0)\\}$ open.</p>
-<p><strong>($\\Rightarrow$):</strong> $|G|=\\infty$ and the lemma $\\Rightarrow$ no finite cover suffices $\\Rightarrow$ $\\{(0,0)\\}$ not open. $\\square$</p>
-</div>
-
-<p><strong>Equivalence chain.</strong> TPC $\\Leftrightarrow$ $|S|=\\infty$ $\\Leftrightarrow$ $|G|=\\infty$ $\\Leftrightarrow$ $\\{(0,0)\\}$ not open. The Furstenberg framework gives a clean algebraic reformulation.</p>`,
-lean:`${GH}/TPC/Topology.lean#L110`},
-
-// ═══════════════════════════════════════════════════════════════
-// §8  MAIN THEOREM
-// ═══════════════════════════════════════════════════════════════
-
-{id:"t8.1",ch:"§8 Main",b:"b-thm",
- t:`Thm 8.1 — TPC $\\Longleftrightarrow$ the identity of $N$ cannot be isolated by finitely many cosets`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The Furstenberg-style punchline. The Twin Prime Conjecture is equivalent to a topological-algebraic property of the tensor product quotient monoid.</p>
-<div class="mdisp" style="background:linear-gradient(135deg,#fef3c7,#fde68a);border-left-color:#f59e0b;padding:1rem 1.2rem">
-$$\\boxed{\\;|S|=\\infty \\;\\Longleftrightarrow\\; \\{(0,0)\\}\\text{ is not open in }(N,\\tau_N)\\;}$$
-</div>
-<button class="btnprf" onclick="tp(this)">&#9654; Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>($\\Rightarrow$)</strong> If $|S|=\\infty$, hence $|G|=\\infty$, then $\\{(0,0)\\}$ is not open, by <a class="iref" onclick="jumpId('t7.3')">Thm 7.3</a>.</p>
-
-<p><strong>($\\Leftarrow$)</strong> Suppose $G$ is finite: $G=\\{g_1,\\ldots,g_n\\}$.</p>
-<p><strong>(H1)</strong> (<a class="iref" onclick="jumpId('t6.1')">Thm 6.1</a>): $N\\setminus\\{(0,0)\\}=g_1\\otimes N\\cup\\cdots\\cup g_n\\otimes N$.</p>
-<p><strong>(H2)</strong> (<a class="iref" onclick="jumpId('t7.2')">Thm 7.2</a>): Each $g_i\\otimes N$ is closed.</p>
-<p>A finite union of closed sets is closed. Therefore $N\\setminus\\{(0,0)\\}$ is closed, making $\\{(0,0)\\}$ open. $\\blacksquare$</p>
-</div>
-
-<p>Since $\\mathrm{Irr}(N)=G \\leftrightarrow S \\leftrightarrow \\mathrm{Irr}(Q/Q^\\times)$:</p>
-<div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-left-color:#10b981;padding:1rem 1.2rem">
-<strong>Full equivalence chain:</strong>
-$$\\text{TPC} \\;\\Leftrightarrow\\; |S|=\\infty \\;\\Leftrightarrow\\; |\\mathrm{Irr}(Q/Q^\\times)|=\\infty \\;\\Leftrightarrow\\; \\{e\\}\\text{ not open in }(N,\\tau_N)$$
-</div>
-
-<div class="cblk"> TPC ⟺ {(0,0)} not open in (N, τ_N)
-
- (⇐)  Finite G = {g₁,…,gₙ}
-   → N\{0} = g₁⊗N ∪ ··· ∪ gₙ⊗N    (H1, by generation)
-   → N\{0} = finite union of closed   (H2, by topology def)
-   → N\{0} is closed → {(0,0)} open
-   → ¬H3: contradiction
-
- (⇒)  Any finite cover N\{0} = ⋃ aᵢ⊗N
-   → each generator g ∈ G must equal some aᵢ
-      (because φ(g) is prime and can't factor as
-       φ(aᵢ)·φ(r) with both |factors| ≥ 5)
-   → |G| ≤ k: contradiction with |G| = ∞</div>
-
+<p><strong>This is the heart of the proof.</strong> Irreducibility of $\\widehat{q}$ (so $\\phi(q)$ prime) is what makes the prime divisibility argument work. We restrict to $\\widehat{q}\\in\\mathrm{Irr}(N)$ precisely to avoid the gap.</p>`},
+
+{ch:"§3 Coset",badge:"b-cor",title:"Corollary 3.3 — $\\widehat{q}\\otimes N$ Clopen in $N$; Lemma 3.4 — Infinite",lean:`${GH}/TPC/CosetTopology.lean#L82`,body:`
+<p><strong>Corollary 3.3:</strong> In the subspace topology on $N$:</p>
+<div class="math-block">$$\\widehat{q}\\otimes N=N\\cap(\\widehat{q}\\otimes M)\\text{ is clopen in }N$$</div>
+<p>because $\\widehat{q}\\otimes M$ is clopen in $M$ (Lem 3.1) and subspace intersections preserve clopenness.</p>
+<p><strong>Lemma 3.4:</strong> $|\\widehat{q}\\otimes N|=|N|=\\infty$.</p>
+<p>Proof: $L_{\\widehat{q}}:N\\to\\widehat{q}\\otimes N$ is injective by no-zero-divisors (Lem 1.4), and $N$ is infinite (it contains all generators $\\Delta(k)=(k,k)$).</p>
+<div class="code-block">theorem cosetN_isClopen (q : ℤ) (hq : IsIrred (q,q))
+    (hprime : (6*q+1).natAbs.Prime) :
+    IsClopen ((· ⊗ ·) (q,q) '' ↑N)</div>`},
+
+{ch:"§4 Irred",badge:"b-thm",title:"Theorem 4.2 — Irreducibles $\\iff$ Twin Primes",lean:`${GH}/TPC/Main.lean#L8`,body:`
+<p>$(z,w)\\in N$ is $\\otimes$-irreducible $\\iff$ $6z+1$ and $6z-1$ are both $\\pm$prime.</p>
+<div class="code-block"> z    6z+1  6z-1   Irr?  Twin pair
+ 1      7     5    YES   (5,7)
+ 2     13    11    YES   (11,13)
+ 3     19    17    YES   (17,19)
+ 4     25    23    NO    25=5²
+ 5     31    29    YES   (29,31)
+10     61    59    YES   (59,61)</div>
+<p>So $|\\mathrm{Irr}(N)|=\\infty$ <strong>is exactly</strong> the Twin Prime Conjecture.</p>`},
+
+{ch:"§4 Irred",badge:"b-cor",title:"Lemma 4.4 + Corollary 4.5 — Descent and Covering",lean:`${GH}/TPC/Main.lean#L55`,body:`
+<p><strong>Norm:</strong> $|(z,w)|=\\phi(z)^2=(6z+1)^2$ is multiplicative and proper factors have strictly smaller norm.</p>
+<p><strong>Lemma 4.4:</strong> Every $(z,w)\\in N\\setminus\\{(0,0)\\}$ has an irreducible $\\otimes$-divisor. (Strong induction on norm.)</p>
+<p><strong>Corollary 4.5 — The Covering:</strong></p>
+<div class="math-block">$$N\\setminus\\{(0,0)\\}=\\bigcup_{\\widehat{q}\\in\\mathrm{Irr}(N)}\\widehat{q}\\otimes N$$</div>
+<p>This is the analogue of Furstenberg's $\\mathbb{Z}\\setminus\\{\\pm1\\}=\\bigcup_p p\\mathbb{Z}$.</p>`},
+
+{ch:"§5 Main",badge:"b-thm",title:"Theorem 5.2 — $|\\mathrm{Irr}(N)|=\\infty$",lean:`${GH}/TPC/Main.lean#L88`,body:`
+<p>The Furstenberg argument:</p>
+<div class="math-block">$$N\\setminus\\{(0,0)\\}=\\bigcup_{\\widehat{q}\\in\\mathrm{Irr}(N)}\\widehat{q}\\otimes N$$</div>
+<p>If $\\mathrm{Irr}(N)$ finite $\\Rightarrow$ finite union of clopen sets $\\Rightarrow$ $N\\setminus\\{(0,0)\\}$ clopen $\\Rightarrow$ $\\{(0,0)\\}$ open in $N$.</p>
+<p>But every nonempty open set in $N$ contains $\\widehat{q}\\otimes N$ (infinite) — <strong>contradiction</strong>.</p>
+<p>Therefore $|\\mathrm{Irr}(N)|=\\infty$. $\\blacksquare$</p>`},
+
+{ch:"§5 Main",badge:"b-cor",title:"Corollary 5.3 — Infinitely Many Twin Primes",lean:`${GH}/TPC/Main.lean#L110`,body:`
+<div class="math-block">$$\\bigl|\\{k\\in\\mathbb{Z}:6k-1\\in\\pm\\mathbb{P}\\text{ and }6k+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty\\qquad\\blacksquare$$</div>
+<p><strong>Logical chain:</strong></p>
+<p>$\\phi,\\psi$ isos $\\to$ No zero divs $\\to$ $M$ top. monoid $\\to$ $\\widehat{q}\\otimes M$ clopen $\\to$ <strong>Coset identity</strong> $\\to$ $\\widehat{q}\\otimes N$ clopen in $N$ $\\to$ Norm descent $\\to$ Covering $\\to$ Furstenberg $\\to$ $|\\mathrm{Irr}(N)|=\\infty$ $\\to$ <strong>Twin primes.</strong></p>
 <div class="d-flex flex-wrap gap-1 mt-2">
-<a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank" class="tpill">Twin Prime Conjecture</a>
-<a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof</a>
-<a href="${GH}/TPC/Main.lean" target="_blank" class="tpill"><i class="bi bi-code-slash"></i> Main.lean</a>
-</div>`,
-lean:`${GH}/TPC/Main.lean#L60`},
-
-// ═══════════════════════════════════════════════════════════════
-// §9  GENERAL FURSTENBERG CRITERION
-// ═══════════════════════════════════════════════════════════════
-
-{id:"gen",ch:"§9 General",b:"b-thm",
- t:`General Furstenberg Criterion — Coset-Closed Topologies on Generated Monoids`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The argument is an instance of a general criterion for generated monoids with irreducibility detection.</p>
-
-<p><strong>Theorem (General Furstenberg Criterion).</strong> Let $(N,\\cdot,1_N)$ be a commutative monoid with $N=\\langle \\mathrm{Irr}\\rangle$ (generated by its irreducibles). Equip $N$ with the coarsest topology making every translate $a\\cdot N$ closed. Then:</p>
-
-<div class="mdisp">
-$$|\\mathrm{Irr}|=\\infty \\;\\Longleftrightarrow\\; \\{1_N\\}\\text{ is not open}$$
-</div>
-
-<button class="btnprf" onclick="tp(this)">&#9654; Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>($\\Leftarrow$)</strong> If $\\mathrm{Irr}=\\{q_1,\\ldots,q_n\\}$ is finite, then $N\\setminus\\{1_N\\}=\\bigcup q_i\\cdot N$ (by generation) is a finite union of closed sets, hence closed. So $\\{1_N\\}$ is open. Contrapositive: $\\{1_N\\}$ not open $\\Rightarrow$ $|\\mathrm{Irr}|=\\infty$.</p>
-<p><strong>($\\Rightarrow$)</strong> If $|\\mathrm{Irr}|=\\infty$: suppose $\\{1_N\\}$ is open, i.e., $N\\setminus\\{1_N\\}=\\bigcup_{i=1}^{k}a_i\\cdot N$ for finitely many $a_i$. Each irreducible $q$ must equal some $a_i$ (since $q\\in a_j\\cdot N$ forces $q = a_j\\cdot r$, and irreducibility of $q$ forces $r=1_N$, so $q=a_j$). Hence $|\\mathrm{Irr}|\\leq k$, contradicting $|\\mathrm{Irr}|=\\infty$. $\\blacksquare$</p>
-<p><strong>Note:</strong> The ($\\Rightarrow$) direction requires that $q \\in a_j \\cdot N$ with $q$ irreducible forces $a_j = q$, $r = 1_N$. This holds when: (i) the monoid is cancellative, and (ii) the only unit is $1_N$. Both hold for $N = \\langle G\\rangle^\\otimes$ (cancellativity via $\\phi$-injectivity; unique unit by no-zero-component).</p>
-</div>
-
-<p><strong>Furstenberg's original (1955).</strong> Take $N=(\\mathbb{N},\\cdot)$ with $\\mathrm{Irr}=\\mathbb{P}$. Conclusion: infinitely many primes.</p>
-
-<p><strong>Our extension.</strong> Take $N=\\langle G\\rangle^{\\otimes} \\cong Q/Q^\\times$ with $\\mathrm{Irr}=G \\leftrightarrow S$. Conclusion: TPC $\\Leftrightarrow$ $\\{e\\}$ not open.</p>
-
-<p><strong>The tensor product quotient adds categorical meaning:</strong> $N$ arises from the tensor product $F_1 \\otimes F_2$ by collapsing cross-terms. The irreducibles of $N$ are exactly the diagonal generators — elements that are simultaneously irreducible in both component monoids.</p>`,
-lean:null},
-
-// ═══════════════════════════════════════════════════════════════
-// §10  CROSS-TERM CANCELLATION (WORKED EXAMPLE)
-// ═══════════════════════════════════════════════════════════════
-
-{id:"ex10",ch:"§10 Examples",b:"b-ex",
- t:`Worked Example — Cross-Term Cancellation in $Q$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">A concrete demonstration of how the quotient construction eliminates cross-terms, using the first two twin-prime generators $1, 2 \\in S$ (corresponding to $(5,7)$ and $(11,13)$).</p>
-
-<p><strong>Setup.</strong> $1 \\in S$ since $\\phi(1)=7, \\psi(1)=5$ are both prime. $2 \\in S$ since $\\phi(2)=13, \\psi(2)=11$ are both prime.</p>
-
-<p><strong>In $T = \\mathrm{FCM}(S \\times S)$:</strong></p>
-<div class="mdisp">
-$$(1 \\cdot 2) \\otimes (1 \\cdot 2) = (1\\otimes 1)(1\\otimes 2)(2\\otimes 1)(2\\otimes 2)$$
-</div>
-<p>This has four generators: two diagonal ($1\\otimes 1$, $2\\otimes 2$) and two cross-terms ($1\\otimes 2$, $2\\otimes 1$).</p>
-
-<p><strong>In $Q = T/\\langle(p\\otimes q)(q\\otimes p) \\sim e\\rangle$:</strong></p>
-<div class="mdisp">
-$$(1\\otimes 2)(2\\otimes 1) = e \\quad\\implies\\quad (1 \\cdot 2) \\otimes (1 \\cdot 2) = (1\\otimes 1)(2\\otimes 2)$$
-</div>
-<p>Cross-terms cancel! The product of the two diagonal generators is all that remains.</p>
-
-<p><strong>Concrete verification in $N$.</strong> In the product monoid $M = (\\mathbb{Z}^2, \\otimes)$:</p>
-<div class="mdisp">
-$$(1,1) \\otimes (2,2) = (1 \\circledast 2,\\; 1 \\star 2) = (15, -9)$$
-</div>
-<p>And indeed $\\phi(15) = 91 = 7 \\times 13 = \\phi(1)\\phi(2)$. The first component records the $\\circledast$-product faithfully.</p>
-
-<p><strong>General pattern.</strong> For $k_1, \\ldots, k_m \\in S$:</p>
-<div class="mdisp">
-$$\\underbrace{(k_1 \\cdots k_m)}_{\\text{in }F_1} \\otimes \\underbrace{(k_1 \\cdots k_m)}_{\\text{in }F_2} \\;\\;\\xrightarrow{\\text{in }Q}\\;\\; (k_1\\otimes k_1)\\cdots(k_m\\otimes k_m)$$
-</div>
-<p>All $\\binom{m}{2}$ cross-term pairs cancel, leaving only the $m$ diagonal generators.</p>
-
-<div class="cblk"> m generators → m² terms in T → m diagonal + m²-m cross-terms
- m = 2:  4 terms, 2 cancel → 2 remain
- m = 3:  9 terms, 6 cancel → 3 remain
- m = 4: 16 terms, 12 cancel → 4 remain
- General: m² - m = m(m-1) cross-terms cancel in Q</div>`,
-lean:null},
-
-// ═══════════════════════════════════════════════════════════════
-// §11  WHY NOT DIRECT PRODUCT / ANTI-DIAGONAL
-// ═══════════════════════════════════════════════════════════════
-
-{id:"hist",ch:"§11 Alternatives",b:"b-ex",
- t:`Why the Tensor Product Quotient? — Comparison with Direct Product and Anti-Diagonal`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Three natural constructions from $M_1$ and $M_2$. Only the tensor product quotient (via the diagonal realization $N$) correctly isolates twin primes.</p>
-
-<p><strong>Attempt 1: Direct product $M_1 \\times M_2$.</strong></p>
-<p>In $M = (\\mathbb{Z}^2, \\otimes) = M_1 \\times M_2$, any $(k,k)$ with $k \\neq 0$ factors as $(k,k) = (k,0) \\otimes (0,k)$. So $(k,k)$ is <em>always reducible</em> in $M$ — irreducibility requires one component to be $0$. The irreducibles of $M$ are $\\{(p,0) : p \\in \\mathrm{Irr}(M_1)\\} \\cup \\{(0,q) : q \\in \\mathrm{Irr}(M_2)\\}$. These encode primes $\\equiv \\pm 1 \\pmod{6}$ separately, not twin primes.</p>
-
-<p><strong>Attempt 2: Anti-diagonal $\\Delta(\\mathbb{Z}) = \\{(x, -x)\\}$.</strong></p>
-<p>This <em>is</em> a submonoid of $M$ (since $(-a) \\star (-b) = -(a \\circledast b)$). But the swap identity collapses the $\\star$-structure: $\\mathrm{Irr}(\\Delta) = \\{(x,-x) : |6x+1| \\text{ prime}\\}$, depending only on $\\circledast$. This encodes primes $\\equiv \\pm 1 \\pmod{6}$, not twin primes.</p>
-
-<p><strong>Attempt 3: Full diagonal $\\{(k,k) : k \\in \\mathbb{Z}\\}$.</strong></p>
-<p>Not a submonoid: $(1,1) \\otimes (1,1) = (8, -4)$ and $8 \\neq -4$.</p>
-
-<p><strong>The fix: Generated diagonal $N = \\langle G \\rangle^\\otimes$.</strong></p>
-<p>By restricting to $S = \\mathrm{Irr}(M_1) \\cap \\mathrm{Irr}(M_2)$ and generating a submonoid, we get a free commutative monoid where:</p>
-<ul>
-<li>Both components contribute independently (unlike anti-diagonal)</li>
-<li>Elements can't degenerate to $(k,0)$ or $(0,k)$ (unlike direct product)</li>
-<li>Irreducibility requires primality in <em>both</em> $\\phi$ and $\\psi$ (= twin primes)</li>
-</ul>
-<p>The tensor product quotient $Q/Q^\\times$ provides the categorical justification: it's the universal construction that "diagonalizes" $F_1 \\otimes F_2$ by killing cross-terms.</p>`,
-lean:null},
-
-// ═══════════════════════════════════════════════════════════════
-// CREDITS
-// ═══════════════════════════════════════════════════════════════
-
-{id:"credits",ch:"Credits",b:"b-cred",
- t:`Credits & Acknowledgements`,
- body:`<p><strong>Author:</strong> FruitfulApproach</p>
-<p><strong>AI Collaborator:</strong> Claude Opus 4.6 (Anthropic) — assisted with proof exploration, error detection, the tensor product quotient construction, and production of this proof-card deck.</p>
-<p><strong>Formalisation:</strong> <a href="https://leanprover-community.github.io/" target="_blank">Lean 4</a> + <a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank">Mathlib4</a>. Source: <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank">github.com/FruitfulApproach/Lean4TPC</a>.</p>
-<p><strong>Key references:</strong></p>
-<ul style="font-size:.9rem;line-height:1.8;color:var(--g600)">
-<li>H. Furstenberg, <em>On the infinitude of primes</em>, Amer. Math. Monthly <strong>62</strong> (1955), 353.</li>
-<li>The twin prime conjecture: $(p,\\,p+2)$ are both prime for infinitely many $p$.</li>
-<li>Tensor product of commutative monoids: the universal recipient of bimultiplicative maps.</li>
-</ul>
-<p style="margin-top:1rem;font-size:.82rem;color:var(--g400)">This deck presents the construction for peer review. The tensor product quotient $Q = (F_1 \\otimes F_2) / \\langle\\text{cross-terms}\\rangle$ provides a categorical framework in which twin primes arise as irreducibles of $Q/Q^\\times$. The Furstenberg topology gives the equivalence: TPC $\\Longleftrightarrow$ the identity cannot be isolated by finitely many cosets. Key ingredients: (1) $\\phi$, $\\psi$ isomorphisms and UFD structure, (2) tensor product of free commutative monoids, (3) cross-term quotient, (4) no-zero-component lemma. Errors and feedback welcome.</p>
-
-<div class="d-flex flex-wrap gap-1 mt-2">
-<a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="tpill"><i class="bi bi-github"></i> Lean4TPC</a>
-<a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank" class="tpill">Mathlib4 docs</a>
-<a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tpill">Twin Primes</a>
-<a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof</a>
-</div>`,lean:null}
-
+<a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank" class="tag">Twin Prime Conjecture</a>
+<a href="${GH}/TPC/Main.lean" target="_blank" class="tag"><i class="bi bi-code-slash"></i> Main.lean</a>
+<a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank" class="tag"><i class="bi bi-file-text"></i> PAPER.md</a>
+</div>`},
 ];
 
-const chapters=[...new Set(cards.map(c=>c.ch))];
 let cur=0;
-
+const chapters=[...new Set(cards.map(c=>c.ch))];
 function render(){
   const c=cards[cur];
-  const src=c.lean?`<a href="${c.lean}" target="_blank" class="srclink"><i class="bi bi-code-slash"></i> Lean4</a>`:"";
-  history.replaceState(null,"","#"+c.id);
+  const lean=c.lean?`<a href="${c.lean}" target="_blank" class="src-link ms-2"><i class="bi bi-code-slash"></i> Lean4</a>`:"";
   document.getElementById("mc").innerHTML=`
-    <div class="ctop">
-      <div class="badge-row">
-        <span class="tbadge ${c.b}">${c.b.replace("b-","")}</span>
-        <span style="font-family:var(--mono);font-size:.62rem;color:#555">${cur+1}/${cards.length}</span>
-        ${src}
-        <button class="btn-copy" onclick="copyLink(this)" title="Copy link to this card"><i class="bi bi-link-45deg"></i> Link</button>
-      </div>
-      <div class="eq-title">${c.t}</div>
-    </div>
-    <div class="cbody">${c.body}</div>`;
+    <div class="card-hdr"><span class="card-badge ${c.badge}">${c.badge.replace("b-","").toUpperCase()}</span>${lean}
+    <h2 class="card-title mt-1">${c.title}</h2></div>
+    <div class="card-body">${c.body}</div>`;
   const pct=Math.round(((cur+1)/cards.length)*100);
-  document.getElementById("pf").style.width=pct+"%";
-  document.getElementById("pt").textContent=`Card ${cur+1} of ${cards.length}`;
-  document.getElementById("nc").textContent=`${cur+1} / ${cards.length}`;
+  document.getElementById("pb").style.width=pct+"%";
+  document.getElementById("pl").textContent=`Card ${cur+1} of ${cards.length}`;
+  document.getElementById("ctr").textContent=`${cur+1} / ${cards.length}`;
   document.getElementById("bp").disabled=cur===0;
   document.getElementById("bn").disabled=cur===cards.length-1;
-  document.getElementById("chs").innerHTML=chapters.map(ch=>{
-    const act=cards[cur].ch===ch?" active":"";
-    return `<button class="chbtn${act}" onclick="jumpCh('${ch}')">${ch}</button>`;
-  }).join("");
+  document.getElementById("chn").innerHTML=chapters.map(ch=>
+    `<button class="ch-btn${cards[cur].ch===ch?" active":""}" onclick="jumpCh('${ch}')">${ch}</button>`).join("");
   document.getElementById("mm").innerHTML=cards.map((c,i)=>
-    `<div class="mmdot${i===cur?" active":""}" onclick="jump(${i})" title="${i+1}"></div>`
-  ).join("");
-  if(window.renderMathInElement){
+    `<div class="mm-dot${i===cur?" active":""}" onclick="jump(${i})"></div>`).join("");
+  if(window.renderMathInElement)
     renderMathInElement(document.getElementById("mc"),{
-      delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],
-      throwOnError:false
-    });
-  }
+      delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],throwOnError:false});
 }
-
-function go(d){
-  cur=Math.max(0,Math.min(cards.length-1,cur+d));
-  const el=document.getElementById("mc");
-  el.style.animation="none";
-  requestAnimationFrame(()=>{
-    el.style.animation=d>0?"slideLeft .28s cubic-bezier(.4,0,.2,1)":"slideRight .28s cubic-bezier(.4,0,.2,1)";
-    render();
-  });
-  window.scrollTo({top:0,behavior:"smooth"});
-}
+function go(d){cur=Math.max(0,Math.min(cards.length-1,cur+d));
+  document.getElementById("mc").style.animation="none";
+  requestAnimationFrame(()=>{document.getElementById("mc").style.animation="cardIn .32s ease";render();});
+  window.scrollTo({top:0,behavior:"smooth"});}
 function jump(i){cur=i;render();window.scrollTo({top:0,behavior:"smooth"});}
-function jumpId(id){const i=cards.findIndex(c=>c.id===id);if(i>=0)jump(i);}
 function jumpCh(ch){const i=cards.findIndex(c=>c.ch===ch);if(i>=0)jump(i);}
-function tp(btn){
-  const el=btn.nextElementSibling;
-  const open=el.style.display==="none"||!el.style.display;
-  el.style.display=open?"block":"none";
-  btn.innerHTML=open?"&#9660; Hide proof":"&#9654; Show proof";
-}
+function tp(btn){const el=btn.nextElementSibling;const open=el.style.display==="none"||!el.style.display;
+  el.style.display=open?"block":"none";btn.innerHTML=open?"▼ Hide proof":"▶ Show proof";}
 document.addEventListener("keydown",e=>{
   if(e.key==="ArrowRight"||e.key==="ArrowDown")go(1);
-  if(e.key==="ArrowLeft"||e.key==="ArrowUp")go(-1);
-});
-const _hash = location.hash.replace('#','');
-if (_hash) { const hi = cards.findIndex(c=>c.id===_hash); if(hi>=0) cur=hi; }
-const _saved = sessionStorage.getItem('tpcCard');
-if (_saved !== null) { cur = Math.min(parseInt(_saved,10), cards.length-1); sessionStorage.removeItem('tpcCard'); }
+  if(e.key==="ArrowLeft"||e.key==="ArrowUp")go(-1);});
+const _s=sessionStorage.getItem("tpcCard");
+if(_s!==null){cur=Math.min(parseInt(_s,10),cards.length-1);sessionStorage.removeItem("tpcCard");}
 render();
-function copyLink(btn){
-  const url = location.origin + location.pathname + '#' + cards[cur].id;
-  navigator.clipboard.writeText(url).then(()=>{
-    btn.classList.add('copied');
-    btn.innerHTML='<i class="bi bi-check2"></i> Copied!';
-    setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML='<i class="bi bi-link-45deg"></i> Link';},1800);
-  });
-}
-
-/* ── Dependency Graph ── */
-let cyInst=null;
-function toggleGraph(){
-  const ov=document.getElementById("graphOverlay");
-  ov.classList.toggle("active");
-  if(ov.classList.contains("active")&&!cyInst) initGraph();
-  if(cyInst) setTimeout(()=>cyInst.resize().fit(null,40),100);
-}
-function initGraph(){
-  const N=[
-    {id:"d1.1", l:"Def 1.1\n⊛ and ⋆", t:"def"},
-    {id:"p1.2", l:"Prop 1.2\nCMon + η", t:"prop"},
-    {id:"t1.3", l:"Thm 1.3\nφ, ψ isom.", t:"thm"},
-    {id:"l1.4", l:"Lem 1.4\nUFD", t:"lem"},
-    {id:"d2.1", l:"Def 2.1\nS = Irr₁∩Irr₂", t:"def"},
-    {id:"d2.2", l:"Def 2.2\nM, F₁, F₂", t:"def"},
-    {id:"d3.1", l:"Def 3.1\n⊗ CMon", t:"def"},
-    {id:"t3.2", l:"Thm 3.2\nT=FCM(S×S)", t:"thm"},
-    {id:"d4.1", l:"Def 4.1\nQuotient Q", t:"def"},
-    {id:"t4.2", l:"Thm 4.2\nOff-diag units", t:"thm"},
-    {id:"c4.3", l:"Cor 4.3\nQ/Q×≅FCM(S)", t:"cor"},
-    {id:"d5.1", l:"Def 5.1\nN=⟨G⟩", t:"def"},
-    {id:"t5.2", l:"Thm 5.2\nIrr(N)=G", t:"thm"},
-    {id:"l5.3", l:"Lem 5.3\nNo 0-comp", t:"lem"},
-    {id:"t6.1", l:"Thm 6.1\n(H1) Cover", t:"thm"},
-    {id:"d7.1", l:"Def 7.1\nτ_N", t:"def"},
-    {id:"t7.2", l:"Thm 7.2\n(H2) Closed", t:"thm"},
-    {id:"t7.3", l:"Thm 7.3\n(H3) ⟺ |G|=∞", t:"thm"},
-    {id:"t8.1", l:"Thm 8.1\nMain TPC", t:"thm"},
-    {id:"gen",  l:"General\nFurstenberg", t:"thm"}
-  ];
-  const E=[
-    ["d1.1","p1.2"],["d1.1","t1.3"],["d1.1","l1.4"],
-    ["p1.2","t1.3"],["t1.3","l1.4"],
-    ["t1.3","d2.1"],["l1.4","d2.1"],
-    ["d1.1","d2.2"],["d2.1","d2.2"],["l1.4","d2.2"],
-    ["d2.2","t3.2"],["d3.1","t3.2"],
-    ["t3.2","d4.1"],
-    ["d4.1","t4.2"],
-    ["t4.2","c4.3"],
-    ["d2.1","d5.1"],["d2.2","d5.1"],["c4.3","d5.1"],
-    ["d5.1","t5.2"],["t1.3","t5.2"],["l1.4","t5.2"],
-    ["d5.1","l5.3"],["t1.3","l5.3"],
-    ["d5.1","t6.1"],["t5.2","t6.1"],
-    ["d5.1","d7.1"],
-    ["d7.1","t7.2"],
-    ["d7.1","t7.3"],["l5.3","t7.3"],["t5.2","t7.3"],
-    ["t6.1","t8.1"],["t7.2","t8.1"],["t7.3","t8.1"],
-    ["t8.1","gen"]
-  ];
-  const colors={def:"#7c3aed",thm:"#f59e0b",prop:"#a1a1aa",lem:"#52525b",cor:"#3b82f6",ex:"#27272a"};
-  cyInst=cytoscape({
-    container:document.getElementById("cy"),
-    elements:[
-      ...N.map(n=>({data:{id:n.id,label:n.l,ntype:n.t}})),
-      ...E.map(([s,t])=>({data:{source:s,target:t}}))
-    ],
-    style:[
-      {selector:"node",style:{
-        "label":"data(label)","text-wrap":"wrap","text-valign":"center","text-halign":"center",
-        "font-family":"'JetBrains Mono',monospace","font-size":"10px","color":"#111",
-        "text-max-width":"100px",
-        "width":110,"height":48,"shape":"round-rectangle",
-        "background-color":"#7c3aed","background-opacity":0.95,
-        "border-width":2,"border-color":"#333","border-opacity":0.8,
-        "padding":"8px","text-margin-y":0,
-        "shadow-blur":8,"shadow-color":"rgba(0,0,0,0.4)","shadow-offset-x":0,"shadow-offset-y":2,"shadow-opacity":0.5
-      }},
-      {selector:"node[ntype='def']",style:{"background-color":"#7c3aed","color":"#fff","border-color":"#6d28d9"}},
-      {selector:"node[ntype='thm']",style:{"background-color":"#f59e0b","color":"#0f0f0f","border-color":"#d97706","font-weight":"bold"}},
-      {selector:"node[ntype='prop']",style:{"background-color":"#a1a1aa","color":"#18181b","border-color":"#71717a"}},
-      {selector:"node[ntype='lem']",style:{"background-color":"#52525b","color":"#e4e4e7","border-color":"#3f3f46"}},
-      {selector:"node[ntype='cor']",style:{"background-color":"#93c5fd","color":"#1e3a5f","border-color":"#3b82f6"}},
-      {selector:"node[ntype='ex']",style:{"background-color":"#27272a","color":"#a1a1aa","border-color":"#3f3f46"}},
-      {selector:"edge",style:{
-        "width":2,"line-color":"#4a4458","target-arrow-color":"#7c6f99",
-        "target-arrow-shape":"triangle-backcurve",
-        "curve-style":"taxi",
-        "taxi-direction":"downward",
-        "taxi-turn":"50%",
-        "taxi-turn-min-distance":"15px",
-        "arrow-scale":0.9,"opacity":0.5,
-        "line-cap":"round"
-      }},
-      {selector:"edge.highlighted",style:{"line-color":"#7c3aed","target-arrow-color":"#7c3aed","opacity":1,"width":3,"z-index":999}},
-      {selector:"node:active",style:{"overlay-opacity":0}},
-      {selector:"node.hover",style:{"border-width":3,"border-color":"#fff","z-index":999,"shadow-blur":18,"shadow-color":"rgba(124,58,237,0.6)"}},
-      {selector:"node.dimmed",style:{"opacity":0.2}},
-      {selector:"edge.dimmed",style:{"opacity":0.08}}
-    ],
-    layout:{
-      name:"elk",
-      elk:{
-        algorithm:"layered",
-        "elk.direction":"DOWN",
-        "elk.layered.spacing.nodeNodeBetweenLayers":"90",
-        "elk.spacing.nodeNode":"50",
-        "elk.layered.spacing.edgeNodeBetweenLayers":"30",
-        "elk.layered.spacing.edgeEdgeBetweenLayers":"12",
-        "elk.spacing.edgeEdge":"10",
-        "elk.spacing.edgeNode":"15",
-        "elk.edgeRouting":"ORTHOGONAL",
-        "elk.layered.nodePlacement.strategy":"NETWORK_SIMPLEX",
-        "elk.layered.crossingMinimization.strategy":"LAYER_SWEEP",
-        "elk.layered.considerModelOrder.strategy":"NODES_AND_EDGES",
-        "elk.layered.mergeEdges":"false"
-      }
-    },
-    minZoom:0.3,maxZoom:3,wheelSensitivity:0.3,
-    boxSelectionEnabled:false
-  });
-  cyInst.on("tap","node",function(evt){
-    const id=evt.target.id();
-    toggleGraph();
-    jumpId(id);
-  });
-  cyInst.on("mouseover","node",function(e){
-    var n=e.target;
-    n.addClass("hover");
-    var conn=n.connectedEdges();
-    var neighbors=conn.connectedNodes();
-    cyInst.elements().not(neighbors).not(conn).not(n).addClass("dimmed");
-    conn.addClass("highlighted");
-    document.getElementById("cy").style.cursor="pointer";
-  });
-  cyInst.on("mouseout","node",function(e){
-    e.target.removeClass("hover");
-    cyInst.elements().removeClass("dimmed highlighted");
-    document.getElementById("cy").style.cursor="default";
-  });
-}
 </script>
 </body>
 </html>

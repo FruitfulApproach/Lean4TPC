@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>TPC — Twin Primes via Weakly Saturated Submonoids</title>
+<title>TPC — Twin Primes via Coset Topology</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" rel="stylesheet"/>
@@ -12,336 +12,191 @@
   onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=JetBrains+Mono:wght@300;400;600&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
-:root{--ink:#1a1a2e;--ink-soft:#2d2d4e;--paper:#f7f3ee;--cream:#ede8e0;--gold:#c9a84c;--gold-light:#f0d98c;--gold-dim:#7a5a00;--teal:#2a7f8f;--rust:#b5451b;--sage:#4a7c59;}
+:root{--ink:#1a1a2e;--ink-soft:#2d2d4e;--paper:#f7f3ee;--cream:#ede8e0;--gold:#c9a84c;--gold-light:#f0d98c;--teal:#2a7f8f;--rust:#b5451b;--sage:#4a7c59;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'Source Sans 3',sans-serif;background:var(--ink);color:var(--paper);overflow-x:hidden;}
-
-/* HERO */
-.hero{min-height:100vh;background:radial-gradient(ellipse 80% 60% at 20% 40%,rgba(201,168,76,.08) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 80% 70%,rgba(42,127,143,.07) 0%,transparent 60%),var(--ink);display:flex;flex-direction:column;justify-content:center;padding:4rem 2rem 3rem;position:relative;overflow:hidden;}
+.hero{min-height:100vh;background:radial-gradient(ellipse 80% 60% at 20% 40%,rgba(201,168,76,.08),transparent 60%),radial-gradient(ellipse 60% 80% at 80% 70%,rgba(42,127,143,.07),transparent 60%),var(--ink);display:flex;flex-direction:column;justify-content:center;padding:4rem 2rem 3rem;position:relative;overflow:hidden;}
 .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.04) 1px,transparent 1px);background-size:48px 48px;animation:gridDrift 40s linear infinite;}
 @keyframes gridDrift{from{background-position:0 0;}to{background-position:48px 48px;}}
 .hero-inner{position:relative;z-index:1;max-width:860px;margin:0 auto;}
-.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;opacity:0;animation:fadeUp .6s .1s forwards;}
-.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,3.8rem);font-weight:900;line-height:1.12;margin-bottom:1.4rem;opacity:0;animation:fadeUp .7s .25s forwards;}
-.hero-title .accent{color:var(--gold);font-style:italic;}
-.hero-sub{font-size:1.1rem;color:#c8c4bc;max-width:620px;line-height:1.7;margin-bottom:2rem;opacity:0;animation:fadeUp .7s .4s forwards;}
-.hero-sub a{color:var(--gold-light);}
-.hero-eq{background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.25);border-left:4px solid var(--gold);border-radius:0 4px 4px 0;padding:1rem 1.4rem;font-size:1.05rem;margin-bottom:2.4rem;overflow-x:auto;opacity:0;animation:fadeUp .7s .55s forwards;}
-.hero-ctas{display:flex;flex-wrap:wrap;gap:.8rem;opacity:0;animation:fadeUp .7s .7s forwards;}
+.ey{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;opacity:0;animation:fu .6s .1s forwards;}
+.ht{font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,3.8rem);font-weight:900;line-height:1.12;margin-bottom:1.4rem;opacity:0;animation:fu .7s .25s forwards;}
+.ht .ac{color:var(--gold);font-style:italic;}
+.hs{font-size:1.1rem;color:#c8c4bc;max-width:620px;line-height:1.7;margin-bottom:2rem;opacity:0;animation:fu .7s .4s forwards;}
+.hs a{color:var(--gold-light);}
+.heq{background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.25);border-left:4px solid var(--gold);border-radius:0 4px 4px 0;padding:1rem 1.4rem;font-size:1.05rem;margin-bottom:2.4rem;overflow-x:auto;opacity:0;animation:fu .7s .55s forwards;}
+.hctas{display:flex;flex-wrap:wrap;gap:.8rem;opacity:0;animation:fu .7s .7s forwards;}
 .btn-ph{background:var(--gold);color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;padding:.75rem 1.8rem;border:2px solid var(--gold);border-radius:3px;text-decoration:none;transition:all .2s;letter-spacing:.04em;}
 .btn-ph:hover{background:transparent;color:var(--gold);}
 .btn-gh{background:transparent;color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:.9rem;padding:.75rem 1.6rem;border:1px solid rgba(255,255,255,.3);border-radius:3px;text-decoration:none;transition:all .2s;letter-spacing:.04em;}
 .btn-gh:hover{border-color:var(--gold);color:var(--gold);}
-.badge-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2rem;opacity:0;animation:fadeUp .7s .85s forwards;}
+.badge-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2rem;opacity:0;animation:fu .7s .85s forwards;}
 .pill{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.07em;padding:.22rem .65rem;border-radius:20px;border:1px solid;text-decoration:none;transition:all .2s;}
-.pg{border-color:var(--gold);color:var(--gold);}
-.pt{border-color:var(--teal);color:#7ecbdb;}
-.ps{border-color:var(--sage);color:#8ecfa0;}
-.pp{border-color:#666;color:#aaa;}
+.pg{border-color:var(--gold);color:var(--gold);}.pt{border-color:var(--teal);color:#7ecbdb;}
+.ps{border-color:var(--sage);color:#8ecfa0;}.pp{border-color:#666;color:#aaa;}
 .pill:hover{background:rgba(255,255,255,.08);}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
-.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:var(--gold);font-size:1.5rem;animation:bounce 1.8s 1.2s infinite,fadeUp .6s 1.2s forwards;opacity:0;}
-@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(6px);}}
-
-/* SECTIONS */
+@keyframes fu{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 .section{background:var(--paper);color:var(--ink);padding:5rem 1.5rem;}
 .section-dark{background:var(--ink-soft);color:var(--paper);padding:5rem 1.5rem;}
 .section-inner{max-width:1000px;margin:0 auto;}
-.section-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;}
-.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:1rem;line-height:1.2;}
-
-/* FLOW GRID */
+.slbl{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;}
+.stitle{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:1rem;line-height:1.2;}
 .flow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:2.5rem;}
-.flow-card{background:white;border-top:3px solid var(--gold);border-radius:0 0 4px 4px;padding:1.1rem 1.2rem;box-shadow:0 2px 12px rgba(0,0,0,.07);transition:transform .2s,box-shadow .2s;cursor:pointer;text-decoration:none;color:var(--ink);display:block;}
-.flow-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12);color:var(--ink);}
-.fc-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--gold-dim);margin-bottom:.3rem;}
+.fc{background:white;border-top:3px solid var(--gold);border-radius:0 0 4px 4px;padding:1.1rem 1.2rem;box-shadow:0 2px 12px rgba(0,0,0,.07);transition:transform .2s,box-shadow .2s;cursor:pointer;text-decoration:none;color:var(--ink);display:block;}
+.fc:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12);color:var(--ink);}
+.fc-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#7a5a00;margin-bottom:.3rem;}
 .fc-type{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .35rem;border-radius:2px;margin-bottom:.4rem;display:inline-block;}
-.fc-def{background:#d4eef2;color:#1a6070;}
-.fc-thm{background:#fae6de;color:#7a2a0a;}
-.fc-prop{background:#d8ede0;color:#2a5035;}
-.fc-lem{background:#e8dff7;color:#3a1f6e;}
-.fc-cor{background:#f0d98c;color:#7a5a00;}
-.flow-card .fc-title{font-size:.88rem;font-weight:600;line-height:1.3;}
-.flow-card .fc-body{font-size:.78rem;color:#666;margin-top:.4rem;line-height:1.5;}
-
-/* STATS */
+.t-def{background:#d4eef2;color:#1a6070;}.t-thm{background:#fae6de;color:#7a2a0a;}
+.t-prop{background:#d8ede0;color:#2a5035;}.t-lem{background:#e8dff7;color:#3a1f6e;}
+.t-cor{background:#f0d98c;color:#7a5a00;}
+.fc-title{font-size:.88rem;font-weight:600;line-height:1.3;}
+.fc-body{font-size:.78rem;color:#666;margin-top:.4rem;line-height:1.5;}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1.5rem;margin-top:2.5rem;}
 .stat-card{text-align:center;padding:1.5rem 1rem;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.2);border-radius:4px;}
 .stat-num{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--gold);font-weight:700;line-height:1;}
 .stat-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin-top:.4rem;}
-
-/* DEP CHAIN */
 .dep-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;margin-bottom:.5rem;line-height:1.6;}
 .dep-node{background:var(--cream);border:1px solid #ccc;border-radius:3px;padding:.15rem .45rem;color:var(--ink);white-space:nowrap;text-decoration:none;transition:all .15s;}
 .dep-node:hover{background:var(--ink);color:var(--gold);border-color:var(--ink);}
 .dep-arrow{color:var(--gold);font-size:1rem;}
-
-/* FILE TREE */
 .file-tree{background:#0d1117;border-radius:6px;padding:1.5rem 1.8rem;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:2;color:#cdd6f4;}
-.file-tree .dir{color:#89b4fa;}
-.file-tree .file a{color:#a6e3a1;text-decoration:none;}
-.file-tree .file a:hover{color:var(--gold-light);}
-.file-tree .comment{color:#6c7086;}
-
-/* FOOTER */
+.file-tree .dir{color:#89b4fa;}.file-tree .file a{color:#a6e3a1;text-decoration:none;}
+.file-tree .file a:hover{color:var(--gold-light);}.file-tree .comment{color:#6c7086;}
 footer{background:#0d0d1a;color:#888;padding:2rem 1.5rem;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.72rem;border-top:2px solid var(--gold);}
-footer a{color:var(--gold);text-decoration:none;}
-footer a:hover{color:var(--gold-light);}
+footer a{color:var(--gold);text-decoration:none;}footer a:hover{color:var(--gold-light);}
 </style>
 </head>
 <body>
-
-<!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow">
-      <i class="bi bi-folder2-open me-1"></i> C:\__CURRENT\TPC\Lean4TPC
-      &nbsp;·&nbsp;
-      <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" style="color:var(--gold-light)"><i class="bi bi-github"></i> github.com/FruitfulApproach/Lean4TPC</a>
-      &nbsp;·&nbsp; March 2026
-    </div>
-    <h1 class="hero-title">
-      Weakly Saturated Submonoids<br/>
-      &amp; the <span class="accent">Twin Prime Conjecture</span>
-    </h1>
-    <p class="hero-sub">
-      A novel algebraic reformulation of the Twin Prime Conjecture, with a
-      <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg-style</a>
-      topological proof that the anti-diagonal submonoid
-      $N = \Delta(\mathbb{Z}) \subset (\mathbb{Z}^2, \otimes)$
-      has infinitely many irreducibles.
-      Formalised in <a href="https://leanprover.github.io/" target="_blank">Lean 4</a>.
-    </p>
-    <div class="hero-eq">
-      $$|\mathrm{Irr}(N)| = \infty \iff \bigl|\{\,x \in \mathbb{Z} : 6x-1 \in \pm\mathbb{P},\; 6x+1 \in \pm\mathbb{P}\,\}\bigr| = \infty$$
-    </div>
-    <div class="hero-ctas">
-      <a href="tpc_cards.html" class="btn-ph">
-        <i class="bi bi-play-fill me-1"></i> Start Proof Deck
-      </a>
-      <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="btn-gh">
-        <i class="bi bi-github me-1"></i> GitHub Repo
-      </a>
-      <a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank" class="btn-gh">
-        <i class="bi bi-file-text me-1"></i> Paper (PAPER.md)
-      </a>
-      <a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank" class="btn-gh">
-        <i class="bi bi-book me-1"></i> Mathlib4 Docs
-      </a>
-      <a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank" class="btn-gh">
-        <i class="bi bi-wikipedia me-1"></i> Twin Primes
-      </a>
+    <div class="ey"><i class="bi bi-folder2-open me-1"></i>C:\__CURRENT\TPC\Lean4TPC &nbsp;·&nbsp;
+      <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" style="color:var(--gold-light)"><i class="bi bi-github"></i> FruitfulApproach/Lean4TPC</a></div>
+    <h1 class="ht">Weakly Saturated Submonoids<br/>&amp; the <span class="ac">Twin Prime Conjecture</span></h1>
+    <p class="hs">A <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg-style</a> proof that the submonoid $N=\\langle G\\rangle\\leqslant(\\mathbb{Z}^2,\\otimes)$ has infinitely many irreducibles, via the <strong>coset identity</strong> $\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)$ and the subspace topology from $M$. Formalised in <a href="https://leanprover.github.io/" target="_blank">Lean 4</a>.</p>
+    <div class="heq">$$\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)\\quad\\Rightarrow\\quad |\\mathrm{Irr}(N)|=\\infty\\quad\\Rightarrow\\quad\\text{infinitely many twin primes}$$</div>
+    <div class="hctas">
+      <a href="tpc_cards.html" class="btn-ph"><i class="bi bi-play-fill me-1"></i>Start Proof Deck</a>
+      <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="btn-gh"><i class="bi bi-github me-1"></i>GitHub</a>
+      <a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank" class="btn-gh"><i class="bi bi-file-text me-1"></i>PAPER.md</a>
+      <a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank" class="btn-gh"><i class="bi bi-book me-1"></i>Mathlib4</a>
     </div>
     <div class="badge-row">
       <a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="pill pg">Twin Primes</a>
       <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="pill pt">Furstenberg 1955</a>
       <a href="https://en.wikipedia.org/wiki/Monoid" target="_blank" class="pill ps">Monoid Theory</a>
       <a href="https://leanprover.github.io/" target="_blank" class="pill pp">Lean 4</a>
-      <a href="https://en.wikipedia.org/wiki/Topological_group" target="_blank" class="pill pt">Topological Monoid</a>
-      <a href="https://en.wikipedia.org/wiki/Arithmetic_progression" target="_blank" class="pill ps">Arith. Progressions</a>
-      <a href="https://en.wikipedia.org/wiki/Chinese_remainder_theorem" target="_blank" class="pill pp">CRT</a>
+      <a href="https://en.wikipedia.org/wiki/Arithmetic_progression" target="_blank" class="pill pt">Arith. Progressions</a>
+      <a href="https://en.wikipedia.org/wiki/Chinese_remainder_theorem" target="_blank" class="pill ps">CRT</a>
     </div>
   </div>
-  <div class="scroll-hint"><i class="bi bi-chevron-double-down"></i></div>
 </section>
 
-<!-- STATS -->
 <section class="section-dark">
   <div class="section-inner">
-    <div class="section-label">at a glance</div>
-    <div class="section-title">The Project in Numbers</div>
+    <div class="slbl">at a glance</div>
+    <div class="stitle">The Project in Numbers</div>
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-num">28</div><div class="stat-label">Proof Cards</div></div>
-      <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Lean 4 Files</div></div>
-      <div class="stat-card"><div class="stat-num">9</div><div class="stat-label">Paper Sections</div></div>
-      <div class="stat-card"><div class="stat-num">$\infty$</div><div class="stat-label">Twin Primes (proved)</div></div>
-      <div class="stat-card"><div class="stat-num">$\phi$</div><div class="stat-label">$\phi(x)=6x+1$</div></div>
+      <div class="stat-card"><div class="stat-num">16</div><div class="stat-label">Proof Cards</div></div>
+      <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Lean 4 Files</div></div>
+      <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">Paper Sections</div></div>
+      <div class="stat-card"><div class="stat-num">$\infty$</div><div class="stat-label">Twin Primes</div></div>
+      <div class="stat-card"><div class="stat-num">$\phi(x)$</div><div class="stat-label">$=6x+1$</div></div>
       <div class="stat-card"><div class="stat-num">$(6x{+}1)^2$</div><div class="stat-label">The Norm</div></div>
     </div>
   </div>
 </section>
 
-<!-- KEY IDEA -->
 <section class="section">
   <div class="section-inner">
-    <div class="section-label">key idea</div>
-    <div class="section-title">Furstenberg's Argument, Generalised to Monoids</div>
-    <div style="max-width:700px;line-height:1.85;color:#444;margin-bottom:1.5rem;">
-      <p style="margin-bottom:1rem;">
-        In Furstenberg's 1955 proof of the infinitude of primes, the core observation is that
-        $\mathbb{Z}\setminus\{\pm1\} = \bigcup_{p\,\in\,\mathrm{Irr}^{\times}(\mathbb{Z})} p\mathbb{Z}$
-        — every nonunit integer is divisible by some prime. Notice that $\mathbb{Z}$ here is only used as a
-        <em>multiplicative monoid</em>: the cosets $p\mathbb{Z}$ are monoid cosets, and the topology is defined
-        by arithmetic progressions. The additive group structure plays no role.
-      </p>
-      <p style="margin-bottom:1rem;">
-        We apply exactly this pattern to a different monoid. The challenge is: <strong>find a monoid whose irreducibles
-        correspond to twin prime averages</strong> — i.e., to integers $x$ where $6x+1$ and $6x-1$ are both $\pm$prime,
-        so that $(6x-1,\,6x+1)$ is a twin prime pair.
-      </p>
-      <p style="margin-bottom:1rem;">
-        The answer is the anti-diagonal submonoid $N = \Delta(\mathbb{Z}) \subset (\mathbb{Z}^2,\otimes)$, where
-        $\otimes$ is built from the operations $\circledast$ and $\star$. The isomorphisms $\phi(x)=6x+1$ and
-        $\psi(x)=6x-1$ transfer irreducibility in $N$ to primality of both $6x\pm1$, establishing the
-        bijection $\mathrm{Irr}(N) \leftrightarrow \{\text{twin prime pairs}\}$.
-      </p>
-      <p>
-        With this monoid in hand, the Furstenberg argument applies verbatim:
-        cover $N\setminus\{1_N\}$ by irreducible cosets, equip $N$ with a coset topology where each coset is closed and
-        every nonempty open set is infinite, and conclude $|\mathrm{Irr}(N)|=\infty$ by contradiction.
-      </p>
-    </div>
-    <div style="background:rgba(201,168,76,.08);border-left:4px solid var(--gold);border-radius:0 4px 4px 0;padding:1rem 1.4rem;max-width:700px;overflow-x:auto;">
-      $$\underbrace{\mathbb{Z}\setminus\{\pm1\}=\bigcup_{p\in\mathbb{P}} p\mathbb{Z}}_{\text{Furstenberg (primes)}} \qquad\longrightarrow\qquad \underbrace{N\setminus\{1_N\}=\bigcup_{q\in\mathrm{Irr}(N)} q\otimes N}_{\text{This paper (twin primes)}}$$
-    </div>
-  </div>
-</section>
-
-<!-- FLOW GRID -->
-<section class="section" style="background:var(--paper);">
-  <div class="section-inner">
-    <div class="section-label">interactive</div>
-    <div class="section-title">Browse the Proof — One Card at a Time</div>
+    <div class="slbl">interactive</div>
+    <div class="stitle">Browse the Proof — One Card at a Time</div>
     <p style="color:#555;max-width:620px;line-height:1.7;margin-bottom:.5rem;">
-      Each card corresponds to exactly one definition, theorem, or example.
-      Click any card to jump directly into the
-      <a href="tpc_cards.html" style="color:var(--teal)">interactive proof deck</a>.
-      Use ← → keys to navigate.
+      Click any card to jump directly to it in the <a href="tpc_cards.html" style="color:var(--teal)">proof deck</a>. Use ← → keys to navigate.
     </p>
     <div class="flow-grid">
-      <a href="tpc_cards.html" class="flow-card" data-card="0"><div class="fc-num">00</div><div class="fc-type fc-def">ABSTRACT</div><div class="fc-title">Overview &amp; Roadmap</div><div class="fc-body">The Twin Prime Conjecture reformulated algebraically.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="1"><div class="fc-num">01</div><div class="fc-type fc-def">DEF 1.1</div><div class="fc-title">Weakly Saturated Submonoid</div><div class="fc-body">$ab\in N \Rightarrow \exists a',b'\in N$ nontrivial with $a'b'=ab$.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="2"><div class="fc-num">02</div><div class="fc-type fc-cor">COR 1.5</div><div class="fc-title">Irreducibility Preserved</div><div class="fc-body">$n$ irred. in $M \iff$ irred. in $N$.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="3"><div class="fc-num">03</div><div class="fc-type fc-def">DEF 2.1</div><div class="fc-title">Operations $\circledast$ and $\star$</div><div class="fc-body">$x\circledast y=6xy+x+y$, $x\star y=-6xy+x+y$, identity $0$.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="4"><div class="fc-num">04</div><div class="fc-type fc-prop">PROP 2.3</div><div class="fc-title">Commutative Monoids</div><div class="fc-body">$N^*=(\mathbb{Z},\circledast)$ and $N^\star=(\mathbb{Z},\star)$ are CommMonoids.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="5"><div class="fc-num">05</div><div class="fc-type fc-prop">INVOL</div><div class="fc-title">Involution $\eta(x)=-x$</div><div class="fc-body">$\eta: N^*\cong N^\star$. So $x\star y=-((-x)\circledast(-y))$.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="6"><div class="fc-num">06</div><div class="fc-type fc-thm">THM 2.6</div><div class="fc-title">Isomorphisms $\phi$ and $\psi$</div><div class="fc-body">$\phi(x)=6x+1: N^*\cong(6\mathbb{Z}+1,\cdot)$. $\psi(x)=6x-1: N^\star\cong(6\mathbb{Z}-1,\bullet)$.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="7"><div class="fc-num">07</div><div class="fc-type fc-lem">LEM 2.8</div><div class="fc-title">No Zero Divisors</div><div class="fc-body">$u,v\neq 0 \Rightarrow u\circledast v\neq 0$ and $u\star v\neq 0$.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="8"><div class="fc-num">08</div><div class="fc-type fc-def">DEF 3.1</div><div class="fc-title">Anti-Diagonal $\Delta(\mathbb{Z})$</div><div class="fc-body">$N=\{(x,-x):x\in\mathbb{Z}\}\subset M=(\mathbb{Z}^2,\otimes)$.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="9"><div class="fc-num">09</div><div class="fc-type fc-prop">PROP 3.3</div><div class="fc-title">$N\cong N^*$</div><div class="fc-body">$\Delta(x)\otimes\Delta(y)=\Delta(x\circledast y)$. $N$ is a submonoid.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="10"><div class="fc-num">10</div><div class="fc-type fc-def">CEX</div><div class="fc-title">$N$ is NOT Saturated</div><div class="fc-body">$(1,0)\otimes(1,-8)=(8,-8)\in N$ but $(1,0)\notin N$.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="11"><div class="fc-num">11</div><div class="fc-type fc-thm">THM 4.1</div><div class="fc-title">$N$ IS Weakly Saturated</div><div class="fc-body">Lift $(a,b)\otimes(c,d)=(k,-k)$ to $(a,-a)\otimes(c,-c)=(k,-k)$.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="12"><div class="fc-num">12</div><div class="fc-type fc-thm">THM 5.1</div><div class="fc-title">Irreducibility $\Leftrightarrow$ Twin Primes</div><div class="fc-body">$(x,-x)\in\mathrm{Irr}(N)\iff 6x\pm 1\in\pm\mathbb{P}$.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="13"><div class="fc-num">13</div><div class="fc-type fc-def">DEF 6.1</div><div class="fc-title">Norm $|(x,-x)|=\phi(x)^2$</div><div class="fc-body">$(6x+1)^2$. Multiplicative, non-degenerate, integer-valued.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="14"><div class="fc-num">14</div><div class="fc-type fc-prop">N1–N6</div><div class="fc-title">Norm Axioms</div><div class="fc-body">$|(p\otimes q)|=|p|\cdot|q|$. Proper factors have strictly smaller norm.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="15"><div class="fc-num">15</div><div class="fc-type fc-thm">THM 7.2</div><div class="fc-title">Every Element has an Irred. Divisor</div><div class="fc-body">Induction on $|(k,-k)|$. Weak saturation lifts reducibility to $N$.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="16"><div class="fc-num">16</div><div class="fc-type fc-def">DEF 8.1</div><div class="fc-title">Basis $U_{a,b,c}$</div><div class="fc-body">$\{(a+cz,b-cz)\}$. Anti-diagonal arithmetic progressions.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="17"><div class="fc-num">17</div><div class="fc-type fc-thm">THM 8.3</div><div class="fc-title">$\mathcal{B}$ Topological Basis; Clopen</div><div class="fc-body">CRT gives intersections. Complement = finite union of translates.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="18"><div class="fc-num">18</div><div class="fc-type fc-thm">THM 8.9</div><div class="fc-title">$N$ Topological Monoid; $L_p$ Homeo.</div><div class="fc-body">Cosets $q\otimes N$ clopen, hence closed. $q\otimes C$ closed for closed $C$.</div></a>
-      <a href="tpc_cards.html" class="flow-card" data-card="19"><div class="fc-num">19</div><div class="fc-type fc-thm">THM 9.1 + COR 9.3</div><div class="fc-title">$|\mathrm{Irr}(N)|=\infty$ — Twin Primes</div><div class="fc-body">Finite $\mathrm{Irr}(N)\Rightarrow\{(0,0)\}$ open $\Rightarrow$ contradiction. QED.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="0"><div class="fc-num">00</div><div class="fc-type t-def">ABSTRACT</div><div class="fc-title">The Coset Topology Approach</div><div class="fc-body">$\widehat{q}\otimes N=N\cap(\widehat{q}\otimes M)$ is the key.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="1"><div class="fc-num">01</div><div class="fc-type t-def">DEF 1.1</div><div class="fc-title">Operations $\oast$ and $\star$</div><div class="fc-body">$x\oast y=6xy+x+y$, $x\star y=-6xy+x+y$, id $0$.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="2"><div class="fc-num">02</div><div class="fc-type t-thm">THM 1.3</div><div class="fc-title">Isomorphisms $\phi,\psi$</div><div class="fc-body">$\phi(x)=6x+1:N^*\cong(6\mathbb{Z}+1,\cdot)$.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="3"><div class="fc-num">03</div><div class="fc-type t-lem">LEM 1.4</div><div class="fc-title">No Zero Divisors</div><div class="fc-body">$u,v\neq 0\Rightarrow u\oast v\neq 0$.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="4"><div class="fc-num">04</div><div class="fc-type t-def">DEF 2.2</div><div class="fc-title">$G$ and $N=\langle G\rangle$</div><div class="fc-body">$G=\{(k,k)\}$. Elements of $N$: $(z,w)$ same sequence, different ops.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="5"><div class="fc-num">05</div><div class="fc-type t-prop">PROP 2.3</div><div class="fc-title">$M$ Topological Monoid</div><div class="fc-body">$\otimes$ continuous in Furstenberg product topology.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="6"><div class="fc-num">06</div><div class="fc-type t-lem">LEM 3.1</div><div class="fc-title">$\widehat{a}\otimes M$ is Clopen</div><div class="fc-body">$(a_1+(6a_1{+}1)\mathbb{Z})\times(a_2+(6a_2{-}1)\mathbb{Z})$.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="7"><div class="fc-num">07</div><div class="fc-type t-thm">THM 3.2</div><div class="fc-title">Coset Identity</div><div class="fc-body">$\widehat{q}\otimes N=N\cap(\widehat{q}\otimes M)$ for $\widehat{q}\in\mathrm{Irr}(N)$.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="8"><div class="fc-num">08</div><div class="fc-type t-cor">COR 3.3</div><div class="fc-title">$\widehat{q}\otimes N$ Clopen in $N$</div><div class="fc-body">Subspace topology gives clopenness for free.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="9"><div class="fc-num">09</div><div class="fc-type t-thm">THM 4.2</div><div class="fc-title">Irred $\iff$ Twin Primes</div><div class="fc-body">$(z,w)\in\mathrm{Irr}(N)\iff 6z\pm1\in\pm\mathbb{P}$.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="10"><div class="fc-num">10</div><div class="fc-type t-cor">LEM+COR 4.4–4.5</div><div class="fc-title">Norm Descent + Covering</div><div class="fc-body">$N\setminus\{0\}=\bigcup_{\widehat{q}\in\mathrm{Irr}(N)}\widehat{q}\otimes N$.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="11"><div class="fc-num">11</div><div class="fc-type t-lem">LEM 5.1</div><div class="fc-title">No Singleton Open in $N$</div><div class="fc-body">Every nonempty open set in $N$ is infinite.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="12"><div class="fc-num">12</div><div class="fc-type t-thm">THM 5.2</div><div class="fc-title">$|\mathrm{Irr}(N)|=\infty$</div><div class="fc-body">Furstenberg: finite $\mathrm{Irr}(N)\Rightarrow\{(0,0)\}$ open. Contradiction.</div></a>
+      <a href="tpc_cards.html" class="fc" data-card="13"><div class="fc-num">13</div><div class="fc-type t-cor">COR 5.3</div><div class="fc-title">Infinitely Many Twin Primes</div><div class="fc-body">$|\{k:6k\pm1\in\pm\mathbb{P}\}|=\infty$. $\blacksquare$</div></a>
     </div>
-    <div class="text-center mt-4">
-      <a href="tpc_cards.html" class="btn-ph">
-        <i class="bi bi-play-fill me-1"></i> Open Interactive Proof Deck
-      </a>
-    </div>
+    <div class="text-center mt-4"><a href="tpc_cards.html" class="btn-ph"><i class="bi bi-play-fill me-1"></i>Open Proof Deck</a></div>
   </div>
 </section>
 
-<!-- DEPENDENCY CHAIN -->
 <section class="section-dark">
   <div class="section-inner">
-    <div class="section-label">logical flow</div>
-    <div class="section-title">Dependency Chain</div>
-    <p style="color:#aaa;margin-bottom:1.5rem;max-width:600px;line-height:1.6;">Click any node to jump to that card in the proof deck.</p>
+    <div class="slbl">logical flow</div>
+    <div class="stitle">Dependency Chain</div>
     <div class="dep-row">
-      <a href="tpc_cards.html" class="dep-node" data-card="3">Def 2.1: $\circledast,\star$</a>
-      <span class="dep-arrow">→</span>
-      <a href="tpc_cards.html" class="dep-node" data-card="4">Prop 2.3: CommMonoid</a>
-      <span class="dep-arrow">→</span>
-      <a href="tpc_cards.html" class="dep-node" data-card="6">Thm 2.6: $\phi,\psi$</a>
-      <span class="dep-arrow">→</span>
-      <a href="tpc_cards.html" class="dep-node" data-card="7">Lem 2.8: No zero div.</a>
+      <a href="tpc_cards.html" class="dep-node" data-card="1">Def 1.1: $\oast,\star$</a><span class="dep-arrow">→</span>
+      <a href="tpc_cards.html" class="dep-node" data-card="2">Thm 1.3: $\phi,\psi$</a><span class="dep-arrow">→</span>
+      <a href="tpc_cards.html" class="dep-node" data-card="3">Lem 1.4: No zero divs</a>
     </div>
     <div class="dep-row">
-      <a href="tpc_cards.html" class="dep-node" data-card="8">Def 3.1: $\Delta(\mathbb{Z})$</a>
-      <span class="dep-arrow">+</span>
-      <a href="tpc_cards.html" class="dep-node" data-card="7">Lem 2.8</a>
-      <span class="dep-arrow">→</span>
-      <a href="tpc_cards.html" class="dep-node" data-card="11">Thm 4.1: Weak Sat.</a>
-      <span class="dep-arrow">→</span>
-      <a href="tpc_cards.html" class="dep-node" data-card="12">Thm 5.1: Irred $\iff$ Twin</a>
+      <a href="tpc_cards.html" class="dep-node" data-card="4">Def 2.2: $N=\langle G\rangle$</a><span class="dep-arrow">+</span>
+      <a href="tpc_cards.html" class="dep-node" data-card="5">Prop 2.3: Top. monoid</a><span class="dep-arrow">→</span>
+      <a href="tpc_cards.html" class="dep-node" data-card="6">Lem 3.1: $\widehat{a}\otimes M$ clopen</a>
     </div>
     <div class="dep-row">
-      <a href="tpc_cards.html" class="dep-node" data-card="13">Def 6.1: Norm</a>
-      <span class="dep-arrow">→</span>
-      <a href="tpc_cards.html" class="dep-node" data-card="14">N1–N6</a>
-      <span class="dep-arrow">→</span>
-      <a href="tpc_cards.html" class="dep-node" data-card="15">Thm 7.2: Irred. divisor</a>
-      <span class="dep-arrow">→</span>
-      <span class="dep-node">Cor 7.5: Covering</span>
+      <a href="tpc_cards.html" class="dep-node" data-card="6">Lem 3.1</a><span class="dep-arrow">+</span>
+      <a href="tpc_cards.html" class="dep-node" data-card="3">Lem 1.4</a><span class="dep-arrow">+</span>
+      <a href="tpc_cards.html" class="dep-node" data-card="2">Thm 1.3</a><span class="dep-arrow">→</span>
+      <a href="tpc_cards.html" class="dep-node" data-card="7"><strong>Thm 3.2: Coset identity</strong></a><span class="dep-arrow">→</span>
+      <a href="tpc_cards.html" class="dep-node" data-card="8">Cor 3.3: $\widehat{q}\otimes N$ clopen</a>
     </div>
     <div class="dep-row">
-      <a href="tpc_cards.html" class="dep-node" data-card="16">Def 8.1: $U_{a,b,c}$</a>
-      <span class="dep-arrow">→</span>
-      <a href="tpc_cards.html" class="dep-node" data-card="17">Thm 8.3: Clopen</a>
-      <span class="dep-arrow">→</span>
-      <a href="tpc_cards.html" class="dep-node" data-card="18">Thm 8.9: Top. Monoid</a>
-      <span class="dep-arrow">→</span>
-      <span class="dep-node">Cosets closed</span>
-    </div>
-    <div class="dep-row mt-2" style="font-size:.9rem;">
-      <span style="color:#aaa">Covering + Cosets closed + No singleton open</span>
-      <span class="dep-arrow" style="font-size:1.3rem">⟹</span>
-      <strong style="color:var(--gold);font-family:'Playfair Display',serif;font-size:1.1rem;">
-        $|\mathrm{Irr}(N)|=\infty$ &nbsp;→&nbsp; Infinitely many twin primes. $\blacksquare$
-      </strong>
+      <a href="tpc_cards.html" class="dep-node" data-card="10">Cor 4.5: Covering</a><span class="dep-arrow">+</span>
+      <a href="tpc_cards.html" class="dep-node" data-card="8">Cor 3.3</a><span class="dep-arrow">+</span>
+      <a href="tpc_cards.html" class="dep-node" data-card="11">Lem 5.1</a><span class="dep-arrow" style="font-size:1.3rem">⟹</span>
+      <strong style="color:var(--gold);font-family:'Playfair Display',serif;font-size:1.1rem;">$|\mathrm{Irr}(N)|=\infty$ → Twin Primes. $\blacksquare$</strong>
     </div>
   </div>
 </section>
 
-<!-- FILE TREE -->
 <section class="section">
   <div class="section-inner">
-    <div class="section-label">source code</div>
-    <div class="section-title">Lean 4 Project Structure</div>
-    <p style="color:#555;margin-bottom:1.5rem;line-height:1.6;">
-      Located at <code>C:\__CURRENT\TPC\Lean4TPC</code>.
-      Run <code>lake exe cache get &amp;&amp; lake build</code> to typecheck everything.
-    </p>
+    <div class="slbl">source code</div>
+    <div class="stitle">Lean 4 Project Structure</div>
+    <p style="color:#555;margin-bottom:1.5rem;line-height:1.6;">At <code>C:\__CURRENT\TPC\Lean4TPC</code>. Run <code>lake exe cache get &amp;&amp; lake build</code>.</p>
     <div class="file-tree">
 <span class="dir">Lean4TPC/</span><br/>
-├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/lakefile.lean" target="_blank">lakefile.lean</a></span>  <span class="comment">-- Lake build config, Mathlib4 dep</span><br/>
+├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/lakefile.lean" target="_blank">lakefile.lean</a></span>  <span class="comment">-- Mathlib4 dep</span><br/>
 ├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/lean-toolchain" target="_blank">lean-toolchain</a></span>  <span class="comment">-- leanprover/lean4:v4.14.0</span><br/>
-├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC.lean" target="_blank">TPC.lean</a></span>  <span class="comment">-- root: imports all submodules</span><br/>
+├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC.lean" target="_blank">TPC.lean</a></span>  <span class="comment">-- root imports</span><br/>
+├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank">PAPER.md</a></span>  <span class="comment">-- full paper</span><br/>
 └── <span class="dir">TPC/</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Basic.lean" target="_blank">Basic.lean</a></span>  <span class="comment">-- mstar, sstar, φ, ψ, η, no-zero-div</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Monoid.lean" target="_blank">Monoid.lean</a></span>  <span class="comment">-- CommMonoid instances, product monoid M</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/AntiDiagonal.lean" target="_blank">AntiDiagonal.lean</a></span>  <span class="comment">-- Δ(ℤ), closure, irred equivalence</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/WeaklySaturated.lean" target="_blank">WeaklySaturated.lean</a></span>  <span class="comment">-- WS defn, counterexample, proof</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Norm.lean" target="_blank">Norm.lean</a></span>  <span class="comment">-- norm (6x+1)², axioms N1–N6, descent</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Topology.lean" target="_blank">Topology.lean</a></span>  <span class="comment">-- U_{a,b,c} basis, clopen, top. monoid</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Main.lean" target="_blank">Main.lean</a></span>  <span class="comment">-- Furstenberg argument, twin prime corollary</span>
-    </div>
-    <div class="mt-3 d-flex flex-wrap gap-2">
-      <code style="font-size:.8rem;background:#f0f0f0;padding:.3rem .7rem;border-radius:3px;color:#333;">cd C:\__CURRENT\TPC\Lean4TPC</code>
-      <code style="font-size:.8rem;background:#f0f0f0;padding:.3rem .7rem;border-radius:3px;color:#333;">lake exe cache get</code>
-      <code style="font-size:.8rem;background:#f0f0f0;padding:.3rem .7rem;border-radius:3px;color:#333;">lake build 2&gt;&amp;1 | findstr /i "error sorry"</code>
+&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Monoid.lean" target="_blank">Monoid.lean</a></span>  <span class="comment">-- M=(ℤ²,⊗), G, N=⟨G⟩, top. monoid</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/CosetTopology.lean" target="_blank">CosetTopology.lean</a></span>  <span class="comment">-- q̂⊗M clopen, coset identity, Cor 3.3</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Main.lean" target="_blank">Main.lean</a></span>  <span class="comment">-- norm, descent, covering, main thm</span>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <p>
-    <strong style="color:var(--gold);font-family:'Playfair Display',serif;">TPC Project</strong>
-    &nbsp;·&nbsp; March 2026
-    &nbsp;·&nbsp; <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank"><i class="bi bi-github"></i> GitHub</a>
-    &nbsp;·&nbsp; <a href="tpc_cards.html"><i class="bi bi-card-text"></i> Proof Deck</a>
-    &nbsp;·&nbsp; <a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank">Mathlib4</a>
-    &nbsp;·&nbsp; <a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank">Twin Primes (Wikipedia)</a>
-  </p>
+  <p><strong style="color:var(--gold);font-family:'Playfair Display',serif;">TPC Project</strong> &nbsp;·&nbsp; March 2026
+  &nbsp;·&nbsp; <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank"><i class="bi bi-github"></i> GitHub</a>
+  &nbsp;·&nbsp; <a href="tpc_cards.html"><i class="bi bi-card-text"></i> Proof Deck</a>
+  &nbsp;·&nbsp; <a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank">PAPER.md</a>
+  &nbsp;·&nbsp; <a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank">Wikipedia</a></p>
   <p style="margin-top:.5rem;color:#555;">Author: [Your Name] &nbsp;·&nbsp; Computational assistance: Claude Sonnet 4.6 (Anthropic)</p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// Store target card in sessionStorage so tpc_cards.html can read it
-document.querySelectorAll('[data-card]').forEach(el => {
-  el.addEventListener('click', () => {
-    sessionStorage.setItem('tpcCard', el.dataset.card);
-  });
+document.querySelectorAll('[data-card]').forEach(el=>{
+  el.addEventListener('click',()=>sessionStorage.setItem('tpcCard',el.dataset.card));
 });
 </script>
 </body>
