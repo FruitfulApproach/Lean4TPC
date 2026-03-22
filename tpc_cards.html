@@ -408,37 +408,35 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 </div>`},
 
 {ch:"§4 Irred",badge:"b-thm",title:"Theorem 4.2 — Irreducibles $\\iff$ Twin Primes",lean:`${GH}/TPC/Main.lean#L8`,body:`
-<p>$(z,w)\\in N$ is $\\otimes$-irreducible if and only if $6z+1$ and $|6z-1|$ are both prime.</p>
-<div class="math-block">$$(z,w)\\in\\mathrm{Irr}(N) \\iff \\phi(z)=6z+1\\in\\pm\\mathbb{P}\\text{ and }\\psi(z)=6z-1\\in\\pm\\mathbb{P}$$</div>
+<p>$(z,w)\\in N$ is $\\otimes$-irreducible if and only if $z$ is $\\circledast$-irreducible and $w$ is $\\star$-irreducible:</p>
+<div class="math-block">$$(z,w)\\in\\mathrm{Irr}(N) \\iff z\\notin\\{x\\circledast y : x,y\\neq 0\\}\\text{ and }w\\notin\\{x\\star y : x,y\\neq 0\\}$$</div>
+<p>Via the isomorphisms $\\phi$ and $\\psi$, these conditions become: $\\phi(z)=6z+1$ is $\\pm$prime and $\\psi(w)=6w-1$ is $\\pm$prime. Since elements of $N$ have the form $(z,w)$ built from the same generator sequence, irreducibles correspond to twin prime pairs.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>Key structural fact:</strong> By construction, every element of $N$ is a product of generators $\\Delta(k_i)=(k_i,k_i)$, so every $(z,w)\\in N$ satisfies $w=z$ (since $w$ is determined by the same generator sequence as $z$). In particular any irreducible $(z,w)\\in\\mathrm{Irr}(N)$ has the form $(z,z)$.</p>
-<p><strong>($\\Rightarrow$) Irreducible $\\Rightarrow$ both $\\phi(z),\\psi(z)$ are $\\pm$prime:</strong></p>
-<p>Suppose $(z,z)\\in\\mathrm{Irr}(N)$ but $\\phi(z)=6z+1$ is not $\\pm$prime. Then $\\phi(z)=\\phi(a)\\phi(b)$ with $a,b\\neq 0$, i.e., $z = a\\circledast b$.</p>
-<p>We ask: can $(z,z)$ be factored as $(a,c)\\otimes(b,d)$ in $N$? This requires:</p>
-<div class="math-block">$$a\\circledast b = z,\\quad c\\star d = z,\\quad\\text{i.e., }6ab+a+b = -6cd+c+d$$</div>
-<p>Rearranging: $\\displaystyle\\frac{c+d-a-b}{ab+cd}=6$. But this equation is extremely restrictive — for integer solutions with $|a|,|b|,|c|,|d|\\geq 1$ and the generators constrained to lie on the diagonal, this is generically impossible.</p>
-<p>However, the correct route uses the <strong>diagonal constraint</strong> directly: any factorization in $N$ must come from generators. If $(z,z) = \\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_r)$ with $r\\geq 2$, then applying $\\phi$ to the first component:</p>
-<p>$\\phi(z) = \\phi(k_1)\\cdots\\phi(k_r)$</p>
-<p>If $\\phi(z)$ is not $\\pm$prime, such a factorization with $r\\geq 2$ and all $k_i\\neq 0$ exists. This contradicts irreducibility. So $\\phi(z)$ must be $\\pm$prime. Similarly, applying $\\psi$ to the second component forces $\\psi(z)=6z-1$ to be $\\pm$prime.</p>
-<p><strong>($\\Leftarrow$) Both prime $\\Rightarrow$ irreducible:</strong></p>
-<p>Suppose $\\phi(z)=6z+1$ and $\\psi(z)=6z-1$ are both $\\pm$prime. If $(z,z) = \\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_r)$ with $r\\geq 2$, then:</p>
-<p>$\\phi(z) = \\phi(k_1)\\cdots\\phi(k_r)$</p>
-<p>Since $\\phi(z)$ is prime, all but one factor must be $\\pm 1$, i.e., all but one $k_i$ satisfies $\\phi(k_i)=\\pm 1$. But $\\phi(k_i)=1\\Rightarrow k_i=0$ (identity), and $\\phi(k_i)=-1\\Rightarrow k_i=-1/3\\notin\\mathbb{Z}$. So all but one $k_i$ is $0$ (the identity element), making the factorization trivial. Hence $(z,z)$ is irreducible.</p>
+<p><strong>Setup:</strong> Recall that every $(z,w)\\in N$ is a product of generators $\\Delta(k_i)=(k_i,k_i)$. So $z = k_1\\circledast\\cdots\\circledast k_r$ and $w = k_1\\star\\cdots\\star k_r$ for the same sequence $k_1,\\ldots,k_r$.</p>
+<p><strong>($\\Rightarrow$) Irreducible in $N$ $\\Rightarrow$ $z$ is $\\circledast$-irred and $w$ is $\\star$-irred:</strong></p>
+<p>Suppose $(z,w)\\in\\mathrm{Irr}(N)$. Then the only way to write $(z,w)=\\widehat{a}\\otimes\\widehat{b}$ with $\\widehat{a},\\widehat{b}\\in N$ has $\\widehat{a}=(0,0)$ or $\\widehat{b}=(0,0)$.</p>
+<p><span class="step-num">1</span><strong>$z$ is $\\circledast$-irreducible:</strong> Suppose $z = x\\circledast y$ with $x,y\\neq 0$. Via $\\phi$: $\\phi(z) = \\phi(x)\\phi(y)$ with $\\phi(x),\\phi(y)\\neq 1$. Since $(z,w)\\in N$, we have $z=k_1\\circledast\\cdots\\circledast k_r$, so $\\phi(z)=\\phi(k_1)\\cdots\\phi(k_r)$. If any nontrivial splitting of this product into two groups exists (i.e., $r\\geq 2$ with all $k_i\\neq 0$), then $(z,w) = \\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_j) \\;\\otimes\\; \\Delta(k_{j+1})\\otimes\\cdots\\otimes\\Delta(k_r)$ — a nontrivial factorization in $N$, contradicting irreducibility. So $r=1$ (up to trivial identity factors), meaning $z$ cannot be nontrivially $\\circledast$-factored.</p>
+<p><span class="step-num">2</span><strong>$w$ is $\\star$-irreducible:</strong> Same argument applied to the second component. If $w = x\\star y$ with $x,y\\neq 0$, then via $\\psi$ we get a nontrivial factorization of $\\psi(w)$, which would lift to a nontrivial factorization in $N$, contradicting irreducibility.</p>
+<p><strong>($\\Leftarrow$) Both components irred $\\Rightarrow$ irreducible in $N$:</strong></p>
+<p>Suppose $z\\notin\\{x\\circledast y:x,y\\neq 0\\}$ and $w\\notin\\{x\\star y:x,y\\neq 0\\}$. If $(z,w) = \\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_r)$ with $r\\geq 2$ and all $k_i\\neq 0$, then:</p>
+<p>$z = k_1\\circledast\\cdots\\circledast k_r$ — a nontrivial $\\circledast$-factorization of $z$ (since $r\\geq 2$ and all $k_i\\neq 0$), contradicting $z\\notin\\{x\\circledast y:x,y\\neq 0\\}$.</p>
+<p>Therefore no such factorization exists, so $(z,w)$ is $\\otimes$-irreducible.</p>
+<p><strong>Connection to twin primes:</strong> By Theorem 1.3, $z$ is $\\circledast$-irreducible $\\iff$ $\\phi(z)=6z+1$ is $\\pm$prime, and $w$ is $\\star$-irreducible $\\iff$ $\\psi(w)=6w-1$ is $\\pm$prime. For generators $(z,z)\\in N$: this gives $6z+1$ and $6z-1$ both $\\pm$prime, i.e., $(6z-1,6z+1)$ is a twin prime pair.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="example-box">
 <div class="example-title"><i class="bi bi-table me-1"></i>Twin Prime Table</div>
-<div class="code-block" style="margin:0"> z    6z+1   6z−1   Both ±prime?   Twin pair
- 1      7      5       YES ✓        (5, 7)
- 2     13     11       YES ✓        (11, 13)
- 3     19     17       YES ✓        (17, 19)
- 4     25     23       NO  ✗        25 = 5²
- 5     31     29       YES ✓        (29, 31)
- 7     43     41       YES ✓        (41, 43)
-10     61     59       YES ✓        (59, 61)
-12     73     71       YES ✓        (71, 73)
-17    103    101       YES ✓        (101, 103)</div>
+<div class="code-block" style="margin:0"> z    φ(z)=6z+1  ψ(z)=6z−1  φ ±prime?  ψ ±prime?  Twin pair
+ 1       7          5        YES ✓      YES ✓      (5, 7)
+ 2      13         11        YES ✓      YES ✓      (11, 13)
+ 3      19         17        YES ✓      YES ✓      (17, 19)
+ 4      25         23        NO  ✗      YES        25 = 5²
+ 5      31         29        YES ✓      YES ✓      (29, 31)
+ 7      43         41        YES ✓      YES ✓      (41, 43)
+10      61         59        YES ✓      YES ✓      (59, 61)
+12      73         71        YES ✓      YES ✓      (71, 73)
+17     103        101        YES ✓      YES ✓      (101, 103)</div>
 </div>
 <p>So $|\\mathrm{Irr}(N)|=\\infty$ is <strong>exactly</strong> the Twin Prime Conjecture.</p>`},
 
