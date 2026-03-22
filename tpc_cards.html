@@ -616,15 +616,43 @@ lean:null},
 <div class="mdisp">$$q\\otimes N = N\\cap\\bigl(\\{x\\equiv k\\!\\pmod{6k+1}\\}\\times\\mathbb{Z}\\bigr) \\quad\\text{is clopen in }N$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>Step 1 — Characterise the coset via congruences.</strong></p>
-<p>If $(a,a')\\in q\\otimes N$, then $(a,a')=(k,k)\\otimes(r,r')$ for some $(r,r')\\in N$. The first component gives $a=k\\mathbin{\\circledast}r=6kr+k+r$. Applying $\\phi$: $\\phi(a)=\\phi(k)\\cdot\\phi(r)=(6k+1)(6r+1)$, so $(6k+1)\\mid\\phi(a)$, i.e., $(6k+1)\\mid(6a+1)$.</p>
-<p>Now $6a+1\\equiv 0\\pmod{6k+1}$ iff $6a\\equiv -1\\pmod{6k+1}$ iff $6a\\equiv 6k\\pmod{6k+1}$ iff $a\\equiv k\\pmod{6k+1}$ (since $\\gcd(6,6k+1)=1$). So the first-component condition is $a\\in k+(6k+1)\\mathbb{Z}$.</p>
+<p>Fix a generator $q=(k,k)\\in G$, so $p:=6k+1$ is prime. We prove:</p>
+<div class="mdisp">$$q\\otimes N \\;=\\; N \\;\\cap\\; \\bigl(\\{a\\in\\mathbb{Z}: a\\equiv k\\!\\!\\pmod{p}\\}\\times\\mathbb{Z}\\bigr)$$</div>
 
-<p><strong>Step 2 — Converse inclusion.</strong></p>
-<p>If $(a,a')\\in N$ and $a\\equiv k\\pmod{6k+1}$, then $(6k+1)\\mid(6a+1)$. By unique factorization in $N$ (<a class="iref" onclick="jumpId('p5.2')">Prop 5.2</a>), write the factorization of $(a,a')$ in terms of generators. The first component satisfies $\\phi(a)=\\prod_i\\phi(g_i)$. Since $(6k+1)$ is prime (as $(k,k)\\in G$) and divides $\\phi(a)$, it must divide some $\\phi(g_i)=6g_i+1$. Since each $\\phi(g_i)\\in\\pm\\mathbb{P}$ and $|6k+1|=|\\phi(g_i)|$ forces $g_i=k$ (by injectivity of $\\phi$). So $(k,k)$ appears among the generators, giving $(a,a')\\in q\\otimes N$.</p>
+<p><strong>Step 1 — Key congruence identity.</strong> For any $r\\in\\mathbb{Z}$:</p>
+<div class="mdisp">$$k\\mathbin{\\circledast}r \\;=\\; 6kr+k+r \\;\\equiv\\; 0\\cdot r + k + r \\cdot 1 \\;\\equiv\\; k + r \\pmod{p}$$</div>
+<p>because $6k\\equiv -1\\pmod{p}$ (since $p=6k+1$), so $6kr\\equiv -r\\pmod{p}$, giving $6kr+k+r\\equiv -r+k+r = k\\pmod{p}$. That is:</p>
+<div class="mdisp">$$\\boxed{k\\mathbin{\\circledast}r \\;\\equiv\\; k \\pmod{p} \\quad\\text{for all }r\\in\\mathbb{Z}}$$</div>
 
-<p><strong>Step 3 — Clopenness.</strong></p>
-<p>The set $\\{x\\equiv k\\pmod{6k+1}\\} = k+(6k+1)\\mathbb{Z}$ is clopen in the Furstenberg topology on $\\mathbb{Z}$, and $\\mathbb{Z}$ is clopen. Their product is clopen in $\\mathbb{Z}^2$. Intersecting with $N$ gives a clopen set in $N$. $\\square$</p>
+<p><strong>Step 2 ($\\subseteq$) — Every element of $q\\otimes N$ satisfies $a\\equiv k\\pmod{p}$.</strong></p>
+<p>If $(a,a')\\in q\\otimes N$, then $a = k\\mathbin{\\circledast}r$ for some $r$. By Step 1, $a\\equiv k\\pmod{p}$. $\\checkmark$</p>
+
+<p><strong>Step 3 ($\\supseteq$) — If $(a,a')\\in N$ and $a\\equiv k\\pmod{p}$, then $(a,a')\\in q\\otimes N$.</strong></p>
+<p>Write the unique factorization (<a class="iref" onclick="jumpId('p5.2')">Prop 5.2</a>) of $(a,a')$ in generators:</p>
+<div class="mdisp">$$(a,a') = (g_1,g_1)\\otimes\\cdots\\otimes(g_m,g_m)$$</div>
+<p>The first component satisfies $\\phi(a)=\\prod_i\\phi(g_i)$ in $\\mathbb{Z}$, i.e.:</p>
+<div class="mdisp">$$6a+1 = \\prod_{i=1}^m (6g_i+1)$$</div>
+<p>Now reduce modulo $p=6k+1$. Since $a\\equiv k\\pmod{p}$:</p>
+<div class="mdisp">$$6a+1 \\equiv 6k+1 \\equiv 0 \\pmod{p}$$</div>
+<p>So $p$ divides $\\prod_i(6g_i+1)$. Since $p$ is prime, $p\\mid(6g_j+1)$ for some $j$. But each $g_j\\in G$, so $6g_j+1$ is itself $\\pm$prime. The only way a prime $p$ divides another $\\pm$prime is if $6g_j+1 = \\pm p = \\pm(6k+1)$.</p>
+<ul>
+<li>$6g_j+1 = 6k+1 \\implies g_j = k$. $\\checkmark$</li>
+<li>$6g_j+1 = -(6k+1) \\implies g_j = -k-\\tfrac{1}{3}\\notin\\mathbb{Z}$. $\\times$</li>
+</ul>
+<p>So $g_j=k$, meaning $(k,k)$ appears in the factorization. Factor it out:</p>
+<div class="mdisp">$$(a,a') = (k,k)\\otimes(\\text{remaining generators}) \\;\\in\\; q\\otimes N \\quad\\checkmark$$</div>
+
+<p><strong>Step 4 — Why the second component is unconstrained.</strong></p>
+<p>Elements of $N$ are products of generators $(g_i,g_i)$. Once we know the multiset of generators (determined by the first component via unique factorization), the second component $a'=g_1\\star\\cdots\\star g_m$ is <em>forced</em>. So membership in $N$ + first-component congruence already pins down the second component. Writing $\\times\\,\\mathbb{Z}$ just means we impose no <em>additional</em> topological constraint there — $N$-membership does the work.</p>
+
+<p><strong>Step 5 — Clopenness.</strong></p>
+<p>In the Furstenberg topology on $\\mathbb{Z}$, every arithmetic progression $a+d\\mathbb{Z}$ ($d\\geq 1$) is clopen (its complement is $\\bigcup_{j=1}^{d-1}(a+j)+d\\mathbb{Z}$, a finite union of open sets, hence open). So:</p>
+<ul>
+<li>$\\{x\\equiv k\\pmod{p}\\}=k+p\\mathbb{Z}$ is clopen in $\\mathbb{Z}$.</li>
+<li>$\\mathbb{Z}$ is clopen in $\\mathbb{Z}$.</li>
+<li>$(k+p\\mathbb{Z})\\times\\mathbb{Z}$ is clopen in $\\mathbb{Z}^2$ (product of clopens).</li>
+<li>$N\\cap\\bigl((k+p\\mathbb{Z})\\times\\mathbb{Z}\\bigr) = q\\otimes N$ is clopen in $N$ (subspace of a clopen set). $\\square$</li>
+</ul>
 </div>
 
 <div class="cblk"> Generator (k,k)   φ(k)=6k+1   Coset condition on first coord
