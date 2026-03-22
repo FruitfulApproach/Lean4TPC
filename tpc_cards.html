@@ -128,7 +128,7 @@ const cards=[
 <p>We prove there are <strong>infinitely many twin prime pairs</strong> via the submonoid $N=\\langle G\\rangle\\leqslant M=(\\mathbb{Z}^2,\\otimes)$ where $G=\\{(k,k):k\\in\\mathbb{Z}\\}$.</p>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Core Strategy</div>
-<p>We transfer the twin-prime question into an algebraic/topological setting where Furstenberg's classic proof-technique applies. The map $\\phi(x)=6x+1$ converts the monoid $(\\mathbb{Z},\\oast)$ into ordinary multiplication in $6\\mathbb{Z}+1$. Irreducible elements of $N$ correspond exactly to twin prime pairs.</p>
+<p>We transfer the twin-prime question into an algebraic/topological setting where Furstenberg's classic proof-technique applies. The map $\\phi(x)=6x+1$ converts the monoid $(\\mathbb{Z},\\circledast)$ into ordinary multiplication in $6\\mathbb{Z}+1$. Irreducible elements of $N$ correspond exactly to twin prime pairs.</p>
 </div>
 <p><strong>Key identity:</strong> For each irreducible $\\widehat{q}\\in\\mathrm{Irr}(N)$:</p>
 <div class="math-block">$$\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)$$</div>
@@ -141,10 +141,10 @@ const cards=[
 <a href="https://en.wikipedia.org/wiki/Monoid" target="_blank" class="tag"><i class="bi bi-diagram-3 me-1"></i>Monoid Theory</a>
 </div>`},
 
-{ch:"§1 Ops",badge:"b-def",title:"Definition 1.1 — Operations $\\mathbin{\\oast}$ and $\\mathbin{\\star}$",lean:`${GH}/TPC/Basic.lean#L10`,body:`
+{ch:"§1 Ops",badge:"b-def",title:"Definition 1.1 — Operations $\\mathbin{\\circledast}$ and $\\mathbin{\\star}$",lean:`${GH}/TPC/Basic.lean#L10`,body:`
 <p>Define two binary operations on $\\mathbb{Z}$:</p>
-<div class="math-block">$$x\\mathbin{\\oast}y=6xy+x+y\\qquad x\\mathbin{\\star}y=-6xy+x+y$$</div>
-<p>Both have <strong>identity element $0$</strong>: one checks $x\\mathbin{\\oast}0 = 6\\cdot x\\cdot 0 + x + 0 = x$ and similarly for $\\mathbin{\\star}$.</p>
+<div class="math-block">$$x\\mathbin{\\circledast}y=6xy+x+y\\qquad x\\mathbin{\\star}y=-6xy+x+y$$</div>
+<p>Both have <strong>identity element $0$</strong>: one checks $x\\mathbin{\\circledast}0 = 6\\cdot x\\cdot 0 + x + 0 = x$ and similarly for $\\mathbin{\\star}$.</p>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Why these operations?</div>
 <p>They arise from "transporting" ordinary multiplication through the maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$. Every integer $n\\equiv 1\\pmod{6}$ has the form $\\phi(x)$ for a unique $x$, and every $n\\equiv 5\\pmod{6}$ (equivalently $n\\equiv -1\\pmod{6}$) has the form $\\psi(x)$. Since all primes $>3$ satisfy $p\\equiv\\pm1\\pmod{6}$, these operations capture the multiplicative structure of primes in the correct residue classes.</p>
@@ -162,23 +162,23 @@ def sstar (x y : ℤ) : ℤ := -6 * x * y + x + y</div>
 </div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show associativity proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>Proof of associativity for $\\oast$:</strong></p>
-<p>$(x\\oast y)\\oast z = 6(6xy+x+y)z+(6xy+x+y)+z$</p>
+<p><strong>Proof of associativity for $\\circledast$:</strong></p>
+<p>$(x\\circledast y)\\circledast z = 6(6xy+x+y)z+(6xy+x+y)+z$</p>
 <p>$= 36xyz+6xz+6yz+6xy+x+y+z$</p>
-<p>$x\\oast(y\\oast z) = 6x(6yz+y+z)+x+(6yz+y+z)$</p>
+<p>$x\\circledast(y\\circledast z) = 6x(6yz+y+z)+x+(6yz+y+z)$</p>
 <p>$= 36xyz+6xy+6xz+x+6yz+y+z$</p>
-<p>Both equal $36xyz+6xy+6xz+6yz+x+y+z$. Commutativity: $x\\oast y = 6xy+x+y = 6yx+y+x = y\\oast x$. The $\\star$ case is identical with $-6$ replacing $6$ in the leading term.</p>
+<p>Both equal $36xyz+6xy+6xz+6yz+x+y+z$. Commutativity: $x\\circledast y = 6xy+x+y = 6yx+y+x = y\\circledast x$. The $\\star$ case is identical with $-6$ replacing $6$ in the leading term.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>`},
 
 {ch:"§1 Ops",badge:"b-thm",title:"Theorem 1.3 — Isomorphisms $\\phi$ and $\\psi$",lean:`${GH}/TPC/Basic.lean#L38`,body:`
 <p>The maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ are <strong>monoid isomorphisms</strong>:</p>
-<div class="math-block">$$\\phi:(\\mathbb{Z},\\oast)\\xrightarrow{\\sim}(6\\mathbb{Z}+1,\\cdot)\\qquad\\psi:(\\mathbb{Z},\\star)\\xrightarrow{\\sim}(6\\mathbb{Z}-1,\\bullet)$$</div>
+<div class="math-block">$$\\phi:(\\mathbb{Z},\\circledast)\\xrightarrow{\\sim}(6\\mathbb{Z}+1,\\cdot)\\qquad\\psi:(\\mathbb{Z},\\star)\\xrightarrow{\\sim}(6\\mathbb{Z}-1,\\bullet)$$</div>
 <p>where $a\\bullet b = -(ab)$ on $6\\mathbb{Z}-1$. Both are bijections: $\\phi^{-1}(n)=\\frac{n-1}{6}$, $\\psi^{-1}(n)=\\frac{n+1}{6}$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
 <p><strong>$\\phi$ is multiplicative:</strong></p>
-<p>$\\phi(x\\oast y) = 6(6xy+x+y)+1 = 36xy+6x+6y+1 = (6x+1)(6y+1) = \\phi(x)\\cdot\\phi(y)$.</p>
+<p>$\\phi(x\\circledast y) = 6(6xy+x+y)+1 = 36xy+6x+6y+1 = (6x+1)(6y+1) = \\phi(x)\\cdot\\phi(y)$.</p>
 <p><strong>$\\phi$ is a bijection onto $6\\mathbb{Z}+1$:</strong></p>
 <p>If $n\\in 6\\mathbb{Z}+1$ then $n=6k+1$ for some $k\\in\\mathbb{Z}$, so $\\phi(k)=n$. Injectivity: $\\phi(x)=\\phi(y)\\Rightarrow 6x+1=6y+1\\Rightarrow x=y$.</p>
 <p><strong>$\\psi$ is multiplicative (with $\\bullet$):</strong></p>
@@ -189,7 +189,7 @@ def sstar (x y : ℤ) : ℤ := -6 * x * y + x + y</div>
 </div>
 <div class="example-box">
 <div class="example-title"><i class="bi bi-lightning-charge me-1"></i>Key Consequence</div>
-<p>$x$ is <strong>$\\oast$-irreducible</strong> (cannot be written as $a\\oast b$ with $a,b\\neq 0$) $\\iff$ $\\phi(x)=6x+1$ is <strong>prime</strong> in $\\mathbb{Z}$ (up to sign). This is because $\\phi$ converts $\\oast$-factorizations into ordinary factorizations in $6\\mathbb{Z}+1$.</p>
+<p>$x$ is <strong>$\\circledast$-irreducible</strong> (cannot be written as $a\\circledast b$ with $a,b\\neq 0$) $\\iff$ $\\phi(x)=6x+1$ is <strong>prime</strong> in $\\mathbb{Z}$ (up to sign). This is because $\\phi$ converts $\\circledast$-factorizations into ordinary factorizations in $6\\mathbb{Z}+1$.</p>
 </div>
 <div class="code-block">lemma φ_mul (x y : ℤ) : φ (x ⊛ y) = φ x * φ y := by
   simp [φ, mstar]; ring
@@ -198,11 +198,11 @@ lemma ψ_mul (x y : ℤ) : ψ (x ⋆ y) = -(ψ x * ψ y) := by
   simp [ψ, sstar]; ring</div>`},
 
 {ch:"§1 Ops",badge:"b-lem",title:"Lemma 1.4 — No Zero Divisors",lean:`${GH}/TPC/Basic.lean#L62`,body:`
-<p><strong>Statement:</strong> If $u,v\\neq 0$ then $u\\mathbin{\\oast}v\\neq 0$ and $u\\mathbin{\\star}v\\neq 0$.</p>
+<p><strong>Statement:</strong> If $u,v\\neq 0$ then $u\\mathbin{\\circledast}v\\neq 0$ and $u\\mathbin{\\star}v\\neq 0$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>For $\\oast$:</strong> Suppose $u\\oast v = 0$. Applying $\\phi$:</p>
-<p>$\\phi(u\\oast v) = \\phi(u)\\phi(v) = (6u+1)(6v+1) = \\phi(0) = 1$.</p>
+<p><strong>For $\\circledast$:</strong> Suppose $u\\circledast v = 0$. Applying $\\phi$:</p>
+<p>$\\phi(u\\circledast v) = \\phi(u)\\phi(v) = (6u+1)(6v+1) = \\phi(0) = 1$.</p>
 <p>In $\\mathbb{Z}$, $ab=1$ forces $a=b=1$ or $a=b=-1$.</p>
 <p><strong>Case 1:</strong> $6u+1=6v+1=1 \\Rightarrow u=v=0$. Contradicts $u\\neq 0$.</p>
 <p><strong>Case 2:</strong> $6u+1=6v+1=-1 \\Rightarrow u=v=-1/3\\notin\\mathbb{Z}$. Impossible.</p>
@@ -224,17 +224,17 @@ lemma ψ_mul (x y : ℤ) : ψ (x ⋆ y) = -(ψ x * ψ y) := by
 
 {ch:"§2 Monoid",badge:"b-def",title:"Definition 2.1–2.2 — Product Monoid $M$, Generators $G$, Submonoid $N$",lean:`${GH}/TPC/Monoid.lean#L10`,body:`
 <p><strong>Definition 2.1.</strong> The <strong>product monoid</strong>:</p>
-<div class="math-block">$$M = (\\mathbb{Z}^2, \\otimes),\\quad (x_1,x_2)\\otimes(y_1,y_2) = (x_1\\oast y_1,\\; x_2\\star y_2),\\quad \\mathbf{1}_M=(0,0)$$</div>
+<div class="math-block">$$M = (\\mathbb{Z}^2, \\otimes),\\quad (x_1,x_2)\\otimes(y_1,y_2) = (x_1\\circledast y_1,\\; x_2\\star y_2),\\quad \\mathbf{1}_M=(0,0)$$</div>
 <p><strong>Definition 2.2.</strong> The <strong>generating set</strong> is the diagonal:</p>
 <div class="math-block">$$G=\\{(k,k):k\\in\\mathbb{Z}\\}\\qquad N=\\langle G\\rangle = \\{\\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_r) : r\\geq 0,\\; k_i\\in\\mathbb{Z}\\}$$</div>
 <p>where $\\Delta(k)=(k,k)$. Elements of $N$ have the form $(z,w)$ where:</p>
-<div class="math-block">$$z = k_1\\oast\\cdots\\oast k_r,\\qquad w = k_1\\star\\cdots\\star k_r$$</div>
+<div class="math-block">$$z = k_1\\circledast\\cdots\\circledast k_r,\\qquad w = k_1\\star\\cdots\\star k_r$$</div>
 <p>built from the <strong>same sequence</strong> $k_1,\\ldots,k_r$ under different operations. In general $z\\neq w$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show that $N$ is a submonoid</button>
 <div class="proof-content" style="display:none">
 <p><strong>Identity:</strong> The empty product ($r=0$) gives $(0,0)\\in N$. ✓</p>
-<p><strong>Closure:</strong> If $(z,w)$ comes from sequence $k_1,\\ldots,k_r$ and $(z',w')$ from $k_1',\\ldots,k_s'$, then $(z,w)\\otimes(z',w')$ comes from the concatenated sequence $k_1,\\ldots,k_r,k_1',\\ldots,k_s'$. This is because $\\oast$ and $\\star$ are associative, so:</p>
-<p>$(k_1\\oast\\cdots\\oast k_r)\\oast(k_1'\\oast\\cdots\\oast k_s') = k_1\\oast\\cdots\\oast k_r\\oast k_1'\\oast\\cdots\\oast k_s'$</p>
+<p><strong>Closure:</strong> If $(z,w)$ comes from sequence $k_1,\\ldots,k_r$ and $(z',w')$ from $k_1',\\ldots,k_s'$, then $(z,w)\\otimes(z',w')$ comes from the concatenated sequence $k_1,\\ldots,k_r,k_1',\\ldots,k_s'$. This is because $\\circledast$ and $\\star$ are associative, so:</p>
+<p>$(k_1\\circledast\\cdots\\circledast k_r)\\circledast(k_1'\\circledast\\cdots\\circledast k_s') = k_1\\circledast\\cdots\\circledast k_r\\circledast k_1'\\circledast\\cdots\\circledast k_s'$</p>
 <p>and similarly for $\\star$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
@@ -251,14 +251,14 @@ lemma ψ_mul (x y : ℤ) : ψ (x ⋆ y) = -(ψ x * ψ y) := by
 <p>Equip $\\mathbb{Z}$ with the <strong>Furstenberg topology</strong>: the basis consists of all arithmetic progressions $a+b\\mathbb{Z}$ with $b\\neq 0$, each of which is clopen. Give $M=\\mathbb{Z}^2$ the product topology. Then $(M,\\otimes)$ is a <strong>topological monoid</strong>.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p>We must show $\\otimes:M\\times M\\to M$ is continuous. Since $\\otimes=(\\oast,\\star)$ component-wise, it suffices to show each of $\\oast$ and $\\star$ is continuous $\\mathbb{Z}\\times\\mathbb{Z}\\to\\mathbb{Z}$.</p>
-<p><strong>Continuity of $\\oast$:</strong> Let $(x_0,y_0)\\in\\mathbb{Z}^2$ and let $a+b\\mathbb{Z}$ be a basic open neighborhood of $x_0\\oast y_0$. We need a neighborhood $U\\times V$ of $(x_0,y_0)$ mapping into $a+b\\mathbb{Z}$.</p>
+<p>We must show $\\otimes:M\\times M\\to M$ is continuous. Since $\\otimes=(\\circledast,\\star)$ component-wise, it suffices to show each of $\\circledast$ and $\\star$ is continuous $\\mathbb{Z}\\times\\mathbb{Z}\\to\\mathbb{Z}$.</p>
+<p><strong>Continuity of $\\circledast$:</strong> Let $(x_0,y_0)\\in\\mathbb{Z}^2$ and let $a+b\\mathbb{Z}$ be a basic open neighborhood of $x_0\\circledast y_0$. We need a neighborhood $U\\times V$ of $(x_0,y_0)$ mapping into $a+b\\mathbb{Z}$.</p>
 <p>Take $U=x_0+b\\mathbb{Z}$, $V=y_0+b\\mathbb{Z}$. For $x=x_0+bs$, $y=y_0+bt$:</p>
-<p>$x\\oast y - x_0\\oast y_0 = (6y_0+1)\\cdot bs + (6x_0+1)\\cdot bt + 6b^2st$</p>
+<p>$x\\circledast y - x_0\\circledast y_0 = (6y_0+1)\\cdot bs + (6x_0+1)\\cdot bt + 6b^2st$</p>
 <p>$= b\\bigl[(6y_0+1)s + (6x_0+1)t + 6b\\cdot st\\bigr] \\equiv 0\\pmod{b}$</p>
-<p>So $x\\oast y \\equiv x_0\\oast y_0 \\equiv a \\pmod{b}$. Hence $U\\times V$ maps into $a+b\\mathbb{Z}$. ✓</p>
+<p>So $x\\circledast y \\equiv x_0\\circledast y_0 \\equiv a \\pmod{b}$. Hence $U\\times V$ maps into $a+b\\mathbb{Z}$. ✓</p>
 <p><strong>Continuity of $\\star$:</strong> Identical argument with $-6$ replacing $6$ in the leading term. The correction term $(-6y_0-1)bs+(-6x_0-1)bt+(-6)b^2st$ is still divisible by $b$. ✓</p>
-<p>Therefore $\\otimes = \\oast\\times\\star$ is continuous, making $(M,\\otimes)$ a topological monoid.</p>
+<p>Therefore $\\otimes = \\circledast\\times\\star$ is continuous, making $(M,\\otimes)$ a topological monoid.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="remark-box">
@@ -272,8 +272,8 @@ lemma ψ_mul (x y : ℤ) : ψ (x ⋆ y) = -(ψ x * ψ y) := by
 <p>A <strong>product of two arithmetic progressions</strong> — each factor is clopen in the Furstenberg topology, hence the product is <strong>clopen in $M$</strong>.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>First component:</strong> $\\{a_1\\oast x : x\\in\\mathbb{Z}\\}$. Applying $\\phi$:</p>
-<p>$\\phi(a_1\\oast x) = \\phi(a_1)\\phi(x) = (6a_1+1)(6x+1)$.</p>
+<p><strong>First component:</strong> $\\{a_1\\circledast x : x\\in\\mathbb{Z}\\}$. Applying $\\phi$:</p>
+<p>$\\phi(a_1\\circledast x) = \\phi(a_1)\\phi(x) = (6a_1+1)(6x+1)$.</p>
 <p>As $x$ ranges over $\\mathbb{Z}$, $6x+1$ ranges over all of $6\\mathbb{Z}+1$. So the image under $\\phi$ is $(6a_1+1)\\cdot(6\\mathbb{Z}+1) = (6a_1+1) + 6(6a_1+1)\\mathbb{Z}$.</p>
 <p>Pulling back through $\\phi^{-1}$: $a_1+(6a_1+1)\\mathbb{Z}$. ✓</p>
 <p><strong>Second component:</strong> $\\{a_2\\star x : x\\in\\mathbb{Z}\\}$. Similarly via $\\psi$:</p>
@@ -304,16 +304,16 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 <p><strong>Direction ($\\subseteq$):</strong> If $(z,w)\\in\\widehat{q}\\otimes N$, then $(z,w)=\\widehat{q}\\otimes\\widehat{n}$ for some $\\widehat{n}\\in N$. Since $N$ is a submonoid containing $\\widehat{q}$, we have $(z,w)\\in N$. Also $(z,w)\\in\\widehat{q}\\otimes M$ trivially (since $N\\subseteq M$). So $(z,w)\\in N\\cap(\\widehat{q}\\otimes M)$. ✓</p>
 <p><strong>Direction ($\\supseteq$) — the hard direction:</strong></p>
 <p>Let $(z,w)\\in N\\cap(\\widehat{q}\\otimes M)$.</p>
-<p><span class="step-num">1</span><strong>Unpack membership in $\\widehat{q}\\otimes M$:</strong> There exist $p,r\\in\\mathbb{Z}$ with $q\\oast p = z$ and $q\\star r = w$.</p>
-<p><span class="step-num">2</span><strong>Unpack membership in $N$:</strong> There exist $k_1,\\ldots,k_s\\in\\mathbb{Z}$ with $z = k_1\\oast\\cdots\\oast k_s$ and $w = k_1\\star\\cdots\\star k_s$.</p>
+<p><span class="step-num">1</span><strong>Unpack membership in $\\widehat{q}\\otimes M$:</strong> There exist $p,r\\in\\mathbb{Z}$ with $q\\circledast p = z$ and $q\\star r = w$.</p>
+<p><span class="step-num">2</span><strong>Unpack membership in $N$:</strong> There exist $k_1,\\ldots,k_s\\in\\mathbb{Z}$ with $z = k_1\\circledast\\cdots\\circledast k_s$ and $w = k_1\\star\\cdots\\star k_s$.</p>
 <p><span class="step-num">3</span><strong>Apply $\\phi$:</strong> From step 1: $\\phi(q)\\cdot\\phi(p) = \\phi(z)$. From step 2: $\\phi(z) = \\phi(k_1)\\cdots\\phi(k_s)$.</p>
 <p>So $\\phi(q)\\cdot\\phi(p) = \\phi(k_1)\\cdots\\phi(k_s)$.</p>
 <p><span class="step-num">4</span><strong>Use irreducibility:</strong> Since $\\widehat{q}\\in\\mathrm{Irr}(N)$, $\\phi(q)=6q+1$ is <strong>prime</strong> in $\\mathbb{Z}$. (This is precisely the content of Thm 4.2.)</p>
 <p>Since $\\phi(q)$ is prime and divides $\\phi(k_1)\\cdots\\phi(k_s)$, by Euclid's lemma it divides some $\\phi(k_i)$.</p>
 <p><span class="step-num">5</span><strong>Force equality:</strong> Since $\\phi(k_i)\\in 6\\mathbb{Z}+1$ and $\\phi(q)$ is a prime in $6\\mathbb{Z}+1$ dividing $\\phi(k_i)$, we need $\\phi(k_i) = \\pm\\phi(q)$. But all values in $6\\mathbb{Z}+1$ satisfy $\\phi(k_i)\\equiv 1\\pmod{6}$, so $\\phi(k_i)=-\\phi(q)$ would give $\\phi(k_i)\\equiv -1\\pmod{6}$, contradicting $\\phi(k_i)\\equiv 1\\pmod{6}$ (when $\\phi(q)\\neq 1$, which holds since $q\\neq 0$). Therefore $\\phi(k_i)=\\phi(q)$, hence $k_i=q$.</p>
-<p><span class="step-num">6</span><strong>Reorder and conclude:</strong> By commutativity of $\\oast$ and $\\star$, we may assume $k_1=q$. Then:</p>
-<p>$z = q\\oast(k_2\\oast\\cdots\\oast k_s)$ and $w = q\\star(k_2\\star\\cdots\\star k_s)$.</p>
-<p>Setting $\\widehat{n} = (k_2\\oast\\cdots\\oast k_s,\\; k_2\\star\\cdots\\star k_s)\\in N$, we get $(z,w) = \\widehat{q}\\otimes\\widehat{n}\\in\\widehat{q}\\otimes N$. ✓</p>
+<p><span class="step-num">6</span><strong>Reorder and conclude:</strong> By commutativity of $\\circledast$ and $\\star$, we may assume $k_1=q$. Then:</p>
+<p>$z = q\\circledast(k_2\\circledast\\cdots\\circledast k_s)$ and $w = q\\star(k_2\\star\\cdots\\star k_s)$.</p>
+<p>Setting $\\widehat{n} = (k_2\\circledast\\cdots\\circledast k_s,\\; k_2\\star\\cdots\\star k_s)\\in N$, we get $(z,w) = \\widehat{q}\\otimes\\widehat{n}\\in\\widehat{q}\\otimes N$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>`},
 
@@ -339,7 +339,7 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 <div class="proof-content" style="display:none">
 <p><strong>$N$ is infinite:</strong> $N$ contains all generators $\\Delta(k)=(k,k)$ for $k\\in\\mathbb{Z}$, and these are pairwise distinct (since they differ in both coordinates). So $|N|\\geq|\\mathbb{Z}|=\\infty$.</p>
 <p><strong>$L_{\\widehat{q}}$ is injective:</strong> Suppose $\\widehat{q}\\otimes\\widehat{x} = \\widehat{q}\\otimes\\widehat{y}$ where $\\widehat{q}=(q,q)$ and $\\widehat{x}=(x_1,x_2)$, $\\widehat{y}=(y_1,y_2)\\in N$.</p>
-<p>First components: $q\\oast x_1 = q\\oast y_1$. Applying $\\phi$: $\\phi(q)\\phi(x_1) = \\phi(q)\\phi(y_1)$.</p>
+<p>First components: $q\\circledast x_1 = q\\circledast y_1$. Applying $\\phi$: $\\phi(q)\\phi(x_1) = \\phi(q)\\phi(y_1)$.</p>
 <p>Since $q\\neq 0$, $\\phi(q)=6q+1\\neq 1$ (as $q\\neq 0$ implies $|6q+1|\\geq 5$). Cancel: $\\phi(x_1)=\\phi(y_1)$, so $x_1=y_1$.</p>
 <p>Similarly for second components: $\\psi(q)\\psi(x_2)=\\psi(q)\\psi(y_2)$ gives $x_2=y_2$.</p>
 <p>Therefore $\\widehat{x}=\\widehat{y}$, so $L_{\\widehat{q}}$ is injective.</p>
@@ -359,16 +359,16 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 <p>Suppose $N\\cap\\bigl((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})\\bigr)\\neq\\emptyset$. Pick $(z_0,w_0)$ in this intersection. We produce infinitely many distinct elements.</p>
 <p><span class="step-num">1</span><strong>Setup:</strong> We have $(z_0,w_0)\\in N$ with $z_0\\equiv a\\pmod{b}$ and $w_0\\equiv c\\pmod{d}$.</p>
 <p><span class="step-num">2</span><strong>Choose generators in $bd\\mathbb{Z}$:</strong> For each $n\\in\\mathbb{Z}$, consider the generator $\\Delta(nbd)=(nbd,nbd)\\in G\\subseteq N$.</p>
-<p><span class="step-num">3</span><strong>Form products:</strong> Define $\\widehat{v}_n = (z_0,w_0)\\otimes\\Delta(nbd) = (z_0\\oast(nbd),\\; w_0\\star(nbd))$.</p>
+<p><span class="step-num">3</span><strong>Form products:</strong> Define $\\widehat{v}_n = (z_0,w_0)\\otimes\\Delta(nbd) = (z_0\\circledast(nbd),\\; w_0\\star(nbd))$.</p>
 <p>Since $(z_0,w_0)\\in N$ and $\\Delta(nbd)\\in N$, we have $\\widehat{v}_n\\in N$ for all $n$. ✓</p>
 <p><span class="step-num">4</span><strong>Check first component stays in $a+b\\mathbb{Z}$:</strong></p>
-<p>$z_0\\oast(nbd) = 6z_0\\cdot nbd + z_0 + nbd = nbd(6z_0+1) + z_0$</p>
+<p>$z_0\\circledast(nbd) = 6z_0\\cdot nbd + z_0 + nbd = nbd(6z_0+1) + z_0$</p>
 <p>$\\equiv z_0 \\equiv a \\pmod{b}$ ✓</p>
 <p><span class="step-num">5</span><strong>Check second component stays in $c+d\\mathbb{Z}$:</strong></p>
 <p>$w_0\\star(nbd) = -6w_0\\cdot nbd + w_0 + nbd = nbd(-6w_0+1) + w_0$</p>
 <p>$\\equiv w_0 \\equiv c \\pmod{d}$ ✓</p>
 <p><span class="step-num">6</span><strong>Show distinctness:</strong> Suppose $\\widehat{v}_n = \\widehat{v}_m$. Looking at first components:</p>
-<p>$z_0\\oast(nbd) = z_0\\oast(mbd)$</p>
+<p>$z_0\\circledast(nbd) = z_0\\circledast(mbd)$</p>
 <p>Applying $\\phi$: $\\phi(z_0)\\cdot\\phi(nbd) = \\phi(z_0)\\cdot\\phi(mbd)$.</p>
 <p>$\\phi(z_0)\\cdot(6nbd+1) = \\phi(z_0)\\cdot(6mbd+1)$.</p>
 <p><strong>Case (a):</strong> $\\phi(z_0)=6z_0+1\\neq 0$ (which holds for all $z_0\\in\\mathbb{Z}$ since $6z_0+1$ is odd, hence nonzero). Cancel $\\phi(z_0)$: $6nbd+1=6mbd+1$, so $n=m$. ✓</p>
@@ -404,7 +404,7 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 <p>In other words, $(z,w)$ cannot be decomposed as a nontrivial product of two elements of $N$. The set of all irreducibles is denoted $\\mathrm{Irr}(N)$.</p>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Note on structure</div>
-<p>Every element of $N$ has the form $(z,w)$ where $z=k_1\\oast\\cdots\\oast k_r$ and $w=k_1\\star\\cdots\\star k_r$. Irreducibility means the generating sequence has length exactly 1: $(z,w)=\\Delta(k)=(k,k)$ for some $k$ that is $\\oast$-irreducible.</p>
+<p>Every element of $N$ has the form $(z,w)$ where $z=k_1\\circledast\\cdots\\circledast k_r$ and $w=k_1\\star\\cdots\\star k_r$. Irreducibility means the generating sequence has length exactly 1: $(z,w)=\\Delta(k)=(k,k)$ for some $k$ that is $\\circledast$-irreducible.</p>
 </div>`},
 
 {ch:"§4 Irred",badge:"b-thm",title:"Theorem 4.2 — Irreducibles $\\iff$ Twin Primes",lean:`${GH}/TPC/Main.lean#L8`,body:`
@@ -413,8 +413,8 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
 <p><strong>($\\Rightarrow$):</strong> Suppose $(z,w)\\in\\mathrm{Irr}(N)$, so $(z,w)=\\Delta(z)=(z,z)$ (irreducibles are generators, i.e., $w=z$).</p>
-<p>Suppose $\\phi(z)=6z+1$ is not prime. Then $6z+1 = ab$ with $a,b\\in 6\\mathbb{Z}+1$, $|a|,|b|>1$. Write $a=\\phi(\\alpha)$, $b=\\phi(\\beta)$. Then $\\phi(z)=\\phi(\\alpha)\\phi(\\beta)=\\phi(\\alpha\\oast\\beta)$, so $z=\\alpha\\oast\\beta$ with $\\alpha,\\beta\\neq 0$.</p>
-<p>Now consider $\\Delta(\\alpha)\\otimes\\Delta(\\beta) = (\\alpha\\oast\\beta, \\alpha\\star\\beta) = (z, \\alpha\\star\\beta)$. This must equal $(z,w)=(z,z)$ only if $\\alpha\\star\\beta = z = \\alpha\\oast\\beta$. But in general $\\oast\\neq\\star$, so this would need to be checked... </p>
+<p>Suppose $\\phi(z)=6z+1$ is not prime. Then $6z+1 = ab$ with $a,b\\in 6\\mathbb{Z}+1$, $|a|,|b|>1$. Write $a=\\phi(\\alpha)$, $b=\\phi(\\beta)$. Then $\\phi(z)=\\phi(\\alpha)\\phi(\\beta)=\\phi(\\alpha\\circledast\\beta)$, so $z=\\alpha\\circledast\\beta$ with $\\alpha,\\beta\\neq 0$.</p>
+<p>Now consider $\\Delta(\\alpha)\\otimes\\Delta(\\beta) = (\\alpha\\circledast\\beta, \\alpha\\star\\beta) = (z, \\alpha\\star\\beta)$. This must equal $(z,w)=(z,z)$ only if $\\alpha\\star\\beta = z = \\alpha\\circledast\\beta$. But in general $\\circledast\\neq\\star$, so this would need to be checked... </p>
 <p>The correct argument: irreducibility of $(z,w)$ in $N$ means that the only way to write $(z,w) = (k_1,k_1)\\otimes\\cdots\\otimes(k_r,k_r)$ has $r=1$. Applying $\\phi$ to the first component: $\\phi(z) = \\phi(k_1)\\cdots\\phi(k_r)$. If $r=1$ then $\\phi(z)=\\phi(k_1)$ with $|\\phi(k_1)|>1$, and there's no shorter factorization. This means $\\phi(z)$ is $\\pm$prime. Similarly applying $\\psi$ to the second component: $\\psi(z)$ is $\\pm$prime.</p>
 <p><strong>($\\Leftarrow$):</strong> Suppose $\\phi(z)=6z+1$ is $\\pm$prime and $\\psi(z)=6z-1$ is $\\pm$prime. If $(z,z) = \\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_r)$ with $r\\geq 2$, then $\\phi(z) = \\phi(k_1)\\cdots\\phi(k_r)$. Since $\\phi(z)$ is prime, all but one factor must be $\\pm 1$, i.e., all but one $k_i$ is $0$. But $\\Delta(0)=(0,0)$ is the identity, so those factors are trivial. Hence $r=1$ (effectively), proving irreducibility.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
@@ -443,7 +443,7 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 <p><strong>N2. Identity:</strong> $|(0,0)|=(6\\cdot 0+1)^2 = 1$. ✓</p>
 <p><strong>N3. Non-degenerate:</strong> $|(z,w)|=1 \\iff (6z+1)^2=1 \\iff 6z+1=\\pm 1 \\iff z=0$ or $z=-1/3$. Since $z\\in\\mathbb{Z}$, we get $z=0$, so $(z,w)=(0,0)$. ✓</p>
 <p><strong>N4. Multiplicative:</strong></p>
-<p>$|(z,w)\\otimes(z',w')| = |(z\\oast z', w\\star w')| = \\phi(z\\oast z')^2 = (\\phi(z)\\phi(z'))^2 = \\phi(z)^2\\cdot\\phi(z')^2 = |(z,w)|\\cdot|(z',w')|$. ✓</p>
+<p>$|(z,w)\\otimes(z',w')| = |(z\\circledast z', w\\star w')| = \\phi(z\\circledast z')^2 = (\\phi(z)\\phi(z'))^2 = \\phi(z)^2\\cdot\\phi(z')^2 = |(z,w)|\\cdot|(z',w')|$. ✓</p>
 <p><strong>N5. Proper factors have smaller norm:</strong></p>
 <p>If $(z,w)=\\widehat{a}\\otimes\\widehat{b}$ with $\\widehat{a},\\widehat{b}\\neq(0,0)$, then $|\\widehat{a}|\\geq 4$ (since $|\\phi(a_1)|\\geq 5$ for $a_1\\neq 0$, giving $|\\widehat{a}|\\geq 25$... actually $|\\widehat{a}|=(6a_1+1)^2$. For $a_1\\neq 0$: $|6a_1+1|\\geq 5$, so $|\\widehat{a}|\\geq 25>1$). Similarly $|\\widehat{b}|\\geq 25$. Then:</p>
 <p>$|\\widehat{a}| = |(z,w)|/|\\widehat{b}| \\leq |(z,w)|/25 < |(z,w)|$. ✓</p>
@@ -533,7 +533,7 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 </div>
 <p><strong>Complete logical chain:</strong></p>
 <p style="font-size:.92rem;line-height:2;">
-<span class="depends-badge">Def 1.1: $\\oast,\\star$</span>
+<span class="depends-badge">Def 1.1: $\\circledast,\\star$</span>
 <span style="color:var(--purple);font-weight:bold"> → </span>
 <span class="depends-badge">Thm 1.3: $\\phi,\\psi$ isos</span>
 <span style="color:var(--purple);font-weight:bold"> → </span>
