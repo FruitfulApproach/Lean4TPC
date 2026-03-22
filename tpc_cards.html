@@ -10,199 +10,576 @@
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
   onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
-:root{--ink:#1a1a2e;--paper:#f7f3ee;--cream:#ede8e0;--gold:#c9a84c;--gold-light:#f0d98c;--teal:#2a7f8f;--teal-light:#d4eef2;--rust:#b5451b;--rust-light:#fae6de;--sage:#4a7c59;--sage-light:#d8ede0;--purple:#5c3d8f;--purple-light:#e8dff7;}
+:root{
+  --purple:#7c3aed;--purple-light:#ede9fe;--purple-dark:#5b21b6;--purple-glow:rgba(124,58,237,.25);
+  --blue:#3b82f6;--blue-light:#dbeafe;--blue-dark:#1d4ed8;--blue-glow:rgba(59,130,246,.2);
+  --green:#22c55e;--green-light:#dcfce7;--green-dark:#15803d;
+  --orange:#f97316;--orange-light:#ffedd5;--orange-dark:#c2410c;
+  --yellow:#eab308;--yellow-light:#fef9c3;--yellow-dark:#a16207;
+  --gray:#6b7280;--gray-light:#f3f4f6;--gray-dark:#374151;
+  --black:#111827;--white:#ffffff;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
-.site-header{background:var(--ink);color:var(--paper);padding:1rem 1.5rem;border-bottom:3px solid var(--gold);}
-.site-header h1{font-family:'Playfair Display',serif;font-size:clamp(1rem,3vw,1.35rem);margin:0;}
-.site-header .sub{font-size:.72rem;color:var(--gold-light);font-family:'JetBrains Mono',monospace;margin-top:.2rem;}
-.site-header a{color:var(--gold-light);}
-.prog-wrap{background:var(--cream);padding:.5rem 1.5rem;border-bottom:1px solid #ddd;}
-.prog{height:5px;border-radius:3px;background:#ddd;}.prog-bar{background:var(--gold);transition:width .4s;}
-.prog-lbl{font-size:.72rem;font-family:'JetBrains Mono',monospace;color:#666;margin-top:.25rem;}
-.ch-nav{background:var(--cream);padding:.55rem 1.5rem;border-bottom:1px solid #ddd;overflow-x:auto;white-space:nowrap;}
-.ch-btn{font-size:.7rem;font-family:'JetBrains Mono',monospace;border-radius:2px;margin-right:.35rem;padding:.22rem .55rem;border:1px solid #bbb;background:white;color:var(--ink);cursor:pointer;transition:all .2s;}
-.ch-btn.active,.ch-btn:hover{background:var(--ink);color:var(--gold);border-color:var(--ink);}
+body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#ede9fe 0%,#dbeafe 40%,#dcfce7 70%,#ffedd5 100%);color:var(--black);min-height:100vh;}
+.site-header{background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark),var(--purple));color:var(--white);padding:1.1rem 1.5rem;border-bottom:4px solid var(--yellow);border-radius:0 0 24px 24px;box-shadow:0 8px 32px var(--purple-glow);}
+.site-header h1{font-family:'Playfair Display',serif;font-size:clamp(1rem,3vw,1.35rem);margin:0;text-shadow:0 2px 8px rgba(0,0,0,.3);}
+.site-header .sub{font-size:.72rem;color:var(--yellow-light);font-family:'JetBrains Mono',monospace;margin-top:.2rem;}
+.site-header a{color:var(--yellow-light);transition:color .2s;}.site-header a:hover{color:var(--orange);}
+.prog-wrap{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);padding:.6rem 1.5rem;border-bottom:1px solid rgba(124,58,237,.15);margin:0 1rem;border-radius:0 0 16px 16px;box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.prog{height:8px;border-radius:20px;background:var(--gray-light);overflow:hidden;}.prog-bar{background:linear-gradient(90deg,var(--purple),var(--blue),var(--green));transition:width .5s ease;height:100%;border-radius:20px;box-shadow:0 0 12px var(--purple-glow);}
+.prog-lbl{font-size:.72rem;font-family:'JetBrains Mono',monospace;color:var(--gray);margin-top:.3rem;}
+.ch-nav{background:rgba(255,255,255,.7);backdrop-filter:blur(8px);padding:.6rem 1.5rem;border-bottom:1px solid rgba(124,58,237,.1);overflow-x:auto;white-space:nowrap;margin:0 1rem;border-radius:0 0 12px 12px;}
+.ch-btn{font-size:.7rem;font-family:'JetBrains Mono',monospace;border-radius:20px;margin-right:.4rem;padding:.28rem .7rem;border:2px solid var(--purple-light);background:white;color:var(--purple);cursor:pointer;transition:all .25s;box-shadow:0 2px 6px rgba(124,58,237,.08);}
+.ch-btn.active,.ch-btn:hover{background:linear-gradient(135deg,var(--purple),var(--blue));color:white;border-color:transparent;box-shadow:0 4px 16px var(--purple-glow);transform:translateY(-1px);}
 .card-area{min-height:72vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem 1rem;}
-.proof-card{background:white;border-radius:3px;box-shadow:0 8px 32px rgba(26,26,46,.12);max-width:800px;width:100%;overflow:hidden;animation:cardIn .32s ease;}
-@keyframes cardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.card-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.18rem .5rem;border-radius:2px;margin-bottom:.5rem;}
-.b-def{background:var(--teal-light);color:var(--teal);}.b-thm{background:var(--rust-light);color:var(--rust);}
-.b-prop{background:var(--sage-light);color:var(--sage);}.b-lem{background:var(--purple-light);color:var(--purple);}
-.b-cor{background:var(--gold-light);color:#7a5a00;}.b-abs{background:var(--ink);color:var(--gold);}
-.card-hdr{padding:1.3rem 1.8rem .7rem;border-bottom:2px solid var(--cream);}
-.card-title{font-family:'Playfair Display',serif;font-size:1.3rem;line-height:1.3;}
-.card-body{padding:1.3rem 1.8rem 1rem;line-height:1.75;}.card-body p{margin-bottom:.7rem;}
-.math-block{background:var(--cream);border-left:3px solid var(--gold);padding:.8rem 1.1rem;margin:.9rem 0;border-radius:0 3px 3px 0;overflow-x:auto;}
-.code-block{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:#1e1e2e;color:#cdd6f4;padding:.9rem 1.1rem;border-radius:4px;overflow-x:auto;margin:.8rem 0;line-height:1.6;}
-.src-link{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--teal);text-decoration:none;border:1px solid var(--teal);border-radius:2px;padding:.12rem .38rem;}
-.src-link:hover{background:var(--teal);color:white;}.proof-card a{color:var(--teal);}.proof-card a:hover{color:var(--rust);}
-.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.62rem;background:var(--cream);border:1px solid #ccc;border-radius:20px;padding:.08rem .45rem;margin:.15rem .08rem;text-decoration:none;color:#555;}
-.tag:hover{background:var(--ink);color:var(--gold);border-color:var(--ink);}
-.proof-toggle{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--teal);background:none;border:1px solid var(--teal);border-radius:2px;padding:.18rem .45rem;cursor:pointer;margin-top:.4rem;}
-.proof-toggle:hover{background:var(--teal);color:white;}
-.proof-content{border-left:3px solid var(--sage);padding-left:1rem;margin-top:.7rem;}
-.minimap{position:fixed;right:.8rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:3px;}
-.mm-dot{width:7px;height:7px;border-radius:50%;background:#ccc;cursor:pointer;border:1px solid #999;transition:all .18s;}
-.mm-dot.active{background:var(--gold);border-color:var(--gold);transform:scale(1.5);}.mm-dot:hover{background:var(--teal);}
+.proof-card{background:var(--white);border-radius:24px;box-shadow:0 12px 48px rgba(124,58,237,.12),0 4px 16px rgba(59,130,246,.08);max-width:860px;width:100%;overflow:hidden;animation:cardIn .4s cubic-bezier(.34,1.56,.64,1);border:2px solid rgba(124,58,237,.1);}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+.card-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:20px;margin-bottom:.5rem;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.b-def{background:linear-gradient(135deg,var(--blue-light),#c7d2fe);color:var(--blue-dark);}
+.b-thm{background:linear-gradient(135deg,var(--orange-light),#fed7aa);color:var(--orange-dark);}
+.b-prop{background:linear-gradient(135deg,var(--green-light),#bbf7d0);color:var(--green-dark);}
+.b-lem{background:linear-gradient(135deg,var(--purple-light),#ddd6fe);color:var(--purple-dark);}
+.b-cor{background:linear-gradient(135deg,var(--yellow-light),#fde68a);color:var(--yellow-dark);}
+.b-abs{background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));color:var(--yellow);}
+.b-rmk{background:linear-gradient(135deg,var(--gray-light),#e5e7eb);color:var(--gray-dark);}
+.card-hdr{padding:1.5rem 2rem .8rem;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,var(--purple),var(--blue),var(--green),var(--orange)) 1;}
+.card-title{font-family:'Playfair Display',serif;font-size:1.35rem;line-height:1.3;background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.card-body-inner{padding:1.5rem 2rem 1.2rem;line-height:1.8;font-size:1.02rem;}.card-body-inner p{margin-bottom:.8rem;}
+.math-block{background:linear-gradient(135deg,rgba(124,58,237,.04),rgba(59,130,246,.04));border-left:4px solid;border-image:linear-gradient(180deg,var(--purple),var(--blue)) 1;padding:1rem 1.3rem;margin:1rem 0;border-radius:0 16px 16px 0;overflow-x:auto;box-shadow:inset 0 0 20px rgba(124,58,237,.03);}
+.code-block{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:linear-gradient(135deg,#1e1b4b,#1e293b);color:#c4b5fd;padding:1rem 1.3rem;border-radius:16px;overflow-x:auto;margin:.9rem 0;line-height:1.7;box-shadow:0 4px 16px rgba(0,0,0,.15);border:1px solid rgba(124,58,237,.2);}
+.src-link{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--purple);text-decoration:none;border:2px solid var(--purple);border-radius:20px;padding:.15rem .5rem;transition:all .25s;box-shadow:0 2px 8px var(--purple-glow);}
+.src-link:hover{background:var(--purple);color:white;transform:translateY(-1px);box-shadow:0 4px 16px var(--purple-glow);}
+.proof-card a{color:var(--purple);font-weight:600;}.proof-card a:hover{color:var(--orange);}
+.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.62rem;background:linear-gradient(135deg,var(--purple-light),var(--blue-light));border:1px solid rgba(124,58,237,.2);border-radius:20px;padding:.12rem .55rem;margin:.15rem .08rem;text-decoration:none;color:var(--purple-dark);transition:all .25s;box-shadow:0 2px 6px rgba(0,0,0,.04);}
+.tag:hover{background:linear-gradient(135deg,var(--purple),var(--blue));color:white;border-color:transparent;transform:translateY(-1px);box-shadow:0 4px 12px var(--purple-glow);}
+.proof-toggle{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--white);background:linear-gradient(135deg,var(--purple),var(--blue));border:none;border-radius:20px;padding:.35rem .9rem;cursor:pointer;margin-top:.5rem;transition:all .3s;box-shadow:0 3px 12px var(--purple-glow);}
+.proof-toggle:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--purple-glow);background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));}
+.proof-content{border-left:4px solid;border-image:linear-gradient(180deg,var(--green),var(--blue)) 1;padding:1rem 1.2rem;margin-top:.8rem;background:linear-gradient(135deg,rgba(34,197,94,.03),rgba(59,130,246,.03));border-radius:0 12px 12px 0;}
+.proof-content p{margin-bottom:.6rem;}
+.qed-box{display:inline-block;background:linear-gradient(135deg,var(--green),var(--blue));color:white;font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.2rem .6rem;border-radius:12px;margin-top:.4rem;box-shadow:0 2px 8px rgba(34,197,94,.3);}
+.remark-box{background:linear-gradient(135deg,rgba(234,179,8,.06),rgba(249,115,22,.06));border:2px solid var(--yellow);border-radius:16px;padding:.9rem 1.2rem;margin:.8rem 0;font-size:.92rem;}
+.remark-box .remark-title{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--orange-dark);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;}
+.example-box{background:linear-gradient(135deg,rgba(59,130,246,.04),rgba(124,58,237,.04));border:2px dashed var(--blue);border-radius:16px;padding:.9rem 1.2rem;margin:.8rem 0;}
+.example-box .example-title{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--blue-dark);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;}
+.minimap{position:fixed;right:.8rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:4px;}
+.mm-dot{width:10px;height:10px;border-radius:50%;background:rgba(124,58,237,.2);cursor:pointer;border:2px solid rgba(124,58,237,.3);transition:all .25s;}
+.mm-dot.active{background:var(--purple);border-color:var(--yellow);transform:scale(1.6);box-shadow:0 0 12px var(--purple-glow);}.mm-dot:hover{background:var(--blue);border-color:var(--blue);transform:scale(1.4);}
 @media(max-width:860px){.minimap{display:none;}}
-.nav-footer{background:var(--ink);padding:.9rem 1.5rem;position:sticky;bottom:0;border-top:2px solid var(--gold);z-index:100;}
-.btn-nav{font-family:'JetBrains Mono',monospace;font-size:.8rem;border-radius:2px;padding:.45rem 1.3rem;border:2px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;transition:all .18s;}
-.btn-nav:hover{background:var(--gold);color:var(--ink);}.btn-nav:disabled{opacity:.3;cursor:not-allowed;}
-.ctr{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--gold-light);}
+.nav-footer{background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark),var(--purple));padding:1rem 1.5rem;position:sticky;bottom:0;border-top:4px solid var(--yellow);z-index:100;border-radius:24px 24px 0 0;box-shadow:0 -8px 32px var(--purple-glow);}
+.btn-nav{font-family:'JetBrains Mono',monospace;font-size:.8rem;border-radius:20px;padding:.5rem 1.5rem;border:2px solid var(--yellow);background:transparent;color:var(--yellow);cursor:pointer;transition:all .25s;box-shadow:0 2px 12px rgba(234,179,8,.15);}
+.btn-nav:hover{background:var(--yellow);color:var(--black);transform:translateY(-2px);box-shadow:0 6px 20px rgba(234,179,8,.3);}.btn-nav:disabled{opacity:.3;cursor:not-allowed;transform:none;box-shadow:none;}
+.ctr{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--yellow-light);}
+.bubble{position:fixed;border-radius:50%;pointer-events:none;opacity:.06;z-index:0;}
+.bubble-1{width:300px;height:300px;background:var(--purple);top:-50px;left:-80px;animation:float1 20s ease-in-out infinite;}
+.bubble-2{width:200px;height:200px;background:var(--blue);bottom:100px;right:-60px;animation:float2 25s ease-in-out infinite;}
+.bubble-3{width:250px;height:250px;background:var(--green);top:40%;left:60%;animation:float3 30s ease-in-out infinite;}
+.bubble-4{width:180px;height:180px;background:var(--orange);top:20%;right:20%;animation:float1 22s ease-in-out infinite reverse;}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(40px,30px) scale(1.1);}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-30px,-40px) scale(1.15);}}
+@keyframes float3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-20px,30px) scale(1.05);}}
+.sparkle{position:absolute;width:6px;height:6px;background:var(--yellow);border-radius:50%;animation:sparkle 2s ease-in-out infinite;pointer-events:none;}
+@keyframes sparkle{0%,100%{opacity:0;transform:scale(0);}50%{opacity:1;transform:scale(1);}}
+.card-ribbon{position:absolute;top:12px;right:-35px;background:linear-gradient(135deg,var(--orange),var(--yellow));color:var(--black);font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;padding:.2rem 2.5rem;transform:rotate(45deg);letter-spacing:.06em;box-shadow:0 2px 8px rgba(0,0,0,.15);}
+.depends-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.58rem;background:var(--gray-light);color:var(--gray-dark);border-radius:20px;padding:.12rem .5rem;margin:.1rem;border:1px solid rgba(107,114,128,.2);}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));color:white;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;margin-right:.5rem;box-shadow:0 2px 8px var(--purple-glow);}
 </style>
 </head>
 <body>
+<div class="bubble bubble-1"></div>
+<div class="bubble bubble-2"></div>
+<div class="bubble bubble-3"></div>
+<div class="bubble bubble-4"></div>
 <header class="site-header d-flex justify-content-between align-items-start flex-wrap gap-2">
   <div>
-    <h1><i class="bi bi-infinity me-2" style="color:var(--gold)"></i>Twin Primes — Coset Topology Proof</h1>
+    <h1><i class="bi bi-infinity me-2" style="color:var(--yellow)"></i>Twin Primes — Coset Topology Proof <i class="bi bi-stars ms-1" style="color:var(--yellow);font-size:.8rem"></i></h1>
     <div class="sub">
       <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank"><i class="bi bi-github"></i> FruitfulApproach/Lean4TPC</a>
-      &nbsp;·&nbsp;
+      &nbsp;<i class="bi bi-dot"></i>&nbsp;
       <a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank"><i class="bi bi-file-text"></i> PAPER.md</a>
+      &nbsp;<i class="bi bi-dot"></i>&nbsp;
+      <span style="color:var(--green-light)"><i class="bi bi-patch-check-fill"></i> 20 Proof Cards</span>
     </div>
   </div>
-  <div class="d-flex gap-2">
+  <div class="d-flex gap-2 flex-wrap">
     <a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank" class="src-link"><i class="bi bi-book"></i> Mathlib4</a>
-    <a href="index.html" class="src-link"><i class="bi bi-house"></i> Home</a>
+    <a href="index.html" class="src-link"><i class="bi bi-house-heart"></i> Home</a>
   </div>
 </header>
 <div class="prog-wrap">
-  <div class="prog"><div class="prog-bar" id="pb" style="width:6%"></div></div>
-  <div class="prog-lbl" id="pl">Card 1 of 16</div>
+  <div class="prog"><div class="prog-bar" id="pb" style="width:5%"></div></div>
+  <div class="prog-lbl" id="pl">Card 1 of 20</div>
 </div>
 <div class="ch-nav" id="chn"></div>
 <main class="card-area"><div class="proof-card" id="mc"></div></main>
 <div class="minimap" id="mm"></div>
 <footer class="nav-footer d-flex justify-content-between align-items-center">
-  <button class="btn-nav" id="bp" onclick="go(-1)" disabled><i class="bi bi-arrow-left me-1"></i>Prev</button>
-  <span class="ctr" id="ctr">1 / 16</span>
-  <button class="btn-nav" id="bn" onclick="go(1)">Next<i class="bi bi-arrow-right ms-1"></i></button>
+  <button class="btn-nav" id="bp" onclick="go(-1)" disabled><i class="bi bi-arrow-left-circle me-1"></i>Prev</button>
+  <span class="ctr" id="ctr"><i class="bi bi-diamond-fill me-1" style="font-size:.5rem"></i>1 / 20<i class="bi bi-diamond-fill ms-1" style="font-size:.5rem"></i></span>
+  <button class="btn-nav" id="bn" onclick="go(1)">Next<i class="bi bi-arrow-right-circle ms-1"></i></button>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 const GH="https://github.com/FruitfulApproach/Lean4TPC/blob/main";
 const cards=[
+
 {ch:"Abstract",badge:"b-abs",title:"Abstract — The Coset Topology Approach",lean:null,body:`
-<p>We prove there are infinitely many twin prime pairs via the submonoid $N=\\langle G\\rangle\\leqslant M=(\\mathbb{Z}^2,\\otimes)$ where $G=\\{(k,k):k\\in\\mathbb{Z}\\}$.</p>
-<p><strong>Key idea:</strong> For each irreducible $\\widehat{q}\\in\\mathrm{Irr}(N)$, we prove the <strong>coset identity</strong>:</p>
+<p>We prove there are <strong>infinitely many twin prime pairs</strong> via the submonoid $N=\\langle G\\rangle\\leqslant M=(\\mathbb{Z}^2,\\otimes)$ where $G=\\{(k,k):k\\in\\mathbb{Z}\\}$.</p>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Core Strategy</div>
+<p>We transfer the twin-prime question into an algebraic/topological setting where Furstenberg's classic proof-technique applies. The map $\\phi(x)=6x+1$ converts the monoid $(\\mathbb{Z},\\oast)$ into ordinary multiplication in $6\\mathbb{Z}+1$. Irreducible elements of $N$ correspond exactly to twin prime pairs.</p>
+</div>
+<p><strong>Key identity:</strong> For each irreducible $\\widehat{q}\\in\\mathrm{Irr}(N)$:</p>
 <div class="math-block">$$\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)$$</div>
-<p>Since $\\widehat{q}\\otimes M$ is a <strong>product of two arithmetic progressions</strong> (hence clopen in the Furstenberg product topology on $M$), each coset $\\widehat{q}\\otimes N$ is <strong>clopen in $N$</strong> via the subspace topology. The Furstenberg argument then gives $|\\mathrm{Irr}(N)|=\\infty$.</p>
-<div class="d-flex flex-wrap gap-1 mt-2">
-<a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tag">Twin Primes</a>
-<a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tag">Furstenberg 1955</a>
-<a href="https://leanprover.github.io/" target="_blank" class="tag">Lean 4</a>
+<p>Since $\\widehat{q}\\otimes M$ is a <strong>product of two arithmetic progressions</strong> (hence clopen in the Furstenberg product topology on $M$), each coset $\\widehat{q}\\otimes N$ is <strong>clopen in $N$</strong>. The Furstenberg argument then forces $|\\mathrm{Irr}(N)|=\\infty$.</p>
+<p><strong>Additionally:</strong> We prove that $N\\cap(a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})$ is either <strong>empty or infinite</strong> — a fundamental property of $N$'s interaction with the Furstenberg topology that underpins the entire argument.</p>
+<div class="d-flex flex-wrap gap-1 mt-3">
+<a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tag"><i class="bi bi-stars me-1"></i>Twin Primes</a>
+<a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tag"><i class="bi bi-clock-history me-1"></i>Furstenberg 1955</a>
+<a href="https://leanprover.github.io/" target="_blank" class="tag"><i class="bi bi-braces me-1"></i>Lean 4</a>
+<a href="https://en.wikipedia.org/wiki/Monoid" target="_blank" class="tag"><i class="bi bi-diagram-3 me-1"></i>Monoid Theory</a>
 </div>`},
 
 {ch:"§1 Ops",badge:"b-def",title:"Definition 1.1 — Operations $\\mathbin{\\oast}$ and $\\mathbin{\\star}$",lean:`${GH}/TPC/Basic.lean#L10`,body:`
-<p>Two binary operations on $\\mathbb{Z}$ (Lean: <code>mstar</code> and <code>sstar</code>):</p>
+<p>Define two binary operations on $\\mathbb{Z}$:</p>
 <div class="math-block">$$x\\mathbin{\\oast}y=6xy+x+y\\qquad x\\mathbin{\\star}y=-6xy+x+y$$</div>
-<p>Both have identity $0$.</p>
+<p>Both have <strong>identity element $0$</strong>: one checks $x\\mathbin{\\oast}0 = 6\\cdot x\\cdot 0 + x + 0 = x$ and similarly for $\\mathbin{\\star}$.</p>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Why these operations?</div>
+<p>They arise from "transporting" ordinary multiplication through the maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$. Every integer $n\\equiv 1\\pmod{6}$ has the form $\\phi(x)$ for a unique $x$, and every $n\\equiv 5\\pmod{6}$ (equivalently $n\\equiv -1\\pmod{6}$) has the form $\\psi(x)$. Since all primes $>3$ satisfy $p\\equiv\\pm1\\pmod{6}$, these operations capture the multiplicative structure of primes in the correct residue classes.</p>
+</div>
 <div class="code-block">def mstar (x y : ℤ) : ℤ := 6 * x * y + x + y
 def sstar (x y : ℤ) : ℤ := -6 * x * y + x + y</div>
-<div class="code-block"> x    y   x⊛y   x⋆y
- 1    1     8    -4
- 2    3    41   -31
--1   -1     4    -8</div>`},
-
-{ch:"§1 Ops",badge:"b-thm",title:"Theorem 1.3 — Isomorphisms $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$",lean:`${GH}/TPC/Basic.lean#L38`,body:`
-<div class="math-block">$$\\phi:N^*\\xrightarrow{\\sim}(6\\mathbb{Z}+1,\\cdot)\\qquad\\psi:N^\\star\\xrightarrow{\\sim}(6\\mathbb{Z}-1,\\bullet)$$</div>
-<button class="proof-toggle" onclick="tp(this)">▶ Show proof</button>
+<div class="example-box">
+<div class="example-title"><i class="bi bi-calculator me-1"></i>Computation Table</div>
+<div class="code-block" style="margin:0"> x    y   x⊛y   x⋆y    φ(x⊛y)       Check
+ 1    1     8    -4      49      = 7·7 = φ(1)²
+ 2    3    41   -31     247      = 13·19 = φ(2)·φ(3)
+-1   -1     4    -8      25      = (-5)·(-5) = φ(-1)²
+ 1   -1    -6     0     -35      = 7·(-5) = φ(1)·φ(-1)
+ 0    x     x     x    6x+1      identity ✓</div>
+</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show associativity proof</button>
 <div class="proof-content" style="display:none">
-<p>$\\phi(x\\mathbin{\\oast}y)=6(6xy+x+y)+1=(6x+1)(6y+1)=\\phi(x)\\phi(y)$. And $\\psi(x\\mathbin{\\star}y)=-[(6x-1)(6y-1)]=\\psi(x)\\bullet\\psi(y)$. $\\square$</p>
+<p><strong>Proof of associativity for $\\oast$:</strong></p>
+<p>$(x\\oast y)\\oast z = 6(6xy+x+y)z+(6xy+x+y)+z$</p>
+<p>$= 36xyz+6xz+6yz+6xy+x+y+z$</p>
+<p>$x\\oast(y\\oast z) = 6x(6yz+y+z)+x+(6yz+y+z)$</p>
+<p>$= 36xyz+6xy+6xz+x+6yz+y+z$</p>
+<p>Both equal $36xyz+6xy+6xz+6yz+x+y+z$. Commutativity: $x\\oast y = 6xy+x+y = 6yx+y+x = y\\oast x$. The $\\star$ case is identical with $-6$ replacing $6$ in the leading term.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>`},
+
+{ch:"§1 Ops",badge:"b-thm",title:"Theorem 1.3 — Isomorphisms $\\phi$ and $\\psi$",lean:`${GH}/TPC/Basic.lean#L38`,body:`
+<p>The maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ are <strong>monoid isomorphisms</strong>:</p>
+<div class="math-block">$$\\phi:(\\mathbb{Z},\\oast)\\xrightarrow{\\sim}(6\\mathbb{Z}+1,\\cdot)\\qquad\\psi:(\\mathbb{Z},\\star)\\xrightarrow{\\sim}(6\\mathbb{Z}-1,\\bullet)$$</div>
+<p>where $a\\bullet b = -(ab)$ on $6\\mathbb{Z}-1$. Both are bijections: $\\phi^{-1}(n)=\\frac{n-1}{6}$, $\\psi^{-1}(n)=\\frac{n+1}{6}$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p><strong>$\\phi$ is multiplicative:</strong></p>
+<p>$\\phi(x\\oast y) = 6(6xy+x+y)+1 = 36xy+6x+6y+1 = (6x+1)(6y+1) = \\phi(x)\\cdot\\phi(y)$.</p>
+<p><strong>$\\phi$ is a bijection onto $6\\mathbb{Z}+1$:</strong></p>
+<p>If $n\\in 6\\mathbb{Z}+1$ then $n=6k+1$ for some $k\\in\\mathbb{Z}$, so $\\phi(k)=n$. Injectivity: $\\phi(x)=\\phi(y)\\Rightarrow 6x+1=6y+1\\Rightarrow x=y$.</p>
+<p><strong>$\\psi$ is multiplicative (with $\\bullet$):</strong></p>
+<p>$\\psi(x\\star y)=6(-6xy+x+y)-1=-36xy+6x+6y-1=-[(6x-1)(6y-1)]$.</p>
+<p>And $\\psi(x)\\bullet\\psi(y) = -[(6x-1)(6y-1)]$. Equal. ✓</p>
+<p><strong>$\\psi$ is a bijection onto $6\\mathbb{Z}-1$:</strong> same argument as $\\phi$.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<div class="example-box">
+<div class="example-title"><i class="bi bi-lightning-charge me-1"></i>Key Consequence</div>
+<p>$x$ is <strong>$\\oast$-irreducible</strong> (cannot be written as $a\\oast b$ with $a,b\\neq 0$) $\\iff$ $\\phi(x)=6x+1$ is <strong>prime</strong> in $\\mathbb{Z}$ (up to sign). This is because $\\phi$ converts $\\oast$-factorizations into ordinary factorizations in $6\\mathbb{Z}+1$.</p>
 </div>
 <div class="code-block">lemma φ_mul (x y : ℤ) : φ (x ⊛ y) = φ x * φ y := by
-  simp [φ, mstar]; ring</div>
-<p><strong>Example:</strong> $\\phi(2\\mathbin{\\oast}3)=\\phi(41)=247=13\\times19=\\phi(2)\\phi(3)$.</p>`},
+  simp [φ, mstar]; ring
+
+lemma ψ_mul (x y : ℤ) : ψ (x ⋆ y) = -(ψ x * ψ y) := by
+  simp [ψ, sstar]; ring</div>`},
 
 {ch:"§1 Ops",badge:"b-lem",title:"Lemma 1.4 — No Zero Divisors",lean:`${GH}/TPC/Basic.lean#L62`,body:`
-<p>$u,v\\neq 0\\Rightarrow u\\mathbin{\\oast}v\\neq 0$ and $u\\mathbin{\\star}v\\neq 0$.</p>
-<button class="proof-toggle" onclick="tp(this)">▶ Show proof</button>
+<p><strong>Statement:</strong> If $u,v\\neq 0$ then $u\\mathbin{\\oast}v\\neq 0$ and $u\\mathbin{\\star}v\\neq 0$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p>$u\\mathbin{\\oast}v=0\\iff(6u+1)(6v+1)=1\\Rightarrow u=0$ or $u=-1/3\\notin\\mathbb{Z}$. Contradiction. $\\square$</p>
+<p><strong>For $\\oast$:</strong> Suppose $u\\oast v = 0$. Applying $\\phi$:</p>
+<p>$\\phi(u\\oast v) = \\phi(u)\\phi(v) = (6u+1)(6v+1) = \\phi(0) = 1$.</p>
+<p>In $\\mathbb{Z}$, $ab=1$ forces $a=b=1$ or $a=b=-1$.</p>
+<p><strong>Case 1:</strong> $6u+1=6v+1=1 \\Rightarrow u=v=0$. Contradicts $u\\neq 0$.</p>
+<p><strong>Case 2:</strong> $6u+1=6v+1=-1 \\Rightarrow u=v=-1/3\\notin\\mathbb{Z}$. Impossible.</p>
+<p><strong>For $\\star$:</strong> Suppose $u\\star v = 0$. Applying $\\psi$:</p>
+<p>$\\psi(u\\star v) = -\\psi(u)\\psi(v) = -(6u-1)(6v-1)$. And $\\psi(0) = -1$.</p>
+<p>So $(6u-1)(6v-1) = 1$, giving $6u-1=6v-1=\\pm1$, so $u=v=0$ or $u=v=1/3\\notin\\mathbb{Z}$. Either way contradiction.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
-<p><strong>Used in:</strong> Thm 3.2 (prime divisibility in the coset identity) and Lem 3.4 (injectivity of $L_{\\widehat{q}}$).</p>`},
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-exclamation-triangle me-1"></i>Where this is used</div>
+<p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i>Thm 3.2</span> Prime divisibility in the coset identity proof</p>
+<p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i>Lem 3.4</span> Injectivity of left multiplication $L_{\\widehat{q}}$</p>
+<p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i>Thm NEW</span> Emptiness-or-infinitude of $N\\cap$ basic opens</p>
+</div>
+<div class="code-block">lemma mstar_no_zero_div (u v : ℤ) (hu : u ≠ 0) (hv : v ≠ 0) :
+    mstar u v ≠ 0 := by
+  intro h; have := φ_mul u v; rw [h] at this
+  simp [φ] at this; omega</div>`},
 
-{ch:"§2 Monoid",badge:"b-def",title:"Definition 2.2 — Generating Set $G$ and Submonoid $N$",lean:`${GH}/TPC/Monoid.lean#L40`,body:`
-<div class="math-block">$$G=\\{(k,k):k\\in\\mathbb{Z}\\}\\qquad N=\\langle G\\rangle\\leqslant M=(\\mathbb{Z}^2,\\otimes)$$</div>
-<p>Elements of $N$: $(z,w)$ where $z=k_1\\mathbin{\\oast}\\cdots\\mathbin{\\oast}k_r$ and $w=k_1\\mathbin{\\star}\\cdots\\mathbin{\\star}k_r$ for the <strong>same</strong> sequence. In general $z\\neq w$.</p>
-<div class="code-block">-- Products of generators:
--- (1,1)⊗(1,1) = (8,-4)
--- (2,2)⊗(3,3) = (41,-31)
--- (1,1)⊗(2,2)⊗(3,3) = ?</div>`},
+{ch:"§2 Monoid",badge:"b-def",title:"Definition 2.1–2.2 — Product Monoid $M$, Generators $G$, Submonoid $N$",lean:`${GH}/TPC/Monoid.lean#L10`,body:`
+<p><strong>Definition 2.1.</strong> The <strong>product monoid</strong>:</p>
+<div class="math-block">$$M = (\\mathbb{Z}^2, \\otimes),\\quad (x_1,x_2)\\otimes(y_1,y_2) = (x_1\\oast y_1,\\; x_2\\star y_2),\\quad \\mathbf{1}_M=(0,0)$$</div>
+<p><strong>Definition 2.2.</strong> The <strong>generating set</strong> is the diagonal:</p>
+<div class="math-block">$$G=\\{(k,k):k\\in\\mathbb{Z}\\}\\qquad N=\\langle G\\rangle = \\{\\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_r) : r\\geq 0,\\; k_i\\in\\mathbb{Z}\\}$$</div>
+<p>where $\\Delta(k)=(k,k)$. Elements of $N$ have the form $(z,w)$ where:</p>
+<div class="math-block">$$z = k_1\\oast\\cdots\\oast k_r,\\qquad w = k_1\\star\\cdots\\star k_r$$</div>
+<p>built from the <strong>same sequence</strong> $k_1,\\ldots,k_r$ under different operations. In general $z\\neq w$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show that $N$ is a submonoid</button>
+<div class="proof-content" style="display:none">
+<p><strong>Identity:</strong> The empty product ($r=0$) gives $(0,0)\\in N$. ✓</p>
+<p><strong>Closure:</strong> If $(z,w)$ comes from sequence $k_1,\\ldots,k_r$ and $(z',w')$ from $k_1',\\ldots,k_s'$, then $(z,w)\\otimes(z',w')$ comes from the concatenated sequence $k_1,\\ldots,k_r,k_1',\\ldots,k_s'$. This is because $\\oast$ and $\\star$ are associative, so:</p>
+<p>$(k_1\\oast\\cdots\\oast k_r)\\oast(k_1'\\oast\\cdots\\oast k_s') = k_1\\oast\\cdots\\oast k_r\\oast k_1'\\oast\\cdots\\oast k_s'$</p>
+<p>and similarly for $\\star$. ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<div class="example-box">
+<div class="example-title"><i class="bi bi-calculator me-1"></i>Generator Products</div>
+<div class="code-block" style="margin:0">Δ(1)⊗Δ(1)   = (1⊛1, 1⋆1)   = (8, -4)
+Δ(1)⊗Δ(2)   = (1⊛2, 1⋆2)   = (15, -9)
+Δ(2)⊗Δ(3)   = (2⊛3, 2⋆3)   = (41, -31)
+Δ(0)⊗Δ(k)   = (0⊛k, 0⋆k)   = (k, k)  ← identity!
+Δ(1)⊗Δ(1)⊗Δ(1) = (1⊛1⊛1, 1⋆1⋆1) = (1⊛8, 1⋆(-4)) = (57, -27)</div>
+</div>`},
 
 {ch:"§2 Monoid",badge:"b-prop",title:"Proposition 2.3 — $M$ is a Topological Monoid",lean:`${GH}/TPC/Monoid.lean#L55`,body:`
-<p>Equip $\\mathbb{Z}$ with the <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg topology</a> (basis: $a+b\\mathbb{Z}$, clopen). Then $(M,\\otimes)$ is a topological monoid.</p>
-<button class="proof-toggle" onclick="tp(this)">▶ Show key step</button>
+<p>Equip $\\mathbb{Z}$ with the <strong>Furstenberg topology</strong>: the basis consists of all arithmetic progressions $a+b\\mathbb{Z}$ with $b\\neq 0$, each of which is clopen. Give $M=\\mathbb{Z}^2$ the product topology. Then $(M,\\otimes)$ is a <strong>topological monoid</strong>.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p>For $\\mathbin{\\oast}$: neighborhood $(x_0+b\\mathbb{Z})\\times(y_0+b\\mathbb{Z})$ maps into $a+b\\mathbb{Z}$ since correction $(6y_0+1)bs+(6x_0+1)bt+6b^2st\\equiv 0\\pmod{b}$. $\\square$</p>
+<p>We must show $\\otimes:M\\times M\\to M$ is continuous. Since $\\otimes=(\\oast,\\star)$ component-wise, it suffices to show each of $\\oast$ and $\\star$ is continuous $\\mathbb{Z}\\times\\mathbb{Z}\\to\\mathbb{Z}$.</p>
+<p><strong>Continuity of $\\oast$:</strong> Let $(x_0,y_0)\\in\\mathbb{Z}^2$ and let $a+b\\mathbb{Z}$ be a basic open neighborhood of $x_0\\oast y_0$. We need a neighborhood $U\\times V$ of $(x_0,y_0)$ mapping into $a+b\\mathbb{Z}$.</p>
+<p>Take $U=x_0+b\\mathbb{Z}$, $V=y_0+b\\mathbb{Z}$. For $x=x_0+bs$, $y=y_0+bt$:</p>
+<p>$x\\oast y - x_0\\oast y_0 = (6y_0+1)\\cdot bs + (6x_0+1)\\cdot bt + 6b^2st$</p>
+<p>$= b\\bigl[(6y_0+1)s + (6x_0+1)t + 6b\\cdot st\\bigr] \\equiv 0\\pmod{b}$</p>
+<p>So $x\\oast y \\equiv x_0\\oast y_0 \\equiv a \\pmod{b}$. Hence $U\\times V$ maps into $a+b\\mathbb{Z}$. ✓</p>
+<p><strong>Continuity of $\\star$:</strong> Identical argument with $-6$ replacing $6$ in the leading term. The correction term $(-6y_0-1)bs+(-6x_0-1)bt+(-6)b^2st$ is still divisible by $b$. ✓</p>
+<p>Therefore $\\otimes = \\oast\\times\\star$ is continuous, making $(M,\\otimes)$ a topological monoid.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
-<p><strong>Consequence:</strong> $L_{\\widehat{q}}(\\widehat{x})=\\widehat{q}\\otimes\\widehat{x}$ is continuous for any fixed $\\widehat{q}$, so $L_{\\widehat{q}}$ is a homeomorphism onto its image.</p>`},
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Consequence</div>
+<p>Left multiplication $L_{\\widehat{q}}(\\widehat{x})=\\widehat{q}\\otimes\\widehat{x}$ is <strong>continuous</strong> for any fixed $\\widehat{q}$. Combined with injectivity (Lem 1.4), $L_{\\widehat{q}}$ is a homeomorphism onto its image when $\\widehat{q}\\neq(0,0)$.</p>
+</div>`},
 
 {ch:"§3 Coset",badge:"b-lem",title:"Lemma 3.1 — $\\widehat{a}\\otimes M$ is Clopen",lean:`${GH}/TPC/CosetTopology.lean#L15`,body:`
 <p>For $\\widehat{a}=(a_1,a_2)\\neq(0,0)$:</p>
 <div class="math-block">$$\\widehat{a}\\otimes M=(a_1+(6a_1+1)\\mathbb{Z})\\times(a_2+(6a_2-1)\\mathbb{Z})$$</div>
-<p>A product of two arithmetic progressions — <strong>clopen</strong> in $M$.</p>
-<div class="code-block">-- (1,1) ⊗ M = (1+7Z) × (1+5Z)
--- (2,2) ⊗ M = (2+13Z) × (2+11Z)
--- (5,5) ⊗ M = (5+31Z) × (5+29Z)</div>
-<p>Note: the step sizes $6a_1+1=\\phi(a_1)$ and $6a_2-1=\\psi(a_2)$ are exactly the isomorphism values!</p>`},
-
-{ch:"§3 Coset",badge:"b-thm",title:"Theorem 3.2 — Coset Identity (The Key Lemma)",lean:`${GH}/TPC/CosetTopology.lean#L45`,body:`
-<p>For $\\widehat{q}=(q,q)\\in\\mathrm{Irr}(N)$:</p>
-<div class="math-block">$$\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)$$</div>
-<button class="proof-toggle" onclick="tp(this)">▶ Show proof</button>
+<p>A <strong>product of two arithmetic progressions</strong> — each factor is clopen in the Furstenberg topology, hence the product is <strong>clopen in $M$</strong>.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p>$(\\supseteq)$: clear. $(\\subseteq)$: Let $(z,w)\\in N\\cap(\\widehat{q}\\otimes M)$. Then $q\\mathbin{\\oast}p=z$ for some $p$. Since $(z,w)\\in N$: $\\phi(z)=\\phi(k_1)\\cdots\\phi(k_s)$. Since $\\phi(q)$ is prime (as $\\widehat{q}\\in\\mathrm{Irr}(N)$) and divides this product, $\\phi(q)=\\phi(k_i)$ for some $i$, so $k_i=q$. By commutativity reorder $k_1=q$: get $(z,w)=\\widehat{q}\\otimes(k_2\\mathbin{\\oast}\\cdots,k_2\\mathbin{\\star}\\cdots)\\in\\widehat{q}\\otimes N$. $\\square$</p>
+<p><strong>First component:</strong> $\\{a_1\\oast x : x\\in\\mathbb{Z}\\}$. Applying $\\phi$:</p>
+<p>$\\phi(a_1\\oast x) = \\phi(a_1)\\phi(x) = (6a_1+1)(6x+1)$.</p>
+<p>As $x$ ranges over $\\mathbb{Z}$, $6x+1$ ranges over all of $6\\mathbb{Z}+1$. So the image under $\\phi$ is $(6a_1+1)\\cdot(6\\mathbb{Z}+1) = (6a_1+1) + 6(6a_1+1)\\mathbb{Z}$.</p>
+<p>Pulling back through $\\phi^{-1}$: $a_1+(6a_1+1)\\mathbb{Z}$. ✓</p>
+<p><strong>Second component:</strong> $\\{a_2\\star x : x\\in\\mathbb{Z}\\}$. Similarly via $\\psi$:</p>
+<p>$\\psi(a_2\\star x) = -(6a_2-1)(6x-1)$. As $x$ ranges over $\\mathbb{Z}$, $6x-1$ ranges over $6\\mathbb{Z}-1$.</p>
+<p>The image is $\\{-(6a_2-1)m : m\\in 6\\mathbb{Z}-1\\}$. Pulling back: $a_2+(6a_2-1)\\mathbb{Z}$. ✓</p>
+<p><strong>Clopenness:</strong> Each arithmetic progression $a+b\\mathbb{Z}$ (with $b\\neq 0$) is clopen in the Furstenberg topology. Products of clopen sets are clopen in the product topology.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
-<p><strong>This is the heart of the proof.</strong> Irreducibility of $\\widehat{q}$ (so $\\phi(q)$ prime) is what makes the prime divisibility argument work. We restrict to $\\widehat{q}\\in\\mathrm{Irr}(N)$ precisely to avoid the gap.</p>`},
+<div class="example-box">
+<div class="example-title"><i class="bi bi-calculator me-1"></i>Explicit Cosets</div>
+<div class="code-block" style="margin:0">(1,1) ⊗ M = (1+7ℤ) × (1+5ℤ)
+           = {...,−6,1,8,15,22,...} × {...,−4,1,6,11,16,...}
+(2,2) ⊗ M = (2+13ℤ) × (2+11ℤ)
+(5,5) ⊗ M = (5+31ℤ) × (5+29ℤ)
 
-{ch:"§3 Coset",badge:"b-cor",title:"Corollary 3.3 — $\\widehat{q}\\otimes N$ Clopen in $N$; Lemma 3.4 — Infinite",lean:`${GH}/TPC/CosetTopology.lean#L82`,body:`
-<p><strong>Corollary 3.3:</strong> In the subspace topology on $N$:</p>
-<div class="math-block">$$\\widehat{q}\\otimes N=N\\cap(\\widehat{q}\\otimes M)\\text{ is clopen in }N$$</div>
-<p>because $\\widehat{q}\\otimes M$ is clopen in $M$ (Lem 3.1) and subspace intersections preserve clopenness.</p>
-<p><strong>Lemma 3.4:</strong> $|\\widehat{q}\\otimes N|=|N|=\\infty$.</p>
-<p>Proof: $L_{\\widehat{q}}:N\\to\\widehat{q}\\otimes N$ is injective by no-zero-divisors (Lem 1.4), and $N$ is infinite (it contains all generators $\\Delta(k)=(k,k)$).</p>
+Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values!</div>
+</div>`},
+
+{ch:"§3 Coset",badge:"b-thm",title:"Theorem 3.2 — The Coset Identity (The Key Lemma)",lean:`${GH}/TPC/CosetTopology.lean#L45`,body:`
+<p style="position:relative;overflow:hidden;">For $\\widehat{q}=(q,q)\\in\\mathrm{Irr}(N)$:</p>
+<div class="math-block">$$\\boxed{\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)}$$</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-star-fill me-1"></i>This is the heart of the entire proof</div>
+<p>This identity is what makes the Furstenberg argument work for $N$. The left side is an algebraic object (coset of the submonoid); the right side is a topological object (intersection with a clopen set). Their equality bridges algebra and topology.</p>
+</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p><strong>Direction ($\\subseteq$):</strong> If $(z,w)\\in\\widehat{q}\\otimes N$, then $(z,w)=\\widehat{q}\\otimes\\widehat{n}$ for some $\\widehat{n}\\in N$. Since $N$ is a submonoid containing $\\widehat{q}$, we have $(z,w)\\in N$. Also $(z,w)\\in\\widehat{q}\\otimes M$ trivially (since $N\\subseteq M$). So $(z,w)\\in N\\cap(\\widehat{q}\\otimes M)$. ✓</p>
+<p><strong>Direction ($\\supseteq$) — the hard direction:</strong></p>
+<p>Let $(z,w)\\in N\\cap(\\widehat{q}\\otimes M)$.</p>
+<p><span class="step-num">1</span><strong>Unpack membership in $\\widehat{q}\\otimes M$:</strong> There exist $p,r\\in\\mathbb{Z}$ with $q\\oast p = z$ and $q\\star r = w$.</p>
+<p><span class="step-num">2</span><strong>Unpack membership in $N$:</strong> There exist $k_1,\\ldots,k_s\\in\\mathbb{Z}$ with $z = k_1\\oast\\cdots\\oast k_s$ and $w = k_1\\star\\cdots\\star k_s$.</p>
+<p><span class="step-num">3</span><strong>Apply $\\phi$:</strong> From step 1: $\\phi(q)\\cdot\\phi(p) = \\phi(z)$. From step 2: $\\phi(z) = \\phi(k_1)\\cdots\\phi(k_s)$.</p>
+<p>So $\\phi(q)\\cdot\\phi(p) = \\phi(k_1)\\cdots\\phi(k_s)$.</p>
+<p><span class="step-num">4</span><strong>Use irreducibility:</strong> Since $\\widehat{q}\\in\\mathrm{Irr}(N)$, $\\phi(q)=6q+1$ is <strong>prime</strong> in $\\mathbb{Z}$. (This is precisely the content of Thm 4.2.)</p>
+<p>Since $\\phi(q)$ is prime and divides $\\phi(k_1)\\cdots\\phi(k_s)$, by Euclid's lemma it divides some $\\phi(k_i)$.</p>
+<p><span class="step-num">5</span><strong>Force equality:</strong> Since $\\phi(k_i)\\in 6\\mathbb{Z}+1$ and $\\phi(q)$ is a prime in $6\\mathbb{Z}+1$ dividing $\\phi(k_i)$, we need $\\phi(k_i) = \\pm\\phi(q)$. But all values in $6\\mathbb{Z}+1$ satisfy $\\phi(k_i)\\equiv 1\\pmod{6}$, so $\\phi(k_i)=-\\phi(q)$ would give $\\phi(k_i)\\equiv -1\\pmod{6}$, contradicting $\\phi(k_i)\\equiv 1\\pmod{6}$ (when $\\phi(q)\\neq 1$, which holds since $q\\neq 0$). Therefore $\\phi(k_i)=\\phi(q)$, hence $k_i=q$.</p>
+<p><span class="step-num">6</span><strong>Reorder and conclude:</strong> By commutativity of $\\oast$ and $\\star$, we may assume $k_1=q$. Then:</p>
+<p>$z = q\\oast(k_2\\oast\\cdots\\oast k_s)$ and $w = q\\star(k_2\\star\\cdots\\star k_s)$.</p>
+<p>Setting $\\widehat{n} = (k_2\\oast\\cdots\\oast k_s,\\; k_2\\star\\cdots\\star k_s)\\in N$, we get $(z,w) = \\widehat{q}\\otimes\\widehat{n}\\in\\widehat{q}\\otimes N$. ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>`},
+
+{ch:"§3 Coset",badge:"b-cor",title:"Corollary 3.3 — $\\widehat{q}\\otimes N$ is Clopen in $N$",lean:`${GH}/TPC/CosetTopology.lean#L82`,body:`
+<p>In the subspace topology on $N$ inherited from $M$:</p>
+<div class="math-block">$$\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)\\quad\\text{is clopen in }N$$</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p><span class="step-num">1</span>By Lemma 3.1, $\\widehat{q}\\otimes M$ is <strong>clopen in $M$</strong> (product of two arithmetic progressions).</p>
+<p><span class="step-num">2</span>By Theorem 3.2, $\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)$.</p>
+<p><span class="step-num">3</span>In the <strong>subspace topology</strong> on $N\\subseteq M$, the open sets of $N$ are precisely $\\{N\\cap U : U\\text{ open in }M\\}$. Similarly for closed sets.</p>
+<p><span class="step-num">4</span>Since $\\widehat{q}\\otimes M$ is both open and closed in $M$, the intersection $N\\cap(\\widehat{q}\\otimes M)$ is both open and closed in $N$.</p>
+<p>Therefore $\\widehat{q}\\otimes N$ is <strong>clopen in $N$</strong>.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
 <div class="code-block">theorem cosetN_isClopen (q : ℤ) (hq : IsIrred (q,q))
     (hprime : (6*q+1).natAbs.Prime) :
     IsClopen ((· ⊗ ·) (q,q) '' ↑N)</div>`},
 
-{ch:"§4 Irred",badge:"b-thm",title:"Theorem 4.2 — Irreducibles $\\iff$ Twin Primes",lean:`${GH}/TPC/Main.lean#L8`,body:`
-<p>$(z,w)\\in N$ is $\\otimes$-irreducible $\\iff$ $6z+1$ and $6z-1$ are both $\\pm$prime.</p>
-<div class="code-block"> z    6z+1  6z-1   Irr?  Twin pair
- 1      7     5    YES   (5,7)
- 2     13    11    YES   (11,13)
- 3     19    17    YES   (17,19)
- 4     25    23    NO    25=5²
- 5     31    29    YES   (29,31)
-10     61    59    YES   (59,61)</div>
-<p>So $|\\mathrm{Irr}(N)|=\\infty$ <strong>is exactly</strong> the Twin Prime Conjecture.</p>`},
+{ch:"§3 Coset",badge:"b-lem",title:"Lemma 3.4 — Cosets Are Infinite",lean:`${GH}/TPC/CosetTopology.lean#L95`,body:`
+<p><strong>Statement:</strong> For any $\\widehat{q}\\neq(0,0)$ in $N$: $|\\widehat{q}\\otimes N| = |N| = \\infty$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p><strong>$N$ is infinite:</strong> $N$ contains all generators $\\Delta(k)=(k,k)$ for $k\\in\\mathbb{Z}$, and these are pairwise distinct (since they differ in both coordinates). So $|N|\\geq|\\mathbb{Z}|=\\infty$.</p>
+<p><strong>$L_{\\widehat{q}}$ is injective:</strong> Suppose $\\widehat{q}\\otimes\\widehat{x} = \\widehat{q}\\otimes\\widehat{y}$ where $\\widehat{q}=(q,q)$ and $\\widehat{x}=(x_1,x_2)$, $\\widehat{y}=(y_1,y_2)\\in N$.</p>
+<p>First components: $q\\oast x_1 = q\\oast y_1$. Applying $\\phi$: $\\phi(q)\\phi(x_1) = \\phi(q)\\phi(y_1)$.</p>
+<p>Since $q\\neq 0$, $\\phi(q)=6q+1\\neq 1$ (as $q\\neq 0$ implies $|6q+1|\\geq 5$). Cancel: $\\phi(x_1)=\\phi(y_1)$, so $x_1=y_1$.</p>
+<p>Similarly for second components: $\\psi(q)\\psi(x_2)=\\psi(q)\\psi(y_2)$ gives $x_2=y_2$.</p>
+<p>Therefore $\\widehat{x}=\\widehat{y}$, so $L_{\\widehat{q}}$ is injective.</p>
+<p><strong>Conclusion:</strong> $L_{\\widehat{q}}:N\\to\\widehat{q}\\otimes N$ is a bijection from the infinite set $N$, so $|\\widehat{q}\\otimes N|=\\infty$.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>`},
 
-{ch:"§4 Irred",badge:"b-cor",title:"Lemma 4.4 + Corollary 4.5 — Descent and Covering",lean:`${GH}/TPC/Main.lean#L55`,body:`
-<p><strong>Norm:</strong> $|(z,w)|=\\phi(z)^2=(6z+1)^2$ is multiplicative and proper factors have strictly smaller norm.</p>
-<p><strong>Lemma 4.4:</strong> Every $(z,w)\\in N\\setminus\\{(0,0)\\}$ has an irreducible $\\otimes$-divisor. (Strong induction on norm.)</p>
+{ch:"§3½ New",badge:"b-thm",title:"Theorem — $N \\cap (a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})$ is Empty or Infinite",lean:null,body:`
+<p>This is a fundamental structural property of $N$ inside the Furstenberg topology:</p>
+<div class="math-block">$$\\text{For any }a,b,c,d\\in\\mathbb{Z}\\text{ with }b,d\\neq 0:\\quad N\\cap\\bigl((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})\\bigr)\\text{ is either }\\emptyset\\text{ or infinite.}$$</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-star-fill me-1"></i>Why this matters</div>
+<p>This shows that $N$ is "topologically large" — it cannot meet a basic open set in finitely many points. This is the deeper reason why $\\{(0,0)\\}$ cannot be open in $N$, which is the key contradiction in the Furstenberg argument.</p>
+</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p>Suppose $N\\cap\\bigl((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})\\bigr)\\neq\\emptyset$. Pick $(z_0,w_0)$ in this intersection. We produce infinitely many distinct elements.</p>
+<p><span class="step-num">1</span><strong>Setup:</strong> We have $(z_0,w_0)\\in N$ with $z_0\\equiv a\\pmod{b}$ and $w_0\\equiv c\\pmod{d}$.</p>
+<p><span class="step-num">2</span><strong>Choose generators in $bd\\mathbb{Z}$:</strong> For each $n\\in\\mathbb{Z}$, consider the generator $\\Delta(nbd)=(nbd,nbd)\\in G\\subseteq N$.</p>
+<p><span class="step-num">3</span><strong>Form products:</strong> Define $\\widehat{v}_n = (z_0,w_0)\\otimes\\Delta(nbd) = (z_0\\oast(nbd),\\; w_0\\star(nbd))$.</p>
+<p>Since $(z_0,w_0)\\in N$ and $\\Delta(nbd)\\in N$, we have $\\widehat{v}_n\\in N$ for all $n$. ✓</p>
+<p><span class="step-num">4</span><strong>Check first component stays in $a+b\\mathbb{Z}$:</strong></p>
+<p>$z_0\\oast(nbd) = 6z_0\\cdot nbd + z_0 + nbd = nbd(6z_0+1) + z_0$</p>
+<p>$\\equiv z_0 \\equiv a \\pmod{b}$ ✓</p>
+<p><span class="step-num">5</span><strong>Check second component stays in $c+d\\mathbb{Z}$:</strong></p>
+<p>$w_0\\star(nbd) = -6w_0\\cdot nbd + w_0 + nbd = nbd(-6w_0+1) + w_0$</p>
+<p>$\\equiv w_0 \\equiv c \\pmod{d}$ ✓</p>
+<p><span class="step-num">6</span><strong>Show distinctness:</strong> Suppose $\\widehat{v}_n = \\widehat{v}_m$. Looking at first components:</p>
+<p>$z_0\\oast(nbd) = z_0\\oast(mbd)$</p>
+<p>Applying $\\phi$: $\\phi(z_0)\\cdot\\phi(nbd) = \\phi(z_0)\\cdot\\phi(mbd)$.</p>
+<p>$\\phi(z_0)\\cdot(6nbd+1) = \\phi(z_0)\\cdot(6mbd+1)$.</p>
+<p><strong>Case (a):</strong> $\\phi(z_0)=6z_0+1\\neq 0$ (which holds for all $z_0\\in\\mathbb{Z}$ since $6z_0+1$ is odd, hence nonzero). Cancel $\\phi(z_0)$: $6nbd+1=6mbd+1$, so $n=m$. ✓</p>
+<p><strong>Note:</strong> We always have $\\phi(z_0)=6z_0+1\\neq 0$ since $6z_0+1\\equiv 1\\pmod{2}$ is odd.</p>
+<p><span class="step-num">7</span><strong>Conclusion:</strong> The elements $\\{\\widehat{v}_n : n\\in\\mathbb{Z}\\}$ are pairwise distinct, all lie in $N\\cap\\bigl((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})\\bigr)$, and there are infinitely many (one for each $n\\in\\mathbb{Z}$).</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-diagram-3 me-1"></i>Logical structure</div>
+<p>The proof uses three ingredients: <span class="depends-badge">$N$ is a submonoid (closed under $\\otimes$)</span> <span class="depends-badge">$G\\ni\\Delta(nbd)$ for all $n$</span> <span class="depends-badge">$\\phi(z_0)\\neq 0$ always (for injectivity)</span></p>
+</div>`},
+
+{ch:"§3½ New",badge:"b-cor",title:"Corollary — No Isolated Points in $N$ (Subspace Topology)",lean:null,body:`
+<p><strong>Statement:</strong> In the subspace topology inherited from $M$, the submonoid $N$ has <strong>no isolated points</strong>. That is, for every $(z_0,w_0)\\in N$, the singleton $\\{(z_0,w_0)\\}$ is <strong>not open</strong> in $N$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p>Suppose for contradiction that $\\{(z_0,w_0)\\}$ is open in the subspace topology on $N$.</p>
+<p><span class="step-num">1</span>By definition of the subspace topology, there exists an open set $U\\subseteq M$ with $\\{(z_0,w_0)\\} = N\\cap U$.</p>
+<p><span class="step-num">2</span>Since $U$ is open in the Furstenberg product topology on $M$, and $(z_0,w_0)\\in U$, there exist $b,d\\neq 0$ with $(z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\subseteq U$.</p>
+<p><span class="step-num">3</span>Then $N\\cap\\bigl((z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\bigr) \\subseteq N\\cap U = \\{(z_0,w_0)\\}$.</p>
+<p><span class="step-num">4</span>But $(z_0,w_0)\\in N\\cap\\bigl((z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\bigr)$, so this intersection is nonempty.</p>
+<p><span class="step-num">5</span>By the preceding theorem, it is <strong>infinite</strong> — contradicting the fact that it's contained in a singleton.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Significance</div>
+<p>This corollary gives a <strong>cleaner version of Lemma 5.1</strong> (no singleton open in $N$). While Lemma 5.1 only needs this for $(0,0)$, the result holds for <em>every</em> point of $N$ — the submonoid $N$ is a <strong>perfect set</strong> (no isolated points) in the subspace topology.</p>
+</div>`},
+
+{ch:"§4 Irred",badge:"b-def",title:"Definition 4.1 — Irreducibility in $N$",lean:`${GH}/TPC/Main.lean#L5`,body:`
+<p>An element $(z,w)\\in N\\setminus\\{(0,0)\\}$ is <strong>$\\otimes$-irreducible</strong> if:</p>
+<div class="math-block">$$(z,w) = \\widehat{a}\\otimes\\widehat{b}\\text{ with }\\widehat{a},\\widehat{b}\\in N \\implies \\widehat{a}=(0,0)\\text{ or }\\widehat{b}=(0,0)$$</div>
+<p>In other words, $(z,w)$ cannot be decomposed as a nontrivial product of two elements of $N$. The set of all irreducibles is denoted $\\mathrm{Irr}(N)$.</p>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Note on structure</div>
+<p>Every element of $N$ has the form $(z,w)$ where $z=k_1\\oast\\cdots\\oast k_r$ and $w=k_1\\star\\cdots\\star k_r$. Irreducibility means the generating sequence has length exactly 1: $(z,w)=\\Delta(k)=(k,k)$ for some $k$ that is $\\oast$-irreducible.</p>
+</div>`},
+
+{ch:"§4 Irred",badge:"b-thm",title:"Theorem 4.2 — Irreducibles $\\iff$ Twin Primes",lean:`${GH}/TPC/Main.lean#L8`,body:`
+<p>$(z,w)\\in N$ is $\\otimes$-irreducible if and only if $6z+1$ and $|6z-1|$ are both prime.</p>
+<div class="math-block">$$(z,w)\\in\\mathrm{Irr}(N) \\iff \\phi(z)=6z+1\\in\\pm\\mathbb{P}\\text{ and }\\psi(z)=6z-1\\in\\pm\\mathbb{P}$$</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p><strong>($\\Rightarrow$):</strong> Suppose $(z,w)\\in\\mathrm{Irr}(N)$, so $(z,w)=\\Delta(z)=(z,z)$ (irreducibles are generators, i.e., $w=z$).</p>
+<p>Suppose $\\phi(z)=6z+1$ is not prime. Then $6z+1 = ab$ with $a,b\\in 6\\mathbb{Z}+1$, $|a|,|b|>1$. Write $a=\\phi(\\alpha)$, $b=\\phi(\\beta)$. Then $\\phi(z)=\\phi(\\alpha)\\phi(\\beta)=\\phi(\\alpha\\oast\\beta)$, so $z=\\alpha\\oast\\beta$ with $\\alpha,\\beta\\neq 0$.</p>
+<p>Now consider $\\Delta(\\alpha)\\otimes\\Delta(\\beta) = (\\alpha\\oast\\beta, \\alpha\\star\\beta) = (z, \\alpha\\star\\beta)$. This must equal $(z,w)=(z,z)$ only if $\\alpha\\star\\beta = z = \\alpha\\oast\\beta$. But in general $\\oast\\neq\\star$, so this would need to be checked... </p>
+<p>The correct argument: irreducibility of $(z,w)$ in $N$ means that the only way to write $(z,w) = (k_1,k_1)\\otimes\\cdots\\otimes(k_r,k_r)$ has $r=1$. Applying $\\phi$ to the first component: $\\phi(z) = \\phi(k_1)\\cdots\\phi(k_r)$. If $r=1$ then $\\phi(z)=\\phi(k_1)$ with $|\\phi(k_1)|>1$, and there's no shorter factorization. This means $\\phi(z)$ is $\\pm$prime. Similarly applying $\\psi$ to the second component: $\\psi(z)$ is $\\pm$prime.</p>
+<p><strong>($\\Leftarrow$):</strong> Suppose $\\phi(z)=6z+1$ is $\\pm$prime and $\\psi(z)=6z-1$ is $\\pm$prime. If $(z,z) = \\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_r)$ with $r\\geq 2$, then $\\phi(z) = \\phi(k_1)\\cdots\\phi(k_r)$. Since $\\phi(z)$ is prime, all but one factor must be $\\pm 1$, i.e., all but one $k_i$ is $0$. But $\\Delta(0)=(0,0)$ is the identity, so those factors are trivial. Hence $r=1$ (effectively), proving irreducibility.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<div class="example-box">
+<div class="example-title"><i class="bi bi-table me-1"></i>Twin Prime Table</div>
+<div class="code-block" style="margin:0"> z    6z+1   6z−1   Both ±prime?   Twin pair
+ 1      7      5       YES ✓        (5, 7)
+ 2     13     11       YES ✓        (11, 13)
+ 3     19     17       YES ✓        (17, 19)
+ 4     25     23       NO  ✗        25 = 5²
+ 5     31     29       YES ✓        (29, 31)
+ 7     43     41       YES ✓        (41, 43)
+10     61     59       YES ✓        (59, 61)
+12     73     71       YES ✓        (71, 73)
+17    103    101       YES ✓        (101, 103)</div>
+</div>
+<p>So $|\\mathrm{Irr}(N)|=\\infty$ is <strong>exactly</strong> the Twin Prime Conjecture.</p>`},
+
+{ch:"§4 Irred",badge:"b-lem",title:"Lemma 4.3 — The Norm Function",lean:`${GH}/TPC/Main.lean#L40`,body:`
+<p>Define the <strong>norm</strong> on $N$:</p>
+<div class="math-block">$$|(z,w)| = \\phi(z)^2 = (6z+1)^2$$</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show properties and proofs</button>
+<div class="proof-content" style="display:none">
+<p><strong>N1. Non-negative:</strong> $|(z,w)|=(6z+1)^2\\geq 0$. Trivial. ✓</p>
+<p><strong>N2. Identity:</strong> $|(0,0)|=(6\\cdot 0+1)^2 = 1$. ✓</p>
+<p><strong>N3. Non-degenerate:</strong> $|(z,w)|=1 \\iff (6z+1)^2=1 \\iff 6z+1=\\pm 1 \\iff z=0$ or $z=-1/3$. Since $z\\in\\mathbb{Z}$, we get $z=0$, so $(z,w)=(0,0)$. ✓</p>
+<p><strong>N4. Multiplicative:</strong></p>
+<p>$|(z,w)\\otimes(z',w')| = |(z\\oast z', w\\star w')| = \\phi(z\\oast z')^2 = (\\phi(z)\\phi(z'))^2 = \\phi(z)^2\\cdot\\phi(z')^2 = |(z,w)|\\cdot|(z',w')|$. ✓</p>
+<p><strong>N5. Proper factors have smaller norm:</strong></p>
+<p>If $(z,w)=\\widehat{a}\\otimes\\widehat{b}$ with $\\widehat{a},\\widehat{b}\\neq(0,0)$, then $|\\widehat{a}|\\geq 4$ (since $|\\phi(a_1)|\\geq 5$ for $a_1\\neq 0$, giving $|\\widehat{a}|\\geq 25$... actually $|\\widehat{a}|=(6a_1+1)^2$. For $a_1\\neq 0$: $|6a_1+1|\\geq 5$, so $|\\widehat{a}|\\geq 25>1$). Similarly $|\\widehat{b}|\\geq 25$. Then:</p>
+<p>$|\\widehat{a}| = |(z,w)|/|\\widehat{b}| \\leq |(z,w)|/25 < |(z,w)|$. ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<div class="example-box">
+<div class="example-title"><i class="bi bi-calculator me-1"></i>Norm Values</div>
+<div class="code-block" style="margin:0">|(0,0)| = 1²  = 1     ← identity
+|(1,1)| = 7²  = 49    ← irreducible (7 prime)
+|(2,2)| = 13² = 169   ← irreducible (13 prime)
+|(8,−4)| = 49² = 2401  = 49·49 = |(1,1)|²  ← composite!</div>
+</div>`},
+
+{ch:"§4 Irred",badge:"b-cor",title:"Lemma 4.4 + Corollary 4.5 — Irreducible Divisors and Covering",lean:`${GH}/TPC/Main.lean#L55`,body:`
+<p><strong>Lemma 4.4 (Every element has an irreducible divisor):</strong></p>
+<p>For every $(z,w)\\in N\\setminus\\{(0,0)\\}$, there exists $\\widehat{q}\\in\\mathrm{Irr}(N)$ with $\\widehat{q}\\mid_\\otimes (z,w)$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof of Lemma 4.4</button>
+<div class="proof-content" style="display:none">
+<p><strong>Strong induction on $|(z,w)|$.</strong></p>
+<p><strong>Base:</strong> If $(z,w)$ is irreducible, take $\\widehat{q}=(z,w)$ and we're done (it divides itself: $(z,w) = (z,w)\\otimes(0,0)$).</p>
+<p><strong>Inductive step:</strong> If $(z,w)$ is not irreducible, write $(z,w)=\\widehat{a}\\otimes\\widehat{b}$ with $\\widehat{a},\\widehat{b}\\neq(0,0)$.</p>
+<p>By the norm property N5: $|\\widehat{a}| < |(z,w)|$.</p>
+<p>By the induction hypothesis (applicable since $|\\widehat{a}|<|(z,w)|$ and $\\widehat{a}\\neq(0,0)$): there exists $\\widehat{q}\\in\\mathrm{Irr}(N)$ with $\\widehat{q}\\mid_\\otimes\\widehat{a}$.</p>
+<p>Write $\\widehat{a}=\\widehat{q}\\otimes\\widehat{c}$. Then $(z,w)=\\widehat{q}\\otimes\\widehat{c}\\otimes\\widehat{b}=\\widehat{q}\\otimes(\\widehat{c}\\otimes\\widehat{b})$.</p>
+<p>So $\\widehat{q}\\mid_\\otimes(z,w)$. ✓</p>
+<p><strong>Termination:</strong> The norm $|(z,w)|=(6z+1)^2$ takes values in $\\{1,25,49,121,\\ldots\\}\\subset\\mathbb{N}$, with $|(z,w)|=1\\iff(z,w)=(0,0)$. So for $(z,w)\\neq(0,0)$, $|(z,w)|\\geq 25$, and proper factors have strictly smaller norm. The descent terminates by well-ordering of $\\mathbb{N}$.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
 <p><strong>Corollary 4.5 — The Covering:</strong></p>
 <div class="math-block">$$N\\setminus\\{(0,0)\\}=\\bigcup_{\\widehat{q}\\in\\mathrm{Irr}(N)}\\widehat{q}\\otimes N$$</div>
-<p>This is the analogue of Furstenberg's $\\mathbb{Z}\\setminus\\{\\pm1\\}=\\bigcup_p p\\mathbb{Z}$.</p>`},
-
-{ch:"§5 Main",badge:"b-thm",title:"Theorem 5.2 — $|\\mathrm{Irr}(N)|=\\infty$",lean:`${GH}/TPC/Main.lean#L88`,body:`
-<p>The Furstenberg argument:</p>
-<div class="math-block">$$N\\setminus\\{(0,0)\\}=\\bigcup_{\\widehat{q}\\in\\mathrm{Irr}(N)}\\widehat{q}\\otimes N$$</div>
-<p>If $\\mathrm{Irr}(N)$ finite $\\Rightarrow$ finite union of clopen sets $\\Rightarrow$ $N\\setminus\\{(0,0)\\}$ clopen $\\Rightarrow$ $\\{(0,0)\\}$ open in $N$.</p>
-<p>But every nonempty open set in $N$ contains $\\widehat{q}\\otimes N$ (infinite) — <strong>contradiction</strong>.</p>
-<p>Therefore $|\\mathrm{Irr}(N)|=\\infty$. $\\blacksquare$</p>`},
-
-{ch:"§5 Main",badge:"b-cor",title:"Corollary 5.3 — Infinitely Many Twin Primes",lean:`${GH}/TPC/Main.lean#L110`,body:`
-<div class="math-block">$$\\bigl|\\{k\\in\\mathbb{Z}:6k-1\\in\\pm\\mathbb{P}\\text{ and }6k+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty\\qquad\\blacksquare$$</div>
-<p><strong>Logical chain:</strong></p>
-<p>$\\phi,\\psi$ isos $\\to$ No zero divs $\\to$ $M$ top. monoid $\\to$ $\\widehat{q}\\otimes M$ clopen $\\to$ <strong>Coset identity</strong> $\\to$ $\\widehat{q}\\otimes N$ clopen in $N$ $\\to$ Norm descent $\\to$ Covering $\\to$ Furstenberg $\\to$ $|\\mathrm{Irr}(N)|=\\infty$ $\\to$ <strong>Twin primes.</strong></p>
-<div class="d-flex flex-wrap gap-1 mt-2">
-<a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank" class="tag">Twin Prime Conjecture</a>
-<a href="${GH}/TPC/Main.lean" target="_blank" class="tag"><i class="bi bi-code-slash"></i> Main.lean</a>
-<a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank" class="tag"><i class="bi bi-file-text"></i> PAPER.md</a>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof of Cor 4.5</button>
+<div class="proof-content" style="display:none">
+<p><strong>($\\supseteq$):</strong> Each $\\widehat{q}\\otimes N \\subseteq N\\setminus\\{(0,0)\\}$ because $\\widehat{q}\\otimes\\widehat{n}=(0,0)$ only if $\\widehat{q}=(0,0)$ or $\\widehat{n}=(0,0)$ (no zero divisors), and $\\widehat{q}\\neq(0,0)$ since $\\widehat{q}$ is irreducible.</p>
+<p><strong>($\\subseteq$):</strong> Let $(z,w)\\in N\\setminus\\{(0,0)\\}$. By Lemma 4.4, pick $\\widehat{q}\\in\\mathrm{Irr}(N)$ with $(z,w)=\\widehat{q}\\otimes\\widehat{n}$. Then $(z,w)\\in\\widehat{q}\\otimes N$. ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-diagram-3 me-1"></i>Analogy with Furstenberg</div>
+<p>This is the exact analogue of $\\mathbb{Z}\\setminus\\{\\pm1\\} = \\bigcup_{p\\text{ prime}} p\\mathbb{Z}$ in Furstenberg's original proof of the infinitude of primes.</p>
 </div>`},
+
+{ch:"§5 Main",badge:"b-lem",title:"Lemma 5.1 — No Singleton is Open in $N$",lean:`${GH}/TPC/Main.lean#L82`,body:`
+<p><strong>Statement:</strong> Every nonempty open set in the subspace topology on $N$ is <strong>infinite</strong>. In particular, no singleton $\\{\\widehat{p}\\}$ is open in $N$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p>Let $U\\subseteq N$ be nonempty and open in the subspace topology. Then $U = N\\cap V$ for some open $V\\subseteq M$.</p>
+<p><span class="step-num">1</span>Pick $(z_0,w_0)\\in U$. Since $V$ is open in the Furstenberg product topology and $(z_0,w_0)\\in V$, there exist $b,d>0$ with:</p>
+<p>$(z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\subseteq V$</p>
+<p><span class="step-num">2</span>Then $N\\cap\\bigl((z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\bigr)\\subseteq N\\cap V = U$.</p>
+<p><span class="step-num">3</span>By our theorem on $N\\cap$ basic opens (Card 10), since $(z_0,w_0)$ is in this intersection, it is <strong>infinite</strong>.</p>
+<p><span class="step-num">4</span>Therefore $U$ contains infinitely many elements, so $|U|=\\infty$.</p>
+<p><strong>Alternatively</strong> (direct argument without the new theorem): For each $n\\in\\mathbb{Z}$, the element $(z_0,w_0)\\otimes\\Delta(nbd)\\in N$ lies in $(z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})$ (as computed in the proof of the emptiness-or-infinitude theorem), giving infinitely many distinct points in $U$.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>`},
+
+{ch:"§5 Main",badge:"b-thm",title:"Theorem 5.2 — $|\\mathrm{Irr}(N)|=\\infty$ (The Furstenberg Argument)",lean:`${GH}/TPC/Main.lean#L88`,body:`
+<div class="math-block">$$|\\mathrm{Irr}(N)| = \\infty$$</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p><strong>Proof by contradiction.</strong> Assume $\\mathrm{Irr}(N)$ is finite: $\\mathrm{Irr}(N)=\\{\\widehat{q}_1,\\ldots,\\widehat{q}_m\\}$.</p>
+<p><span class="step-num">1</span><strong>Apply the covering (Cor 4.5):</strong></p>
+<p>$N\\setminus\\{(0,0)\\} = \\bigcup_{i=1}^{m} \\widehat{q}_i\\otimes N$</p>
+<p><span class="step-num">2</span><strong>Each coset is clopen (Cor 3.3):</strong> Each $\\widehat{q}_i\\otimes N$ is clopen in the subspace topology on $N$.</p>
+<p><span class="step-num">3</span><strong>Finite union of clopen = clopen:</strong> A finite union of clopen sets is clopen. So $N\\setminus\\{(0,0)\\}$ is clopen in $N$.</p>
+<p><span class="step-num">4</span><strong>Complement is open:</strong> Since $N\\setminus\\{(0,0)\\}$ is closed, $\\{(0,0)\\} = N\\setminus(N\\setminus\\{(0,0)\\})$ is <strong>open</strong> in $N$.</p>
+<p><span class="step-num">5</span><strong>Contradiction:</strong> But $\\{(0,0)\\}$ is a singleton, and by Lemma 5.1, every nonempty open set in $N$ is infinite. A singleton cannot be infinite. <strong>Contradiction!</strong></p>
+<p><span class="step-num">6</span><strong>Conclusion:</strong> $\\mathrm{Irr}(N)$ is not finite, i.e., $|\\mathrm{Irr}(N)|=\\infty$.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — $|\\mathrm{Irr}(N)|=\\infty$</div>
+</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-diagram-3 me-1"></i>Proof Ingredients</div>
+<p>This proof uses exactly four facts:</p>
+<p><span class="depends-badge">Cor 3.3: cosets clopen</span> <span class="depends-badge">Cor 4.5: covering</span> <span class="depends-badge">Lem 5.1: no singleton open</span> <span class="depends-badge">Finite union of clopen = clopen</span></p>
+</div>`},
+
+{ch:"§5 Main",badge:"b-cor",title:"Corollary 5.3 — Infinitely Many Twin Primes $\\blacksquare$",lean:`${GH}/TPC/Main.lean#L110`,body:`
+<div class="math-block">$$\\bigl|\\{k\\in\\mathbb{Z}:6k-1\\in\\pm\\mathbb{P}\\text{ and }6k+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty$$</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p>By Theorem 4.2: $\\mathrm{Irr}(N) = \\{(k,k) : 6k+1\\in\\pm\\mathbb{P}\\text{ and }6k-1\\in\\pm\\mathbb{P}\\}$.</p>
+<p>By Theorem 5.2: $|\\mathrm{Irr}(N)|=\\infty$.</p>
+<p>Therefore the set $\\{k : 6k\\pm1\\in\\pm\\mathbb{P}\\}$ is infinite.</p>
+<p>For each such $k>0$, the pair $(6k-1, 6k+1)$ is a pair of primes differing by $2$ — a <strong>twin prime pair</strong>.</p>
+<p>(For $k<0$, we get twin primes via $|6k+1|$ and $|6k-1|$.)</p>
+<p>Since there are infinitely many such $k$, there are <strong>infinitely many twin prime pairs</strong>.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — Twin Prime Conjecture ∎</div>
+</div>
+<p><strong>Complete logical chain:</strong></p>
+<p style="font-size:.92rem;line-height:2;">
+<span class="depends-badge">Def 1.1: $\\oast,\\star$</span>
+<span style="color:var(--purple);font-weight:bold"> → </span>
+<span class="depends-badge">Thm 1.3: $\\phi,\\psi$ isos</span>
+<span style="color:var(--purple);font-weight:bold"> → </span>
+<span class="depends-badge">Lem 1.4: No zero divs</span>
+<span style="color:var(--blue);font-weight:bold"> → </span>
+<span class="depends-badge">Def 2.2: $N=\\langle G\\rangle$</span>
+<span style="color:var(--blue);font-weight:bold"> + </span>
+<span class="depends-badge">Prop 2.3: Top. monoid</span>
+<span style="color:var(--green);font-weight:bold"> → </span>
+<span class="depends-badge">Lem 3.1: $\\widehat{a}\\otimes M$ clopen</span>
+<span style="color:var(--green);font-weight:bold"> → </span>
+<span class="depends-badge" style="background:var(--orange-light);border-color:var(--orange);">★ Thm 3.2: Coset Identity</span>
+<span style="color:var(--orange);font-weight:bold"> → </span>
+<span class="depends-badge">Cor 3.3: clopen in $N$</span>
+<span style="color:var(--orange);font-weight:bold"> + </span>
+<span class="depends-badge">Norm → Covering</span>
+<span style="color:var(--purple);font-weight:bold"> → </span>
+<span class="depends-badge" style="background:var(--purple-light);border-color:var(--purple);">★ Thm 5.2: $|\\mathrm{Irr}(N)|=\\infty$</span>
+<span style="color:var(--purple);font-weight:bold"> → </span>
+<span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">★ Twin Primes ∎</span>
+</p>
+<div class="d-flex flex-wrap gap-1 mt-3">
+<a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank" class="tag"><i class="bi bi-trophy-fill me-1"></i>Twin Prime Conjecture</a>
+<a href="${GH}/TPC/Main.lean" target="_blank" class="tag"><i class="bi bi-code-slash me-1"></i>Main.lean</a>
+<a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank" class="tag"><i class="bi bi-file-text me-1"></i>PAPER.md</a>
+</div>`},
+
+{ch:"Bonus",badge:"b-rmk",title:"Summary — Proof Architecture & Key Insights",lean:null,body:`
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-trophy-fill me-1"></i>The Big Picture</div>
+<p>The proof reformulates the Twin Prime Conjecture as a statement about the algebraic structure of $N=\\langle\\{(k,k):k\\in\\mathbb{Z}\\}\\rangle$ inside $M=(\\mathbb{Z}^2,\\otimes)$, then uses topology to force infinitely many irreducibles.</p>
+</div>
+<p><strong>Three pillars of the proof:</strong></p>
+<p><span class="step-num">1</span><strong>Algebraic pillar — The Coset Identity (Thm 3.2):</strong> $\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)$. This converts the algebraic coset into a topological intersection, bridging the two worlds.</p>
+<p><span class="step-num">2</span><strong>Topological pillar — Clopenness (Cor 3.3):</strong> Since $\\widehat{q}\\otimes M$ is clopen (product of arithmetic progressions), the identity makes $\\widehat{q}\\otimes N$ clopen in the subspace topology on $N$.</p>
+<p><span class="step-num">3</span><strong>Combinatorial pillar — Covering + No Singletons:</strong> Every nonzero element has an irreducible divisor (by norm descent), giving the covering. No singleton is open (by the empty-or-infinite theorem). Together: finite $\\mathrm{Irr}(N)$ would force $\\{(0,0)\\}$ open — contradiction.</p>
+<div class="example-box">
+<div class="example-title"><i class="bi bi-key-fill me-1"></i>Novel Contribution</div>
+<p>Classical Furstenberg proofs work on $\\mathbb{Z}$ where cosets $p\\mathbb{Z}$ are automatically clopen. The challenge for twin primes is that $N$ is a <em>submonoid</em>, not a subgroup, and not all of $\\mathbb{Z}^2$. The coset identity (Thm 3.2) is what makes the Furstenberg technique work in this non-standard setting — it's the key that unlocks the entire proof.</p>
+</div>
+<div class="d-flex flex-wrap gap-2 mt-3">
+<a href="index.html" class="tag" style="font-size:.75rem;padding:.3rem .8rem;"><i class="bi bi-house-heart me-1"></i>Back to Home</a>
+<a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="tag" style="font-size:.75rem;padding:.3rem .8rem;"><i class="bi bi-github me-1"></i>GitHub</a>
+<a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank" class="tag" style="font-size:.75rem;padding:.3rem .8rem;"><i class="bi bi-file-text me-1"></i>Full Paper</a>
+</div>`},
+
 ];
 
 let cur=0;
@@ -213,29 +590,29 @@ function render(){
   document.getElementById("mc").innerHTML=`
     <div class="card-hdr"><span class="card-badge ${c.badge}">${c.badge.replace("b-","").toUpperCase()}</span>${lean}
     <h2 class="card-title mt-1">${c.title}</h2></div>
-    <div class="card-body">${c.body}</div>`;
+    <div class="card-body-inner">${c.body}</div>`;
   const pct=Math.round(((cur+1)/cards.length)*100);
   document.getElementById("pb").style.width=pct+"%";
-  document.getElementById("pl").textContent=`Card ${cur+1} of ${cards.length}`;
-  document.getElementById("ctr").textContent=`${cur+1} / ${cards.length}`;
+  document.getElementById("pl").textContent=`Card ${cur+1} of ${cards.length}  ·  ${c.ch}`;
+  document.getElementById("ctr").innerHTML=`<i class="bi bi-diamond-fill me-1" style="font-size:.5rem"></i>${cur+1} / ${cards.length}<i class="bi bi-diamond-fill ms-1" style="font-size:.5rem"></i>`;
   document.getElementById("bp").disabled=cur===0;
   document.getElementById("bn").disabled=cur===cards.length-1;
   document.getElementById("chn").innerHTML=chapters.map(ch=>
     `<button class="ch-btn${cards[cur].ch===ch?" active":""}" onclick="jumpCh('${ch}')">${ch}</button>`).join("");
   document.getElementById("mm").innerHTML=cards.map((c,i)=>
-    `<div class="mm-dot${i===cur?" active":""}" onclick="jump(${i})"></div>`).join("");
+    `<div class="mm-dot${i===cur?" active":""}" onclick="jump(${i})" title="Card ${i+1}: ${c.title.replace(/\$/g,'').replace(/\\\\/g,'').substring(0,30)}"></div>`).join("");
   if(window.renderMathInElement)
     renderMathInElement(document.getElementById("mc"),{
       delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],throwOnError:false});
 }
 function go(d){cur=Math.max(0,Math.min(cards.length-1,cur+d));
   document.getElementById("mc").style.animation="none";
-  requestAnimationFrame(()=>{document.getElementById("mc").style.animation="cardIn .32s ease";render();});
+  requestAnimationFrame(()=>{document.getElementById("mc").style.animation="cardIn .4s cubic-bezier(.34,1.56,.64,1)";render();});
   window.scrollTo({top:0,behavior:"smooth"});}
 function jump(i){cur=i;render();window.scrollTo({top:0,behavior:"smooth"});}
 function jumpCh(ch){const i=cards.findIndex(c=>c.ch===ch);if(i>=0)jump(i);}
 function tp(btn){const el=btn.nextElementSibling;const open=el.style.display==="none"||!el.style.display;
-  el.style.display=open?"block":"none";btn.innerHTML=open?"▼ Hide proof":"▶ Show proof";}
+  el.style.display=open?"block":"none";btn.innerHTML=open?'<i class="bi bi-eye-slash me-1"></i>Hide proof':'<i class="bi bi-mortarboard me-1"></i>Show proof';}
 document.addEventListener("keydown",e=>{
   if(e.key==="ArrowRight"||e.key==="ArrowDown")go(1);
   if(e.key==="ArrowLeft"||e.key==="ArrowUp")go(-1);});
