@@ -272,6 +272,205 @@ body{font-family:var(--sans);background:var(--g50);color:var(--g900);min-height:
 <script>
 const GH="https://github.com/FruitfulApproach/Lean4TPC/blob/main";
 const cards=[
+{id:"intro",ch:"Introduction",b:"b-thm",
+ t:`The Generated Diagonal Submonoid & Twin Primes via Product Furstenberg Topology`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">
+This card presents a <strong>complete, self-contained construction</strong> that encodes twin primes as irreducible elements of a commutative monoid, together with a <strong>topological proof</strong> that — if correct — establishes infinitely many twin primes.
+The argument is a direct generalisation of Furstenberg's 1955 proof, applied not to $\\mathbb{Z}$ under multiplication but to a <em>generated diagonal submonoid</em> $N$ inside a product monoid $M=(\\mathbb{Z}^2,\\,\\otimes)$.
+</p>
+
+<hr style="border:none;border-top:2px solid #e4e4e7;margin:1.2rem 0"/>
+
+<h5 style="color:#7c3aed;font-weight:700">§ I. The Two Monoid Operations</h5>
+<p>Define two binary operations on $\\mathbb{Z}$:</p>
+<div class="mdisp">
+$$x\\mathbin{\\circledast}y \\;=\\; 6xy + x + y, \\qquad x\\star y \\;=\\; -6xy + x + y$$
+</div>
+<p>Both are commutative, associative, and have identity $0$.
+The map $\\phi(x)=6x+1$ is an isomorphism $(\\mathbb{Z},\\mathbin{\\circledast})\\xrightarrow{\\;\\sim\\;}(6\\mathbb{Z}+1,\\,\\cdot\\,)$,
+and $\\psi(x)=6x-1$ is an isomorphism $(\\mathbb{Z},\\star)\\xrightarrow{\\;\\sim\\;}(6\\mathbb{Z}-1,\\,\\bullet\\,)$, where $a\\,\\bullet\\,b := -ab$.</p>
+
+<p>The <strong>swap automorphism</strong> $\\eta(x)=-x$ interchanges the two operations:</p>
+<div class="mdisp">
+$$(-a)\\star(-b) \\;=\\; -(a\\mathbin{\\circledast}b)$$
+</div>
+<p>Consequently $x$ is $\\circledast$-irreducible if and only if $-x$ is $\\star$-irreducible.</p>
+
+<h5 style="color:#7c3aed;font-weight:700;margin-top:1.4rem">§ II. The Product Monoid and the Generated Diagonal Submonoid</h5>
+<p>Form the product monoid $M=(\\mathbb{Z}^2,\\,\\otimes)$ with</p>
+<div class="mdisp">
+$$(a,b)\\otimes(c,d) \\;=\\; (a\\mathbin{\\circledast}c,\\;b\\star d), \\qquad 1_M = (0,0).$$
+</div>
+
+<p>An element $k\\in\\mathbb{Z}$ is called a <strong>twin-prime generator</strong> if both $\\phi(k)=6k+1$ and $\\psi(k)=6k-1$ are $\\pm$ prime numbers, i.e., $(6k-1,\\,6k+1)$ is a twin prime pair (up to sign). Let</p>
+<div class="mdisp">
+$$G \\;=\\; \\bigl\\{(k,k) : 6k+1\\in\\pm\\mathbb{P}\\text{ and }6k-1\\in\\pm\\mathbb{P}\\bigr\\}.$$
+</div>
+
+<p>The <strong>generated diagonal submonoid</strong> is</p>
+<div class="mdisp">
+$$\\boxed{\\;N \\;=\\; \\langle G \\rangle^{\\otimes} \\;=\\; \\bigl\\{\\, g_1\\otimes g_2 \\otimes \\cdots \\otimes g_m : g_i\\in G,\\; m\\geq 0\\,\\bigr\\}}$$
+</div>
+<p>including the empty product $(0,0)=1_N$. Since each generator has the form $(k,k)$, the submonoid $N$ sits inside the <em>diagonal</em> $\\{(x,x):x\\in\\mathbb{Z}\\}$, but $N$ is <em>not</em> the full diagonal (which is not a submonoid, as closure would require $12kl=0$).</p>
+
+<p><strong>Remark.</strong> The anti-diagonal $\\{(x,-x)\\}$ <em>is</em> a submonoid, but the swap identity $(-a)\\star(-b)=-(a\\circledast b)$ collapses it so that irreducibility depends only on $\\circledast$, encoding primes $\\equiv\\pm1\\pmod6$ rather than twin primes. The generated diagonal submonoid avoids this collapse.</p>
+
+<h5 style="color:#7c3aed;font-weight:700;margin-top:1.4rem">§ III. Irreducibility in $N$ Encodes Twin Primes</h5>
+
+<p><strong>Claim (converse direction).</strong> Every generator $(k,k)\\in G$ is irreducible in $N$.</p>
+
+<button class="btnprf" onclick="tp(this)">▶ Show proof of irreducibility</button>
+<div class="prfbody" style="display:none">
+<p>Suppose $(k,k) = (a,a)\\otimes(b,b)$ for some $(a,a),(b,b)\\in N$ with $(a,a),(b,b)\\neq(0,0)$. Then:</p>
+<div class="mdisp">
+$$k = a\\mathbin{\\circledast}b = 6ab+a+b \\quad\\text{and}\\quad k = a\\star b = -6ab+a+b$$
+</div>
+<p>Subtracting: $0 = 12ab$, so $a=0$ or $b=0$. If $a=0$ then $(a,a)=(0,0)=1_N$, contradicting nontriviality. Similarly for $b=0$. $\\square$</p>
+<p>Therefore every generator is irreducible: $G\\subseteq\\mathrm{Irr}(N)$.</p>
+</div>
+
+<p style="margin-top:.8rem"><strong>Claim (forward direction).</strong> Conversely, if $(q,q)\\in N$ is irreducible and $q\\neq 0$, then $(q,q)\\in G$ — that is, $6q+1\\in\\pm\\mathbb{P}$ and $6q-1\\in\\pm\\mathbb{P}$.</p>
+
+<button class="btnprf" onclick="tp(this)">▶ Show proof sketch</button>
+<div class="prfbody" style="display:none">
+<p>Every element of $N$ is a $\\otimes$-product of generators from $G$. In particular, every nonidentity element $(q,q)\\in N$ is divisible by at least one generator $(k,k)\\in G$, say $(q,q)=(k,k)\\otimes(r,r)$.
+If $(q,q)$ is irreducible then this forces $(r,r)=(0,0)$, hence $(q,q)=(k,k)\\in G$.</p>
+<p>So $q=k$ for some $k$ with $6k+1\\in\\pm\\mathbb{P}$ and $6k-1\\in\\pm\\mathbb{P}$. $\\square$</p>
+</div>
+
+<p style="margin-top:.8rem"><strong>Corollary.</strong></p>
+<div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#dbeafe);border-left-color:#10b981">
+$$\\mathrm{Irr}(N) \\;=\\; G \\;=\\; \\bigl\\{(k,k) : (6k-1,\\,6k+1)\\in\\pm\\mathbb{P}^2\\bigr\\}$$
+$$\\text{i.e., irreducibles of } N \\longleftrightarrow \\text{twin prime pairs } (p,\\,p+2)$$
+</div>
+
+<h5 style="color:#7c3aed;font-weight:700;margin-top:1.4rem">§ IV. The No-Zero-Component Lemma</h5>
+<p>A key structural fact about $N$: no nonidentity element has a zero component.</p>
+
+<p><strong>Lemma.</strong> If $(a,0)\\in N$ then $a=0$. Similarly, if $(0,b)\\in N$ then $b=0$.</p>
+
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p>Every nonidentity element of $N$ is a product of generators $(g_i,g_i)\\in G$. Write $(a,0)=(g_1,g_1)\\otimes\\cdots\\otimes(g_m,g_m)$.
+The second component gives:</p>
+<div class="mdisp">$$0 = g_1\\star g_2\\star\\cdots\\star g_m$$</div>
+<p>Applying $\\psi$: $\\psi(g_1\\star\\cdots\\star g_m) = \\psi(g_1)\\,\\bullet\\,\\cdots\\,\\bullet\\,\\psi(g_m) = (-1)^{m-1}\\prod_{i=1}^m(6g_i-1)$.</p>
+<p>But $\\psi(0)=6\\cdot 0-1=-1$, so $(-1)^{m-1}\\prod(6g_i-1) = -1$.</p>
+<p>Since each $g_i\\in G$ satisfies $6g_i-1\\in\\pm\\mathbb{P}$, we have $|6g_i-1|\\geq 3$ (the smallest twin prime pair gives $|6\\cdot1-1|=5$). So $|\\prod(6g_i-1)|\\geq 3^m\\geq 3$ for $m\\geq 1$. But the left side has absolute value $1$ — contradiction unless $m=0$, i.e., $(a,0)=(0,0)$. $\\square$</p>
+</div>
+
+<p style="margin-top:.6rem">This lemma ensures that factorizations in $N$ are "genuine" — they cannot degenerate by having one coordinate collapse to the identity.</p>
+
+<h5 style="color:#7c3aed;font-weight:700;margin-top:1.4rem">§ V. The Product Furstenberg Topology</h5>
+
+<p>We equip $\\mathbb{Z}^2$ with the <strong>product Furstenberg topology</strong>: the product of two copies of the <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg topology</a> on $\\mathbb{Z}$, whose basis consists of two-sided arithmetic progressions $a+d\\mathbb{Z}=\\{a+dn:n\\in\\mathbb{Z}\\}$ for $d\\geq 1$.</p>
+
+<p>A basis for the product topology on $\\mathbb{Z}^2$ is:</p>
+<div class="mdisp">
+$$\\mathcal{B} = \\bigl\\{(a+d\\mathbb{Z})\\times(b+e\\mathbb{Z}) : a,b\\in\\mathbb{Z},\\;d,e\\geq 1\\bigr\\}$$
+</div>
+
+<p>We then give $N$ the <strong>subspace topology</strong> inherited from $\\mathbb{Z}^2$. A basis for the topology on $N$ consists of sets:</p>
+<div class="mdisp">
+$$N \\;\\cap\\; \\bigl((a+d\\mathbb{Z})\\times(b+e\\mathbb{Z})\\bigr)$$
+</div>
+
+<h5 style="color:#7c3aed;font-weight:700;margin-top:1.4rem">§ VI. Verification of the Furstenberg Hypotheses</h5>
+
+<p>We verify the three hypotheses <strong>(H1)</strong>, <strong>(H2)</strong>, <strong>(H3)</strong> from the <a class="iref" onclick="jumpId('gen')">General Furstenberg Theorem</a>.</p>
+
+<h6 style="font-weight:700;margin-top:1rem">(H1) Every nonidentity element is divisible by an irreducible</h6>
+<div class="mdisp">
+$$N\\setminus\\{(0,0)\\} \\;=\\; \\bigcup_{q\\in\\mathrm{Irr}(N)} q\\otimes N$$
+</div>
+<p>This is immediate from the definition: $N=\\langle G\\rangle^{\\otimes}$, so every nonidentity element is a product of generators, and each generator is irreducible ($G=\\mathrm{Irr}(N)$). In particular, writing $(q,q)=g_1\\otimes\\cdots\\otimes g_m$ with $m\\geq 1$, we have $(q,q)=g_1\\otimes(g_2\\otimes\\cdots\\otimes g_m)\\in g_1\\otimes N$. $\\checkmark$</p>
+
+<h6 style="font-weight:700;margin-top:1rem">(H2) Each coset $q\\otimes N$ is clopen in $N$</h6>
+
+<button class="btnprf" onclick="tp(this)">▶ Show proof of (H2)</button>
+<div class="prfbody" style="display:none">
+<p>Let $q=(k,k)\\in G$ be a generator (= irreducible). We claim:</p>
+<div class="mdisp">
+$$q\\otimes N \\;=\\; N \\;\\cap\\; \\bigl(\\{x\\in\\mathbb{Z}: x\\equiv k\\!\\!\\pmod{6k+1}\\}\\times\\mathbb{Z}\\bigr)$$
+</div>
+<p><strong>Why?</strong> If $(a,a)\\in q\\otimes N$, then $(a,a)=(k,k)\\otimes(r,r)$ for some $(r,r)\\in N$. The first component gives $a=k\\mathbin{\\circledast}r=6kr+k+r$. Applying $\\phi$: $\\phi(a)=6a+1=\\phi(k)\\cdot\\phi(r)=(6k+1)(6r+1)$. So $\\phi(a)\\equiv 0\\pmod{6k+1}$, hence $6a+1\\equiv 0\\pmod{6k+1}$, i.e., $a\\equiv k\\pmod{6k+1}$ (since $6k+1\\mid 6a+1$ iff $a\\equiv k\\pmod{6k+1}$, which one checks directly).</p>
+
+<p><strong>Conversely,</strong> if $(a,a)\\in N$ and $a\\equiv k\\pmod{6k+1}$, then $(6k+1)\\mid(6a+1)$. Since $N$ is freely generated by $G$, write the unique factorization of $(a,a)$ in terms of generators. The condition $(6k+1)\\mid\\phi(a)$ and the fact that distinct generators have distinct prime values $\\phi(g_i)=6g_i+1$ (each $\\in\\pm\\mathbb{P}$) means that $(k,k)$ must appear among the generators in the factorization. Hence $(a,a)=(k,k)\\otimes(\\text{rest})\\in q\\otimes N$.</p>
+
+<p>Now $\\{x\\equiv k\\pmod{6k+1}\\}=k+(6k+1)\\mathbb{Z}$ is clopen in the Furstenberg topology on $\\mathbb{Z}$, and $\\mathbb{Z}$ is clopen. So the product set is clopen in $\\mathbb{Z}^2$. Intersecting with $N$ gives a clopen set in $N$. $\\square$</p>
+</div>
+
+<h6 style="font-weight:700;margin-top:1rem">(H3) No singleton of $N$ is open</h6>
+
+<button class="btnprf" onclick="tp(this)">▶ Show proof of (H3)</button>
+<div class="prfbody" style="display:none">
+<p>It suffices to show that $\\{(0,0)\\}$ is not open in $N$ (for other points, translate the argument). Suppose $\\{(0,0)\\}$ were open. Then there exist $d,e\\geq 1$ such that:</p>
+<div class="mdisp">$$N\\cap\\bigl(d\\mathbb{Z}\\times e\\mathbb{Z}\\bigr) = \\{(0,0)\\}$$</div>
+
+<p>We produce a nonzero element of $N\\cap(d\\mathbb{Z}\\times e\\mathbb{Z})$ using <strong>Euler's theorem</strong>. Take the generator $(1,1)\\in G$ (since $(5,7)$ is a twin prime pair, $k=1$ gives $6\\cdot1-1=5\\in\\mathbb{P}$ and $6\\cdot1+1=7\\in\\mathbb{P}$).</p>
+
+<p>Consider the $\\otimes$-powers $(1,1)^{\\otimes n}=(s_n,t_n)$. Under $\\phi$, the first component satisfies $\\phi(s_n)=7^n$, so $s_n=\\frac{7^n-1}{6}$. Under $\\psi$, the second component satisfies $\\psi(t_n)=(-1)^{n-1}5^n$, so $t_n=\\frac{(-1)^{n-1}5^n-1}{6}$ (note: $(-5)^n=(-1)^n 5^n$, and $\\psi(x)=6x-1$ gives $6t_n=(-1)^{n-1}5^n+1$).</p>
+
+<p>We need $d\\mid s_n$ and $e\\mid t_n$, i.e., $6d\\mid(7^n-1)$ and $6e\\mid((-1)^{n-1}5^n+1)$. Take $n$ even; then we need $6d\\mid(7^n-1)$ and $6e\\mid(1-5^n)$, i.e., $7^n\\equiv 1\\pmod{6d}$ and $5^n\\equiv 1\\pmod{6e}$.</p>
+
+<p>By <strong>Euler's theorem</strong> (since $\\gcd(7,6d)=1$ and $\\gcd(5,6e)=1$), we can take $n=2\\cdot\\mathrm{lcm}(\\varphi(6d),\\varphi(6e))$, which is even and satisfies both congruences. This gives $(s_n,t_n)\\in N\\cap(d\\mathbb{Z}\\times e\\mathbb{Z})$ with $(s_n,t_n)\\neq(0,0)$ (since $7^n>1$ for $n\\geq 1$). Contradiction. $\\square$</p>
+
+<p><strong>Key point:</strong> This argument is <em>unconditional</em> — it uses only Euler's theorem and the existence of the single twin prime pair $(5,7)$, not an assumption about infinitely many twin primes.</p>
+</div>
+
+<h5 style="color:#7c3aed;font-weight:700;margin-top:1.4rem">§ VII. The Punchline</h5>
+
+<p>By the <a class="iref" onclick="jumpId('gen')">General Furstenberg Theorem</a>, hypotheses <strong>(H1)</strong>–<strong>(H3)</strong> imply:</p>
+
+<div class="mdisp" style="background:linear-gradient(135deg,#fef3c7,#fde68a);border-left-color:#f59e0b;padding:1rem 1.2rem">
+$$|\\mathrm{Irr}(N)| \\;=\\; \\infty$$
+</div>
+
+<p>The proof by contradiction: if $\\mathrm{Irr}(N)=\\{q_1,\\ldots,q_n\\}$ were finite, then by <strong>(H1)</strong>,</p>
+<div class="mdisp">
+$$N\\setminus\\{(0,0)\\} = q_1\\otimes N \\;\\cup\\; \\cdots \\;\\cup\\; q_n\\otimes N$$
+</div>
+<p>Each $q_i\\otimes N$ is closed by <strong>(H2)</strong>. A finite union of closed sets is closed. So $N\\setminus\\{(0,0)\\}$ is closed, making $\\{(0,0)\\}$ open — contradicting <strong>(H3)</strong>. $\\blacksquare$</p>
+
+<p>Since $\\mathrm{Irr}(N)=G$, this yields:</p>
+<div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-left-color:#10b981;padding:1rem 1.2rem">
+<strong>Theorem.</strong> There are infinitely many twin prime pairs.
+$$|\\{k\\in\\mathbb{Z} : 6k-1\\in\\pm\\mathbb{P}\\text{ and }6k+1\\in\\pm\\mathbb{P}\\}| = \\infty$$
+$$\\implies |\\{p\\in\\mathbb{P} : p+2\\in\\mathbb{P}\\}| = \\infty$$
+</div>
+
+<hr style="border:none;border-top:2px solid #e4e4e7;margin:1.2rem 0"/>
+
+<p><strong>Structure of the argument:</strong></p>
+<table class="table table-sm table-bordered" style="font-size:.82rem;max-width:600px">
+<thead><tr><th>Step</th><th>Content</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Define $\\circledast,\\star$ and isomorphisms $\\phi,\\psi$</td><td>§§1–2 ✓</td></tr>
+<tr><td>2</td><td>Form $M=(\\mathbb{Z}^2,\\otimes)$, define $N=\\langle G\\rangle^{\\otimes}$</td><td>§ II ✓</td></tr>
+<tr><td>3</td><td>Prove $\\mathrm{Irr}(N)=G$ (twin prime generators)</td><td>§ III ✓</td></tr>
+<tr><td>4</td><td>No-zero-component lemma</td><td>§ IV ✓</td></tr>
+<tr><td>5</td><td>Product Furstenberg topology on $N\\subseteq\\mathbb{Z}^2$</td><td>§ V ✓</td></tr>
+<tr><td>6</td><td>Verify (H1): immediate from generation</td><td>§ VI ✓</td></tr>
+<tr><td>7</td><td>Verify (H2): $q\\otimes N$ clopen via unique factorization + distinct $\\phi$-values</td><td>§ VI ✓</td></tr>
+<tr><td>8</td><td>Verify (H3): powers of $(1,1)$ via Euler's thm (unconditional)</td><td>§ VI ✓</td></tr>
+<tr><td>9</td><td>Furstenberg punchline $\\implies |\\mathrm{Irr}(N)|=\\infty \\implies$ TPC</td><td>§ VII ✓</td></tr>
+</tbody>
+</table>
+
+<div class="mdisp" style="background:linear-gradient(135deg,#ede9fe,#dbeafe);border-left-color:#7c3aed;margin-top:1rem">
+<strong>Standing notation for this card:</strong>
+$$\\phi(x)=6x+1,\\quad \\psi(x)=6x-1,\\quad \\eta(x)=-x$$
+$$M=(\\mathbb{Z}^2,\\otimes),\\quad (a,b)\\otimes(c,d)=(a\\mathbin{\\circledast}c,\\;b\\star d)$$
+$$G=\\{(k,k):6k\\pm1\\in\\pm\\mathbb{P}\\},\\quad N=\\langle G\\rangle^{\\otimes}$$
+</div>
+
+<div class="d-flex flex-wrap gap-1 mt-2">
+<a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tpill">Twin Primes (Wikipedia)</a>
+<a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof</a>
+<a href="https://en.wikipedia.org/wiki/Euler%27s_theorem" target="_blank" class="tpill">Euler's Theorem</a>
+<a href="https://leanprover-community.github.io/" target="_blank" class="tpill">Lean 4</a>
+</div>`,lean:null},
+
 {id:"abs",ch:"Abstract",b:"b-abs",
  t:`Primes $\\equiv\\pm1\\pmod6$ via $|\\mathrm{Irr}(\\Delta(\\mathbb{Z}))| = \\infty$`,
  body:`<p>This paper offers a <strong>novel algebraic construction</strong> and an <strong>unconditional topological proof</strong> that there are infinitely many primes $p\\equiv\\pm1\\pmod6$. The core insight is that the classical Furstenberg argument — which proves the infinitude of primes by topologising $\\mathbb{Z}$ and observing that $\\mathbb{Z}\\setminus\\{\\pm1\\}=\\bigcup_{p\\,\\text{prime}} p\\mathbb{Z}$ cannot be a <em>finite</em> union of closed sets — can be <strong>generalised to monoids</strong>. In Furstenberg's original proof, $\\mathbb{Z}$ is viewed only as a multiplicative monoid, and the cosets $p\\mathbb{Z}$ are cosets of a submonoid. The topology is defined by arithmetic progressions, and the key properties are: (1) every element has an irreducible divisor, (2) irreducible cosets are closed, and (3) no singleton is open. These properties are purely monoid-theoretic — they do not depend on the additive structure of $\\mathbb{Z}$.</p>

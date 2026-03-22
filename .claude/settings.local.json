@@ -3,7 +3,11 @@
     "allow": [
       "Bash(node:*)",
       "Bash(curl -sI https://cdn.jsdelivr.net/npm/cytoscape-elk@2.2.0/dist/cytoscape-elk.min.js)",
-      "Bash(curl -sI https://cdn.jsdelivr.net/npm/elkjs@0.9.3/lib/elk.bundled.js)"
+      "Bash(curl -sI https://cdn.jsdelivr.net/npm/elkjs@0.9.3/lib/elk.bundled.js)",
+      "Bash(pip install:*)",
+      "Bash(python3 compute_identities.py)",
+      "Bash(python3 compute_identities2.py)",
+      "Bash(python3:*)"
     ]
   }
 }
