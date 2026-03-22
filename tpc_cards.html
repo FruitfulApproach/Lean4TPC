@@ -286,7 +286,7 @@ const cards=[
 
 <p><strong>The product monoid.</strong> Form $M=(\\mathbb{Z}^2,\\,\\otimes)$ where $(x,y)\\otimes(x',y')=(x\\mathbin{\\circledast}x',\\;y\\star y')$. Inside $M$, the <strong>anti-diagonal</strong> $N=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}$ is a submonoid (<a class="iref" onclick="jumpId('d2.10')">Def 2.10</a>, <a class="iref" onclick="jumpId('d3.1')">Def 3.1</a>).</p>
 
-<p><strong>Twin primes $\\boldsymbol{=}$ irreducibles.</strong> An element $(x,-x)\\in N$ is irreducible if and only if both $6x+1$ and $6x-1$ are prime — i.e., $(6x-1,\\,6x+1)$ is a twin prime pair (<a class="iref" onclick="jumpId('t5.1')">Thm 5.1</a>). For example, $x=1$ gives $(5,7)$; $x=2$ gives $(11,13)$; $x=5$ gives $(29,31)$.</p>
+<p><strong>Twin primes $\\boldsymbol{=}$ irreducibles.</strong> An element $(x,-x)\\in N$ is irreducible if and only if both $6x+1$ and $6x-1$ are prime — i.e., $(6x-1,\\,6x+1)$ is a twin prime pair (<a class="iref" onclick="jumpId('t5.4')">Thm 5.4</a>). For example, $x=1$ gives $(5,7)$; $x=2$ gives $(11,13)$; $x=5$ gives $(29,31)$.</p>
 
 <p><strong>Weak saturation.</strong> We introduce the notion of a <em>weakly saturated</em> submonoid (<a class="iref" onclick="jumpId('d1.1')">Def 1.1</a>): if a nontrivial product in $M$ lands in $N$, it can be re-factored nontrivially <em>within</em> $N$. This is strictly weaker than classical saturation, yet sufficient to guarantee that irreducibility in $N$ and irreducibility in $M$ coincide (<a class="iref" onclick="jumpId('c1.5')">Cor 1.5</a>). We prove $N$ is weakly saturated in $M$ (<a class="iref" onclick="jumpId('t4.1')">Thm 4.1</a>).</p>
 
@@ -579,41 +579,100 @@ lean:`${GH}/TPC/WeaklySaturated.lean#L45`},
 </div>`,
 lean:`${GH}/TPC/Irreducible.lean#L10`},
 
-{id:"t5.1",ch:"§5 Irred",b:"b-thm",
- t:`Thm 5.1 — $\\phi(x)\\in\\pm\\mathbb{P}$ and $\\psi(x)\\in\\pm\\mathbb{P}$ $\\iff$ $(x,-x)\\in\\mathrm{Irr}(N)$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">An element $(x,-x)$ is irreducible in $N$ if and only if both $6x+1$ and $6x-1$ are $\\pm$primes — i.e., $(6x-1,6x+1)$ is a twin prime pair. This is the bridge between algebra and number theory.</p>
-<div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(N)\\iff 6x+1\\in\\pm\\mathbb{P}\\text{ and }6x-1\\in\\pm\\mathbb{P}\\iff(6x-1,6x+1)\\text{ twin prime}$$</div>
+{id:"p5.1",ch:"§5 Irred",b:"b-prop",
+ t:`Prop 5.1 — $(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; x\\in\\mathrm{Irr}(\\circledast)\\;\\wedge\\; x\\in\\mathrm{Irr}(\\star)$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Irreducibility in the anti-diagonal $N$ decomposes into two independent conditions: $n$ must be irreducible under both monoid operations $\\circledast$ and $\\star$. Write $\\widehat{n}:=(n,-n)$.</p>
+<div class="mdisp">$$\\widehat{n}\\in\\mathrm{Irr}(N) \\;\\iff\\; n\\in\\mathrm{Irr}(N_{\\circledast}) \\;\\wedge\\; n\\in\\mathrm{Irr}(N_{\\star})$$</div>
+<p>where $N_{\\circledast}=(\\mathbb{Z},\\circledast)$ and $N_{\\star}=(\\mathbb{Z},\\star)$.</p>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>Claim:</strong></p>
-<div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; x\\in\\mathrm{Irr}(\\mathbb{Z},\\circledast) \\;\\wedge\\; x\\in\\mathrm{Irr}(\\mathbb{Z},\\star)$$</div>
+<p><strong>($\\Rightarrow$) $\\widehat{n}$ irreducible in $N$ $\\implies$ $n$ irreducible in both $N_{\\circledast}$ and $N_{\\star}$:</strong></p>
+<p>Suppose $\\widehat{n}\\in\\mathrm{Irr}(N)$ with $\\widehat{n}\\neq 1_N=(0,0)$. Assume for contradiction that $n = u\\mathbin{\\circledast}v$ for some nonzero $u,v$. By the isomorphism $\\eta:N_{\\circledast}\\to N_{\\star}$ given by $\\eta(x)=-x$ (<a class="iref" onclick="jumpId('eta')">Involution</a>), we have $-u,-v\\neq0$ and:</p>
+<p>$$-n = -(u\\mathbin{\\circledast}v) = (-u)\\star(-v)$$</p>
+<p>Therefore:</p>
+<p>$$\\widehat{n} = (n,\\,-n) = (u\\mathbin{\\circledast}v,\\;(-u)\\star(-v)) = (u,-u)\\otimes(v,-v) = \\widehat{u}\\otimes\\widehat{v}$$</p>
+<p>with $u,v\\neq0$, hence $\\widehat{u},\\widehat{v}\\neq\\widehat{0}=1_N$. This is a nontrivial factorization in $N$, contradicting $\\widehat{n}\\in\\mathrm{Irr}(N)$. So $n\\in\\mathrm{Irr}(N_{\\circledast})$. $\\checkmark$</p>
+<p>An identical argument (applying $\\eta^{-1}$ to a $\\star$-factorization) shows $n\\in\\mathrm{Irr}(N_{\\star})$. $\\checkmark$</p>
 
-<p><strong>($\\Leftarrow$) Both irreducible $\\implies$ $(x,-x)\\in\\mathrm{Irr}(N)$:</strong></p>
-<p>Suppose $x\\in\\mathrm{Irr}(\\mathbb{Z},\\circledast)$ and $(x,-x)=(a,-a)\\otimes(b,-b)$ is a factorization in $N$ with $a,b\\neq0$. The first component gives $x=a\\mathbin{\\circledast}b$ — a nontrivial $\\circledast$-factorization, contradicting $x\\in\\mathrm{Irr}(\\mathbb{Z},\\circledast)$. So $(x,-x)$ is irreducible in $N$. (Irreducibility in $N$ depends on both $\\circledast$- and $\\star$-irreducibility.)</p>
+<p><strong>($\\Leftarrow$) $n$ irreducible in both $N_{\\circledast}$ and $N_{\\star}$ $\\implies$ $\\widehat{n}$ irreducible in $N$:</strong></p>
+<p>Suppose $n\\in\\mathrm{Irr}(N_{\\circledast})\\cap\\mathrm{Irr}(N_{\\star})$. Choose either condition, say $n\\in\\mathrm{Irr}(N_{\\circledast})$. If $\\widehat{n}=(x,-x)\\otimes(y,-y)$ nontrivially, then $x,y\\neq0$ and the first component gives $n=x\\mathbin{\\circledast}y$ — a nontrivial $\\circledast$-factorization, contradicting $n\\in\\mathrm{Irr}(N_{\\circledast})$. $\\square$</p>
+</div>
+<p><strong>Key point:</strong> The ($\\Rightarrow$) direction uses the <a class="iref" onclick="jumpId('eta')">Involution</a> $\\eta(x)=-x$ to convert a $\\circledast$-factorization of $n$ into matching $\\star$-components, building a full factorization in $N$.</p>`,
+lean:`${GH}/TPC/AntiDiagonal.lean#L95`},
 
-<p><strong>($\\Rightarrow$) $(x,-x)\\in\\mathrm{Irr}(N)$ $\\implies$ both irreducible:</strong></p>
+{id:"p5.2",ch:"§5 Irred",b:"b-prop",
+ t:`Prop 5.2 — $n\\notin N_{\\circledast}\\!\\cdot\\! N_{\\circledast} \\;\\iff\\; 6n+1\\in\\pm\\mathbb{P}$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">An integer $n\\neq0$ is $\\circledast$-irreducible if and only if $\\phi(n)=6n+1$ is $\\pm$prime in $\\mathbb{Z}$. The proof analyses the only two residue-class forms a composite in $6\\mathbb{Z}+1$ can take, and shows each corresponds to a $\\circledast$-factorization.</p>
+<div class="mdisp">$$n\\notin N_{\\circledast}\\!\\cdot\\! N_{\\circledast}:=\\{a\\mathbin{\\circledast}b:a,b\\neq0\\} \\;\\iff\\; 6n+1\\in\\pm\\mathbb{P}$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p><strong>($\\Leftarrow$) $6n+1\\in\\pm\\mathbb{P}$ $\\implies$ $n\\notin N_{\\circledast}\\!\\cdot\\!N_{\\circledast}$:</strong></p>
+<p>If $n=a\\mathbin{\\circledast}b$ with $a,b\\neq0$, then $\\phi(n)=\\phi(a)\\phi(b)=(6a+1)(6b+1)$ with $|6a+1|,|6b+1|\\geq5$ (since $a\\neq0\\implies6a+1\\neq1$, and $6a+1=-1\\implies a=-\\tfrac{1}{3}\\notin\\mathbb{Z}$). So $|\\phi(n)|\\geq25$, contradicting $6n+1\\in\\pm\\mathbb{P}$. $\\checkmark$</p>
 
-<p><em>$\\circledast$-irreducibility:</em> If $x = a\\mathbin{\\circledast}b$ with $a,b\\neq0$, then $(a,-a)\\otimes(b,-b)=(a\\mathbin{\\circledast}b,\\;(-a)\\star(-b))=(x,-x)$ is a nontrivial factorization in $N$ (using $(-a)\\star(-b)=-(a\\mathbin{\\circledast}b)=-x$ from the <a class="iref" onclick="jumpId('eta')">Involution</a>). This contradicts $(x,-x)\\in\\mathrm{Irr}(N)$. $\\checkmark$</p>
+<p><strong>($\\Rightarrow$) $6n+1\\notin\\pm\\mathbb{P}$ (composite) $\\implies$ $n\\in N_{\\circledast}\\!\\cdot\\!N_{\\circledast}$:</strong></p>
+<p>Suppose $6n+1$ is composite: $6n+1=cd$ with $|c|,|d|>1$. Since $6n+1\\equiv1\\pmod6$, every prime factor is $\\equiv\\pm1\\pmod6$, and $cd\\equiv1\\pmod6$ forces two cases:</p>
 
-<p><em>$\\star$-irreducibility:</em> If $x = a\\star b$ with $a,b\\neq0$, we use the involution $\\eta(t)=-t$, which is an isomorphism $(\\mathbb{Z},\\star)\\to(\\mathbb{Z},\\circledast)$ (<a class="iref" onclick="jumpId('eta')">Involution</a>). Applying $\\eta$:</p>
-<p>$$-x = \\eta(x) = \\eta(a\\star b) = (-a)\\mathbin{\\circledast}(-b)$$</p>
-<p>This is a nontrivial $\\circledast$-factorization of $-x$ (since $-a,-b\\neq0$), which yields a nontrivial factorization in $N$:</p>
-<p>$$(-a,a)\\otimes(-b,b) = ((-a)\\mathbin{\\circledast}(-b),\\; a\\star b) = (-x,\\, x)$$</p>
-<p>Now $(-x,x)=\\eta_N(x,-x)$ where $\\eta_N(k,-k)=(-k,k)$ is an automorphism of $N$. Applying $\\eta_N^{-1}$, we get a nontrivial factorization of $(x,-x)$ itself, contradicting irreducibility. $\\checkmark$</p>
+<p><em>Form 1:</em> $c=6a+1,\\;d=6b+1$ (both $\\equiv1\\pmod6$). Then:</p>
+<p>$$(6a+1)(6b+1) = \\phi(a)\\,\\phi(b) = \\phi(a\\mathbin{\\circledast}b) = 6(a\\mathbin{\\circledast}b)+1$$</p>
+<p>So $n = a\\mathbin{\\circledast}b$. Since $|c|>1$ we have $a\\neq0$; since $|d|>1$ we have $b\\neq0$. Hence $n\\in N_{\\circledast}\\!\\cdot\\!N_{\\circledast}$. $\\checkmark$</p>
 
-<p><strong>Conclusion:</strong> By definition, $x\\notin\\{a\\mathbin{\\circledast}b:a,b\\neq0\\}$ iff $\\phi(x)=6x+1$ has no nontrivial factorisation in $(6\\mathbb{Z}+1,\\cdot)$, i.e. $6x+1\\in\\pm\\mathbb{P}$. Likewise $x\\notin\\{a\\star b:a,b\\neq0\\}$ iff $6x-1\\in\\pm\\mathbb{P}$. So:</p>
-<p>$$x\\in\\mathrm{Irr}(\\circledast)\\cap\\mathrm{Irr}(\\star) \\;\\iff\\; 6x\\pm1\\in\\pm\\mathbb{P} \\;\\iff\\; (6x-1,6x+1)\\text{ is a twin prime pair}\\quad\\square$$</p>
+<p><em>Form 2:</em> $c=6a-1,\\;d=6b-1$ (both $\\equiv-1\\pmod6$). Then negate both factors:</p>
+<p>$$(-c)(-d) = (-(6a-1))(-(6b-1)) = (6(-a)+1)(6(-b)+1) = \\phi(-a)\\,\\phi(-b) = \\phi((-a)\\mathbin{\\circledast}(-b))$$</p>
+<p>Since $(-c)(-d)=cd=6n+1$, we get $n = (-a)\\mathbin{\\circledast}(-b)$. Since $|c|>1$ forces $a\\neq0$ (as $6a-1\\neq\\pm1$ for integer $a\\neq0$), and likewise $b\\neq0$. Hence $n\\in N_{\\circledast}\\!\\cdot\\!N_{\\circledast}$. $\\checkmark$</p>
+
+<p>No other cases arise: $c\\equiv1,\\,d\\equiv-1\\pmod6$ gives $cd\\equiv-1\\pmod6\\neq1$. $\\square$</p>
+</div>
+<p><strong>Key observation:</strong> The two forms $(6a+1)(6b+1)$ and $(6a-1)(6b-1)$ are the only ways to build a composite in $6\\mathbb{Z}+1$, and both land in $N_{\\circledast}\\!\\cdot\\!N_{\\circledast}$ via $\\phi$.</p>`,
+lean:`${GH}/TPC/Irreducible.lean#L10`},
+
+{id:"p5.3",ch:"§5 Irred",b:"b-prop",
+ t:`Prop 5.3 — $n\\notin N_{\\star}\\!\\cdot\\! N_{\\star} \\;\\iff\\; 6n-1\\in\\pm\\mathbb{P}$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">An integer $n\\neq0$ is $\\star$-irreducible if and only if $\\psi(n)=6n-1$ is $\\pm$prime in $\\mathbb{Z}$. The proof differs from the $\\circledast$ case because $\\psi$ maps into $(6\\mathbb{Z}-1,\\,\\bullet\\,)$ where $a\\,\\bullet\\,b := -a\\cdot b$ (negated multiplication), not ordinary multiplication. Accordingly, there is only <em>one</em> residue-class form for composites in $6\\mathbb{Z}-1$.</p>
+<div class="mdisp">$$n\\notin N_{\\star}\\!\\cdot\\! N_{\\star}:=\\{a\\star b:a,b\\neq0\\} \\;\\iff\\; 6n-1\\in\\pm\\mathbb{P}$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p><strong>Setup:</strong> Recall $\\psi(a\\star b)=-\\psi(a)\\psi(b)$ (<a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>), so $\\psi$ is an isomorphism $N_{\\star}=(\\mathbb{Z},\\star)\\xrightarrow{\\sim}(6\\mathbb{Z}-1,\\,\\bullet\\,)$ where $a\\,\\bullet\\,b:=-ab$. The identity of $\\bullet$ is $\\psi(0)=-1$.</p>
+
+<p><strong>($\\Leftarrow$) $6n-1\\in\\pm\\mathbb{P}$ $\\implies$ $n\\notin N_{\\star}\\!\\cdot\\!N_{\\star}$:</strong></p>
+<p>If $n=u\\star v$ with $u,v\\neq0$, then $6n-1=-(6u-1)(6v-1)=(6u-1)(-(6v-1))=(6u-1)(6(-v)+1)$. Since $u\\neq0$: $|6u-1|\\geq5$; since $v\\neq0$: $|6(-v)+1|=|{-6v+1}|\\geq5$. So $|6n-1|\\geq25$, contradicting $6n-1\\in\\pm\\mathbb{P}$. $\\checkmark$</p>
+
+<p><strong>($\\Rightarrow$) $6n-1\\notin\\pm\\mathbb{P}$ (composite) $\\implies$ $n\\in N_{\\star}\\!\\cdot\\!N_{\\star}$:</strong></p>
+<p>Suppose $6n-1$ is composite: $6n-1=cd$ with $|c|,|d|>1$. Since $6n-1\\equiv -1\\pmod6$, the product $cd\\equiv-1\\pmod6$ forces exactly one form:</p>
+
+<p><em>Single form:</em> $c=6a-1,\\;d=6b+1$ (one factor $\\equiv-1$, the other $\\equiv1\\pmod6$). Rewrite:</p>
+<p>$$(6a-1)(6b+1) = (6a-1)\\bigl(-(6(-b)-1)\\bigr) = -\\,(6a-1)(6(-b)-1) = \\psi(a)\\,\\bullet\\,\\psi(-b)$$</p>
+<p>Since $\\psi$ is an isomorphism, $\\psi(a)\\,\\bullet\\,\\psi(-b) = \\psi(a\\star(-b))$, so $6n-1 = \\psi(a\\star(-b))$, giving $n = a\\star(-b)$.</p>
+<p>We need $a\\neq0$ and $-b\\neq0$: since $|c|=|6a-1|>1$ we have $6a-1\\neq\\pm1$, so $a\\neq0$ (and $a\\neq\\tfrac{1}{3}\\notin\\mathbb{Z}$); since $|d|=|6b+1|>1$ we have $6b+1\\neq\\pm1$, so $b\\neq0$ (and $b\\neq-\\tfrac{1}{3}\\notin\\mathbb{Z}$). Hence $n\\in N_{\\star}\\!\\cdot\\!N_{\\star}$. $\\checkmark$</p>
+
+<p>No other residue-class pairing works: $c\\equiv1,\\,d\\equiv1$ gives $cd\\equiv1\\pmod6\\neq-1$, and $c\\equiv-1,\\,d\\equiv-1$ also gives $cd\\equiv1\\pmod6\\neq-1$. So the single form above is exhaustive. $\\square$</p>
+</div>
+<p><strong>Contrast with <a class="iref" onclick="jumpId('p5.2')">Prop 5.2</a>:</strong> For $\\circledast$ there are two residue-class forms; for $\\star$ there is only one. This asymmetry reflects the sign flip in $\\psi(a\\star b)=-\\psi(a)\\psi(b)$, which means $\\psi$ maps into $(6\\mathbb{Z}-1,\\,\\bullet\\,)$ rather than $(6\\mathbb{Z}-1,\\,\\cdot\\,)$.</p>`,
+lean:`${GH}/TPC/Irreducible.lean#L10`},
+
+{id:"t5.4",ch:"§5 Irred",b:"b-thm",
+ t:`Thm 5.4 — $(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; 6x\\pm1\\in\\pm\\mathbb{P} \\;\\iff\\;$ twin prime pair`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Combining Props 5.1–5.3: irreducibility in $N$ is equivalent to $6x+1$ and $6x-1$ both being $\\pm$primes — i.e., $(6x-1,6x+1)$ is a twin prime pair. This is the bridge between algebra and number theory.</p>
+<div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(N)\\;\\iff\\; 6x+1\\in\\pm\\mathbb{P}\\;\\wedge\\;6x-1\\in\\pm\\mathbb{P}\\;\\iff\\;(6x-1,6x+1)\\text{ twin prime pair}$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p>Chain the three propositions:</p>
+<p><strong>Step 1 (<a class="iref" onclick="jumpId('p5.1')">Prop 5.1</a>):</strong> $\\widehat{x}=(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; x\\in\\mathrm{Irr}(N_{\\circledast})\\,\\wedge\\,x\\in\\mathrm{Irr}(N_{\\star})$.</p>
+<p><strong>Step 2 (<a class="iref" onclick="jumpId('p5.2')">Prop 5.2</a>):</strong> $x\\in\\mathrm{Irr}(N_{\\circledast})\\iff 6x+1\\in\\pm\\mathbb{P}$, via residue-class analysis of composites in $6\\mathbb{Z}+1$ (two forms).</p>
+<p><strong>Step 3 (<a class="iref" onclick="jumpId('p5.3')">Prop 5.3</a>):</strong> $x\\in\\mathrm{Irr}(N_{\\star})\\iff 6x-1\\in\\pm\\mathbb{P}$, via residue-class analysis of composites in $6\\mathbb{Z}-1$ (single form), accounting for the negated-multiplication operation $\\bullet$ on $(6\\mathbb{Z}-1,\\,\\bullet\\,)$.</p>
+<p>Composing: $(x,-x)\\in\\mathrm{Irr}(N)\\iff 6x+1\\in\\pm\\mathbb{P}\\wedge 6x-1\\in\\pm\\mathbb{P}$. $\\square$</p>
+</div>
 <p><strong>Worked example ($x=2$):</strong></p>
 <div class="cblk"> φ(2)=13 (prime), ψ(2)=11 (prime) → (2,-2) ∈ Irr(N)
- Check: any factor (a,-a)⊗(b,-b)=(2,-2) needs φ(a)φ(b)=13
- Since 13 is prime: φ(a)=±1 or φ(b)=±1
- φ(a)=1 ⟹ a=0 (identity), so factorization is trivial ✓</div>
+ Prop 5.1: (2,-2) irred in N ⟺ 2 ∈ Irr(N⊛) ∧ 2 ∈ Irr(N⋆)
+ Prop 5.2: 2 ∉ N⊛·N⊛ ⟺ φ(2)=13 ∈ ±ℙ  ✓
+ Prop 5.3: 2 ∉ N⋆·N⋆ ⟺ ψ(2)=11 ∈ ±ℙ  ✓</div>
 <p><strong>Worked non-example ($x=4$):</strong></p>
-<div class="cblk"> φ(4)=25=5·5, ψ(4)=23 (prime) → (4,-4) ∉ Irr(N)
- Factorization: φ(-1)=-5, so 25=(-5)·(-5)=φ(-1)·φ(-1)
- Hence 4=(-1)⊛(-1): verify 6·1+(-1)+(-1)=4 ✓
- So (4,-4)=(-1,1)⊗(-1,1) is a nontrivial factorization</div>
-</div>
+<div class="cblk"> φ(4)=25, ψ(4)=23
+ 25 is composite: 25 = 5·5, and 5 ≡ -1 (mod 6)
+ Prop 5.2, Form 2: 5=6(1)-1, 5=6(1)-1
+   negate: (-5)(-5)=25, with -5=6(-1)+1 ∈ 6ℤ+1
+   so 4 = (-1)⊛(-1) ∈ N⊛·N⊛ → 4 ∉ Irr(N⊛)
+ Hence (4,-4) ∉ Irr(N), even though ψ(4)=23 is prime</div>
 <div class="cblk"> x   6x-1  6x+1  Irred?  Twin pair
  1      5     7    YES    (5,7)
  2     11    13    YES    (11,13)
@@ -969,12 +1028,12 @@ Every nonidentity element has an irreducible divisor, so it lies in some irreduc
 lean:`${GH}/TPC/Main.lean#L60`},
 
 {id:"c9.3",ch:"§9 Main",b:"b-cor",
- t:`Cor 9.3 — Thm 5.1 + Thm 9.1 $\\implies$ Infinitely Many Twin Prime Pairs`,
+ t:`Cor 9.3 — Thm 5.4 + Thm 9.1 $\\implies$ Infinitely Many Twin Prime Pairs`,
  body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Combining the algebraic equivalence (irreducibles $=$ twin primes) with the topological result (infinitely many irreducibles): there are infinitely many twin prime pairs.</p>
 <div class="mdisp">$$\\boxed{\\bigl|\\{x\\in\\mathbb{Z}:6x-1\\in\\pm\\mathbb{P}\\text{ and }6x+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty}$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>Step 1 (<a class="iref" onclick="jumpId('t5.1')">Thm 5.1</a>):</strong> Establishes a bijection:
+<p><strong>Step 1 (<a class="iref" onclick="jumpId('t5.4')">Thm 5.4</a>):</strong> Establishes a bijection:
 $$\\mathrm{Irr}(N) \\longleftrightarrow \\{x\\in\\mathbb{Z}: 6x-1\\in\\pm\\mathbb{P}\\text{ and }6x+1\\in\\pm\\mathbb{P}\\}$$
 Each irreducible $(x,-x)\\in N$ corresponds to the twin prime pair $(6x-1,6x+1)$.</p>
 <p><strong>Step 2 (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>):</strong> The topological argument proves $|\\mathrm{Irr}(N)|=\\infty$.</p>
@@ -1023,7 +1082,7 @@ $$\\textbf{(H3)}\\quad\\text{No singleton of } N \\text{ is open (equivalently, 
 <p><strong>(H1)</strong> follows from Noetherian descent on the multiplicative norm $|(x,-x)|=(6x+1)^2$ (<a class="iref" onclick="jumpId('t7.2')">Thm 7.2</a>, <a class="iref" onclick="jumpId('c7.5')">Cor 7.5</a>). Because the norm is multiplicative and strictly decreases under proper division, every nonidentity element eventually factors down to an irreducible divisor.</p>
 <p><strong>(H2)</strong> follows from the fact that left multiplication $L_q$ is a topological embedding with clopen image (<a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>, <a class="iref" onclick="jumpId('l8.13')">Lem 8.13</a>). The key ingredients are continuity and injectivity of $L_q$ (which uses the no-zero-divisor property of $\\circledast$ established in <a class="iref" onclick="jumpId('l2.8')">Lem 2.8</a>), together with the fact that images of clopen sets under $L_q$ remain clopen.</p>
 <p><strong>(H3)</strong> follows from the structure of the basis sets $U_{a,b,c}=\\{(a+cz,\\,b-cz):z\\in\\mathbb{Z}\\}$, each of which is an infinite arithmetic-progression-like set (<a class="iref" onclick="jumpId('d8.1')">Def 8.1</a>, <a class="iref" onclick="jumpId('t8.7')">Thm 8.7</a>). Since every nonempty open set contains a basis element, no singleton can be open.</p>
-<p>The general theorem then immediately yields $|\\mathrm{Irr}(N)|=\\infty$ (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>), and the algebraic equivalence between irreducibles of $N$ and twin prime pairs (<a class="iref" onclick="jumpId('t5.1')">Thm 5.1</a>) completes the proof that there are infinitely many twin primes (<a class="iref" onclick="jumpId('c9.3')">Cor 9.3</a>).</p>
+<p>The general theorem then immediately yields $|\\mathrm{Irr}(N)|=\\infty$ (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>), and the algebraic equivalence between irreducibles of $N$ and twin prime pairs (<a class="iref" onclick="jumpId('t5.4')">Thm 5.4</a>) completes the proof that there are infinitely many twin primes (<a class="iref" onclick="jumpId('c9.3')">Cor 9.3</a>).</p>
 
 <div class="d-flex flex-wrap gap-1 mt-2">
 <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof (Wikipedia)</a>
@@ -1136,7 +1195,10 @@ function initGraph(){
     {id:"cx",   l:"Cex\nNot Sat.", t:"ex"},
     {id:"t4.1", l:"Thm 4.1\nWeak Sat.", t:"thm"},
     {id:"l4.5", l:"Lem 4.5\n⊛-decomp⇔comp", t:"lem"},
-    {id:"t5.1", l:"Thm 5.1\nIrred⇔Twin", t:"thm"},
+    {id:"p5.1", l:"Prop 5.1\nIrred⇔⊛∧⋆", t:"prop"},
+    {id:"p5.2", l:"Prop 5.2\n⊛-irred⇔±ℙ", t:"prop"},
+    {id:"p5.3", l:"Prop 5.3\n⋆-irred⇔±ℙ", t:"prop"},
+    {id:"t5.4", l:"Thm 5.4\nIrred⇔Twin", t:"thm"},
     {id:"d6.1", l:"Def 6.1\nNorm", t:"def"},
     {id:"n56",  l:"Prop N5–N6\nMult+Desc", t:"prop"},
     {id:"t7.2", l:"Thm 7.2\nIrred Div", t:"thm"},
@@ -1162,7 +1224,8 @@ function initGraph(){
     ["d3.1","cx"],["d3.1","t4.1"],
     ["l2.8","t4.1"],
     ["t2.6","l4.5"],
-    ["c1.5","t5.1"],["l4.5","t5.1"],["t4.1","t5.1"],
+    ["c1.5","p5.1"],["t4.1","p5.1"],["eta","p5.1"],
+    ["t2.6","p5.2"],["t2.6","p5.3"],["p5.1","t5.4"],["p5.2","t5.4"],["p5.3","t5.4"],
     ["t2.6","d6.1"],
     ["t2.6","n56"],["d6.1","n56"],
     ["n56","t7.2"],["t4.1","t7.2"],
@@ -1175,7 +1238,7 @@ function initGraph(){
     ["l8.9a","t8.9"],["l8.9b","t8.9"],["l8.9c","t8.9"],
     ["t8.9","l8.13"],["l8.9c","l8.13"],
     ["c7.5","t9.1"],["l8.13","t9.1"],["t8.7","t9.1"],
-    ["t5.1","c9.3"],["t9.1","c9.3"],
+    ["t5.4","c9.3"],["t9.1","c9.3"],
     ["t9.1","gen"],["c9.3","gen"]
   ];
   const colors={def:"#7c3aed",thm:"#f59e0b",prop:"#a1a1aa",lem:"#52525b",cor:"#3b82f6",ex:"#27272a"};
