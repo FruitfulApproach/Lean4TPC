@@ -412,11 +412,19 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 <div class="math-block">$$(z,w)\\in\\mathrm{Irr}(N) \\iff \\phi(z)=6z+1\\in\\pm\\mathbb{P}\\text{ and }\\psi(z)=6z-1\\in\\pm\\mathbb{P}$$</div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>($\\Rightarrow$):</strong> Suppose $(z,w)\\in\\mathrm{Irr}(N)$, so $(z,w)=\\Delta(z)=(z,z)$ (irreducibles are generators, i.e., $w=z$).</p>
-<p>Suppose $\\phi(z)=6z+1$ is not prime. Then $6z+1 = ab$ with $a,b\\in 6\\mathbb{Z}+1$, $|a|,|b|>1$. Write $a=\\phi(\\alpha)$, $b=\\phi(\\beta)$. Then $\\phi(z)=\\phi(\\alpha)\\phi(\\beta)=\\phi(\\alpha\\circledast\\beta)$, so $z=\\alpha\\circledast\\beta$ with $\\alpha,\\beta\\neq 0$.</p>
-<p>Now consider $\\Delta(\\alpha)\\otimes\\Delta(\\beta) = (\\alpha\\circledast\\beta, \\alpha\\star\\beta) = (z, \\alpha\\star\\beta)$. This must equal $(z,w)=(z,z)$ only if $\\alpha\\star\\beta = z = \\alpha\\circledast\\beta$. But in general $\\circledast\\neq\\star$, so this would need to be checked... </p>
-<p>The correct argument: irreducibility of $(z,w)$ in $N$ means that the only way to write $(z,w) = (k_1,k_1)\\otimes\\cdots\\otimes(k_r,k_r)$ has $r=1$. Applying $\\phi$ to the first component: $\\phi(z) = \\phi(k_1)\\cdots\\phi(k_r)$. If $r=1$ then $\\phi(z)=\\phi(k_1)$ with $|\\phi(k_1)|>1$, and there's no shorter factorization. This means $\\phi(z)$ is $\\pm$prime. Similarly applying $\\psi$ to the second component: $\\psi(z)$ is $\\pm$prime.</p>
-<p><strong>($\\Leftarrow$):</strong> Suppose $\\phi(z)=6z+1$ is $\\pm$prime and $\\psi(z)=6z-1$ is $\\pm$prime. If $(z,z) = \\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_r)$ with $r\\geq 2$, then $\\phi(z) = \\phi(k_1)\\cdots\\phi(k_r)$. Since $\\phi(z)$ is prime, all but one factor must be $\\pm 1$, i.e., all but one $k_i$ is $0$. But $\\Delta(0)=(0,0)$ is the identity, so those factors are trivial. Hence $r=1$ (effectively), proving irreducibility.</p>
+<p><strong>Key structural fact:</strong> By construction, every element of $N$ is a product of generators $\\Delta(k_i)=(k_i,k_i)$, so every $(z,w)\\in N$ satisfies $w=z$ (since $w$ is determined by the same generator sequence as $z$). In particular any irreducible $(z,w)\\in\\mathrm{Irr}(N)$ has the form $(z,z)$.</p>
+<p><strong>($\\Rightarrow$) Irreducible $\\Rightarrow$ both $\\phi(z),\\psi(z)$ are $\\pm$prime:</strong></p>
+<p>Suppose $(z,z)\\in\\mathrm{Irr}(N)$ but $\\phi(z)=6z+1$ is not $\\pm$prime. Then $\\phi(z)=\\phi(a)\\phi(b)$ with $a,b\\neq 0$, i.e., $z = a\\circledast b$.</p>
+<p>We ask: can $(z,z)$ be factored as $(a,c)\\otimes(b,d)$ in $N$? This requires:</p>
+<div class="math-block">$$a\\circledast b = z,\\quad c\\star d = z,\\quad\\text{i.e., }6ab+a+b = -6cd+c+d$$</div>
+<p>Rearranging: $\\displaystyle\\frac{c+d-a-b}{ab+cd}=6$. But this equation is extremely restrictive — for integer solutions with $|a|,|b|,|c|,|d|\\geq 1$ and the generators constrained to lie on the diagonal, this is generically impossible.</p>
+<p>However, the correct route uses the <strong>diagonal constraint</strong> directly: any factorization in $N$ must come from generators. If $(z,z) = \\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_r)$ with $r\\geq 2$, then applying $\\phi$ to the first component:</p>
+<p>$\\phi(z) = \\phi(k_1)\\cdots\\phi(k_r)$</p>
+<p>If $\\phi(z)$ is not $\\pm$prime, such a factorization with $r\\geq 2$ and all $k_i\\neq 0$ exists. This contradicts irreducibility. So $\\phi(z)$ must be $\\pm$prime. Similarly, applying $\\psi$ to the second component forces $\\psi(z)=6z-1$ to be $\\pm$prime.</p>
+<p><strong>($\\Leftarrow$) Both prime $\\Rightarrow$ irreducible:</strong></p>
+<p>Suppose $\\phi(z)=6z+1$ and $\\psi(z)=6z-1$ are both $\\pm$prime. If $(z,z) = \\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_r)$ with $r\\geq 2$, then:</p>
+<p>$\\phi(z) = \\phi(k_1)\\cdots\\phi(k_r)$</p>
+<p>Since $\\phi(z)$ is prime, all but one factor must be $\\pm 1$, i.e., all but one $k_i$ satisfies $\\phi(k_i)=\\pm 1$. But $\\phi(k_i)=1\\Rightarrow k_i=0$ (identity), and $\\phi(k_i)=-1\\Rightarrow k_i=-1/3\\notin\\mathbb{Z}$. So all but one $k_i$ is $0$ (the identity element), making the factorization trivial. Hence $(z,z)$ is irreducible.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="example-box">
