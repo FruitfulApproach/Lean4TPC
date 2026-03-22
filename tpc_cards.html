@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Twin Prime Conjecture — Proof Cards</title>
+<title>Furstenberg Topology on Monoids gives Twin Prime Infinitude — Proof Cards</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" rel="stylesheet"/>
@@ -13,172 +13,217 @@
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
   onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --blue:#1e90ff;--blue-dk:#0d6efd;--blue-pale:#e8f3ff;
-  --yellow:#fffde7;--yellow-mid:#f5e642;
-  --g50:#f9f9f9;--g100:#eeeeee;--g200:#cccccc;--g500:#888;--g800:#333;
-  --black:#111;--white:#fff;
-  --sans:'IBM Plex Sans',sans-serif;
-  --serif:'IBM Plex Serif',serif;
-  --mono:'IBM Plex Mono',monospace;
-  --r:14px;--r-sm:8px;
-  --sh-btn:0 4px 16px rgba(30,144,255,.35);
-  --sh-card:0 6px 24px rgba(0,0,0,.09);
-  --sh-card-h:0 12px 36px rgba(30,144,255,.16);
-  --t:.22s cubic-bezier(.4,0,.2,1);
+  /* Core palette */
+  --purple:#7c3aed;--purple-dk:#6d28d9;--purple-lt:#ede9fe;--purple-glow:rgba(124,58,237,.25);
+  --green:#10b981;--green-dk:#059669;--green-lt:#d1fae5;--green-glow:rgba(16,185,129,.2);
+  --blue:#3b82f6;--blue-dk:#2563eb;--blue-lt:#dbeafe;--blue-glow:rgba(59,130,246,.2);
+  --orange:#f59e0b;--orange-dk:#d97706;--orange-lt:#fef3c7;--orange-glow:rgba(245,158,11,.2);
+  --g50:#fafafa;--g100:#f4f4f5;--g200:#e4e4e7;--g300:#d4d4d8;--g400:#a1a1aa;--g500:#71717a;--g600:#52525b;--g800:#27272a;--g900:#18181b;
+  --black:#0f0f0f;--white:#ffffff;
+
+  /* Typography */
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+  --serif:'Lora',Georgia,serif;
+  --mono:'JetBrains Mono','Fira Code',monospace;
+
+  /* Spacing & shape */
+  --r:18px;--r-sm:10px;--r-lg:24px;
+  --sh-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --sh-md:0 4px 20px rgba(0,0,0,.06),0 2px 8px rgba(0,0,0,.04);
+  --sh-lg:0 12px 40px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+  --sh-purple:0 8px 30px rgba(124,58,237,.18);
+  --sh-glow:0 0 20px rgba(124,58,237,.12);
+  --t:.2s cubic-bezier(.4,0,.2,1);--t-bounce:.35s cubic-bezier(.34,1.56,.64,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--sans);background:var(--g50);color:var(--black);min-height:100vh}
+body{font-family:var(--sans);background:var(--g50);color:var(--g900);min-height:100vh;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
-/* header */
-.hdr{background:var(--black);color:var(--white);padding:.85rem 1.4rem;
-  border-bottom:3px solid var(--blue);
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
-.hdr h1{font-family:var(--mono);font-size:clamp(.82rem,2.4vw,1.05rem);font-weight:600;color:var(--white)}
-.hdr h1 span{color:var(--blue)}
-.hdr-links{display:flex;gap:.4rem;flex-wrap:wrap}
+/* ── Header ── */
+.hdr{background:var(--g900);color:var(--white);padding:.9rem 1.6rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.7rem;
+  position:relative;z-index:300}
+.hdr h1{font-family:var(--sans);font-size:clamp(.82rem,2.4vw,1rem);font-weight:600;
+  color:rgba(255,255,255,.88);letter-spacing:-.01em}
+.hdr h1 span{background:linear-gradient(135deg,var(--purple),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;font-weight:700}
+.hdr-links{display:flex;gap:.35rem;flex-wrap:wrap}
 
-/* progress */
-.prog{background:var(--g100);padding:.4rem 1.4rem;border-bottom:1px solid var(--g200)}
-.prog-track{height:5px;background:var(--g200);border-radius:3px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),#5bb8ff);border-radius:3px;transition:width .4s var(--t)}
-.prog-txt{font-family:var(--mono);font-size:.68rem;color:var(--g500);margin-top:.22rem}
+/* ── Progress ── */
+.prog{background:var(--white);padding:.5rem 1.6rem .45rem;
+  border-bottom:1px solid var(--g200)}
+.prog-track{height:4px;background:var(--g200);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--blue),var(--green));
+  border-radius:99px;transition:width .5s var(--t)}
+.prog-txt{font-family:var(--mono);font-size:.65rem;color:var(--g400);margin-top:.2rem;
+  letter-spacing:.03em}
 
-/* chapter strip */
+/* ── Chapter strip ── */
 .chstrip{background:var(--white);border-bottom:1px solid var(--g200);
-  padding:.45rem 1.2rem;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  padding:.5rem 1.4rem;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
 .chstrip::-webkit-scrollbar{display:none}
-.chbtn{font-family:var(--mono);font-size:.67rem;font-weight:600;letter-spacing:.05em;
-  padding:.26rem .72rem;border-radius:30px;border:1.5px solid var(--g200);
-  background:var(--white);color:var(--g500);cursor:pointer;margin-right:.35rem;transition:var(--t)}
-.chbtn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-pale)}
-.chbtn.active{background:var(--blue);color:var(--white);border-color:var(--blue);
-  box-shadow:0 2px 10px rgba(30,144,255,.35)}
+.chbtn{font-family:var(--mono);font-size:.64rem;font-weight:500;letter-spacing:.03em;
+  padding:.3rem .8rem;border-radius:99px;border:1.5px solid var(--g200);
+  background:var(--white);color:var(--g500);cursor:pointer;margin-right:.35rem;
+  transition:all var(--t)}
+.chbtn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-lt)}
+.chbtn.active{background:var(--purple);color:var(--white);border-color:var(--purple);
+  box-shadow:0 2px 12px var(--purple-glow)}
 
-/* stage */
+/* ── Stage ── */
 .stage{min-height:calc(100vh - 210px);display:flex;align-items:flex-start;
-  justify-content:center;padding:1.8rem 1rem 6rem}
+  justify-content:center;padding:2rem 1rem 6.5rem;
+  background:linear-gradient(180deg,var(--g100) 0%,var(--g50) 40%,var(--white) 100%)}
 
-/* card */
-.pcard{background:var(--white);border-radius:var(--r);box-shadow:var(--sh-card);
-  max-width:780px;width:100%;overflow:hidden;
-  animation:slideUp .3s cubic-bezier(.4,0,.2,1);
-  transition:box-shadow var(--t)}
-.pcard:hover{box-shadow:var(--sh-card-h)}
-@keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideLeft{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
-@keyframes slideRight{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:translateX(0)}}
+/* ── Card ── */
+.pcard{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-md);
+  max-width:800px;width:100%;overflow:hidden;
+  animation:slideUp .35s cubic-bezier(.4,0,.2,1);
+  transition:box-shadow var(--t),transform var(--t);
+  border:1px solid var(--g200)}
+.pcard:hover{box-shadow:var(--sh-lg);transform:translateY(-2px)}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
 
-/* card top */
-.ctop{background:#2d2d3a;padding:1.1rem 1.5rem .85rem}
-.badge-row{display:flex;align-items:center;gap:.4rem;margin-bottom:.55rem;flex-wrap:wrap}
-.tbadge{font-family:var(--mono);font-size:.61rem;font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;padding:.17rem .52rem;border-radius:30px}
-.b-def{background:var(--blue);color:var(--white)}
-.b-thm{background:var(--yellow-mid);color:var(--black)}
-.b-prop{background:var(--g200);color:var(--g800)}
-.b-lem{background:#444;color:var(--white)}
-.b-cor{background:var(--blue-pale);color:var(--blue-dk);border:1px solid var(--blue)}
-.b-ex{background:#1e1e1e;color:#aaa}
-.b-abs{background:var(--blue);color:var(--white)}
+/* ── Card top ── */
+.ctop{background:linear-gradient(135deg,var(--g900) 0%,#1e1b2e 60%,#1a1530 100%);
+  padding:1.2rem 1.6rem 1rem;position:relative;overflow:hidden}
+.ctop::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;
+  background:radial-gradient(circle,var(--purple-glow) 0%,transparent 70%);
+  pointer-events:none}
+.badge-row{display:flex;align-items:center;gap:.45rem;margin-bottom:.6rem;flex-wrap:wrap;
+  position:relative;z-index:1}
+.tbadge{font-family:var(--mono);font-size:.58rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;padding:.2rem .6rem;border-radius:99px}
+.b-def{background:var(--purple);color:var(--white)}
+.b-thm{background:var(--orange);color:var(--black)}
+.b-prop{background:var(--g300);color:var(--g800)}
+.b-lem{background:var(--g600);color:var(--g200)}
+.b-cor{background:var(--blue-lt);color:var(--blue-dk);border:1px solid var(--blue)}
+.b-ex{background:var(--g800);color:var(--g400)}
+.b-abs{background:linear-gradient(135deg,var(--purple),var(--blue));color:var(--white)}
 .eq-title{font-family:var(--serif);font-size:clamp(.95rem,2.8vw,1.22rem);
-  font-weight:400;color:var(--white);line-height:1.4}
-.eq-title .katex,.eq-title .katex *{color:var(--yellow-mid)!important}
+  font-weight:400;color:rgba(255,255,255,.92);line-height:1.45;position:relative;z-index:1}
+.eq-title .katex,.eq-title .katex *{color:var(--orange)!important}
 
-/* card body */
-.cbody{padding:1.3rem 1.5rem 1.1rem}
-.cbody p{line-height:1.76;color:var(--g800);margin-bottom:.75rem}
+/* ── Card body ── */
+.cbody{padding:1.4rem 1.6rem 1.2rem}
+.cbody p{line-height:1.8;color:var(--g800);margin-bottom:.8rem;font-size:.935rem}
 .cbody p:last-child{margin-bottom:0}
-.mdisp{background:var(--yellow);border-left:4px solid var(--blue);
-  border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.8rem 1.1rem;margin:.85rem 0;overflow-x:auto}
-.cblk{font-family:var(--mono);font-size:.75rem;background:#111;color:#e5e5e5;
-  padding:.85rem 1rem;border-radius:var(--r-sm);overflow-x:auto;white-space:pre;
-  margin:.75rem 0;line-height:1.65;border:1px solid #2a2a2a}
-.cblk .kw{color:#5bb8ff}.cblk .fn{color:#f5e642}.cblk .cm{color:#666}
-.cbody a{color:var(--blue);text-decoration:none;border-bottom:1px dotted var(--blue);transition:var(--t)}
-.cbody a:hover{background:var(--blue-pale);border-radius:2px}
-.iref{color:inherit;border-bottom:1px dotted #555;cursor:pointer;text-decoration:none;transition:var(--t)}
-.iref:hover{color:var(--blue);border-bottom-color:var(--blue)}
+.mdisp{background:linear-gradient(135deg,var(--purple-lt) 0%,var(--blue-lt) 100%);
+  border-left:4px solid var(--purple);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.85rem 1.2rem;margin:.9rem 0;overflow-x:auto}
+.cblk{font-family:var(--mono);font-size:.74rem;background:var(--g900);color:#e4e4e7;
+  padding:.9rem 1.1rem;border-radius:var(--r-sm);overflow-x:auto;white-space:pre;
+  margin:.8rem 0;line-height:1.7;border:1px solid var(--g800)}
+.cblk .kw{color:var(--blue)}.cblk .fn{color:var(--orange)}.cblk .cm{color:var(--g500)}
+.cbody a{color:var(--purple);text-decoration:none;
+  border-bottom:1px dotted rgba(124,58,237,.4);transition:var(--t)}
+.cbody a:hover{background:var(--purple-lt);border-radius:3px;border-bottom-color:var(--purple)}
+.iref{color:var(--purple-dk);border-bottom:1px dotted rgba(124,58,237,.35);
+  cursor:pointer;text-decoration:none;transition:var(--t);font-weight:500}
+.iref:hover{color:var(--purple);border-bottom-color:var(--purple);background:var(--purple-lt);
+  border-radius:2px;padding:0 2px;margin:0 -2px}
 
-/* source link */
-.srclink{font-family:var(--mono);font-size:.66rem;color:var(--g500);
-  background:var(--g100);border:1px solid var(--g200);border-radius:30px;
-  padding:.14rem .52rem;text-decoration:none;transition:var(--t);white-space:nowrap}
-.srclink:hover{background:var(--blue);color:var(--white);border-color:var(--blue);box-shadow:var(--sh-btn)}
-.btn-copy{font-family:var(--mono);font-size:.6rem;color:#888;background:transparent;
-  border:1px solid #555;border-radius:30px;padding:.12rem .48rem;cursor:pointer;
-  transition:var(--t);white-space:nowrap;margin-left:auto}
-.btn-copy:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
-.btn-copy.copied{background:#2a9d5c;color:#fff;border-color:#2a9d5c}
+/* ── Source link ── */
+.srclink{font-family:var(--mono);font-size:.64rem;color:var(--g400);
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:99px;
+  padding:.18rem .6rem;text-decoration:none;transition:var(--t);white-space:nowrap;
+  backdrop-filter:blur(4px)}
+.srclink:hover{background:var(--purple);color:var(--white);border-color:var(--purple);
+  box-shadow:0 4px 14px var(--purple-glow)}
+.btn-copy{font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.5);
+  background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:99px;
+  padding:.14rem .55rem;cursor:pointer;transition:var(--t);white-space:nowrap;margin-left:auto}
+.btn-copy:hover{background:var(--purple);color:var(--white);border-color:var(--purple)}
+.btn-copy.copied{background:var(--green);color:#fff;border-color:var(--green)}
 
-/* proof toggle */
-.btnprf{font-family:var(--mono);font-size:.71rem;font-weight:600;
-  color:var(--blue);background:var(--blue-pale);
-  border:1.5px solid var(--blue);border-radius:30px;
-  padding:.24rem .72rem;cursor:pointer;margin:.5rem 0;transition:var(--t)}
-.btnprf:hover{background:var(--blue);color:var(--white);box-shadow:var(--sh-btn)}
-.prfbody{border-left:3px solid var(--g200);padding-left:.9rem;
-  margin-top:.55rem;color:var(--g500);font-size:.91rem}
+/* ── Proof toggle ── */
+.btnprf{font-family:var(--mono);font-size:.7rem;font-weight:600;
+  color:var(--purple);background:var(--purple-lt);
+  border:1.5px solid rgba(124,58,237,.3);border-radius:99px;
+  padding:.28rem .8rem;cursor:pointer;margin:.55rem 0;transition:all var(--t)}
+.btnprf:hover{background:var(--purple);color:var(--white);border-color:var(--purple);
+  box-shadow:0 4px 16px var(--purple-glow);transform:translateY(-1px)}
+.prfbody{border-left:3px solid var(--green);padding-left:1rem;
+  margin-top:.6rem;color:var(--g600);font-size:.9rem;
+  background:linear-gradient(90deg,var(--green-lt) 0%,transparent 3%)}
 
-/* tag pills */
-.tpill{display:inline-block;font-family:var(--mono);font-size:.63rem;
-  background:var(--g100);border:1px solid var(--g200);border-radius:30px;
-  padding:.11rem .48rem;margin:.12rem .08rem;color:var(--g500);text-decoration:none;transition:var(--t)}
-.tpill:hover{background:var(--blue);color:var(--white);border-color:var(--blue);
-  box-shadow:0 2px 8px rgba(30,144,255,.3)}
+/* ── Tag pills ── */
+.tpill{display:inline-block;font-family:var(--mono);font-size:.62rem;
+  background:var(--g100);border:1px solid var(--g200);border-radius:99px;
+  padding:.14rem .55rem;margin:.12rem .08rem;color:var(--g500);
+  text-decoration:none;transition:all var(--t)}
+.tpill:hover{background:var(--purple);color:var(--white);border-color:var(--purple);
+  box-shadow:0 3px 10px var(--purple-glow);transform:translateY(-1px)}
 
-/* footer */
-.ftr{position:fixed;bottom:0;left:0;right:0;background:var(--white);
-  border-top:1px solid var(--g200);padding:.75rem 1.4rem;
+/* ── Footer ── */
+.ftr{position:fixed;bottom:0;left:0;right:0;
+  background:rgba(255,255,255,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-top:1px solid rgba(0,0,0,.06);padding:.8rem 1.6rem;
   display:flex;align-items:center;justify-content:space-between;
-  z-index:200;box-shadow:0 -3px 16px rgba(0,0,0,.07)}
-.btnav{font-family:var(--mono);font-size:.8rem;font-weight:600;
-  letter-spacing:.04em;padding:.5rem 1.5rem;border-radius:30px;
-  border:2px solid var(--blue);background:var(--white);color:var(--blue);
-  cursor:pointer;transition:var(--t);
-  box-shadow:0 3px 10px rgba(30,144,255,.18);
-  display:flex;align-items:center;gap:.35rem}
-.btnav:hover:not(:disabled){background:var(--blue);color:var(--white);
-  box-shadow:var(--sh-btn);transform:translateY(-1px)}
-.btnav:active:not(:disabled){transform:translateY(0);box-shadow:none}
-.btnav:disabled{opacity:.28;cursor:not-allowed;border-color:var(--g200);color:var(--g200);box-shadow:none}
-.navcnt{font-family:var(--mono);font-size:.76rem;color:var(--g500);
-  background:var(--g100);padding:.28rem .85rem;border-radius:30px}
+  z-index:200}
+.btnav{font-family:var(--mono);font-size:.78rem;font-weight:600;
+  letter-spacing:.03em;padding:.5rem 1.6rem;border-radius:99px;
+  border:2px solid var(--purple);background:var(--white);color:var(--purple);
+  cursor:pointer;transition:all var(--t);
+  box-shadow:0 2px 8px var(--purple-glow);
+  display:flex;align-items:center;gap:.4rem}
+.btnav:hover:not(:disabled){background:var(--purple);color:var(--white);
+  box-shadow:var(--sh-purple);transform:translateY(-2px)}
+.btnav:active:not(:disabled){transform:translateY(0);box-shadow:0 2px 6px var(--purple-glow)}
+.btnav:disabled{opacity:.25;cursor:not-allowed;border-color:var(--g200);color:var(--g300);box-shadow:none}
+.navcnt{font-family:var(--mono);font-size:.74rem;color:var(--g400);
+  background:var(--g100);padding:.3rem .9rem;border-radius:99px;font-weight:500}
 
-/* minimap */
-.mmap{position:fixed;right:.7rem;top:50%;transform:translateY(-50%);
-  display:flex;flex-direction:column;gap:5px;z-index:100}
-.mmdot{width:7px;height:7px;border-radius:50%;background:var(--g200);
-  cursor:pointer;transition:var(--t);border:1px solid var(--g200)}
-.mmdot.active{background:var(--blue);border-color:var(--blue);transform:scale(1.5)}
-.mmdot:hover{background:var(--blue);transform:scale(1.4)}
+/* ── Minimap ── */
+.mmap{position:fixed;right:.8rem;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:6px;z-index:100}
+.mmdot{width:8px;height:8px;border-radius:50%;background:var(--g200);
+  cursor:pointer;transition:all var(--t-bounce);border:1.5px solid var(--g300)}
+.mmdot.active{background:var(--purple);border-color:var(--purple);transform:scale(1.6);
+  box-shadow:0 0 8px var(--purple-glow)}
+.mmdot:hover{background:var(--purple);border-color:var(--purple);transform:scale(1.5)}
 @media(max-width:860px){.mmap{display:none}}
 
-/* graph overlay */
-.graph-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);
+/* ── Graph overlay ── */
+.graph-overlay{position:fixed;inset:0;z-index:9999;
+  background:rgba(15,15,15,.94);backdrop-filter:blur(8px);
   display:none;flex-direction:column}
 .graph-overlay.active{display:flex}
 .graph-hdr{display:flex;align-items:center;justify-content:space-between;
-  padding:.7rem 1.2rem;border-bottom:1px solid #333}
-.graph-hdr h2{font-family:var(--mono);font-size:.9rem;color:var(--white);font-weight:600}
-.graph-hdr h2 span{color:var(--blue)}
-.graph-close{font-size:1.4rem;color:#888;cursor:pointer;background:none;border:none;
-  transition:var(--t);padding:.2rem .5rem;border-radius:6px}
-.graph-close:hover{color:var(--white);background:#333}
-.graph-hint{font-family:var(--mono);font-size:.6rem;color:#666;padding:0 1.2rem .3rem;
-  border-bottom:1px solid #222}
-#cy{flex:1;width:100%;background:radial-gradient(ellipse at center,#1a1a24 0%,#0d0d14 100%)}
-.graph-legend{display:flex;gap:1rem;padding:.3rem 1.2rem .5rem;flex-wrap:wrap}
-.graph-legend-item{display:flex;align-items:center;gap:.35rem;font-family:var(--mono);font-size:.58rem;color:#888}
-.graph-legend-swatch{width:12px;height:12px;border-radius:3px;border:1px solid rgba(255,255,255,.15)}
+  padding:.8rem 1.4rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.graph-hdr h2{font-family:var(--mono);font-size:.88rem;color:var(--white);font-weight:600}
+.graph-hdr h2 span{color:var(--purple)}
+.graph-close{font-size:1.4rem;color:var(--g400);cursor:pointer;background:none;border:none;
+  transition:var(--t);padding:.2rem .5rem;border-radius:8px}
+.graph-close:hover{color:var(--white);background:rgba(255,255,255,.1)}
+.graph-hint{font-family:var(--mono);font-size:.6rem;color:var(--g500);padding:.15rem 1.4rem .35rem;
+  border-bottom:1px solid rgba(255,255,255,.05)}
+#cy{flex:1;width:100%;background:radial-gradient(ellipse at center,#1a1528 0%,#0d0b14 100%)}
+.graph-legend{display:flex;gap:1rem;padding:.35rem 1.4rem .55rem;flex-wrap:wrap}
+.graph-legend-item{display:flex;align-items:center;gap:.35rem;font-family:var(--mono);font-size:.57rem;color:var(--g400)}
+.graph-legend-swatch{width:12px;height:12px;border-radius:4px;border:1px solid rgba(255,255,255,.12)}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--g300);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:var(--purple)}
+
+/* ── Selection ── */
+::selection{background:var(--purple-lt);color:var(--purple-dk)}
 </style>
 </head>
 <body>
 
 <header class="hdr">
-  <h1><span>TPC</span> · Twin Primes via Weakly Saturated Submonoids</h1>
+  <h1><span>TPC</span> · Furstenberg Topology on Monoids gives Twin Prime Infinitude</h1>
   <div class="hdr-links">
     <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="srclink"><i class="bi bi-github"></i> Lean4TPC</a>
     <a href="PAPER.md" target="_blank" class="srclink"><i class="bi bi-file-text"></i> PAPER.md</a>
@@ -203,12 +248,12 @@ body{font-family:var(--sans);background:var(--g50);color:var(--black);min-height
   </div>
   <div class="graph-hint">Scroll to zoom · Drag to pan · Click a node to jump to its card · Hover to highlight dependencies</div>
   <div class="graph-legend">
-    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#1a6dd4"></div>Definition</div>
-    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#f0dd30"></div>Theorem</div>
-    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#c8c8c8"></div>Proposition</div>
-    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#4a4a5a"></div>Lemma</div>
-    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#b8ddf5"></div>Corollary</div>
-    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#2a2a2a;border-color:#555"></div>Counterexample</div>
+    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#7c3aed"></div>Definition</div>
+    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#f59e0b"></div>Theorem</div>
+    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#a1a1aa"></div>Proposition</div>
+    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#52525b"></div>Lemma</div>
+    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#93c5fd"></div>Corollary</div>
+    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#27272a;border-color:#555"></div>Counterexample</div>
   </div>
   <div id="cy"></div>
 </div>
@@ -255,7 +300,7 @@ const cards=[
 
 <p>The proof uses no sieve theory, no analytic number theory, and no bounds on prime gaps. It is purely algebraic and topological — a direct generalisation of Furstenberg's 1955 proof to a carefully constructed monoid whose irreducibles happen to be twin primes. Every step is being formalised in <a href="https://leanprover-community.github.io/" target="_blank">Lean 4</a> + Mathlib.</p>
 
-<div class="mdisp" style="background:#f0f4ff;border-left-color:#1a6dd4">
+<div class="mdisp" style="background:linear-gradient(135deg,#ede9fe,#dbeafe);border-left-color:#7c3aed">
 <strong>Standing notation used throughout this deck:</strong>
 $$\\mathbin{\\circledast}:\\; x\\mathbin{\\circledast}y = 6xy+x+y, \\qquad \\star:\\; x\\star y = -6xy+x+y$$
 $$\\phi(x)=6x+1, \\qquad \\psi(x)=6x-1$$
@@ -944,7 +989,49 @@ $(5,7)\\to x=1$, $(11,13)\\to x=2$, $(17,19)\\to x=3$, $(29,31)\\to x=5$, $(41,4
 <a href="${GH}/TPC/Main.lean" target="_blank" class="tpill"><i class="bi bi-code-slash"></i> Main.lean</a>
 <a href="${GH}/PAPER.md" target="_blank" class="tpill"><i class="bi bi-file-text"></i> PAPER.md</a>
 <a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank" class="tpill">Mathlib4 docs</a>
-</div>`}
+</div>`},
+
+{id:"gen",ch:"§10 General",b:"b-thm",
+ t:`General Furstenberg Theorem — Topological Monoids with Irreducible Covering have $|\\mathrm{Irr}|=\\infty$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The argument used to prove the Twin Prime Conjecture is not specific to $\\Delta(\\mathbb{Z})$. It is an instance of a general theorem about topological monoids. Any commutative monoid satisfying the hypotheses below must have infinitely many irreducibles.</p>
+
+<p><strong>Theorem (General Furstenberg Criterion).</strong> Let $(N,\\cdot)$ be a commutative monoid equipped with a topology satisfying:</p>
+
+<div class="mdisp">
+$$\\textbf{(H1)}\\quad\\text{Every nonidentity element of } N \\text{ is divisible by some irreducible:}$$
+$$N\\setminus\\{1_N\\}\\;=\\;\\bigcup_{q\\,\\in\\,\\mathrm{Irr}(N)} q\\cdot N$$
+</div>
+
+<div class="mdisp">
+$$\\textbf{(H2)}\\quad\\text{For every irreducible } q\\in\\mathrm{Irr}(N),\\; \\text{the coset } q\\cdot N \\text{ is closed in } N$$
+</div>
+
+<div class="mdisp">
+$$\\textbf{(H3)}\\quad\\text{No singleton of } N \\text{ is open (equivalently, every nonempty open set is infinite)}$$
+</div>
+
+<p>Then $|\\mathrm{Irr}(N)|=\\infty$.</p>
+
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p>Suppose for contradiction that $\\mathrm{Irr}(N)$ is finite, say $\\mathrm{Irr}(N)=\\{q_1,\\ldots,q_n\\}$. By <strong>(H1)</strong>:</p>
+<p>$$N\\setminus\\{1_N\\}=q_1\\cdot N\\cup\\cdots\\cup q_n\\cdot N$$</p>
+<p>Each $q_i\\cdot N$ is closed by <strong>(H2)</strong>. A finite union of closed sets is closed. Therefore $N\\setminus\\{1_N\\}$ is closed, which makes $\\{1_N\\}$ open. But this contradicts <strong>(H3)</strong>. $\\blacksquare$</p>
+</div>
+
+<p>In this paper, we verify <strong>(H1)</strong>–<strong>(H3)</strong> for the anti-diagonal monoid $N=\\Delta(\\mathbb{Z})\\leqslant(\\mathbb{Z}^2,\\otimes)$:</p>
+<p><strong>(H1)</strong> follows from Noetherian descent on the multiplicative norm $|(x,-x)|=(6x+1)^2$ (<a class="iref" onclick="jumpId('t7.2')">Thm 7.2</a>, <a class="iref" onclick="jumpId('c7.5')">Cor 7.5</a>). Because the norm is multiplicative and strictly decreases under proper division, every nonidentity element eventually factors down to an irreducible divisor.</p>
+<p><strong>(H2)</strong> follows from the fact that left multiplication $L_q$ is a topological embedding with clopen image (<a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>, <a class="iref" onclick="jumpId('l8.13')">Lem 8.13</a>). The key ingredients are continuity and injectivity of $L_q$ (which uses the no-zero-divisor property of $\\circledast$ established in <a class="iref" onclick="jumpId('l2.8')">Lem 2.8</a>), together with the fact that images of clopen sets under $L_q$ remain clopen.</p>
+<p><strong>(H3)</strong> follows from the structure of the basis sets $U_{a,b,c}=\\{(a+cz,\\,b-cz):z\\in\\mathbb{Z}\\}$, each of which is an infinite arithmetic-progression-like set (<a class="iref" onclick="jumpId('d8.1')">Def 8.1</a>, <a class="iref" onclick="jumpId('t8.7')">Thm 8.7</a>). Since every nonempty open set contains a basis element, no singleton can be open.</p>
+<p>The general theorem then immediately yields $|\\mathrm{Irr}(N)|=\\infty$ (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>), and the algebraic equivalence between irreducibles of $N$ and twin prime pairs (<a class="iref" onclick="jumpId('t5.1')">Thm 5.1</a>) completes the proof that there are infinitely many twin primes (<a class="iref" onclick="jumpId('c9.3')">Cor 9.3</a>).</p>
+
+<div class="d-flex flex-wrap gap-1 mt-2">
+<a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof (Wikipedia)</a>
+<a href="https://en.wikipedia.org/wiki/Topological_group" target="_blank" class="tpill">Topological Groups</a>
+<a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="tpill"><i class="bi bi-github"></i> Lean4TPC</a>
+<a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank" class="tpill"><i class="bi bi-file-text"></i> PAPER.md</a>
+<a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank" class="tpill">Mathlib4 docs</a>
+</div>`,lean:null}
 ];
 
 const chapters=[...new Set(cards.map(c=>c.ch))];
@@ -1063,7 +1150,8 @@ function initGraph(){
     {id:"t8.9", l:"Thm 8.9\nLp homeo.", t:"thm"},
     {id:"l8.13",l:"Lem 8.13\nq⊗C closed", t:"lem"},
     {id:"t9.1", l:"Thm 9.1\n|Irr|=∞", t:"thm"},
-    {id:"c9.3", l:"Cor 9.3\n∞ Twin Primes", t:"cor"}
+    {id:"c9.3", l:"Cor 9.3\n∞ Twin Primes", t:"cor"},
+    {id:"gen",  l:"General\nFurstenberg", t:"thm"}
   ];
   const E=[
     ["d1.1","c1.5"],["d1.1","t4.1"],
@@ -1087,9 +1175,10 @@ function initGraph(){
     ["l8.9a","t8.9"],["l8.9b","t8.9"],["l8.9c","t8.9"],
     ["t8.9","l8.13"],["l8.9c","l8.13"],
     ["c7.5","t9.1"],["l8.13","t9.1"],["t8.7","t9.1"],
-    ["t5.1","c9.3"],["t9.1","c9.3"]
+    ["t5.1","c9.3"],["t9.1","c9.3"],
+    ["t9.1","gen"],["c9.3","gen"]
   ];
-  const colors={def:"#1e90ff",thm:"#f5e642",prop:"#aaa",lem:"#666",cor:"#7ec8e3",ex:"#555"};
+  const colors={def:"#7c3aed",thm:"#f59e0b",prop:"#a1a1aa",lem:"#52525b",cor:"#3b82f6",ex:"#27272a"};
   cyInst=cytoscape({
     container:document.getElementById("cy"),
     elements:[
@@ -1099,35 +1188,35 @@ function initGraph(){
     style:[
       {selector:"node",style:{
         "label":"data(label)","text-wrap":"wrap","text-valign":"center","text-halign":"center",
-        "font-family":"'IBM Plex Mono',monospace","font-size":"10px","color":"#111",
+        "font-family":"'JetBrains Mono',monospace","font-size":"10px","color":"#111",
         "text-max-width":"100px",
         "width":110,"height":48,"shape":"round-rectangle",
-        "background-color":"#1e90ff","background-opacity":0.95,
+        "background-color":"#7c3aed","background-opacity":0.95,
         "border-width":2,"border-color":"#333","border-opacity":0.8,
         "padding":"8px","text-margin-y":0,
         "shadow-blur":8,"shadow-color":"rgba(0,0,0,0.4)","shadow-offset-x":0,"shadow-offset-y":2,"shadow-opacity":0.5
       }},
-      {selector:"node[ntype='def']",style:{"background-color":"#1a6dd4","color":"#fff","border-color":"#0d5bbd"}},
-      {selector:"node[ntype='thm']",style:{"background-color":"#f0dd30","color":"#1a1a1a","border-color":"#b8a800","font-weight":"bold"}},
-      {selector:"node[ntype='prop']",style:{"background-color":"#c8c8c8","color":"#222","border-color":"#888"}},
-      {selector:"node[ntype='lem']",style:{"background-color":"#4a4a5a","color":"#e8e8e8","border-color":"#333"}},
-      {selector:"node[ntype='cor']",style:{"background-color":"#b8ddf5","color":"#0a4f8a","border-color":"#3a9ad9"}},
-      {selector:"node[ntype='ex']",style:{"background-color":"#2a2a2a","color":"#999","border-color":"#444"}},
+      {selector:"node[ntype='def']",style:{"background-color":"#7c3aed","color":"#fff","border-color":"#6d28d9"}},
+      {selector:"node[ntype='thm']",style:{"background-color":"#f59e0b","color":"#0f0f0f","border-color":"#d97706","font-weight":"bold"}},
+      {selector:"node[ntype='prop']",style:{"background-color":"#a1a1aa","color":"#18181b","border-color":"#71717a"}},
+      {selector:"node[ntype='lem']",style:{"background-color":"#52525b","color":"#e4e4e7","border-color":"#3f3f46"}},
+      {selector:"node[ntype='cor']",style:{"background-color":"#93c5fd","color":"#1e3a5f","border-color":"#3b82f6"}},
+      {selector:"node[ntype='ex']",style:{"background-color":"#27272a","color":"#a1a1aa","border-color":"#3f3f46"}},
       {selector:"edge",style:{
-        "width":2,"line-color":"#556","target-arrow-color":"#99a",
+        "width":2,"line-color":"#4a4458","target-arrow-color":"#7c6f99",
         "target-arrow-shape":"triangle-backcurve",
         "curve-style":"taxi",
         "taxi-direction":"downward",
         "taxi-turn":"50%",
         "taxi-turn-min-distance":"15px",
-        "arrow-scale":0.9,"opacity":0.55,
+        "arrow-scale":0.9,"opacity":0.5,
         "line-cap":"round"
       }},
-      {selector:"edge.highlighted",style:{"line-color":"#1e90ff","target-arrow-color":"#1e90ff","opacity":1,"width":3,"z-index":999}},
+      {selector:"edge.highlighted",style:{"line-color":"#7c3aed","target-arrow-color":"#7c3aed","opacity":1,"width":3,"z-index":999}},
       {selector:"node:active",style:{"overlay-opacity":0}},
-      {selector:"node.hover",style:{"border-width":3,"border-color":"#fff","z-index":999,"shadow-blur":16,"shadow-color":"rgba(30,144,255,0.6)"}},
-      {selector:"node.dimmed",style:{"opacity":0.25}},
-      {selector:"edge.dimmed",style:{"opacity":0.1}}
+      {selector:"node.hover",style:{"border-width":3,"border-color":"#fff","z-index":999,"shadow-blur":18,"shadow-color":"rgba(124,58,237,0.6)"}},
+      {selector:"node.dimmed",style:{"opacity":0.2}},
+      {selector:"edge.dimmed",style:{"opacity":0.08}}
     ],
     layout:{
       name:"elk",
