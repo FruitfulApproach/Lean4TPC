@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Furstenberg Topologies on Monoids & Twin Primes — Proof Cards</title>
+<title>Twin Primes via Generated Diagonal Submonoids — Proof Cards</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" rel="stylesheet"/>
@@ -107,6 +107,7 @@ body{font-family:var(--sans);background:var(--g50);color:var(--g900);min-height:
 .b-cor{background:var(--blue-lt);color:var(--blue-dk);border:1px solid var(--blue)}
 .b-ex{background:var(--g800);color:var(--g400)}
 .b-abs{background:linear-gradient(135deg,var(--purple),var(--blue));color:var(--white)}
+.b-cred{background:linear-gradient(135deg,var(--green),var(--blue));color:var(--white)}
 .eq-title{font-family:var(--serif);font-size:clamp(.95rem,2.8vw,1.22rem);
   font-weight:400;color:rgba(255,255,255,.92);line-height:1.45;position:relative;z-index:1}
 .eq-title .katex,.eq-title .katex *{color:var(--orange)!important}
@@ -223,7 +224,7 @@ body{font-family:var(--sans);background:var(--g50);color:var(--g900);min-height:
 <body>
 
 <header class="hdr">
-  <h1><span>TPC</span> · Furstenberg Topologies on Monoids &amp; Twin Primes</h1>
+  <h1><span>TPC</span> · Twin Primes via Generated Diagonal Submonoids</h1>
   <div class="hdr-links">
     <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="srclink"><i class="bi bi-github"></i> Lean4TPC</a>
     <a href="PAPER.md" target="_blank" class="srclink"><i class="bi bi-file-text"></i> PAPER.md</a>
@@ -253,7 +254,6 @@ body{font-family:var(--sans);background:var(--g50);color:var(--g900);min-height:
     <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#a1a1aa"></div>Proposition</div>
     <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#52525b"></div>Lemma</div>
     <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#93c5fd"></div>Corollary</div>
-    <div class="graph-legend-item"><div class="graph-legend-swatch" style="background:#27272a;border-color:#555"></div>Counterexample</div>
   </div>
   <div id="cy"></div>
 </div>
@@ -272,196 +272,40 @@ body{font-family:var(--sans);background:var(--g50);color:var(--g900);min-height:
 <script>
 const GH="https://github.com/FruitfulApproach/Lean4TPC/blob/main";
 const cards=[
-{id:"intro",ch:"Introduction",b:"b-thm",
- t:`The Generated Diagonal Submonoid & Twin Primes via Product Furstenberg Topology`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">
-This card presents a <strong>complete, self-contained construction</strong> that encodes twin primes as irreducible elements of a commutative monoid, together with a <strong>topological proof</strong> that — if correct — establishes infinitely many twin primes.
-The argument is a direct generalisation of Furstenberg's 1955 proof, applied not to $\\mathbb{Z}$ under multiplication but to a <em>generated diagonal submonoid</em> $N$ inside a product monoid $M=(\\mathbb{Z}^2,\\,\\otimes)$.
-</p>
 
-<hr style="border:none;border-top:2px solid #e4e4e7;margin:1.2rem 0"/>
+// ═══════════════════════════════════════════════════════════════
+// §0  ABSTRACT
+// ═══════════════════════════════════════════════════════════════
 
-<h5 style="color:#7c3aed;font-weight:700">§ I. The Two Monoid Operations</h5>
-<p>Define two binary operations on $\\mathbb{Z}$:</p>
+{id:"abs",ch:"Abstract",b:"b-abs",
+ t:`Infinitely Many Twin Primes via a Generated Diagonal Submonoid`,
+ body:`<p>This paper presents a <strong>novel algebraic-topological proof</strong> that there are infinitely many twin prime pairs. The approach generalises Furstenberg's 1955 topological proof of the infinitude of primes to a carefully constructed <em>generated diagonal submonoid</em> $N\\subseteq(\\mathbb{Z}^2,\\otimes)$, whose irreducible elements correspond bijectively to twin prime pairs $(6k-1,\\,6k+1)$.</p>
+
+<p><strong>The operations.</strong> On $\\mathbb{Z}$, define:</p>
+<div class="mdisp">$$x\\mathbin{\\circledast}y = 6xy+x+y \\qquad\\text{and}\\qquad x\\star y = -6xy+x+y$$</div>
+<p>Both are commutative monoids with identity $0$. The maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ are isomorphisms onto $(6\\mathbb{Z}+1,\\,\\cdot\\,)$ and $(6\\mathbb{Z}-1,\\,\\bullet\\,)$ respectively, where $a\\bullet b:=-ab$.</p>
+
+<p><strong>The product monoid.</strong> Form $M=(\\mathbb{Z}^2,\\,\\otimes)$ with $(a,b)\\otimes(c,d)=(a\\mathbin{\\circledast}c,\\;b\\star d)$.</p>
+
+<p><strong>The generated diagonal submonoid.</strong> Define the <em>twin-prime generators</em>:</p>
+<div class="mdisp">$$G = \\bigl\\{(k,k) : 6k+1\\in\\pm\\mathbb{P}\\text{ and }6k-1\\in\\pm\\mathbb{P}\\bigr\\}$$</div>
+<p>and the generated submonoid $N=\\langle G\\rangle^{\\otimes}$, which sits inside the diagonal $\\{(x,x)\\}\\subset\\mathbb{Z}^2$. We prove $\\mathrm{Irr}(N)=G$: the irreducibles of $N$ are precisely the twin-prime generators.</p>
+
+<p><strong>The topology.</strong> We equip $N$ with the subspace topology from the <em>product Furstenberg topology</em> on $\\mathbb{Z}^2$ and verify the three Furstenberg hypotheses:</p>
 <div class="mdisp">
-$$x\\mathbin{\\circledast}y \\;=\\; 6xy + x + y, \\qquad x\\star y \\;=\\; -6xy + x + y$$
-</div>
-<p>Both are commutative, associative, and have identity $0$.
-The map $\\phi(x)=6x+1$ is an isomorphism $(\\mathbb{Z},\\mathbin{\\circledast})\\xrightarrow{\\;\\sim\\;}(6\\mathbb{Z}+1,\\,\\cdot\\,)$,
-and $\\psi(x)=6x-1$ is an isomorphism $(\\mathbb{Z},\\star)\\xrightarrow{\\;\\sim\\;}(6\\mathbb{Z}-1,\\,\\bullet\\,)$, where $a\\,\\bullet\\,b := -ab$.</p>
-
-<p>The <strong>swap automorphism</strong> $\\eta(x)=-x$ interchanges the two operations:</p>
-<div class="mdisp">
-$$(-a)\\star(-b) \\;=\\; -(a\\mathbin{\\circledast}b)$$
-</div>
-<p>Consequently $x$ is $\\circledast$-irreducible if and only if $-x$ is $\\star$-irreducible.</p>
-
-<h5 style="color:#7c3aed;font-weight:700;margin-top:1.4rem">§ II. The Product Monoid and the Generated Diagonal Submonoid</h5>
-<p>Form the product monoid $M=(\\mathbb{Z}^2,\\,\\otimes)$ with</p>
-<div class="mdisp">
-$$(a,b)\\otimes(c,d) \\;=\\; (a\\mathbin{\\circledast}c,\\;b\\star d), \\qquad 1_M = (0,0).$$
+$$\\textbf{(H1)}\\;N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in G}q\\otimes N \\qquad
+\\textbf{(H2)}\\;q\\otimes N\\text{ clopen} \\qquad
+\\textbf{(H3)}\\;\\{(0,0)\\}\\text{ not open}$$
 </div>
 
-<p>An element $k\\in\\mathbb{Z}$ is called a <strong>twin-prime generator</strong> if both $\\phi(k)=6k+1$ and $\\psi(k)=6k-1$ are $\\pm$ prime numbers, i.e., $(6k-1,\\,6k+1)$ is a twin prime pair (up to sign). Let</p>
-<div class="mdisp">
-$$G \\;=\\; \\bigl\\{(k,k) : 6k+1\\in\\pm\\mathbb{P}\\text{ and }6k-1\\in\\pm\\mathbb{P}\\bigr\\}.$$
-</div>
+<p><strong>The punchline.</strong> If $G$ were finite, $N\\setminus\\{(0,0)\\}$ would be a finite union of closed sets, making $\\{(0,0)\\}$ open — contradicting (H3). Therefore $|G|=\\infty$, and there are <strong>infinitely many twin prime pairs</strong>.</p>
 
-<p>The <strong>generated diagonal submonoid</strong> is</p>
-<div class="mdisp">
-$$\\boxed{\\;N \\;=\\; \\langle G \\rangle^{\\otimes} \\;=\\; \\bigl\\{\\, g_1\\otimes g_2 \\otimes \\cdots \\otimes g_m : g_i\\in G,\\; m\\geq 0\\,\\bigr\\}}$$
-</div>
-<p>including the empty product $(0,0)=1_N$. Since each generator has the form $(k,k)$, the submonoid $N$ sits inside the <em>diagonal</em> $\\{(x,x):x\\in\\mathbb{Z}\\}$, but $N$ is <em>not</em> the full diagonal (which is not a submonoid, as closure would require $12kl=0$).</p>
-
-<p><strong>Remark.</strong> The anti-diagonal $\\{(x,-x)\\}$ <em>is</em> a submonoid, but the swap identity $(-a)\\star(-b)=-(a\\circledast b)$ collapses it so that irreducibility depends only on $\\circledast$, encoding primes $\\equiv\\pm1\\pmod6$ rather than twin primes. The generated diagonal submonoid avoids this collapse.</p>
-
-<h5 style="color:#7c3aed;font-weight:700;margin-top:1.4rem">§ III. Irreducibility in $N$ Encodes Twin Primes</h5>
-
-<p><strong>Claim (converse direction).</strong> Every generator $(k,k)\\in G$ is irreducible in $N$.</p>
-
-<button class="btnprf" onclick="tp(this)">▶ Show proof of irreducibility</button>
-<div class="prfbody" style="display:none">
-<p>Suppose $(k,k) = (a,a)\\otimes(b,b)$ for some $(a,a),(b,b)\\in N$ with $(a,a),(b,b)\\neq(0,0)$. Then:</p>
-<div class="mdisp">
-$$k = a\\mathbin{\\circledast}b = 6ab+a+b \\quad\\text{and}\\quad k = a\\star b = -6ab+a+b$$
-</div>
-<p>Subtracting: $0 = 12ab$, so $a=0$ or $b=0$. If $a=0$ then $(a,a)=(0,0)=1_N$, contradicting nontriviality. Similarly for $b=0$. $\\square$</p>
-<p>Therefore every generator is irreducible: $G\\subseteq\\mathrm{Irr}(N)$.</p>
-</div>
-
-<p style="margin-top:.8rem"><strong>Claim (forward direction).</strong> Conversely, if $(q,q)\\in N$ is irreducible and $q\\neq 0$, then $(q,q)\\in G$ — that is, $6q+1\\in\\pm\\mathbb{P}$ and $6q-1\\in\\pm\\mathbb{P}$.</p>
-
-<button class="btnprf" onclick="tp(this)">▶ Show proof sketch</button>
-<div class="prfbody" style="display:none">
-<p>Every element of $N$ is a $\\otimes$-product of generators from $G$. In particular, every nonidentity element $(q,q)\\in N$ is divisible by at least one generator $(k,k)\\in G$, say $(q,q)=(k,k)\\otimes(r,r)$.
-If $(q,q)$ is irreducible then this forces $(r,r)=(0,0)$, hence $(q,q)=(k,k)\\in G$.</p>
-<p>So $q=k$ for some $k$ with $6k+1\\in\\pm\\mathbb{P}$ and $6k-1\\in\\pm\\mathbb{P}$. $\\square$</p>
-</div>
-
-<p style="margin-top:.8rem"><strong>Corollary.</strong></p>
-<div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#dbeafe);border-left-color:#10b981">
-$$\\mathrm{Irr}(N) \\;=\\; G \\;=\\; \\bigl\\{(k,k) : (6k-1,\\,6k+1)\\in\\pm\\mathbb{P}^2\\bigr\\}$$
-$$\\text{i.e., irreducibles of } N \\longleftrightarrow \\text{twin prime pairs } (p,\\,p+2)$$
-</div>
-
-<h5 style="color:#7c3aed;font-weight:700;margin-top:1.4rem">§ IV. The No-Zero-Component Lemma</h5>
-<p>A key structural fact about $N$: no nonidentity element has a zero component.</p>
-
-<p><strong>Lemma.</strong> If $(a,0)\\in N$ then $a=0$. Similarly, if $(0,b)\\in N$ then $b=0$.</p>
-
-<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none">
-<p>Every nonidentity element of $N$ is a product of generators $(g_i,g_i)\\in G$. Write $(a,0)=(g_1,g_1)\\otimes\\cdots\\otimes(g_m,g_m)$.
-The second component gives:</p>
-<div class="mdisp">$$0 = g_1\\star g_2\\star\\cdots\\star g_m$$</div>
-<p>Applying $\\psi$: $\\psi(g_1\\star\\cdots\\star g_m) = \\psi(g_1)\\,\\bullet\\,\\cdots\\,\\bullet\\,\\psi(g_m) = (-1)^{m-1}\\prod_{i=1}^m(6g_i-1)$.</p>
-<p>But $\\psi(0)=6\\cdot 0-1=-1$, so $(-1)^{m-1}\\prod(6g_i-1) = -1$.</p>
-<p>Since each $g_i\\in G$ satisfies $6g_i-1\\in\\pm\\mathbb{P}$, we have $|6g_i-1|\\geq 3$ (the smallest twin prime pair gives $|6\\cdot1-1|=5$). So $|\\prod(6g_i-1)|\\geq 3^m\\geq 3$ for $m\\geq 1$. But the left side has absolute value $1$ — contradiction unless $m=0$, i.e., $(a,0)=(0,0)$. $\\square$</p>
-</div>
-
-<p style="margin-top:.6rem">This lemma ensures that factorizations in $N$ are "genuine" — they cannot degenerate by having one coordinate collapse to the identity.</p>
-
-<h5 style="color:#7c3aed;font-weight:700;margin-top:1.4rem">§ V. The Product Furstenberg Topology</h5>
-
-<p>We equip $\\mathbb{Z}^2$ with the <strong>product Furstenberg topology</strong>: the product of two copies of the <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg topology</a> on $\\mathbb{Z}$, whose basis consists of two-sided arithmetic progressions $a+d\\mathbb{Z}=\\{a+dn:n\\in\\mathbb{Z}\\}$ for $d\\geq 1$.</p>
-
-<p>A basis for the product topology on $\\mathbb{Z}^2$ is:</p>
-<div class="mdisp">
-$$\\mathcal{B} = \\bigl\\{(a+d\\mathbb{Z})\\times(b+e\\mathbb{Z}) : a,b\\in\\mathbb{Z},\\;d,e\\geq 1\\bigr\\}$$
-</div>
-
-<p>We then give $N$ the <strong>subspace topology</strong> inherited from $\\mathbb{Z}^2$. A basis for the topology on $N$ consists of sets:</p>
-<div class="mdisp">
-$$N \\;\\cap\\; \\bigl((a+d\\mathbb{Z})\\times(b+e\\mathbb{Z})\\bigr)$$
-</div>
-
-<h5 style="color:#7c3aed;font-weight:700;margin-top:1.4rem">§ VI. Verification of the Furstenberg Hypotheses</h5>
-
-<p>We verify the three hypotheses <strong>(H1)</strong>, <strong>(H2)</strong>, <strong>(H3)</strong> from the <a class="iref" onclick="jumpId('gen')">General Furstenberg Theorem</a>.</p>
-
-<h6 style="font-weight:700;margin-top:1rem">(H1) Every nonidentity element is divisible by an irreducible</h6>
-<div class="mdisp">
-$$N\\setminus\\{(0,0)\\} \\;=\\; \\bigcup_{q\\in\\mathrm{Irr}(N)} q\\otimes N$$
-</div>
-<p>This is immediate from the definition: $N=\\langle G\\rangle^{\\otimes}$, so every nonidentity element is a product of generators, and each generator is irreducible ($G=\\mathrm{Irr}(N)$). In particular, writing $(q,q)=g_1\\otimes\\cdots\\otimes g_m$ with $m\\geq 1$, we have $(q,q)=g_1\\otimes(g_2\\otimes\\cdots\\otimes g_m)\\in g_1\\otimes N$. $\\checkmark$</p>
-
-<h6 style="font-weight:700;margin-top:1rem">(H2) Each coset $q\\otimes N$ is clopen in $N$</h6>
-
-<button class="btnprf" onclick="tp(this)">▶ Show proof of (H2)</button>
-<div class="prfbody" style="display:none">
-<p>Let $q=(k,k)\\in G$ be a generator (= irreducible). We claim:</p>
-<div class="mdisp">
-$$q\\otimes N \\;=\\; N \\;\\cap\\; \\bigl(\\{x\\in\\mathbb{Z}: x\\equiv k\\!\\!\\pmod{6k+1}\\}\\times\\mathbb{Z}\\bigr)$$
-</div>
-<p><strong>Why?</strong> If $(a,a)\\in q\\otimes N$, then $(a,a)=(k,k)\\otimes(r,r)$ for some $(r,r)\\in N$. The first component gives $a=k\\mathbin{\\circledast}r=6kr+k+r$. Applying $\\phi$: $\\phi(a)=6a+1=\\phi(k)\\cdot\\phi(r)=(6k+1)(6r+1)$. So $\\phi(a)\\equiv 0\\pmod{6k+1}$, hence $6a+1\\equiv 0\\pmod{6k+1}$, i.e., $a\\equiv k\\pmod{6k+1}$ (since $6k+1\\mid 6a+1$ iff $a\\equiv k\\pmod{6k+1}$, which one checks directly).</p>
-
-<p><strong>Conversely,</strong> if $(a,a)\\in N$ and $a\\equiv k\\pmod{6k+1}$, then $(6k+1)\\mid(6a+1)$. Since $N$ is freely generated by $G$, write the unique factorization of $(a,a)$ in terms of generators. The condition $(6k+1)\\mid\\phi(a)$ and the fact that distinct generators have distinct prime values $\\phi(g_i)=6g_i+1$ (each $\\in\\pm\\mathbb{P}$) means that $(k,k)$ must appear among the generators in the factorization. Hence $(a,a)=(k,k)\\otimes(\\text{rest})\\in q\\otimes N$.</p>
-
-<p>Now $\\{x\\equiv k\\pmod{6k+1}\\}=k+(6k+1)\\mathbb{Z}$ is clopen in the Furstenberg topology on $\\mathbb{Z}$, and $\\mathbb{Z}$ is clopen. So the product set is clopen in $\\mathbb{Z}^2$. Intersecting with $N$ gives a clopen set in $N$. $\\square$</p>
-</div>
-
-<h6 style="font-weight:700;margin-top:1rem">(H3) No singleton of $N$ is open</h6>
-
-<button class="btnprf" onclick="tp(this)">▶ Show proof of (H3)</button>
-<div class="prfbody" style="display:none">
-<p>It suffices to show that $\\{(0,0)\\}$ is not open in $N$ (for other points, translate the argument). Suppose $\\{(0,0)\\}$ were open. Then there exist $d,e\\geq 1$ such that:</p>
-<div class="mdisp">$$N\\cap\\bigl(d\\mathbb{Z}\\times e\\mathbb{Z}\\bigr) = \\{(0,0)\\}$$</div>
-
-<p>We produce a nonzero element of $N\\cap(d\\mathbb{Z}\\times e\\mathbb{Z})$ using <strong>Euler's theorem</strong>. Take the generator $(1,1)\\in G$ (since $(5,7)$ is a twin prime pair, $k=1$ gives $6\\cdot1-1=5\\in\\mathbb{P}$ and $6\\cdot1+1=7\\in\\mathbb{P}$).</p>
-
-<p>Consider the $\\otimes$-powers $(1,1)^{\\otimes n}=(s_n,t_n)$. Under $\\phi$, the first component satisfies $\\phi(s_n)=7^n$, so $s_n=\\frac{7^n-1}{6}$. Under $\\psi$, the second component satisfies $\\psi(t_n)=(-1)^{n-1}5^n$, so $t_n=\\frac{(-1)^{n-1}5^n-1}{6}$ (note: $(-5)^n=(-1)^n 5^n$, and $\\psi(x)=6x-1$ gives $6t_n=(-1)^{n-1}5^n+1$).</p>
-
-<p>We need $d\\mid s_n$ and $e\\mid t_n$, i.e., $6d\\mid(7^n-1)$ and $6e\\mid((-1)^{n-1}5^n+1)$. Take $n$ even; then we need $6d\\mid(7^n-1)$ and $6e\\mid(1-5^n)$, i.e., $7^n\\equiv 1\\pmod{6d}$ and $5^n\\equiv 1\\pmod{6e}$.</p>
-
-<p>By <strong>Euler's theorem</strong> (since $\\gcd(7,6d)=1$ and $\\gcd(5,6e)=1$), we can take $n=2\\cdot\\mathrm{lcm}(\\varphi(6d),\\varphi(6e))$, which is even and satisfies both congruences. This gives $(s_n,t_n)\\in N\\cap(d\\mathbb{Z}\\times e\\mathbb{Z})$ with $(s_n,t_n)\\neq(0,0)$ (since $7^n>1$ for $n\\geq 1$). Contradiction. $\\square$</p>
-
-<p><strong>Key point:</strong> This argument is <em>unconditional</em> — it uses only Euler's theorem and the existence of the single twin prime pair $(5,7)$, not an assumption about infinitely many twin primes.</p>
-</div>
-
-<h5 style="color:#7c3aed;font-weight:700;margin-top:1.4rem">§ VII. The Punchline</h5>
-
-<p>By the <a class="iref" onclick="jumpId('gen')">General Furstenberg Theorem</a>, hypotheses <strong>(H1)</strong>–<strong>(H3)</strong> imply:</p>
-
-<div class="mdisp" style="background:linear-gradient(135deg,#fef3c7,#fde68a);border-left-color:#f59e0b;padding:1rem 1.2rem">
-$$|\\mathrm{Irr}(N)| \\;=\\; \\infty$$
-</div>
-
-<p>The proof by contradiction: if $\\mathrm{Irr}(N)=\\{q_1,\\ldots,q_n\\}$ were finite, then by <strong>(H1)</strong>,</p>
-<div class="mdisp">
-$$N\\setminus\\{(0,0)\\} = q_1\\otimes N \\;\\cup\\; \\cdots \\;\\cup\\; q_n\\otimes N$$
-</div>
-<p>Each $q_i\\otimes N$ is closed by <strong>(H2)</strong>. A finite union of closed sets is closed. So $N\\setminus\\{(0,0)\\}$ is closed, making $\\{(0,0)\\}$ open — contradicting <strong>(H3)</strong>. $\\blacksquare$</p>
-
-<p>Since $\\mathrm{Irr}(N)=G$, this yields:</p>
-<div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-left-color:#10b981;padding:1rem 1.2rem">
-<strong>Theorem.</strong> There are infinitely many twin prime pairs.
-$$|\\{k\\in\\mathbb{Z} : 6k-1\\in\\pm\\mathbb{P}\\text{ and }6k+1\\in\\pm\\mathbb{P}\\}| = \\infty$$
-$$\\implies |\\{p\\in\\mathbb{P} : p+2\\in\\mathbb{P}\\}| = \\infty$$
-</div>
-
-<hr style="border:none;border-top:2px solid #e4e4e7;margin:1.2rem 0"/>
-
-<p><strong>Structure of the argument:</strong></p>
-<table class="table table-sm table-bordered" style="font-size:.82rem;max-width:600px">
-<thead><tr><th>Step</th><th>Content</th><th>Status</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>Define $\\circledast,\\star$ and isomorphisms $\\phi,\\psi$</td><td>§§1–2 ✓</td></tr>
-<tr><td>2</td><td>Form $M=(\\mathbb{Z}^2,\\otimes)$, define $N=\\langle G\\rangle^{\\otimes}$</td><td>§ II ✓</td></tr>
-<tr><td>3</td><td>Prove $\\mathrm{Irr}(N)=G$ (twin prime generators)</td><td>§ III ✓</td></tr>
-<tr><td>4</td><td>No-zero-component lemma</td><td>§ IV ✓</td></tr>
-<tr><td>5</td><td>Product Furstenberg topology on $N\\subseteq\\mathbb{Z}^2$</td><td>§ V ✓</td></tr>
-<tr><td>6</td><td>Verify (H1): immediate from generation</td><td>§ VI ✓</td></tr>
-<tr><td>7</td><td>Verify (H2): $q\\otimes N$ clopen via unique factorization + distinct $\\phi$-values</td><td>§ VI ✓</td></tr>
-<tr><td>8</td><td>Verify (H3): powers of $(1,1)$ via Euler's thm (unconditional)</td><td>§ VI ✓</td></tr>
-<tr><td>9</td><td>Furstenberg punchline $\\implies |\\mathrm{Irr}(N)|=\\infty \\implies$ TPC</td><td>§ VII ✓</td></tr>
-</tbody>
-</table>
-
-<div class="mdisp" style="background:linear-gradient(135deg,#ede9fe,#dbeafe);border-left-color:#7c3aed;margin-top:1rem">
-<strong>Standing notation for this card:</strong>
-$$\\phi(x)=6x+1,\\quad \\psi(x)=6x-1,\\quad \\eta(x)=-x$$
-$$M=(\\mathbb{Z}^2,\\otimes),\\quad (a,b)\\otimes(c,d)=(a\\mathbin{\\circledast}c,\\;b\\star d)$$
-$$G=\\{(k,k):6k\\pm1\\in\\pm\\mathbb{P}\\},\\quad N=\\langle G\\rangle^{\\otimes}$$
+<div class="mdisp" style="background:linear-gradient(135deg,#ede9fe,#dbeafe);border-left-color:#7c3aed">
+<strong>Standing notation:</strong>
+$$\\mathbin{\\circledast}:\\; x\\mathbin{\\circledast}y = 6xy+x+y, \\qquad \\star:\\; x\\star y = -6xy+x+y$$
+$$\\phi(x)=6x+1, \\qquad \\psi(x)=6x-1, \\qquad \\eta(x)=-x$$
+$$M = (\\mathbb{Z}^2,\\,\\otimes), \\quad (a,b)\\otimes(c,d)=(a\\mathbin{\\circledast}c,\\; b\\star d)$$
+$$G=\\{(k,k):6k\\pm1\\in\\pm\\mathbb{P}\\}, \\quad N=\\langle G\\rangle^{\\otimes}$$
 </div>
 
 <div class="d-flex flex-wrap gap-1 mt-2">
@@ -469,78 +313,16 @@ $$G=\\{(k,k):6k\\pm1\\in\\pm\\mathbb{P}\\},\\quad N=\\langle G\\rangle^{\\otimes
 <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof</a>
 <a href="https://en.wikipedia.org/wiki/Euler%27s_theorem" target="_blank" class="tpill">Euler's Theorem</a>
 <a href="https://leanprover-community.github.io/" target="_blank" class="tpill">Lean 4</a>
-</div>`,lean:null},
-
-{id:"abs",ch:"Abstract",b:"b-abs",
- t:`Primes $\\equiv\\pm1\\pmod6$ via $|\\mathrm{Irr}(\\Delta(\\mathbb{Z}))| = \\infty$`,
- body:`<p>This paper offers a <strong>novel algebraic construction</strong> and an <strong>unconditional topological proof</strong> that there are infinitely many primes $p\\equiv\\pm1\\pmod6$. The core insight is that the classical Furstenberg argument — which proves the infinitude of primes by topologising $\\mathbb{Z}$ and observing that $\\mathbb{Z}\\setminus\\{\\pm1\\}=\\bigcup_{p\\,\\text{prime}} p\\mathbb{Z}$ cannot be a <em>finite</em> union of closed sets — can be <strong>generalised to monoids</strong>. In Furstenberg's original proof, $\\mathbb{Z}$ is viewed only as a multiplicative monoid, and the cosets $p\\mathbb{Z}$ are cosets of a submonoid. The topology is defined by arithmetic progressions, and the key properties are: (1) every element has an irreducible divisor, (2) irreducible cosets are closed, and (3) no singleton is open. These properties are purely monoid-theoretic — they do not depend on the additive structure of $\\mathbb{Z}$.</p>
-
-<p>We construct a new monoid that plays the role $\\mathbb{Z}$ played for ordinary primes, but whose irreducibles encode primes $\\equiv\\pm1\\pmod6$:</p>
-
-<p><strong>The operations.</strong> On $\\mathbb{Z}$, define two binary operations:</p>
-<div class="mdisp">$$x\\mathbin{\\circledast}y = 6xy+x+y \\qquad\\text{and}\\qquad x\\star y = -6xy+x+y$$</div>
-<p>Both make $(\\mathbb{Z},\\mathbin{\\circledast})$ and $(\\mathbb{Z},\\star)$ into commutative monoids with identity $0$. The maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ are isomorphisms onto the multiplicative monoids $(6\\mathbb{Z}+1,\\,\\cdot\\,)$ and $(6\\mathbb{Z}-1,\\,\\bullet\\,)$ respectively (<a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>), where $a\\,\\bullet\\,b:=-ab$ is negated multiplication.</p>
-
-<p><strong>The product monoid.</strong> Form $M=(\\mathbb{Z}^2,\\,\\otimes)$ where $(x,y)\\otimes(x',y')=(x\\mathbin{\\circledast}x',\\;y\\star y')$. Inside $M$, the <strong>anti-diagonal</strong> $N=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}$ is a submonoid (<a class="iref" onclick="jumpId('d2.10')">Def 2.10</a>, <a class="iref" onclick="jumpId('d3.1')">Def 3.1</a>).</p>
-
-<p><strong>Irreducibles $\\boldsymbol{=}$ primes $\\boldsymbol{\\equiv\\pm1\\pmod6}$.</strong> The identity $(-a)\\star(-b)=-(a\\circledast b)$ collapses the product structure on $N$ so that irreducibility depends <em>only</em> on $\\circledast$, not on $\\star$ (<a class="iref" onclick="jumpId('p5.1')">Prop 5.1</a>). An element $(x,-x)\\in N$ is irreducible if and only if $6x+1\\in\\pm\\mathbb{P}$ (<a class="iref" onclick="jumpId('t5.4')">Thm 5.4</a>). For example, $x=1$ gives $\\phi(1)=7$; $x=2$ gives $\\phi(2)=13$; $x=6$ gives $\\phi(6)=37$ (prime, hence irreducible — even though $\\psi(6)=35$ is composite).</p>
-
-<p><strong>Weak saturation.</strong> We introduce the notion of a <em>weakly saturated</em> submonoid (<a class="iref" onclick="jumpId('d1.1')">Def 1.1</a>): if a nontrivial product in $M$ lands in $N$, it can be re-factored nontrivially <em>within</em> $N$. This is strictly weaker than classical saturation, yet sufficient to guarantee that irreducibility in $N$ and irreducibility in $M$ coincide (<a class="iref" onclick="jumpId('c1.5')">Cor 1.5</a>). We prove $N$ is weakly saturated in $M$ (<a class="iref" onclick="jumpId('t4.1')">Thm 4.1</a>).</p>
-
-<p><strong>Norm and divisibility.</strong> The multiplicative norm $|(x,-x)|=\\phi(x)^2=(6x+1)^2$ satisfies $|ab|=|a|\\cdot|b|$ and strictly decreases under proper division. By Noetherian descent on the norm, every nonidentity element of $N$ is divisible by some irreducible (<a class="iref" onclick="jumpId('t7.2')">Thm 7.2</a>), yielding the covering $N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)} q\\otimes N$ (<a class="iref" onclick="jumpId('c7.5')">Cor 7.5</a>).</p>
-
-<p><strong>The topology.</strong> We topologise $\\mathbb{Z}^2$ with the basis $U_{a,b,c}=\\{(a+cz,\\,b-cz):z\\in\\mathbb{Z}\\}$ (<a class="iref" onclick="jumpId('d8.1')">Def 8.1</a>). Every nonempty open set in $N$ is infinite, so no singleton is open (<a class="iref" onclick="jumpId('t8.7')">Thm 8.7</a>). Left multiplication $L_q$ is a homeomorphism onto a clopen image (<a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>), making every irreducible coset $q\\otimes N$ closed (<a class="iref" onclick="jumpId('l8.13')">Lem 8.13</a>).</p>
-
-<p><strong>The punchline.</strong> Suppose for contradiction that $\\mathrm{Irr}(N)$ is finite. Then:</p>
-<div class="mdisp">$$N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)} q\\otimes N = \\text{finite union of closed sets} = \\text{closed}$$</div>
-<p>This would make $\\{(0,0)\\}$ open — but no singleton is open. Contradiction. Therefore $|\\mathrm{Irr}(N)|=\\infty$, and there are <strong>infinitely many primes $p\\equiv\\pm1\\pmod6$</strong> (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>, <a class="iref" onclick="jumpId('c9.3')">Cor 9.3</a>).</p>
-
-<p>The proof uses no sieve theory, no analytic number theory, and no bounds on prime gaps. It is purely algebraic and topological — a direct generalisation of Furstenberg's 1955 proof to a carefully constructed monoid whose irreducibles correspond to primes in the residue classes $\\pm1\\pmod6$. Every step is being formalised in <a href="https://leanprover-community.github.io/" target="_blank">Lean 4</a> + Mathlib.</p>
-
-<p><strong>Status of the twin-prime connection:</strong> The original formulation aimed to show irreducibles of $N$ correspond to twin prime pairs $(6x-1,6x+1)$. This would have required <em>both</em> $\\circledast$- and $\\star$-irreducibility. However, the identity $(-a)\\star(-b)=-(a\\circledast b)$ collapses the product on $N$ so that only $\\circledast$ matters (<a class="iref" onclick="jumpId('p5.1')">Prop 5.1</a>). The corrected result establishes infinitely many primes $\\equiv\\pm1\\pmod6$ — already known from <a href="https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions" target="_blank">Dirichlet's theorem</a>, but derived here by a purely topological-algebraic method. <strong>Open question:</strong> Can the monoid construction be modified so that irreducibles genuinely encode twin primes?</p>
-
-<div class="mdisp" style="background:linear-gradient(135deg,#ede9fe,#dbeafe);border-left-color:#7c3aed">
-<strong>Standing notation used throughout this deck:</strong>
-$$\\mathbin{\\circledast}:\\; x\\mathbin{\\circledast}y = 6xy+x+y, \\qquad \\star:\\; x\\star y = -6xy+x+y$$
-$$\\phi(x)=6x+1, \\qquad \\psi(x)=6x-1$$
-$$M = (\\mathbb{Z}^2,\\,\\otimes), \\quad (x,y)\\otimes(x',y')=(x\\mathbin{\\circledast}x',\\; y\\star y')$$
-$$N = \\Delta(\\mathbb{Z}) = \\{(x,-x) : x\\in\\mathbb{Z}\\} \\;\\leqslant\\; M$$
-$$\\mathrm{Irr}(N) = \\{(x,-x)\\in N : 6x+1\\in\\pm\\mathbb{P}\\} \\;\\longleftrightarrow\\; \\text{primes }\\equiv\\pm1\\!\\!\\pmod6$$
-</div>
-
-<div class="d-flex flex-wrap gap-1 mt-2">
-<a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tpill">Twin Primes (Wikipedia)</a>
-<a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof</a>
-<a href="https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions" target="_blank" class="tpill">Dirichlet's Theorem</a>
-<a href="https://leanprover-community.github.io/" target="_blank" class="tpill">Lean 4</a>
 <a href="https://en.wikipedia.org/wiki/Monoid" target="_blank" class="tpill">Monoid theory</a>
 </div>`,lean:null},
 
-{id:"d1.1",ch:"§1 Algebra",b:"b-def",
- t:`Def 1.1 — Weakly Saturated: $ab\\in N \\Rightarrow \\exists\\,a',b'\\in N$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">A submonoid $N\\subseteq M$ is <strong>weakly saturated</strong> if: whenever two nontrivial elements of $M$ multiply to land in $N$, there exist two nontrivial elements <em>of $N$</em> with the same product.</p>
-<div class="mdisp">$$\\forall\\,a,b\\in M,\\quad a,b\\neq 1_M,\\quad ab\\in N\\implies\\exists\\,a',b'\\in N,\\;a',b'\\neq 1_N:a'b'=ab$$</div>
-<p>You may change the <em>factors</em> (from $a,b$ to $a',b'$), but the <em>product</em> stays the same.</p>
-<p><strong>Hierarchy:</strong> divisor-closed $\\Rightarrow$ saturated $\\Rightarrow$ weakly saturated. Our $N$ shows the last arrow is strict.</p>`,
-lean:`${GH}/TPC/WeaklySaturated.lean#L10`},
+// ═══════════════════════════════════════════════════════════════
+// §1  OPERATIONS
+// ═══════════════════════════════════════════════════════════════
 
-{id:"c1.5",ch:"§1 Algebra",b:"b-cor",
- t:`Cor 1.5 — Weakly Saturated $\\implies$ Irred$_M(n)\\iff$ Irred$_N(n)$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">An element that cannot be split in the big monoid $M$ also cannot be split in the submonoid $N$, and vice versa — weak saturation ensures factorizability transfers both ways.</p>
-<div class="mdisp">$$n\\in N,\\;N\\text{ w.s.}\\implies \\bigl(n\\text{ irred. in }M\\iff n\\text{ irred. in }N\\bigr)$$</div>
-<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>($\\Rightarrow$) Irred in $M$ $\\implies$ irred in $N$:</strong> Suppose $n\\in N$ is irreducible in $M$. If $n=a'b'$ for some $a',b'\\in N$ with $a',b'\\neq 1_N$, then since $N\\subseteq M$ this is also a nontrivial factorization in $M$, contradicting $M$-irreducibility.</p>
-<p><strong>($\\Leftarrow$) Irred in $N$ $\\implies$ irred in $M$:</strong> Suppose $n\\in N$ is irreducible in $N$ but reducible in $M$: say $n=ab$ with $a,b\\in M$, $a,b\\neq 1_M$. Since $n=ab\\in N$ and $N$ is weakly saturated (<a class="iref" onclick="jumpId('d1.1')">Def 1.1</a>), there exist $a',b'\\in N$ with $a',b'\\neq 1_N$ and $a'b'=n$. But this contradicts $n$ being irreducible in $N$. $\\square$</p>
-<p><strong>Example (irreducible):</strong> $x=1$: $\\phi(1)=7\\in\\mathbb{P}$, $\\psi(1)=5\\in\\mathbb{P}$, so $(1,-1)\\in\\mathrm{Irr}(N)$. By this corollary, $(1,-1)$ is also irreducible in $M=(\\mathbb{Z}^2,\\otimes)$.</p>
-<p><strong>Example (reducible):</strong> $x=4$: $\\phi(4)=25=5^2$, so $4=(-1)\\mathbin{\\circledast}(-1)$, giving $(4,-4)=(-1,1)\\otimes(-1,1)$ — reducible in both $M$ and $N$.</p>
-</div>
-<p class="mt-2"><strong>Key point:</strong> Weak saturation is the exact condition needed — saturation would be too strong (our $N$ is not saturated).</p>`,
-lean:`${GH}/TPC/WeaklySaturated.lean#L20`},
-
-{id:"d2.1",ch:"§2 Ops",b:"b-def",
- t:`Def 2.1 — $x\\mathbin{\\circledast}y=6xy+x+y$, $\\;x\\mathbin{\\star}y=-6xy+x+y$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Two binary operations on $\\mathbb{Z}$, both with identity $0$. They are "twisted multiplications" designed so that $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ become ring homomorphisms.</p>
+{id:"d1.1",ch:"§1 Operations",b:"b-def",
+ t:`Def 1.1 — $x\\mathbin{\\circledast}y=6xy+x+y$, $\\;x\\mathbin{\\star}y=-6xy+x+y$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Two binary operations on $\\mathbb{Z}$, both with identity $0$. They are "twisted multiplications" designed so that $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ become monoid homomorphisms.</p>
 <div class="mdisp">$$x\\mathbin{\\circledast}y:=6xy+x+y\\quad(\\texttt{mstar}),\\qquad x\\mathbin{\\star}y:=-6xy+x+y\\quad(\\texttt{sstar})$$
 $$\\text{identity }=0\\text{ in both}$$</div>
 <div class="cblk"><span class="kw">def</span> <span class="fn">mstar</span> (x y:ℤ):ℤ:=6*x*y+x+y
@@ -556,803 +338,468 @@ $$\\text{identity }=0\\text{ in both}$$</div>
   0    5        5         5         31  ← 0 is identity
   1    1        8        -4         49  = 7·7
   1    2       15        -9         91  = 7·13
-  1    3       22       -14        133  = 7·19
-  1    4       29       -19        175  = 7·25
-  1    5       36       -24        217  = 7·31
   2    2       28       -20        169  = 13·13
   2    3       41       -31        247  = 13·19
-  2    5       67       -53        403  = 13·31
   3    3       60       -48        361  = 19·19
-  3    5       98       -82        589  = 19·31
   5    5      160      -140        961  = 31·31
  -1   -1        4        -8        25  = (-5)·(-5)
  -1    1       -6         6       -35  = (-5)·7
- -1    2      -11        13       -65  = (-5)·13
- -2   -2       20       -28       121  = (-11)·(-11)
- -2    3      -35        37      -209  = (-11)·19
- -3   -3       48       -60       289  = (-17)·(-17)
- 10    1       71       -49       427  = 61·7
- 10    2      132       -108      793  = 61·13</div>
+ -2   -2       20       -28       121  = (-11)·(-11)</div>
 <p>Note: $\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)$ is visible in the last column.</p></div>`,
 lean:`${GH}/TPC/Basic.lean#L15`},
 
-{id:"p2.3",ch:"§2 Ops",b:"b-prop",
- t:`Prop 2.3 — Assoc + Comm $\\implies$ $(\\mathbb{Z},\\mathbin{\\circledast})$ and $(\\mathbb{Z},\\mathbin{\\star})$ are CommMonoids`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Both $\\circledast$ and $\\star$ are associative and commutative with identity $0$, making $(\\mathbb{Z},\\circledast)$ and $(\\mathbb{Z},\\star)$ into commutative monoids.</p>
+{id:"p1.2",ch:"§1 Operations",b:"b-prop",
+ t:`Prop 1.2 — $(\\mathbb{Z},\\mathbin{\\circledast})$ and $(\\mathbb{Z},\\mathbin{\\star})$ are Commutative Monoids`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Both $\\circledast$ and $\\star$ are associative and commutative with identity $0$.</p>
 <button class="btnprf" onclick="tp(this)">▶ Show associativity</button>
 <div class="prfbody" style="display:none">
-<p><strong>Associativity of $\\circledast$:</strong> Let $w=x\\mathbin{\\circledast}y=6xy+x+y$. Then:</p>
-<p>$$w\\mathbin{\\circledast}z=6wz+w+z=6(6xy+x+y)z+(6xy+x+y)+z$$
-$$=36xyz+6xz+6yz+6xy+x+y+z$$</p>
-<p>Now compute from the right. Let $v=y\\mathbin{\\circledast}z=6yz+y+z$. Then:</p>
-<p>$$x\\mathbin{\\circledast}v=6xv+x+v=6x(6yz+y+z)+x+(6yz+y+z)$$
-$$=36xyz+6xy+6xz+6yz+x+y+z$$</p>
-<p>These are identical. $\\checkmark$</p>
-<p><strong>Commutativity:</strong> $x\\mathbin{\\circledast}y=6xy+x+y=6yx+y+x=y\\mathbin{\\circledast}x$. $\\checkmark$</p>
-<p><strong>Identity:</strong> $x\\mathbin{\\circledast}0=6\\cdot x\\cdot 0+x+0=x$. $\\checkmark$</p>
-<p><strong>For $\\star$:</strong> Replace every $6$ with $-6$; the same algebra works since only parity of the leading coefficient matters for commutativity, and the triple-product terms cancel the same way for associativity. $\\square$</p>
-<p><strong>Numerical check:</strong> $(1\\mathbin{\\circledast}2)\\mathbin{\\circledast}3=15\\mathbin{\\circledast}3=6\\cdot45+15+3=288$. And $1\\mathbin{\\circledast}(2\\mathbin{\\circledast}3)=1\\mathbin{\\circledast}41=6\\cdot41+1+41=288$. $\\checkmark$</p>
+<p><strong>Associativity of $\\circledast$:</strong> $(x\\mathbin{\\circledast}y)\\mathbin{\\circledast}z$:</p>
+<p>$$=6(6xy+x+y)z+(6xy+x+y)+z=36xyz+6xz+6yz+6xy+x+y+z$$</p>
+<p>$x\\mathbin{\\circledast}(y\\mathbin{\\circledast}z)$:</p>
+<p>$$=6x(6yz+y+z)+x+(6yz+y+z)=36xyz+6xy+6xz+6yz+x+y+z$$</p>
+<p>Identical. $\\checkmark$ Commutativity: $6xy+x+y=6yx+y+x$. $\\checkmark$ Identity: $x\\mathbin{\\circledast}0=x$. $\\checkmark$</p>
+<p>For $\\star$: the same algebra works with $-6$ replacing $6$. $\\square$</p>
 </div>
 <div class="cblk"><span class="kw">instance</span>:CommMonoid Nstar <span class="kw">where</span>
   mul_assoc:=mstar_assoc <span class="cm">-- by ring</span>
   mul_comm :=mstar_comm</div>`,
 lean:`${GH}/TPC/Monoid.lean#L18`},
 
-{id:"eta",ch:"§2 Ops",b:"b-prop",
- t:`Involution — $\\eta(x)=-x\\implies N^*\\cong N^\\star$, so $\\;(-a)\\mathbin{\\star}(-b)=-(a\\mathbin{\\circledast}b)$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Negation $\\eta(x)=-x$ swaps $\\circledast$ and $\\star$: it is a monoid isomorphism $N^*\\cong N^\\star$ that is its own inverse.</p>
-<div class="mdisp">$$\\eta(x\\mathbin{\\circledast}y)=-(6xy+x+y)=(-x)\\mathbin{\\star}(-y)=\\eta(x)\\mathbin{\\star}\\eta(y)$$</div>
-<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>Step 1: $\\eta$ respects the operation.</strong> We need $\\eta(x\\mathbin{\\circledast}y)=\\eta(x)\\mathbin{\\star}\\eta(y)$.</p>
-<p><strong>LHS:</strong> $\\eta(x\\mathbin{\\circledast}y)=-(6xy+x+y)=-6xy-x-y$</p>
-<p><strong>RHS:</strong> $\\eta(x)\\mathbin{\\star}\\eta(y)=(-x)\\mathbin{\\star}(-y)=-6(-x)(-y)+(-x)+(-y)=-6xy-x-y$</p>
-<p>LHS $=$ RHS. $\\checkmark$</p>
-<p><strong>Step 2: $\\eta$ preserves identity.</strong> $\\eta(0)=-0=0$, and $0$ is the identity of both $\\circledast$ and $\\star$. $\\checkmark$</p>
-<p><strong>Step 3: $\\eta$ is its own inverse.</strong> $\\eta(\\eta(x))=-(-x)=x$, so $\\eta\\circ\\eta=\\mathrm{id}$. Hence $\\eta$ is bijective, making it an isomorphism. $\\square$</p>
-<p><strong>Worked examples:</strong></p>
-<div class="cblk">  x    y    x⊛y   η(x⊛y)   η(x)⋆η(y)  Match?
-  2    3     41     -41      (-2)⋆(-3)=-6·6-2-3=-41  ✓
-  1    1      8      -8      (-1)⋆(-1)=-6·1-1-1=-8   ✓
- -1    2    -11      11      (1)⋆(-2)=-6·(-2)+1-2=11 ✓
-  5    5    160    -160      (-5)⋆(-5)=-6·25-10=-160  ✓</div>
-<div class="cblk"><span class="kw">def</span> η(x:ℤ):ℤ:=-x
-<span class="kw">lemma</span> <span class="fn">η_mstar_sstar</span>(x y:ℤ):η(x⊛y)=η x⋆η y:=<span class="kw">by</span> simp[η,mstar,sstar];ring</div>
-</div>
-<p><strong>Example:</strong> $\\eta(2\\mathbin{\\circledast}3)=\\eta(41)=-41=(-2)\\mathbin{\\star}(-3)$.</p>
-<p>This identity is used in the <a class="iref" onclick="jumpId('t4.1')">Thm 4.1</a> proof: $(-a)\\mathbin{\\star}(-c)=-(a\\mathbin{\\circledast}c)=-k$.</p>`,
-lean:`${GH}/TPC/Basic.lean#L70`},
-
-{id:"t2.6",ch:"§2 Ops",b:"b-thm",
- t:`Thm 2.6 — $\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies N^*\\cong(6\\mathbb{Z}+1,\\cdot)$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The map $\\phi(x)=6x+1$ is a monoid isomorphism from $(\\mathbb{Z},\\circledast)$ onto $(6\\mathbb{Z}+1,\\cdot)$. Similarly $\\psi(x)=6x-1$ gives $(\\mathbb{Z},\\star)\\cong(6\\mathbb{Z}-1,\\bullet)$. These isomorphisms translate factorization in $\\circledast/\\star$ to ordinary integer factorization.</p>
+{id:"t1.3",ch:"§1 Operations",b:"b-thm",
+ t:`Thm 1.3 — $\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies (\\mathbb{Z},\\circledast)\\cong(6\\mathbb{Z}+1,\\cdot)$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The map $\\phi(x)=6x+1$ is a monoid isomorphism from $(\\mathbb{Z},\\circledast)$ onto $(6\\mathbb{Z}+1,\\cdot)$. Similarly $\\psi(x)=6x-1$ gives $(\\mathbb{Z},\\star)\\cong(6\\mathbb{Z}-1,\\bullet)$ where $a\\bullet b:=-ab$.</p>
 <div class="mdisp">$$\\phi(x)=6x+1,\\quad\\phi(x\\mathbin{\\circledast}y)=(6x+1)(6y+1)=\\phi(x)\\phi(y)$$
 $$\\psi(x)=6x-1,\\quad\\psi(x\\mathbin{\\star}y)=-[(6x-1)(6y-1)]=\\psi(x)\\bullet\\psi(y)$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none"><p><strong>$\\phi$ is a homomorphism:</strong>
+<div class="prfbody" style="display:none"><p><strong>$\\phi$ homomorphism:</strong>
 $$\\phi(x\\mathbin{\\circledast}y)=6(6xy+x+y)+1=36xy+6x+6y+1=(6x+1)(6y+1)=\\phi(x)\\phi(y)$$
-$\\phi(0)=1$ (identity to identity). $\\phi$ is injective since $6x+1=6y+1\\Rightarrow x=y$. The image is exactly $6\\mathbb{Z}+1$ since every $6k+1$ has $k$ as preimage.</p>
-<p><strong>$\\psi$ is a homomorphism:</strong>
+$\\phi(0)=1$. $\\phi$ injective since $6x+1=6y+1\\Rightarrow x=y$. Image $=6\\mathbb{Z}+1$.</p>
+<p><strong>$\\psi$ homomorphism:</strong>
 $$\\psi(x\\mathbin{\\star}y)=6(-6xy+x+y)-1=-36xy+6x+6y-1$$
-$$\\psi(x)\\bullet\\psi(y)=-[(6x-1)(6y-1)]=-(36xy-6x-6y+1)=-36xy+6x+6y-1$$
-These are equal. $\\psi(0)=-1$ and $(-1)\\bullet(-1)=-1$ confirms identity. $\\square$</p>
-<div class="cblk"><span class="kw">def</span> φ(x:ℤ):ℤ:=6*x+1
-<span class="kw">lemma</span> <span class="fn">φ_mul</span>(x y:ℤ):φ(x⊛y)=φ x*φ y:=<span class="kw">by</span> simp[φ,mstar];ring</div></div>
+$$\\psi(x)\\bullet\\psi(y)=-(6x-1)(6y-1)=-36xy+6x+6y-1$$
+Equal. $\\psi(0)=-1$ and $(-1)\\bullet(-1)=-1$. $\\square$</p>
+</div>
 <p><strong>Example:</strong> $\\phi(2\\mathbin{\\circledast}3)=\\phi(41)=247=13\\times19=\\phi(2)\\phi(3)$.</p>`,
 lean:`${GH}/TPC/Basic.lean#L55`},
 
-{id:"l2.8",ch:"§2 Ops",b:"b-lem",
- t:`Lem 2.8 — $(6u+1)(6v+1)=1$ has no solution with $u,v\\neq0$ — No Zero Divisors`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Neither $\\circledast$ nor $\\star$ has zero divisors: a product of two nonzero integers is always nonzero. This is because $\\phi$ maps $\\circledast$ to ordinary multiplication in $6\\mathbb{Z}+1$, which inherits the no-zero-divisor property from $\\mathbb{Z}$.</p>
-<div class="mdisp">$$u,v\\neq0\\implies u\\mathbin{\\circledast}v\\neq0\\text{ and }u\\mathbin{\\star}v\\neq0$$</div>
+{id:"eta",ch:"§1 Operations",b:"b-prop",
+ t:`Prop 1.4 — Swap Automorphism $\\eta(x)=-x$: $\\;(-a)\\mathbin{\\star}(-b)=-(a\\mathbin{\\circledast}b)$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Negation $\\eta(x)=-x$ is a monoid isomorphism $(\\mathbb{Z},\\circledast)\\xrightarrow{\\sim}(\\mathbb{Z},\\star)$.</p>
+<div class="mdisp">$$\\eta(x\\mathbin{\\circledast}y)=-(6xy+x+y)=(-x)\\mathbin{\\star}(-y)=\\eta(x)\\mathbin{\\star}\\eta(y)$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>Proof for $\\circledast$:</strong> Apply $\\phi$ to both sides of $u\\mathbin{\\circledast}v=0$:
-$$\\phi(u\\mathbin{\\circledast}v)=\\phi(0) \\implies \\phi(u)\\phi(v)=1 \\implies (6u+1)(6v+1)=1$$</p>
-<p>In $\\mathbb{Z}$, the only units are $\\pm1$. So $6u+1\\in\\{1,-1\\}$:</p>
-<p>$\\bullet$ $6u+1=1 \\implies u=0$<br/>$\\bullet$ $6u+1=-1 \\implies u=-1/3\\notin\\mathbb{Z}$</p>
-<p>So $u\\mathbin{\\circledast}v=0$ forces $u=0$ (or $v=0$ by symmetry). Contrapositively: $u,v\\neq0\\implies u\\mathbin{\\circledast}v\\neq0$.</p>
-<p><strong>Proof for $\\star$:</strong> Similarly, $\\psi(u\\mathbin{\\star}v)=\\psi(u)\\bullet\\psi(v)$. If $u\\mathbin{\\star}v=0$, then $\\psi(0)=-1$, so $-(6u-1)(6v-1)=-1$, giving $(6u-1)(6v-1)=1$, and the same argument applies. $\\square$</p>
-<p><strong>Numerical check:</strong> The smallest nonzero values $u=\\pm1$ give $\\phi(\\pm1)\\in\\{7,-5\\}$, so $|\\phi(u)|\\geq5$. Then $|\\phi(u)\\phi(v)|\\geq25\\neq1$, confirming $u\\mathbin{\\circledast}v\\neq0$.</p>
+<p><strong>LHS:</strong> $\\eta(x\\mathbin{\\circledast}y)=-(6xy+x+y)=-6xy-x-y$</p>
+<p><strong>RHS:</strong> $(-x)\\mathbin{\\star}(-y)=-6(-x)(-y)+(-x)+(-y)=-6xy-x-y$</p>
+<p>LHS $=$ RHS. $\\eta(0)=0$. $\\eta\\circ\\eta=\\mathrm{id}$, so $\\eta$ is a bijection. $\\square$</p>
 </div>
-<p><strong>Key use:</strong> forces $a,c\\neq0$ from $a\\mathbin{\\circledast}c=k\\neq0$ in the <a class="iref" onclick="jumpId('t4.1')">Thm 4.1</a> proof.</p>`,
+<p><strong>Consequence:</strong> $x$ is $\\circledast$-irreducible $\\iff$ $-x$ is $\\star$-irreducible.</p>`,
+lean:`${GH}/TPC/Basic.lean#L70`},
+
+{id:"l1.5",ch:"§1 Operations",b:"b-lem",
+ t:`Lem 1.5 — No Zero Divisors: $u,v\\neq0\\implies u\\circledast v\\neq0$ and $u\\star v\\neq0$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Neither operation has zero divisors. This is because $\\phi$ maps into $(6\\mathbb{Z}+1,\\cdot)$, which inherits the no-zero-divisor property from $\\mathbb{Z}$.</p>
+<div class="mdisp">$$u\\mathbin{\\circledast}v=0\\implies \\phi(u)\\phi(v)=(6u+1)(6v+1)=1\\implies u=0\\text{ or }v=0$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p>$u\\mathbin{\\circledast}v=0 \\implies \\phi(u)\\phi(v)=1$. In $\\mathbb{Z}$: $6u+1\\in\\{\\pm1\\}$. $6u+1=1\\implies u=0$. $6u+1=-1\\implies u=-\\tfrac{1}{3}\\notin\\mathbb{Z}$. So $u=0$.</p>
+<p>For $\\star$: same argument via $\\psi$. $\\square$</p>
+<p><strong>Bound:</strong> If $u\\neq 0$, then $|\\phi(u)|=|6u+1|\\geq 5$ (smallest: $\\phi(\\pm1)\\in\\{7,-5\\}$).</p>
+</div>`,
 lean:`${GH}/TPC/Basic.lean#L90`},
 
-{id:"d2.10",ch:"§2 Ops",b:"b-def",
- t:`Def 2.10 — Product Monoid $M=(\\mathbb{Z}^2,\\otimes)$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The ambient monoid $M$ is $\\mathbb{Z}^2$ with coordinate-wise twisted multiplication: $\\circledast$ in the first slot, $\\star$ in the second. The anti-diagonal submonoid $N$ lives inside $M$.</p>
-<div class="mdisp">$$(x,y)\\otimes(x',y'):=(x\\mathbin{\\circledast}x',\\;y\\mathbin{\\star}y'),\\quad 1_M=(0,0)$$</div>
-<p>Combines <a class="iref" onclick="jumpId('d2.1')">$\\circledast$</a> on the first coordinate and $\\star$ on the second. The anti-diagonal <a class="iref" onclick="jumpId('d3.1')">$N=\\Delta(\\mathbb{Z})$</a> lives inside $M$.</p>
+// ═══════════════════════════════════════════════════════════════
+// §2  PRODUCT MONOID & GENERATED SUBMONOID
+// ═══════════════════════════════════════════════════════════════
+
+{id:"d2.1",ch:"§2 Product",b:"b-def",
+ t:`Def 2.1 — Product Monoid $M=(\\mathbb{Z}^2,\\otimes)$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The ambient monoid $M$ is $\\mathbb{Z}^2$ with $\\circledast$ in the first slot and $\\star$ in the second.</p>
+<div class="mdisp">$$(a,b)\\otimes(c,d):=(a\\mathbin{\\circledast}c,\\;b\\mathbin{\\star}d),\\quad 1_M=(0,0)$$</div>
+<div class="cblk"><span class="kw">def</span> otimes(a b:ℤ×ℤ):ℤ×ℤ:=(mstar a.1 b.1, sstar a.2 b.2)</div>
 <button class="btnprf" onclick="tp(this)">▶ Show examples</button>
-<div class="prfbody" style="display:none"><div class="cblk"> (x,y)       (x',y')       (x,y)⊗(x',y')
- (1, 0)      (1,-8)        (1⊛1,  0⋆(-8))  = ( 8, -8)
- (1,-1)      (2,-2)        (1⊛2,(-1)⋆(-2)) = (15,-15)
- (0, 0)      (x, y)        (0⊛x,  0⋆y)     = ( x,  y)
- (1,-1)      (1,-1)        (1⊛1,(-1)⋆(-1)) = ( 8, -8)
- (2,-2)      (3,-3)        (2⊛3,(-2)⋆(-3)) = (41,-41)
- (1, 0)      (0,-1)        (1⊛0,  0⋆(-1))  = ( 1, -1)</div></div>
-<div class="cblk"><span class="kw">def</span> otimes(a b:ℤ×ℤ):ℤ×ℤ:=(mstar a.1 b.1, sstar a.2 b.2)</div>`,
+<div class="prfbody" style="display:none"><div class="cblk"> (a,b)       (c,d)         (a,b)⊗(c,d)
+ (1, 1)      (1, 1)        (1⊛1,  1⋆1)   = ( 8, -4)
+ (1, 1)      (2, 2)        (1⊛2,  1⋆2)   = (15, -9)
+ (0, 0)      (x, y)        (0⊛x,  0⋆y)   = ( x,  y)
+ (1, 1)      (3, 3)        (1⊛3,  1⋆3)   = (22,-14)</div></div>`,
 lean:`${GH}/TPC/Basic.lean#L40`},
 
-{id:"d3.1",ch:"§3 Anti-Diag",b:"b-def",
- t:`Def 3.1 — $\\Delta(\\mathbb{Z})=\\{(x,-x)\\}$, $\\;\\Delta(x)\\otimes\\Delta(y)=\\Delta(x\\mathbin{\\circledast}y)$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The anti-diagonal $N$ consists of all pairs $(x,-x)$. It is a submonoid of $M$ because products on $N$ stay on $N$ — the involution $\\eta$ ensures the second coordinate is always the negative of the first.</p>
-<div class="mdisp">$$N:=\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}\\subset(\\mathbb{Z}^2,\\otimes)$$</div>
-<button class="btnprf" onclick="tp(this)">▶ Show $N$ is a submonoid</button>
-<div class="prfbody" style="display:none"><p><strong>Closure:</strong> $(x,-x)\\otimes(y,-y)=(x\\mathbin{\\circledast}y,\\;(-x)\\mathbin{\\star}(-y))$. By the <a class="iref" onclick="jumpId('eta')">involution $\\eta$</a>: $(-x)\\mathbin{\\star}(-y)=-(x\\mathbin{\\circledast}y)$. So the result is $(x\\mathbin{\\circledast}y,\\,-(x\\mathbin{\\circledast}y))\\in N$.</p>
-<p><strong>Identity:</strong> $(0,0)=(0,-0)\\in N$. $\\square$</p>
-<div class="cblk"><span class="kw">def</span> AntiDiag:Set(ℤ×ℤ):={p|p.2=-p.1}
-<span class="kw">def</span> Δ(x:ℤ):ℤ×ℤ:=(x,-x)
-<span class="kw">lemma</span> <span class="fn">Δ_otimes</span>(x y:ℤ):Δ x⊗Δ y=Δ(x⊛y):=<span class="kw">by</span> simp[Δ,otimes,neg_sstar_neg]</div></div>
-<p><strong>Example:</strong> $(1,-1)\\otimes(2,-2)=(1\\mathbin{\\circledast}2,-(1\\mathbin{\\circledast}2))=(15,-15)\\in N$.</p>`,
+{id:"d2.2",ch:"§2 Product",b:"b-def",
+ t:`Def 2.2 — Generated Diagonal Submonoid $N=\\langle G\\rangle^{\\otimes}$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The central object: a submonoid of $M$ freely generated by pairs $(k,k)$ where both $6k\\pm1$ are $\\pm$prime — encoding twin prime pairs.</p>
+
+<p>An element $k\\in\\mathbb{Z}$ is a <strong>twin-prime generator</strong> if both $\\phi(k)=6k+1$ and $\\psi(k)=6k-1$ are $\\pm$prime. Define:</p>
+<div class="mdisp">$$G = \\bigl\\{(k,k) : 6k+1\\in\\pm\\mathbb{P}\\text{ and }6k-1\\in\\pm\\mathbb{P}\\bigr\\}$$</div>
+
+<p>The <strong>generated diagonal submonoid</strong> is:</p>
+<div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#dbeafe);border-left-color:#10b981">
+$$\\boxed{\\;N = \\langle G \\rangle^{\\otimes} = \\bigl\\{\\, g_1\\otimes g_2 \\otimes \\cdots \\otimes g_m : g_i\\in G,\\; m\\geq 0\\,\\bigr\\}}$$
+</div>
+<p>including the empty product $(0,0)=1_N$. Every element of $N$ has the form $(x,x)$ for some $x\\in\\mathbb{Z}$, so $N$ sits inside the diagonal.</p>
+
+<div class="cblk"> k    6k-1   6k+1   Twin pair?   (k,k) ∈ G?
+ 1       5      7    (5,7) ✓       YES
+ 2      11     13    (11,13) ✓     YES
+ 3      17     19    (17,19) ✓     YES
+ 5      29     31    (29,31) ✓     YES
+ 6      35     37    35=5·7 ✗      NO
+ 7      41     43    (41,43) ✓     YES
+10      59     61    (59,61) ✓     YES
+-1      -7     -5    (-7,-5) ✓     YES
+-2     -13    -11    (-13,-11) ✓   YES</div>
+
+<p><strong>Why not the full diagonal?</strong> The diagonal $\\{(k,k):k\\in\\mathbb{Z}\\}$ is <em>not</em> a submonoid: $(k,k)\\otimes(l,l)=(k\\mathbin{\\circledast}l,\\;k\\star l)$, and $k\\mathbin{\\circledast}l=k\\star l$ requires $12kl=0$, which fails for general $k,l\\neq0$.</p>
+
+<p><strong>Why not the anti-diagonal?</strong> The anti-diagonal $\\{(x,-x)\\}$ <em>is</em> a submonoid (via $(-a)\\star(-b)=-(a\\circledast b)$), but that same identity collapses it so irreducibility depends only on $\\circledast$, encoding primes $\\equiv\\pm1\\pmod6$ rather than twin primes.</p>`,
 lean:`${GH}/TPC/AntiDiagonal.lean#L10`},
 
-{id:"cx",ch:"§4 Weak Sat",b:"b-ex",
- t:`Counterexample — $(1,0)\\otimes(1,-8)=(8,-8)\\in N$ but $(1,0)\\notin N$ — NOT Saturated`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">$N$ is <strong>not</strong> saturated: a product can land in $N$ even though neither factor is in $N$. This is why we need the weaker notion of weak saturation.</p>
-<div class="mdisp">$$a=(1,0),\\;b=(1,-8):\\quad(1\\mathbin{\\circledast}1,\\;0\\mathbin{\\star}(-8))=(8,-8)\\in N$$</div>
-<p>$(1,0)\\notin N$ since $0\\neq-1$. Saturation fails.</p>
-<div class="cblk"><span class="kw">theorem</span> <span class="fn">antiDiag_not_saturated</span>:
-  ∃ a b:ℤ×ℤ, a∉AntiDiag∧b∉AntiDiag∧a⊗b∈AntiDiag:=<span class="kw">by</span>
-  refine⟨(1,0),(1,-8),?_,?_,?_⟩ <span class="cm">-- norm_num closes all three</span></div>`,
-lean:`${GH}/TPC/WeaklySaturated.lean#L80`},
+// ═══════════════════════════════════════════════════════════════
+// §3  IRREDUCIBILITY
+// ═══════════════════════════════════════════════════════════════
 
-{id:"t4.1",ch:"§4 Weak Sat",b:"b-thm",
- t:`Thm 4.1 — $a\\mathbin{\\circledast}c=k\\neq0$ + Lemma 2.8 $\\implies$ $\\Delta(\\mathbb{Z})$ is Weakly Saturated`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Whenever a product in $M$ lands on the anti-diagonal, we can "lift" the factorization: replace any factors $(a,b),(c,d)$ with anti-diagonal elements $(a,-a),(c,-c)$ that give the same product. The no-zero-divisor lemma ensures these lifts are nontrivial.</p>
+{id:"l3.1",ch:"§3 Irreducibility",b:"b-lem",
+ t:`Lem 3.1 — Diagonal Closure: $(k,k)\\otimes(l,l)=(k\\circledast l,\\;k\\star l)$ with $k\\circledast l\\neq k\\star l$ in general`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Products of diagonal elements do not stay on the diagonal unless the generators satisfy special properties. This is why $N$ must be <em>generated</em> rather than defined as a level set.</p>
+<div class="mdisp">$$(k,k)\\otimes(l,l) = (k\\mathbin{\\circledast}l,\\; k\\star l) = (6kl+k+l,\\; -6kl+k+l)$$</div>
+<p>These two coordinates differ by $12kl$. They are equal iff $kl=0$.</p>
+<button class="btnprf" onclick="tp(this)">▶ Show examples</button>
+<div class="prfbody" style="display:none"><div class="cblk"> (k,k)     (l,l)     k⊛l    k⋆l    equal?
+ (1,1)    (1,1)       8     -4      NO  (12·1≠0)
+ (1,1)    (2,2)      15     -9      NO  (12·2≠0)
+ (1,1)    (0,0)       1      1      YES (identity)
+ (2,2)    (3,3)      41    -31      NO  (12·6≠0)</div>
+<p>This shows the full diagonal is NOT closed under $\\otimes$. But $N=\\langle G\\rangle^{\\otimes}$ is a submonoid by definition (closure under $\\otimes$ is guaranteed since we take all finite products).</p>
+</div>`,
+lean:null},
+
+{id:"t3.2",ch:"§3 Irreducibility",b:"b-thm",
+ t:`Thm 3.2 — Generators are Irreducible: $G\\subseteq\\mathrm{Irr}(N)$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every twin-prime generator $(k,k)\\in G$ is irreducible in $N$ — it cannot be written as a nontrivial $\\otimes$-product of elements of $N$.</p>
+<div class="mdisp">$$(k,k)\\in G \\implies (k,k)\\in\\mathrm{Irr}(N)$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>Setup:</strong> Suppose $(a,b)\\otimes(c,d)=(k,-k)\\in N$ with $(a,b),(c,d)\\neq(0,0)$. We need to find $(a',-a'),(c',-c')\\in N$ with $(a',-a')\\otimes(c',-c')=(k,-k)$.</p>
-<p><strong>Step 1:</strong> The first coordinate gives $a\\mathbin{\\circledast}c=k$. Since $(k,-k)\\neq(0,0)$, we have $k\\neq0$, so $a\\mathbin{\\circledast}c\\neq0$.</p>
-<p><strong>Step 2:</strong> By <a class="iref" onclick="jumpId('l2.8')">Lemma 2.8</a> (no zero divisors), $a\\mathbin{\\circledast}c\\neq0$ implies $a\\neq0$ and $c\\neq0$.</p>
-<p><strong>Step 3:</strong> Set $a'=(a,-a)\\in N$ and $c'=(c,-c)\\in N$. Both are nonidentity since $a,c\\neq0$.</p>
-<p><strong>Step 4:</strong> Compute $a'\\otimes c'=(a,-a)\\otimes(c,-c)=(a\\mathbin{\\circledast}c,\\;(-a)\\mathbin{\\star}(-c))$. By the <a class="iref" onclick="jumpId('eta')">involution</a>: $(-a)\\mathbin{\\star}(-c)=-(a\\mathbin{\\circledast}c)=-k$. So $a'\\otimes c'=(k,-k)$. $\\blacksquare$</p>
-<p><strong>Worked example:</strong> $(1,0)\\otimes(1,-8)=(8,-8)\\in N$:</p>
-<div class="cblk"> Original factors: (1,0) and (1,-8) — neither in N
- First coord: a⊛c = 1⊛1 = 6·1·1+1+1 = 8 = k  ✓
- k≠0, so by Lem 2.8: a=1≠0, c=1≠0
- Lifted factors: (1,-1) and (1,-1) — both in N
- Check: (1,-1)⊗(1,-1) = (1⊛1, (-1)⋆(-1))
-      = (8, -6·1+(-1)+(-1)) = (8, -8) ✓</div>
-</div>`,
-lean:`${GH}/TPC/WeaklySaturated.lean#L45`},
+<p>Suppose $(k,k)=(a,a')\\otimes(b,b')$ for some $(a,a'),(b,b')\\in N\\setminus\\{(0,0)\\}$. Since every element of $N$ is a product of generators $(g_i,g_i)$, and generators have the form $(g,g)$, we need to check if the product can produce an element on the diagonal.</p>
+<p>Actually, since $N=\\langle G\\rangle^{\\otimes}$ and every generator has the form $(g,g)$, every element of $N$ can be written as a $\\otimes$-product of such generators. But the first component is the $\\circledast$-product of the first coordinates and the second component is the $\\star$-product of the second coordinates. So if $(a,a')\\in N$, then $a'$ is the $\\star$-product of the same generator values that gave $a$ via $\\circledast$.</p>
+<p><strong>Key constraint:</strong> Suppose $(k,k) = (a,a')\\otimes(b,b')$ with both nonidentity. The first component gives $k = a\\mathbin{\\circledast}b$ and the second gives $k = a'\\star b'$. Since both factors are in $N$, each is built from generators. But consider: $(k,k)$ being a generator means it is a "single-letter word" in $G$. If it factored as a product of two nonidentity elements, each built from at least one generator, then $(k,k)$ would be a product of $\\geq 2$ generators.</p>
+<p>In $N$, applying $\\phi$ to the first component: $\\phi(k)=6k+1\\in\\pm\\mathbb{P}$. If $(k,k)=g_1\\otimes g_2\\otimes\\cdots\\otimes g_m$ with $m\\geq 2$, then $\\phi(k)=\\prod_i \\phi(g_i)=\\prod_i(6g_i+1)$. Each $|6g_i+1|\\geq 5$ (since $g_i\\neq 0$), so $|\\phi(k)|\\geq 25$. But $\\phi(k)\\in\\pm\\mathbb{P}$ means $|\\phi(k)|$ is prime, and primes cannot be written as a product of integers each $\\geq 5$. Contradiction. $\\square$</p>
+</div>
+<p><strong>Example:</strong> $(1,1)\\in G$ since $(5,7)$ is a twin prime pair. $\\phi(1)=7\\in\\mathbb{P}$, so $(1,1)$ cannot be a product of $\\geq 2$ generators.</p>`,
+lean:`${GH}/TPC/AntiDiagonal.lean#L95`},
 
-{id:"l4.5",ch:"§4 Weak Sat.",b:"b-lem",
- t:`Lem 4.5 — $x\\in\\{a\\mathbin{\\circledast}b:a,b\\neq0\\}$ $\\iff$ $6x+1$ is composite`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">An integer $x$ can be written as $a\\mathbin{\\circledast}b$ with $a,b\\neq0$ if and only if $\\phi(x)=6x+1$ is composite (i.e., not $\\pm$prime and not $\\pm1$). This is the link between $\\circledast$-decomposability and ordinary integer factorisation.</p>
+{id:"t3.3",ch:"§3 Irreducibility",b:"b-thm",
+ t:`Thm 3.3 — Irreducibles are Generators: $\\mathrm{Irr}(N)\\subseteq G$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Conversely, every irreducible of $N$ is a generator — no other element of $N$ can be irreducible.</p>
+<div class="mdisp">$$(q,q')\\in\\mathrm{Irr}(N),\\;(q,q')\\neq(0,0) \\implies (q,q')\\in G$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p>Every nonidentity element of $N=\\langle G\\rangle^{\\otimes}$ is a $\\otimes$-product of generators: $(q,q')=g_1\\otimes\\cdots\\otimes g_m$ with $m\\geq 1$ and each $g_i\\in G$. If $m\\geq 2$, then $(q,q')=(g_1)\\otimes(g_2\\otimes\\cdots\\otimes g_m)$ is a nontrivial factorization in $N$ (both factors nonidentity), contradicting irreducibility. So $m=1$ and $(q,q')=g_1\\in G$. $\\square$</p>
+</div>
+
+<p><strong>Combining Thms 3.2 and 3.3:</strong></p>
+<div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#dbeafe);border-left-color:#10b981">
+$$\\mathrm{Irr}(N) = G = \\bigl\\{(k,k) : (6k-1,\\,6k+1)\\in\\pm\\mathbb{P}^2\\bigr\\}$$
+$$\\text{Irreducibles of } N \\;\\longleftrightarrow\\; \\text{twin prime pairs}$$
+</div>`,
+lean:`${GH}/TPC/AntiDiagonal.lean#L95`},
+
+// ═══════════════════════════════════════════════════════════════
+// §4  DECOMPOSABILITY
+// ═══════════════════════════════════════════════════════════════
+
+{id:"l4.1",ch:"§4 Decomposability",b:"b-lem",
+ t:`Lem 4.1 — $x\\in\\{a\\mathbin{\\circledast}b:a,b\\neq0\\}$ $\\iff$ $6x+1$ is composite`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">An integer $x$ can be written as $a\\mathbin{\\circledast}b$ with $a,b\\neq0$ if and only if $\\phi(x)=6x+1$ is composite.</p>
 <div class="mdisp">$$x\\in\\{a\\mathbin{\\circledast}b:a,b\\neq0\\} \\;\\iff\\; 6x+1\\text{ is composite}$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>Setup:</strong> Recall from <a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a> that $\\phi:(\\mathbb{Z},\\circledast)\\xrightarrow{\\sim}(6\\mathbb{Z}+1,\\cdot)$ is a monoid isomorphism with $\\phi(x)=6x+1$ and $\\phi(a\\mathbin{\\circledast}b)=\\phi(a)\\phi(b)$. The identity of $\\circledast$ is $0$, and $\\phi(0)=1$.</p>
-
-<p><strong>($\\Rightarrow$) Decomposable $\\implies$ composite:</strong></p>
-
-<p>Suppose $x = a\\mathbin{\\circledast}b$ with $a,b\\neq0$. Apply $\\phi$:</p>
-<p>$$\\phi(x) = \\phi(a)\\,\\phi(b) = (6a+1)(6b+1)$$</p>
-
-<p>Since $a\\neq0$, we have $\\phi(a)=6a+1\\neq1$. Can $\\phi(a)=-1$? That requires $6a+1=-1$, i.e., $a=-\\tfrac{1}{3}\\notin\\mathbb{Z}$. So $|\\phi(a)|\\geq5$ (the smallest nonzero values are $\\phi(1)=7$, $\\phi(-1)=-5$). Similarly $|\\phi(b)|\\geq5$.</p>
-
-<p>Therefore $|\\phi(x)| = |\\phi(a)|\\cdot|\\phi(b)| \\geq 25$, and $\\phi(x)$ is a product of two integers each with absolute value $\\geq5$. In particular, $\\phi(x)$ is not $\\pm1$ and not $\\pm$prime (since a prime $p$ cannot satisfy $|p|=|u|\\cdot|v|$ with $|u|,|v|\\geq5$). So $6x+1$ is composite. $\\checkmark$</p>
-
-<p><strong>($\\Leftarrow$) Composite $\\implies$ decomposable:</strong></p>
-
-<p>Suppose $n = 6x+1$ is composite. We must find $a,b\\neq0$ with $a\\mathbin{\\circledast}b=x$.</p>
-
-<p><em>Step 1 — Prime factorisation:</em> Since $n\\in6\\mathbb{Z}+1$, we have $\\gcd(n,6)=1$, so every prime factor $p$ of $n$ satisfies $p\\equiv\\pm1\\pmod{6}$. Since $n$ is composite, write $n = m\\cdot m'$ with $|m|,|m'|>1$. Both $m$ and $m'$ are products of primes $\\equiv\\pm1\\pmod6$, so $m,m'\\equiv\\pm1\\pmod6$. Since $n\\equiv1\\pmod6$, the two factors satisfy $m\\cdot m'\\equiv1\\pmod6$, which forces either both $\\equiv1$ or both $\\equiv-1\\pmod6$.</p>
-
-<p><em>Case 1 — Both $m,m'\\equiv1\\pmod6$:</em> Then $m,m'\\in6\\mathbb{Z}+1$. Write $m=6a+1$, $m'=6b+1$ with $a,b\\in\\mathbb{Z}$. Since $|m|,|m'|\\geq5$ (the smallest elements of $6\\mathbb{Z}+1$ with absolute value $>1$ are $\\pm5,\\pm7,\\ldots$), we have $a,b\\neq0$. Then:</p>
-<p>$$n = (6a+1)(6b+1) = \\phi(a)\\,\\phi(b) = \\phi(a\\mathbin{\\circledast}b)$$</p>
-<p>So $a\\mathbin{\\circledast}b = x$ by injectivity of $\\phi$. $\\checkmark$</p>
-
-<p><em>Case 2 — Both $m,m'\\equiv-1\\pmod6$:</em> Then $m,m'\\in6\\mathbb{Z}-1$. Write $m=6\\alpha-1$, $m'=6\\beta-1$ with $\\alpha,\\beta\\in\\mathbb{Z}$. Note:</p>
-<p>$$(6\\alpha-1)(6\\beta-1) = 36\\alpha\\beta - 6\\alpha - 6\\beta + 1 = 6(6\\alpha\\beta-\\alpha-\\beta)+1 = n$$</p>
-<p>Now set $a=-\\alpha$ and $b=-\\beta$. Then $6a+1 = -6\\alpha+1 = -(6\\alpha-1) = -m$ and $6b+1 = -m'$, so:</p>
-<p>$$(6a+1)(6b+1) = (-m)(-m') = mm' = n = \\phi(x)$$</p>
-<p>Since $|m|,|m'|\\geq5$, we have $|6a+1|,|6b+1|\\geq5$, so $a,b\\neq0$. Again $\\phi(a)\\phi(b)=\\phi(x)$ gives $a\\mathbin{\\circledast}b=x$. $\\checkmark$</p>
-
-<p>In both cases we have found $a,b\\neq0$ with $a\\mathbin{\\circledast}b=x$. $\\checkmark$</p>
-
-<p><strong>Worked examples:</strong></p>
-<div class="cblk"> x=4:  φ(4) = 25 = 5·5 (composite)
-   Case 2: 5,5 ∈ 6ℤ-1 (both ≡ -1 mod 6)
-   α=1, β=1: (6·1-1)(6·1-1) = 25 ✓
-   a=-α=-1, b=-β=-1
-   φ(-1)φ(-1) = (-5)(-5) = 25 ✓
-   Check: (-1)⊛(-1) = 6·1+(-1)+(-1) = 4 ✓
-
- x=14: φ(14) = 85 = 5·17 (composite)
-   Case 2: 5,17 ∈ 6ℤ-1 (both ≡ -1 mod 6)
-   α=1, β=3: (6·1-1)(6·3-1) = 5·17 = 85 ✓
-   a=-1, b=-3
-   φ(-1)φ(-3) = (-5)(-17) = 85 ✓
-   Check: (-1)⊛(-3) = 6·3+(-1)+(-3) = 14 ✓
-
- x=8:  φ(8) = 49 = 7·7 (composite)
-   Case 1: 7,7 ∈ 6ℤ+1 (both ≡ 1 mod 6)
-   a=1, b=1: φ(1)φ(1) = 7·7 = 49 ✓
-   Check: 1⊛1 = 6+1+1 = 8 ✓
-
- x=1:  φ(1) = 7 (prime) → NOT decomposable ✓
- x=2:  φ(2) = 13 (prime) → NOT decomposable ✓</div>
-
-<p><strong>Remark:</strong> The corresponding result for $\\star$ is <a class="iref" onclick="jumpId('l4.6')">Lem 4.6</a>. The proof is <em>not</em> identical: the sign flip $\\psi(a\\star b)=-\\psi(a)\\psi(b)$ means $\\psi$ maps into $(6\\mathbb{Z}-1,\\,\\bullet\\,)$ where $a\\,\\bullet\\,b:=-ab$, and there is only one residue-class form instead of two.</p>
-</div>`,
+<p><strong>($\\Rightarrow$):</strong> If $x=a\\mathbin{\\circledast}b$ with $a,b\\neq0$, then $\\phi(x)=\\phi(a)\\phi(b)=(6a+1)(6b+1)$ with $|6a+1|,|6b+1|\\geq 5$. So $|\\phi(x)|\\geq 25$, and $\\phi(x)$ factors nontrivially. $\\checkmark$</p>
+<p><strong>($\\Leftarrow$):</strong> If $6x+1$ is composite, write $6x+1=cd$ with $|c|,|d|>1$. Since $6x+1\\equiv 1\\pmod6$, both factors satisfy $c,d\\equiv\\pm1\\pmod6$.</p>
+<p><em>Case 1 — both $\\equiv 1$:</em> $c=6a+1,d=6b+1$, then $\\phi(a)\\phi(b)=\\phi(x)$ gives $a\\mathbin{\\circledast}b=x$. $\\checkmark$</p>
+<p><em>Case 2 — both $\\equiv -1$:</em> $c=6\\alpha-1,d=6\\beta-1$, set $a=-\\alpha,b=-\\beta$. Then $\\phi(a)\\phi(b)=(-c)(-d)=cd=\\phi(x)$, giving $a\\mathbin{\\circledast}b=x$. $\\checkmark$ $\\square$</p>
+</div>
+<p><strong>Corollary:</strong> $x$ is $\\circledast$-irreducible $\\iff$ $6x+1\\in\\pm\\mathbb{P}$.</p>`,
 lean:`${GH}/TPC/Irreducible.lean#L10`},
 
-{id:"l4.6",ch:"§4 Weak Sat.",b:"b-lem",
- t:`Lem 4.6 — $x\\in\\{a\\star b:a,b\\neq0\\}$ $\\iff$ $6x-1$ is composite`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The $\\star$-analogue of <a class="iref" onclick="jumpId('l4.5')">Lem 4.5</a>. An integer $x$ can be written as $a\\star b$ with $a,b\\neq0$ if and only if $\\psi(x)=6x-1$ is composite. Unlike the $\\circledast$ case, $\\psi$ maps into $(6\\mathbb{Z}-1,\\,\\bullet\\,)$ where $a\\,\\bullet\\,b:=-ab$ (negated multiplication), and there is only <em>one</em> residue-class form for composites.</p>
+{id:"l4.2",ch:"§4 Decomposability",b:"b-lem",
+ t:`Lem 4.2 — $x\\in\\{a\\star b:a,b\\neq0\\}$ $\\iff$ $6x-1$ is composite`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The $\\star$-analogue: $x$ is $\\star$-decomposable iff $\\psi(x)=6x-1$ is composite.</p>
 <div class="mdisp">$$x\\in\\{a\\star b:a,b\\neq0\\} \\;\\iff\\; 6x-1\\text{ is composite}$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>Setup:</strong> Recall from <a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a> that $\\psi:(\\mathbb{Z},\\star)\\to(6\\mathbb{Z}-1,\\,\\bullet\\,)$ is a monoid isomorphism with $\\psi(x)=6x-1$ and $\\psi(a\\star b)=-\\psi(a)\\psi(b)=\\psi(a)\\,\\bullet\\,\\psi(b)$. The identity of $\\star$ is $0$, and $\\psi(0)=-1$ (the identity of $\\bullet$).</p>
-
-<p><strong>($\\Rightarrow$) $\\star$-decomposable in $\\mathbb{Z}\\setminus\\{0\\}$ implies $6x-1$ composite:</strong></p>
-
-<p>Suppose $x = a\\star b$ with $a,b\\neq0$. Then:</p>
-<p>$$\\psi(x) = \\psi(a)\\,\\bullet\\,\\psi(b) = -(6a-1)(6b-1)$$</p>
-<p>Rewrite as a product in $\\mathbb{Z}$: $\\psi(x) = (6a-1)\\cdot(-(6b-1)) = (6a-1)(6(-b)+1)$.</p>
-<p>Since $a\\neq0$: $\\psi(a)=6a-1\\neq-1$, and $6a-1=1\\implies a=\\tfrac{1}{3}\\notin\\mathbb{Z}$, so $|6a-1|\\geq5$. Since $b\\neq0$: $|6(-b)+1|=|-6b+1|\\geq5$. Therefore $|\\psi(x)|\\geq25$, so $6x-1$ is composite. $\\checkmark$</p>
-
-<p><strong>($\\Leftarrow$) $6x-1$ composite implies $\\star$-decomposable in $\\mathbb{Z}\\setminus\\{0\\}$:</strong></p>
-
-<p>Suppose $n=6x-1$ is composite. We must find $a,b\\neq0$ with $a\\star b=x$.</p>
-
-<p><em>Step 1 — Residue analysis:</em> Since $n\\in6\\mathbb{Z}-1$, we have $\\gcd(n,6)=1$, so every prime factor satisfies $p\\equiv\\pm1\\pmod{6}$. Since $n$ is composite, write $n=m\\cdot m'$ with $|m|,|m'|>1$. Since $n\\equiv-1\\pmod6$, the product $m\\cdot m'\\equiv-1\\pmod6$ forces exactly one factor $\\equiv1$ and one $\\equiv-1\\pmod6$.</p>
-
-<p><em>Single form — $m\\equiv-1,\\;m'\\equiv1\\pmod6$:</em> Write $m=6\\alpha-1$, $m'=6\\beta+1$. Then:</p>
-<p>$$(6\\alpha-1)(6\\beta+1) = (6\\alpha-1)\\bigl(-(6(-\\beta)-1)\\bigr) = -\\,(6\\alpha-1)(6(-\\beta)-1)$$</p>
-<p>This equals $\\psi(\\alpha)\\,\\bullet\\,\\psi(-\\beta) = \\psi(\\alpha\\star(-\\beta))$. So $\\psi(x)=\\psi(\\alpha\\star(-\\beta))$, giving $x=\\alpha\\star(-\\beta)$ by injectivity of $\\psi$.</p>
-<p>We need $\\alpha\\neq0$ and $-\\beta\\neq0$: since $|m|=|6\\alpha-1|>1$, we have $6\\alpha-1\\neq\\pm1$, so $\\alpha\\neq0$ (and $\\alpha\\neq\\tfrac{1}{3}\\notin\\mathbb{Z}$). Since $|m'|=|6\\beta+1|>1$, we have $6\\beta+1\\neq\\pm1$, so $\\beta\\neq0$ (and $\\beta\\neq-\\tfrac{1}{3}\\notin\\mathbb{Z}$), hence $-\\beta\\neq0$. $\\checkmark$</p>
-
-<p>(No other residue-class pairing works: both $\\equiv1$ gives product $\\equiv1\\pmod6\\neq-1$; both $\\equiv-1$ also gives $\\equiv1$.) $\\checkmark$</p>
-
-<p><strong>Worked examples:</strong></p>
-<div class="cblk"> x=6:  ψ(6) = 35 = 5·7 (composite)
-   m=5 ≡ -1, m'=7 ≡ 1 (mod 6)
-   α=1, β=1: (6·1-1)(6·1+1) = 5·7 = 35 ✓
-   a=α=1, b=-β=-1
-   ψ(1)•ψ(-1) = -(5)(-7) = 35 ✓
-   Check: 1⋆(-1) = -6·1·(-1)+1+(-1) = 6 ✓
-
- x=8:  ψ(8) = 47 (prime) → NOT decomposable ✓
-
- x=9:  ψ(9) = 53 (prime) → NOT decomposable ✓
-
- x=4:  ψ(4) = 23 (prime) → NOT decomposable ✓
-
- x=14: ψ(14) = 83 (prime) → NOT decomposable ✓
-
- x=24: ψ(24) = 143 = 11·13 (composite)
-   m=11 ≡ -1, m'=13 ≡ 1 (mod 6)
-   α=2, β=2: (6·2-1)(6·2+1) = 11·13 = 143 ✓
-   a=α=2, b=-β=-2
-   Check: 2⋆(-2) = -6·2·(-2)+2+(-2) = 24 ✓</div>
+<p><strong>($\\Rightarrow$):</strong> If $x=a\\star b$ with $a,b\\neq0$, then $\\psi(x)=-(6a-1)(6b-1)$ with $|6a-1|,|6b-1|\\geq 5$. So $|\\psi(x)|\\geq 25$, composite. $\\checkmark$</p>
+<p><strong>($\\Leftarrow$):</strong> If $6x-1$ is composite, write $6x-1=cd$. Since $cd\\equiv -1\\pmod6$, exactly one factor $\\equiv 1$ and one $\\equiv -1\\pmod6$. Say $c=6\\alpha-1,d=6\\beta+1$. Then $-(6\\alpha-1)(6(-\\beta)-1)=\\psi(\\alpha)\\bullet\\psi(-\\beta)=\\psi(\\alpha\\star(-\\beta))$, giving $x=\\alpha\\star(-\\beta)$. $\\square$</p>
 </div>
-<p><strong>Contrast with <a class="iref" onclick="jumpId('l4.5')">Lem 4.5</a>:</strong> The $\\circledast$ version has two residue-class forms (both $\\equiv1$ or both $\\equiv-1$). The $\\star$ version has only one form (one $\\equiv1$, one $\\equiv-1$), reflecting the sign flip in $\\psi(a\\star b)=-\\psi(a)\\psi(b)$.</p>`,
+<p><strong>Corollary:</strong> $x$ is $\\star$-irreducible $\\iff$ $6x-1\\in\\pm\\mathbb{P}$.</p>
+
+<div class="cblk"> x    6x+1  ⊛-irred?   6x-1  ⋆-irred?   Twin?
+ 1       7    YES         5    YES       YES (5,7)
+ 2      13    YES        11    YES       YES (11,13)
+ 3      19    YES        17    YES       YES (17,19)
+ 4      25     NO        23    YES       NO
+ 5      31    YES        29    YES       YES (29,31)
+ 6      37    YES        35     NO       NO
+ 7      43    YES        41    YES       YES (41,43)
+ 8      49     NO        47    YES       NO
+10      61    YES        59    YES       YES (59,61)
+12      73    YES        71    YES       YES (71,73)</div>`,
 lean:`${GH}/TPC/Irreducible.lean#L10`},
 
-{id:"p5.1",ch:"§5 Irred",b:"b-prop",
- t:`Prop 5.1 — $\\widehat{n}\\in\\mathrm{Irr}(N) \\;\\iff\\; n\\in\\mathrm{Irr}(N_{\\circledast})$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Irreducibility in the anti-diagonal $N$ is determined entirely by $\\circledast$-irreducibility. The $\\star$ operation plays no independent role, because the involution identity $(-a)\\star(-b)=-(a\\mathbin{\\circledast}b)$ forces the second component of any factorization in $N$ to be determined by the first. Write $\\widehat{n}:=(n,-n)$.</p>
-<div class="mdisp">$$\\widehat{n}\\in\\mathrm{Irr}(N) \\;\\iff\\; n\\in\\mathrm{Irr}(N_{\\circledast})$$</div>
-<p>where $N_{\\circledast}=(\\mathbb{Z},\\circledast)$.</p>
+// ═══════════════════════════════════════════════════════════════
+// §5  NO-ZERO-COMPONENT LEMMA
+// ═══════════════════════════════════════════════════════════════
+
+{id:"l5.1",ch:"§5 Structure",b:"b-lem",
+ t:`Lem 5.1 — No Zero Component: $(a,0)\\in N \\implies a=0$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">No nonidentity element of $N$ can have a zero component. This ensures factorizations in $N$ are "genuine" and cannot degenerate.</p>
+<div class="mdisp">$$(a,0)\\in N \\implies (a,0)=(0,0) \\qquad\\text{(and symmetrically for }(0,b)\\text{)}$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>Key identity:</strong> By the <a class="iref" onclick="jumpId('eta')">Involution</a> $\\eta(x)=-x:N_{\\circledast}\\to N_{\\star}$, for any $a,b\\in\\mathbb{Z}$:</p>
-<p>$$(-a)\\star(-b) = \\eta(a\\mathbin{\\circledast}b) = -(a\\mathbin{\\circledast}b)$$</p>
-<p>Therefore every product in $N$ takes the form:</p>
-<p>$$(a,-a)\\otimes(b,-b) = (a\\mathbin{\\circledast}b,\\;(-a)\\star(-b)) = (a\\mathbin{\\circledast}b,\\;-(a\\mathbin{\\circledast}b)) = \\widehat{a\\mathbin{\\circledast}b}$$</p>
-<p>The second component is <em>completely determined</em> by the first. In particular:</p>
-<p>$$\\widehat{n} = \\widehat{u}\\otimes\\widehat{v} \\;\\iff\\; n = u\\mathbin{\\circledast}v$$</p>
-
-<p><strong>($\\Rightarrow$) $\\widehat{n}$ irreducible $\\implies$ $n\\in\\mathrm{Irr}(N_{\\circledast})$:</strong></p>
-<p>If $n = u\\mathbin{\\circledast}v$ with $u,v\\neq0$, then $\\widehat{n} = \\widehat{u}\\otimes\\widehat{v}$ with $\\widehat{u},\\widehat{v}\\neq1_N$, contradicting irreducibility. $\\checkmark$</p>
-
-<p><strong>($\\Leftarrow$) $n\\in\\mathrm{Irr}(N_{\\circledast})$ $\\implies$ $\\widehat{n}$ irreducible:</strong></p>
-<p>If $\\widehat{n}=(x,-x)\\otimes(y,-y)$ nontrivially, then $x,y\\neq0$ and $n=x\\mathbin{\\circledast}y$, contradicting $n\\in\\mathrm{Irr}(N_{\\circledast})$. $\\square$</p>
-
-<p><strong>Why $N_{\\star}$-irreducibility is NOT required:</strong> A $\\star$-factorization $n=u\\star v$ does <em>not</em> yield a factorization of $\\widehat{n}=(n,-n)$ in $N$. It would give $(-u,u)\\otimes(-v,v) = ((-u)\\mathbin{\\circledast}(-v),\\;u\\star v) = (-(u\\star v),\\;u\\star v) = (-n,\\,n)$, which is a factorization of $(-n,n)\\neq\\widehat{n}$. Moreover, $\\eta_N:\\widehat{k}\\mapsto(-k,k)$ is <em>not</em> a monoid automorphism of $(N,\\otimes)$, so irreducibility of $\\widehat{n}$ does not transfer to $(-n,n)$.</p>
-<p><strong>Counterexample:</strong> $n=6$: $\\phi(6)=37\\in\\mathbb{P}$, so $\\widehat{6}=(6,-6)\\in\\mathrm{Irr}(N)$. But $\\psi(6)=35=5\\cdot7$ is composite, so $6\\notin\\mathrm{Irr}(N_{\\star})$ (indeed $6=1\\star(-1)$). Irreducibility in $N$ does <em>not</em> imply $\\star$-irreducibility.</p>
+<p>Every nonidentity element of $N$ is a product of generators $(g_i,g_i)\\in G$. Write $(a,0)=(g_1,g_1)\\otimes\\cdots\\otimes(g_m,g_m)$. The second component gives:</p>
+<div class="mdisp">$$0 = g_1\\star g_2\\star\\cdots\\star g_m$$</div>
+<p>Applying $\\psi$:</p>
+<div class="mdisp">$$\\psi(g_1\\star\\cdots\\star g_m) = \\psi(g_1)\\bullet\\cdots\\bullet\\psi(g_m) = (-1)^{m-1}\\prod_{i=1}^m(6g_i-1)$$</div>
+<p>Since $\\psi(0)=-1$: $(-1)^{m-1}\\prod(6g_i-1) = -1$, so $\\bigl|\\prod(6g_i-1)\\bigr| = 1$.</p>
+<p>But each $g_i\\in G$ has $6g_i-1\\in\\pm\\mathbb{P}$, so $|6g_i-1|\\geq 5$ (the smallest twin prime pair gives $|6\\cdot 1-1|=5$). Therefore $|\\prod(6g_i-1)|\\geq 5^m\\geq 5$ for $m\\geq 1$. This contradicts $|\\prod|=1$, so $m=0$ and $(a,0)=(0,0)$. $\\square$</p>
 </div>
-<p><strong>Key point:</strong> The monoid $(N,\\otimes)$ is isomorphic to $(\\mathbb{Z},\\circledast)$ via $n\\mapsto\\widehat{n}$, because $(-a)\\star(-b)=-(a\\circledast b)$ collapses the second component. The $\\star$ operation is structurally present in $M$ but contributes nothing to $N$.</p>`,
-lean:`${GH}/TPC/AntiDiagonal.lean#L95`},
+<p><strong>Consequence:</strong> If $(q,q')\\in N$ and $q=0$, then $q'=0$ too (and vice versa). Every nonidentity element of $N$ has both components nonzero.</p>`,
+lean:null},
 
-{id:"p5.2",ch:"§5 Irred",b:"b-prop",
- t:`Prop 5.2 — $n\\notin N_{\\circledast}\\!\\cdot\\! N_{\\circledast} \\;\\iff\\; 6n+1\\in\\pm\\mathbb{P}$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">An integer $n\\neq0$ is $\\circledast$-irreducible if and only if $\\phi(n)=6n+1$ is $\\pm$prime in $\\mathbb{Z}$. The proof analyses the only two residue-class forms a composite in $6\\mathbb{Z}+1$ can take, and shows each corresponds to a $\\circledast$-factorization.</p>
-<div class="mdisp">$$n\\notin N_{\\circledast}\\!\\cdot\\! N_{\\circledast}:=\\{a\\mathbin{\\circledast}b:a,b\\neq0\\} \\;\\iff\\; 6n+1\\in\\pm\\mathbb{P}$$</div>
+{id:"p5.2",ch:"§5 Structure",b:"b-prop",
+ t:`Prop 5.2 — $N$ is a Free Commutative Monoid on $G$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every element of $N$ has a <strong>unique</strong> factorization into generators (up to reordering). This follows because the $\\phi$-values of generators are distinct primes.</p>
+<div class="mdisp">$$\\text{If }\\; g_1\\otimes\\cdots\\otimes g_m = h_1\\otimes\\cdots\\otimes h_n \\;\\text{ in }N\\text{, then } m=n \\text{ and } \\{g_i\\}=\\{h_j\\} \\text{ as multisets}$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>($\\Leftarrow$) $6n+1\\in\\pm\\mathbb{P}$ $\\implies$ $n\\notin N_{\\circledast}\\!\\cdot\\!N_{\\circledast}$:</strong></p>
-<p>If $n=a\\mathbin{\\circledast}b$ with $a,b\\neq0$, then $\\phi(n)=\\phi(a)\\phi(b)=(6a+1)(6b+1)$ with $|6a+1|,|6b+1|\\geq5$ (since $a\\neq0\\implies6a+1\\neq1$, and $6a+1=-1\\implies a=-\\tfrac{1}{3}\\notin\\mathbb{Z}$). So $|\\phi(n)|\\geq25$, contradicting $6n+1\\in\\pm\\mathbb{P}$. $\\checkmark$</p>
+<p>Apply $\\phi$ to the first components. For generators $(g_i,g_i)\\in G$, the first component of the product is $g_1\\mathbin{\\circledast}\\cdots\\mathbin{\\circledast}g_m$, and $\\phi(g_1\\mathbin{\\circledast}\\cdots\\mathbin{\\circledast}g_m)=\\prod_i \\phi(g_i)=\\prod_i(6g_i+1)$.</p>
+<p>Each $\\phi(g_i)=6g_i+1\\in\\pm\\mathbb{P}$ is a <em>distinct</em> prime (up to sign). The equality $\\prod_i \\phi(g_i)=\\prod_j \\phi(h_j)$ in $\\mathbb{Z}$ then forces the multisets $\\{\\phi(g_i)\\}$ and $\\{\\phi(h_j)\\}$ to agree (by unique factorization in $\\mathbb{Z}$). Since $\\phi$ is injective, $\\{g_i\\}=\\{h_j\\}$. $\\square$</p>
+<p><strong>Note:</strong> Distinct generators may share the same $|\\phi|$-value only if $g$ and $g'$ give the same prime. But $\\phi(g)=\\phi(g')\\implies g=g'$, so generators are uniquely determined by their $\\phi$-value.</p>
+</div>`,
+lean:null},
 
-<p><strong>($\\Rightarrow$) $6n+1\\notin\\pm\\mathbb{P}$ (composite) $\\implies$ $n\\in N_{\\circledast}\\!\\cdot\\!N_{\\circledast}$:</strong></p>
-<p>Suppose $6n+1$ is composite: $6n+1=cd$ with $|c|,|d|>1$. Since $6n+1\\equiv1\\pmod6$, every prime factor is $\\equiv\\pm1\\pmod6$, and $cd\\equiv1\\pmod6$ forces two cases:</p>
+// ═══════════════════════════════════════════════════════════════
+// §6  COVERING (H1)
+// ═══════════════════════════════════════════════════════════════
 
-<p><em>Form 1:</em> $c=6a+1,\\;d=6b+1$ (both $\\equiv1\\pmod6$). Then:</p>
-<p>$$(6a+1)(6b+1) = \\phi(a)\\,\\phi(b) = \\phi(a\\mathbin{\\circledast}b) = 6(a\\mathbin{\\circledast}b)+1$$</p>
-<p>So $n = a\\mathbin{\\circledast}b$. Since $|c|>1$ we have $a\\neq0$; since $|d|>1$ we have $b\\neq0$. Hence $n\\in N_{\\circledast}\\!\\cdot\\!N_{\\circledast}$. $\\checkmark$</p>
-
-<p><em>Form 2:</em> $c=6a-1,\\;d=6b-1$ (both $\\equiv-1\\pmod6$). Then negate both factors:</p>
-<p>$$(-c)(-d) = (-(6a-1))(-(6b-1)) = (6(-a)+1)(6(-b)+1) = \\phi(-a)\\,\\phi(-b) = \\phi((-a)\\mathbin{\\circledast}(-b))$$</p>
-<p>Since $(-c)(-d)=cd=6n+1$, we get $n = (-a)\\mathbin{\\circledast}(-b)$. Since $|c|>1$ forces $a\\neq0$ (as $6a-1\\neq\\pm1$ for integer $a\\neq0$), and likewise $b\\neq0$. Hence $n\\in N_{\\circledast}\\!\\cdot\\!N_{\\circledast}$. $\\checkmark$</p>
-
-<p>No other cases arise: $c\\equiv1,\\,d\\equiv-1\\pmod6$ gives $cd\\equiv-1\\pmod6\\neq1$. $\\square$</p>
+{id:"t6.1",ch:"§6 Covering",b:"b-thm",
+ t:`Thm 6.1 (H1) — $N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in G}q\\otimes N$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every nonidentity element of $N$ is divisible by a generator (= irreducible). This is hypothesis (H1) of the Furstenberg criterion.</p>
+<div class="mdisp">$$\\text{Every nonidentity }(x,x')\\in N\\text{ lies in }q\\otimes N\\text{ for some }q\\in G$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p>Every nonidentity element of $N=\\langle G\\rangle^{\\otimes}$ is a product of generators: $(x,x')=g_1\\otimes\\cdots\\otimes g_m$ with $m\\geq 1$. Then $(x,x')=g_1\\otimes(g_2\\otimes\\cdots\\otimes g_m)\\in g_1\\otimes N$, with $g_1\\in G$. $\\square$</p>
+<p>This is immediate from the definition of $N$ as a generated submonoid — no norm or induction needed.</p>
 </div>
-<p><strong>Key observation:</strong> The two forms $(6a+1)(6b+1)$ and $(6a-1)(6b-1)$ are the only ways to build a composite in $6\\mathbb{Z}+1$, and both land in $N_{\\circledast}\\!\\cdot\\!N_{\\circledast}$ via $\\phi$.</p>`,
-lean:`${GH}/TPC/Irreducible.lean#L10`},
+<p><strong>Contrast with the anti-diagonal case:</strong> For $\\Delta(\\mathbb{Z})=\\{(x,-x)\\}$, proving (H1) required a multiplicative norm and Noetherian descent. Here, the generated structure gives (H1) for free.</p>`,
+lean:null},
 
-{id:"p5.3",ch:"§5 Irred",b:"b-prop",
- t:`Prop 5.3 — $n\\notin N_{\\star}\\!\\cdot\\! N_{\\star} \\;\\iff\\; 6n-1\\in\\pm\\mathbb{P}$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">An integer $n\\neq0$ is $\\star$-irreducible if and only if $\\psi(n)=6n-1$ is $\\pm$prime in $\\mathbb{Z}$. The proof differs from the $\\circledast$ case because $\\psi$ maps into $(6\\mathbb{Z}-1,\\,\\bullet\\,)$ where $a\\,\\bullet\\,b := -a\\cdot b$ (negated multiplication), not ordinary multiplication. Accordingly, there is only <em>one</em> residue-class form for composites in $6\\mathbb{Z}-1$.</p>
-<div class="mdisp">$$n\\notin N_{\\star}\\!\\cdot\\! N_{\\star}:=\\{a\\star b:a,b\\neq0\\} \\;\\iff\\; 6n-1\\in\\pm\\mathbb{P}$$</div>
+// ═══════════════════════════════════════════════════════════════
+// §7  TOPOLOGY
+// ═══════════════════════════════════════════════════════════════
+
+{id:"d7.1",ch:"§7 Topology",b:"b-def",
+ t:`Def 7.1 — Product Furstenberg Topology on $\\mathbb{Z}^2$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The product Furstenberg topology on $\\mathbb{Z}^2$: the product of two copies of the Furstenberg topology on $\\mathbb{Z}$, whose basis consists of two-sided arithmetic progressions.</p>
+<div class="mdisp">$$\\text{Basis on }\\mathbb{Z}:\\quad a+d\\mathbb{Z} = \\{a+dn : n\\in\\mathbb{Z}\\},\\quad d\\geq 1$$</div>
+<div class="mdisp">$$\\text{Basis on }\\mathbb{Z}^2:\\quad (a+d\\mathbb{Z})\\times(b+e\\mathbb{Z}),\\quad a,b\\in\\mathbb{Z},\\; d,e\\geq 1$$</div>
+<p>We give $N$ the <strong>subspace topology</strong> inherited from $\\mathbb{Z}^2$. A basis for the topology on $N$ consists of:</p>
+<div class="mdisp">$$N\\cap\\bigl((a+d\\mathbb{Z})\\times(b+e\\mathbb{Z})\\bigr)$$</div>
+<p>Each set $a+d\\mathbb{Z}$ is clopen in the Furstenberg topology (its complement is $\\bigcup_{j=1}^{d-1}(a+j)+d\\mathbb{Z}$, a finite union of open sets). So basis sets in $\\mathbb{Z}^2$ are clopen, and their intersections with $N$ are clopen in $N$.</p>`,
+lean:null},
+
+// ═══════════════════════════════════════════════════════════════
+// §8  CLOPEN COSETS (H2)
+// ═══════════════════════════════════════════════════════════════
+
+{id:"t8.1",ch:"§8 Clopen Cosets",b:"b-thm",
+ t:`Thm 8.1 (H2) — For each $q=(k,k)\\in G$, the coset $q\\otimes N$ is clopen in $N$`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every irreducible coset is simultaneously open and closed in $N$. This is hypothesis (H2) of the Furstenberg criterion.</p>
+<div class="mdisp">$$q\\otimes N = N\\cap\\bigl(\\{x\\equiv k\\!\\pmod{6k+1}\\}\\times\\mathbb{Z}\\bigr) \\quad\\text{is clopen in }N$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>Setup:</strong> Recall $\\psi(a\\star b)=-\\psi(a)\\psi(b)$ (<a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>), so $\\psi$ is an isomorphism $N_{\\star}=(\\mathbb{Z},\\star)\\xrightarrow{\\sim}(6\\mathbb{Z}-1,\\,\\bullet\\,)$ where $a\\,\\bullet\\,b:=-ab$. The identity of $\\bullet$ is $\\psi(0)=-1$.</p>
+<p><strong>Step 1 — Characterise the coset via congruences.</strong></p>
+<p>If $(a,a')\\in q\\otimes N$, then $(a,a')=(k,k)\\otimes(r,r')$ for some $(r,r')\\in N$. The first component gives $a=k\\mathbin{\\circledast}r=6kr+k+r$. Applying $\\phi$: $\\phi(a)=\\phi(k)\\cdot\\phi(r)=(6k+1)(6r+1)$, so $(6k+1)\\mid\\phi(a)$, i.e., $(6k+1)\\mid(6a+1)$.</p>
+<p>Now $6a+1\\equiv 0\\pmod{6k+1}$ iff $6a\\equiv -1\\pmod{6k+1}$ iff $6a\\equiv 6k\\pmod{6k+1}$ iff $a\\equiv k\\pmod{6k+1}$ (since $\\gcd(6,6k+1)=1$). So the first-component condition is $a\\in k+(6k+1)\\mathbb{Z}$.</p>
 
-<p><strong>($\\Leftarrow$) $6n-1\\in\\pm\\mathbb{P}$ $\\implies$ $n\\notin N_{\\star}\\!\\cdot\\!N_{\\star}$:</strong></p>
-<p>If $n=u\\star v$ with $u,v\\neq0$, then $6n-1=-(6u-1)(6v-1)=(6u-1)(-(6v-1))=(6u-1)(6(-v)+1)$. Since $u\\neq0$: $|6u-1|\\geq5$; since $v\\neq0$: $|6(-v)+1|=|{-6v+1}|\\geq5$. So $|6n-1|\\geq25$, contradicting $6n-1\\in\\pm\\mathbb{P}$. $\\checkmark$</p>
+<p><strong>Step 2 — Converse inclusion.</strong></p>
+<p>If $(a,a')\\in N$ and $a\\equiv k\\pmod{6k+1}$, then $(6k+1)\\mid(6a+1)$. By unique factorization in $N$ (<a class="iref" onclick="jumpId('p5.2')">Prop 5.2</a>), write the factorization of $(a,a')$ in terms of generators. The first component satisfies $\\phi(a)=\\prod_i\\phi(g_i)$. Since $(6k+1)$ is prime (as $(k,k)\\in G$) and divides $\\phi(a)$, it must divide some $\\phi(g_i)=6g_i+1$. Since each $\\phi(g_i)\\in\\pm\\mathbb{P}$ and $|6k+1|=|\\phi(g_i)|$ forces $g_i=k$ (by injectivity of $\\phi$). So $(k,k)$ appears among the generators, giving $(a,a')\\in q\\otimes N$.</p>
 
-<p><strong>($\\Rightarrow$) $6n-1\\notin\\pm\\mathbb{P}$ (composite) $\\implies$ $n\\in N_{\\star}\\!\\cdot\\!N_{\\star}$:</strong></p>
-<p>Suppose $6n-1$ is composite: $6n-1=cd$ with $|c|,|d|>1$. Since $6n-1\\equiv -1\\pmod6$, the product $cd\\equiv-1\\pmod6$ forces exactly one form:</p>
-
-<p><em>Single form:</em> $c=6a-1,\\;d=6b+1$ (one factor $\\equiv-1$, the other $\\equiv1\\pmod6$). Rewrite:</p>
-<p>$$(6a-1)(6b+1) = (6a-1)\\bigl(-(6(-b)-1)\\bigr) = -\\,(6a-1)(6(-b)-1) = \\psi(a)\\,\\bullet\\,\\psi(-b)$$</p>
-<p>Since $\\psi$ is an isomorphism, $\\psi(a)\\,\\bullet\\,\\psi(-b) = \\psi(a\\star(-b))$, so $6n-1 = \\psi(a\\star(-b))$, giving $n = a\\star(-b)$.</p>
-<p>We need $a\\neq0$ and $-b\\neq0$: since $|c|=|6a-1|>1$ we have $6a-1\\neq\\pm1$, so $a\\neq0$ (and $a\\neq\\tfrac{1}{3}\\notin\\mathbb{Z}$); since $|d|=|6b+1|>1$ we have $6b+1\\neq\\pm1$, so $b\\neq0$ (and $b\\neq-\\tfrac{1}{3}\\notin\\mathbb{Z}$). Hence $n\\in N_{\\star}\\!\\cdot\\!N_{\\star}$. $\\checkmark$</p>
-
-<p>No other residue-class pairing works: $c\\equiv1,\\,d\\equiv1$ gives $cd\\equiv1\\pmod6\\neq-1$, and $c\\equiv-1,\\,d\\equiv-1$ also gives $cd\\equiv1\\pmod6\\neq-1$. So the single form above is exhaustive. $\\square$</p>
+<p><strong>Step 3 — Clopenness.</strong></p>
+<p>The set $\\{x\\equiv k\\pmod{6k+1}\\} = k+(6k+1)\\mathbb{Z}$ is clopen in the Furstenberg topology on $\\mathbb{Z}$, and $\\mathbb{Z}$ is clopen. Their product is clopen in $\\mathbb{Z}^2$. Intersecting with $N$ gives a clopen set in $N$. $\\square$</p>
 </div>
-<p><strong>Contrast with <a class="iref" onclick="jumpId('p5.2')">Prop 5.2</a>:</strong> For $\\circledast$ there are two residue-class forms; for $\\star$ there is only one. This asymmetry reflects the sign flip in $\\psi(a\\star b)=-\\psi(a)\\psi(b)$, which means $\\psi$ maps into $(6\\mathbb{Z}-1,\\,\\bullet\\,)$ rather than $(6\\mathbb{Z}-1,\\,\\cdot\\,)$.</p>`,
-lean:`${GH}/TPC/Irreducible.lean#L10`},
 
-{id:"t5.4",ch:"§5 Irred",b:"b-thm",
- t:`Thm 5.4 — $(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; 6x+1\\in\\pm\\mathbb{P}$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Combining Props 5.1 and 5.2: irreducibility in $N$ is equivalent to $6x+1$ being $\\pm$prime. The $\\star$ operation and $6x-1$ play no role — this is a consequence of the identity $(-a)\\star(-b)=-(a\\circledast b)$ collapsing the product structure of $N$ to depend only on $\\circledast$.</p>
-<div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(N)\\;\\iff\\; 6x+1\\in\\pm\\mathbb{P}$$</div>
+<div class="cblk"> Generator (k,k)   φ(k)=6k+1   Coset condition on first coord
+ (1,1)                  7        a ≡ 1 (mod 7)
+ (2,2)                 13        a ≡ 2 (mod 13)
+ (3,3)                 19        a ≡ 3 (mod 19)
+ (5,5)                 31        a ≡ 5 (mod 31)
+ (7,7)                 43        a ≡ 7 (mod 43)</div>`,
+lean:null},
+
+// ═══════════════════════════════════════════════════════════════
+// §9  NO OPEN SINGLETONS (H3)
+// ═══════════════════════════════════════════════════════════════
+
+{id:"t9.1",ch:"§9 No Singletons",b:"b-thm",
+ t:`Thm 9.1 (H3) — $\\{(0,0)\\}$ is not open in $N$ (unconditional)`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">No singleton of $N$ is open. The proof uses only <strong>Euler's theorem</strong> and the existence of the single twin prime pair $(5,7)$ — it does not assume infinitely many twin primes.</p>
+<div class="mdisp">$$\\{(0,0)\\}\\text{ is not open in }N \\subseteq \\mathbb{Z}^2$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p>Chain two propositions:</p>
-<p><strong>Step 1 (<a class="iref" onclick="jumpId('p5.1')">Prop 5.1</a>):</strong> $\\widehat{x}=(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; x\\in\\mathrm{Irr}(N_{\\circledast})$. (The $N_{\\star}$ condition is not needed because $(-a)\\star(-b)=-(a\\circledast b)$ makes every factorization in $N$ depend only on $\\circledast$.)</p>
-<p><strong>Step 2 (<a class="iref" onclick="jumpId('p5.2')">Prop 5.2</a>):</strong> $x\\in\\mathrm{Irr}(N_{\\circledast})\\iff 6x+1\\in\\pm\\mathbb{P}$, via residue-class analysis of composites in $6\\mathbb{Z}+1$ (two forms).</p>
-<p>Composing: $(x,-x)\\in\\mathrm{Irr}(N)\\iff 6x+1\\in\\pm\\mathbb{P}$. $\\square$</p>
-<p><strong>Note:</strong> <a class="iref" onclick="jumpId('p5.3')">Prop 5.3</a> ($N_{\\star}$-irreducibility $\\iff$ $6x-1\\in\\pm\\mathbb{P}$) is a valid independent result, but it does not enter the characterization of irreducibles of $N$.</p>
+<p>Suppose $\\{(0,0)\\}$ is open in $N$. Then there exist $d,e\\geq 1$ such that:</p>
+<div class="mdisp">$$N\\cap\\bigl(d\\mathbb{Z}\\times e\\mathbb{Z}\\bigr) = \\{(0,0)\\}$$</div>
+<p>We produce a nonzero element of $N\\cap(d\\mathbb{Z}\\times e\\mathbb{Z})$ using powers of the generator $(1,1)\\in G$ (which exists since $(5,7)$ is a twin prime pair).</p>
+
+<p><strong>Powers of $(1,1)$.</strong> Write $(1,1)^{\\otimes n}=(s_n,t_n)\\in N$. Under $\\phi$:</p>
+<div class="mdisp">$$\\phi(s_n) = \\phi(1)^n = 7^n \\quad\\implies\\quad s_n = \\frac{7^n - 1}{6}$$</div>
+<p>Under $\\psi$ for the second component: $\\psi(t_n) = (\\psi(1))^{\\bullet n} = (-1)^{n-1}\\cdot 5^n$. For even $n$:</p>
+<div class="mdisp">$$\\psi(t_n) = -5^n \\quad\\implies\\quad t_n = \\frac{-5^n + 1}{6} = \\frac{1-5^n}{6}$$</div>
+
+<p><strong>Finding $n$ with $d\\mid s_n$ and $e\\mid t_n$.</strong></p>
+<p>We need $d\\mid\\frac{7^n-1}{6}$ and $e\\mid\\frac{1-5^n}{6}$, i.e., $7^n\\equiv 1\\pmod{6d}$ and $5^n\\equiv 1\\pmod{6e}$ (for even $n$).</p>
+<p>By <strong>Euler's theorem</strong>: $\\gcd(7,6d)=1$ and $\\gcd(5,6e)=1$, so $7^{\\varphi(6d)}\\equiv 1\\pmod{6d}$ and $5^{\\varphi(6e)}\\equiv 1\\pmod{6e}$.</p>
+<p>Take $n = 2\\cdot\\mathrm{lcm}(\\varphi(6d),\\varphi(6e))$, which is even. Then:</p>
+<div class="mdisp">$$7^n\\equiv 1\\pmod{6d}\\quad\\text{and}\\quad 5^n\\equiv 1\\pmod{6e}$$</div>
+<p>So $(s_n,t_n)\\in N\\cap(d\\mathbb{Z}\\times e\\mathbb{Z})$ with $s_n = \\frac{7^n-1}{6}\\neq 0$ (since $7^n > 1$ for $n\\geq 1$). This contradicts $N\\cap(d\\mathbb{Z}\\times e\\mathbb{Z})=\\{(0,0)\\}$. $\\square$</p>
+
+<p><strong>Worked example ($d=e=1$):</strong></p>
+<div class="cblk"> n=2: (1,1)⊗(1,1) = (1⊛1, 1⋆1) = (8, -4)
+   s₂ = (49-1)/6 = 8,  t₂ = (1-25)/6 = -4
+   8 ∈ 1·ℤ ✓,  -4 ∈ 1·ℤ ✓  → (8,-4) ∈ N ∩ (ℤ×ℤ), nonzero ✓
+
+ n=4: s₄ = (7⁴-1)/6 = 2400/6 = 400
+       t₄ = (1-5⁴)/6 = -624/6 = -104
+       (400,-104) ∈ N, nonzero ✓</div>
 </div>
-<p><strong>Worked example ($x=2$):</strong></p>
-<div class="cblk"> φ(2)=13 (prime) → (2,-2) ∈ Irr(N)
- Prop 5.1: (2,-2) irred in N ⟺ 2 ∈ Irr(N⊛)
- Prop 5.2: 2 ∉ N⊛·N⊛ ⟺ φ(2)=13 ∈ ±ℙ  ✓</div>
-<p><strong>Worked non-example ($x=4$):</strong></p>
-<div class="cblk"> φ(4)=25 (composite) → (4,-4) ∉ Irr(N)
- 25 = 5·5, and 5 ≡ -1 (mod 6)
- Prop 5.2, Form 2: negate both: (-5)(-5)=25, -5 ∈ 6ℤ+1
- so 4 = (-1)⊛(-1) ∈ N⊛·N⊛ → 4 ∉ Irr(N⊛) → (4,-4) ∉ Irr(N)</div>
-<p><strong>Worked example showing $\\star$ is irrelevant ($x=6$):</strong></p>
-<div class="cblk"> φ(6)=37 (prime) → (6,-6) ∈ Irr(N)  ✓
- Even though ψ(6)=35=5·7 is composite (6 is ⋆-reducible),
- this does NOT affect irreducibility in N.
- Any factorization in N: (a,-a)⊗(b,-b) = (a⊛b, -(a⊛b))
- needs a⊛b=6, which is impossible since 37 is prime.</div>
-<div class="cblk"> x   6x+1  Irred?  Note
- 1      7    YES    7 prime
- 2     13    YES    13 prime
- 4     25     NO    25=5²
- 5     31    YES    31 prime
- 6     37    YES    37 prime (even though 6x−1=35 composite)
-10     61    YES    61 prime</div>
-<button class="btnprf" onclick="tp(this)">▶ Show full table</button>
-<div class="prfbody" style="display:none"><div class="cblk">  x    6x+1  Irred?  Note
-  1       7    YES    7 prime
-  2      13    YES    13 prime
-  3      19    YES    19 prime
-  4      25     NO    25 = 5²
-  5      31    YES    31 prime
-  6      37    YES    37 prime (6x−1=35 composite — irrelevant)
-  7      43    YES    43 prime
-  8      49     NO    49 = 7²
-  9      55     NO    55 = 5·11
- 10      61    YES    61 prime
- 11      67    YES    67 prime (6x−1=65 composite — irrelevant)
- 12      73    YES    73 prime
- 13      79    YES    79 prime (6x−1=77 composite — irrelevant)
- 14      85     NO    85 = 5·17
- 15      91     NO    91 = 7·13
- 16      97    YES    97 prime (6x−1=95 composite — irrelevant)
- 17     103    YES    103 prime
- 18     109    YES    109 prime
- ─── negative x ───
- -1      -5    YES    -5 ∈ ±ℙ
- -2     -11    YES    -11 ∈ ±ℙ
- -3     -17    YES    -17 ∈ ±ℙ
- -4     -23    YES    -23 ∈ ±ℙ (6x−1=−25 composite — irrelevant)
- -5     -29    YES    -29 ∈ ±ℙ
- -7     -41    YES    -41 ∈ ±ℙ
--10     -59    YES    -59 ∈ ±ℙ
--12     -71    YES    -71 ∈ ±ℙ</div>
-<p>$(x,-x)\\in\\mathrm{Irr}(N)$ iff $6x+1\\in\\pm\\mathbb{P}$. For positive $x$: $x=(p-1)/6$ where $p=6x+1$ is prime.</p></div>`,
-lean:`${GH}/TPC/AntiDiagonal.lean#L95`},
+<p><strong>Key:</strong> This argument is <em>unconditional</em> — it uses only Euler's theorem and the single twin prime pair $(5,7)$.</p>`,
+lean:null},
 
-{id:"d6.1",ch:"§6 Norm",b:"b-def",
- t:`Def 6.1 — Norm $|(x,-x)|:=\\phi(x)^2=(6x+1)^2$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">A norm on $N$ that is multiplicative ($|ab|=|a||b|$) and ensures proper factors have strictly smaller norm — enabling induction on norm to find irreducible divisors.</p>
-<div class="mdisp">$$|(x,-x)|:=(6x+1)^2=\\phi(x)^2$$</div>
-<div class="cblk"><span class="kw">def</span> norm(x:ℤ):ℤ:=(6*x+1)^2
-<span class="kw">lemma</span> <span class="fn">norm_eq_φ_sq</span>(x:ℤ):norm x=φ x^2</div>
-<div class="cblk"> x    φ(x)   |(x,-x)|  Irred?
- 0       1          1  identity
- 1       7         49  YES
- 2      13        169  YES
- 4      25        625  NO
- 5      31        961  YES
--1      -5         25  YES</div>
-<button class="btnprf" onclick="tp(this)">▶ Show full norm table</button>
-<div class="prfbody" style="display:none"><div class="cblk">  x    φ(x)   |(x,-x)|  Irred?  Factorization
-  0       1          1  ident.  —
-  1       7         49  YES     (5,7)
-  2      13        169  YES     (11,13)
-  3      19        361  YES     (17,19)
-  4      25        625  NO      25=5², (4,-4)=(-1,1)⊗(-1,1)
-  5      31        961  YES     (29,31)
-  6      37       1369  NO      35=5·7
-  7      43       1849  YES     (41,43)
-  8      49       2401  NO      49=7², (8,-8)=(1,-1)⊗(1,-1)
-  9      55       3025  NO      55=5·11
- 10      61       3721  YES     (59,61)
- 12      73       5329  YES     (71,73)
- 14      85       7225  NO      85=5·17
- 17     103      10609  YES     (101,103)
- 18     109      11881  YES     (107,109)
- -1      -5         25  YES     (-7,-5)
- -2     -11        121  YES     (-13,-11)
- -3     -17        289  YES     (-19,-17)
- -4     -23        529  NO      -25=(-5)²
- -5     -29        841  YES     (-31,-29)
- -7     -41       1681  YES     (-43,-41)</div>
-<p><strong>N5 check:</strong> $|(1,-1)\\otimes(2,-2)|=|(15,-15)|=91^2=8281=49\\cdot169=|(1,-1)|\\cdot|(2,-2)|$. $\\checkmark$</p></div>`,
-lean:`${GH}/TPC/Norm.lean#L12`},
+// ═══════════════════════════════════════════════════════════════
+// §10  MAIN THEOREM
+// ═══════════════════════════════════════════════════════════════
 
-{id:"n56",ch:"§6 Norm",b:"b-prop",
- t:`Prop N5–N6 — $\\phi(x\\mathbin{\\circledast}y)=\\phi(x)\\phi(y)\\implies |x\\otimes y|=|x||y|$ and strict descent`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem"><strong>N5:</strong> The norm is multiplicative — the norm of a product equals the product of norms. <strong>N6:</strong> In any nontrivial factorization, both factors have strictly smaller norm than the product. Together, these enable strong induction on norm.</p>
-<div class="mdisp">$$\\textbf{N5:}\\quad|(x,-x)\\otimes(y,-y)|=|(x,-x)|\\cdot|(y,-y)|$$
-$$\\textbf{N6:}\\quad(x,-x)=(a,-a)\\otimes(b,-b),\\;a,b\\neq0\\implies|(a,-a)|,|(b,-b)|<|(x,-x)|$$</div>
-<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>N5 (multiplicativity) — step by step:</strong></p>
-<p>$$|(x,-x)\\otimes(y,-y)| = |(x\\mathbin{\\circledast}y,\\;-(x\\mathbin{\\circledast}y))|$$
-$$= \\phi(x\\mathbin{\\circledast}y)^2 \\qquad\\text{(by definition of norm)}$$
-$$= (\\phi(x)\\phi(y))^2 \\qquad\\text{(by }\\phi\\text{ homomorphism, }\\href{javascript:jumpId('t2.6')}{\\text{Thm 2.6}}\\text{)}$$
-$$= \\phi(x)^2\\cdot\\phi(y)^2 = |(x,-x)|\\cdot|(y,-y)|$$</p>
-<p><strong>N5 numerical check:</strong></p>
-<div class="cblk"> (x,-x)    (y,-y)    x⊛y    |(x,-x)|  |(y,-y)|  |(x⊛y,−)|  product
- (1,-1)   (2,-2)     15      49       169       8281    49·169=8281 ✓
- (1,-1)   (1,-1)      8      49        49       2401    49·49=2401  ✓
- (2,-2)   (3,-3)     41     169       361      60889   169·361=60889 ✓
- (-1,1)   (-1,1)      4      25        25        625    25·25=625   ✓</div>
-<p><strong>N6 (strict descent) — step by step:</strong></p>
-<p>Suppose $(x,-x)=(a,-a)\\otimes(b,-b)$ with $a,b\\neq0$. Then $x=a\\mathbin{\\circledast}b$.</p>
-<p>Since $a\\neq0$: $\\phi(a)=6a+1\\neq1$, so $|\\phi(a)|\\geq5$ (next values after $1$ are $\\pm5,\\pm7,\\ldots$).</p>
-<p>Similarly $|\\phi(b)|\\geq5$. Then:</p>
-<p>$$|(a,-a)|=\\phi(a)^2 < \\phi(a)^2\\cdot\\phi(b)^2 = |(x,-x)|$$</p>
-<p>since $\\phi(b)^2\\geq25>1$. The same bound gives $|(b,-b)|<|(x,-x)|$. $\\square$</p>
-<div class="cblk"> Descent examples:
- (8,-8) = (1,-1)⊗(1,-1):  |8|=2401, |1|=49   → 49 < 2401 ✓
- (4,-4) = (-1,1)⊗(-1,1):  |4|=625,  |-1|=25  → 25 < 625  ✓
- (15,-15)= (1,-1)⊗(2,-2): |15|=8281, |1|=49, |2|=169 → both < 8281 ✓
- (41,-41)= (2,-2)⊗(3,-3): |41|=60889, |2|=169, |3|=361 → both < 60889 ✓</div>
-</div>`,
-lean:`${GH}/TPC/Norm.lean#L50`},
-
-{id:"t7.2",ch:"§7 Divisibility",b:"b-thm",
- t:`Thm 7.2 — N5+N6+Weak Sat. $\\implies$ $\\forall n\\in N\\;\\exists q\\in\\mathrm{Irr}(N):q\\mid_{\\otimes}n$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Every nonidentity element of $N$ is divisible (under $\\otimes$) by some irreducible. This is the monoid analogue of "every integer $>1$ has a prime factor", proved by strong induction on the norm $|(k,-k)|$.</p>
-<button class="btnprf" onclick="tp(this)">▶ Induction proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>Proof by strong induction on $|(k,-k)|$.</strong></p>
-<p><strong>Base case:</strong> The smallest nonidentity norms are $|(\\pm1,\\mp1)|=25$ and $49$. For $|(k,-k)|=25$: $k=-1$, $\\phi(-1)=-5\\in\\pm\\mathbb{P}$, $\\psi(-1)=-7\\in\\pm\\mathbb{P}$, so $(-1,1)$ is itself irreducible. Similarly $|(1,-1)|=49$ gives twin pair $(5,7)$. Done.</p>
-<p><strong>Inductive step:</strong> Assume the result holds for all elements with norm $&lt;|(k,-k)|$.</p>
-<p><strong>Case 1:</strong> $(k,-k)$ is irreducible in $N$. Then $q=(k,-k)$ itself is the irreducible divisor, with $(k,-k)=(k,-k)\\otimes(0,0)$. Done.</p>
-<p><strong>Case 2:</strong> $(k,-k)$ is reducible in $N$. Then $(k,-k)=(a,-a)\\otimes(b,-b)$ with $a,b\\neq0$. By <a class="iref" onclick="jumpId('n56')">N6</a>, $|(a,-a)|&lt;|(k,-k)|$. By the inductive hypothesis, $(a,-a)$ has an irreducible divisor $q$. Since $q\\mid_{\\otimes}(a,-a)$ and $(a,-a)\\mid_{\\otimes}(k,-k)$, we get $q\\mid_{\\otimes}(k,-k)$.</p>
-<p><strong>Case 3:</strong> $(k,-k)$ is irreducible in $N$ but reducible in $M$. This cannot happen by <a class="iref" onclick="jumpId('c1.5')">Cor 1.5</a> + <a class="iref" onclick="jumpId('t4.1')">Thm 4.1</a> (weak saturation preserves irreducibility). But if $(k,-k)$ is reducible in $M$ via $(a,b)\\otimes(c,d)=(k,-k)$ with $(a,b),(c,d)\\notin N$, then weak saturation provides a factorization within $N$, reducing to Case 2. $\\blacksquare$</p>
-<p><strong>Worked example — $(14,-14)$:</strong></p>
-<div class="cblk"> φ(14) = 85 = 5·17 → reducible
- Need a,b with a⊛b = 14 and φ(a)φ(b) = 85
- φ(-1)=-5, φ(-3)=-17 → (-5)·(-17)=85 ✓
- Check: (-1)⊛(-3) = 6·3+(-1)+(-3) = 14 ✓
- So (14,-14) = (-1,1)⊗(-3,3)
- |-1| = 25,  |-3| = 289  → both < 7225 = |14| ✓
- (-1,1): φ(-1)=-5∈±ℙ, ψ(-1)=-7∈±ℙ → irreducible! Done.</div>
-</div>`,
-lean:`${GH}/TPC/Norm.lean#L90`},
-
-{id:"c7.5",ch:"§7 Divisibility",b:"b-cor",
- t:`Cor 7.5 — $N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The nonidentity part of $N$ is exactly covered by irreducible cosets $q\\otimes N$. This is the monoid analogue of $\\mathbb{Z}\\setminus\\{\\pm1\\}=\\bigcup_{p\\in\\mathbb{P}} p\\mathbb{Z}$ from Furstenberg's proof.</p>
-<div class="mdisp">$$\\text{Every nonidentity element of }N\\text{ lies in some irreducible coset}$$</div>
-<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>Proof:</strong> Let $(k,-k)\\in N\\setminus\\{(0,0)\\}$. By <a class="iref" onclick="jumpId('t7.2')">Thm 7.2</a>, there exists $(q,-q)\\in\\mathrm{Irr}(N)$ with $(q,-q)\\mid_{\\otimes}(k,-k)$. This means $(k,-k)=(q,-q)\\otimes(m,-m)$ for some $(m,-m)\\in N$. Hence $(k,-k)\\in(q,-q)\\otimes N$, giving $\\subseteq$.</p>
-<p>Conversely, every element of $q\\otimes N$ is in $N$ (since $N$ is a submonoid), and $q\\neq0$ implies $q\\otimes(m,-m)\\neq(0,0)$ by <a class="iref" onclick="jumpId('l2.8')">Lem 2.8</a>. So the union $\\subseteq N\\setminus\\{(0,0)\\}$. $\\square$</p>
-<p><strong>First few cosets:</strong></p>
-<div class="cblk"> q=-1: (-1,1)⊗N = {(-1⊛x, 1⋆(-x)) : x∈ℤ}
-   x=0: (-1,1), x=1: (-6,6), x=2: (-11,11), x=-1: (4,-4)
-   Image under φ: multiples of φ(-1)=-5 in 6ℤ+1
-
- q=1:  (1,-1)⊗N = {(1⊛x, -(1⊛x)) : x∈ℤ}
-   x=0: (1,-1), x=1: (8,-8), x=2: (15,-15)
-   Image under φ: multiples of φ(1)=7 in 6ℤ+1
-
- q=2:  (2,-2)⊗N = {(2⊛x, -(2⊛x)) : x∈ℤ}
-   x=0: (2,-2), x=1: (15,-15), x=2: (28,-28)
-   Image under φ: multiples of φ(2)=13 in 6ℤ+1</div>
-</div>`,
-lean:`${GH}/TPC/Norm.lean#L110`},
-
-{id:"d8.1",ch:"§8 Topology",b:"b-def",
- t:`Def 8.1 — $U_{a,b,c}=\\{(a+cz,\\,b-cz)\\}$, anti-diagonal APs`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Anti-diagonal arithmetic progressions: sets of pairs $(a+cz,\\,b-cz)$ as $z$ ranges over $\\mathbb{Z}$. These form the basic open sets of the topology on $\\mathbb{Z}^2$.</p>
-<div class="mdisp">$$U_{a,b,c}=\\{(a+cz,\\;b-cz):z\\in\\mathbb{Z}\\},\\quad c\\neq0$$</div>
-<div class="cblk"><span class="kw">def</span> U(a b c:ℤ):Set(ℤ×ℤ):=
-  {p|∃z:ℤ, p=(a+c*z, b-c*z)}</div>
-<p>$U_{1,-1,7}=\\{\\ldots,(-6,6),(1,-1),(8,-8),(15,-15),\\ldots\\}$</p>
-<p>$N\\cap U_{a,b,c}$: empty if $c\\nmid a+b$, else infinite AP in $N$.</p>
-<p><strong>Consequence:</strong> No singleton of $N$ is open.</p>`,
-lean:`${GH}/TPC/Topology.lean#L18`},
-
-{id:"t8.3",ch:"§8 Topology",b:"b-thm",
- t:`Thm 8.3 — CRT $\\implies$ $\\{U_{a,b,c}\\}$ is a basis and each $U_{a,b,c}$ is clopen`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The sets $U_{a,b,c}$ form a topological basis: they cover $\\mathbb{Z}^2$, their intersections reduce (via CRT) to another basis element, and each is simultaneously open and closed (clopen). This gives $\\mathbb{Z}^2$ a totally disconnected topology.</p>
-<button class="btnprf" onclick="tp(this)">▶ Show proof sketch</button>
-<div class="prfbody" style="display:none">
-<p><strong>B1 (covering):</strong> Every $(x,y)\\in\\mathbb{Z}^2$ lies in $U_{x,y,1}=\\{(x+z,y-z):z\\in\\mathbb{Z}\\}$ (take $z=0$). $\\checkmark$</p>
-<p><strong>B2 (intersections):</strong> Let $(x,y)\\in U_{a,b,c}\\cap U_{a',b',c'}$. Then:
-$$x=a+cz_1=a'+c'z_2 \\implies a+cz_1\\equiv a'\\pmod{c'}$$
-By CRT (since we need $x\\equiv a\\pmod{c}$ and $x\\equiv a'\\pmod{c'}$), there exists $x^*$ with $x^*\\equiv a\\pmod{c}$ and $x^*\\equiv a'\\pmod{c'}$, and the solution set is $x^*+\\mathrm{lcm}(c,c')\\mathbb{Z}$. Since $x+y=a+b=a'+b'$ is constant on each anti-diagonal, the intersection is $U_{x^*,\\,a+b-x^*,\\,\\mathrm{lcm}(c,c')}$. $\\checkmark$</p>
-<p><strong>Clopen:</strong> The complement of $U_{a,b,c}$ in the anti-diagonal line $x+y=a+b$ consists of all points with $x\\not\\equiv a\\pmod{c}$. These are exactly:
-$$\\mathbb{Z}^2\\setminus U_{a,b,c}=\\bigcup_{k=1}^{|c|-1}U_{a+k,\\,b-k,\\,c}$$
-a finite union of basis elements $\\implies$ open. So $U_{a,b,c}$ has open complement $\\implies$ closed. Being both open (by definition) and closed $\\implies$ clopen. $\\square$</p>
-<p><strong>Worked CRT example:</strong></p>
-<div class="cblk"> U_{1,-1,7} ∩ U_{8,-8,5}:
- Need x ≡ 1 (mod 7) and x ≡ 8 (mod 5)
- x ≡ 1 (mod 7): x ∈ {…,-6, 1, 8, 15, 22, 29, 36, 43,…}
- x ≡ 8 (mod 5): x ∈ {…,-2, 3, 8, 13, 18, 23, 28, 33, 38, 43,…}
- First common: x* = 8 (works: 8≡1 mod 7, 8≡3 mod 5... no!)
- Actually: 8 mod 7 = 1 ✓, 8 mod 5 = 3 ≠ 8 mod 5 ✗
- Try x*=43: 43 mod 7 = 1 ✓, 43 mod 5 = 3 ≠ 8 ✗
- Wait — 8 mod 5 = 3. Need x≡3 mod 5.
- 43 mod 5 = 3 ✓! So intersection = U_{43,-43,35}</div>
+{id:"t10.1",ch:"§10 Main",b:"b-thm",
+ t:`Thm 10.1 — $|\\mathrm{Irr}(N)|=\\infty$: Infinitely Many Twin Prime Pairs`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The Furstenberg punchline. Combining (H1), (H2), (H3) yields infinitely many irreducibles in $N$, hence infinitely many twin prime pairs.</p>
+<div class="mdisp" style="background:linear-gradient(135deg,#fef3c7,#fde68a);border-left-color:#f59e0b;padding:1rem 1.2rem">
+$$\\boxed{\\;|\\mathrm{Irr}(N)| = |G| = \\infty\\;}$$
 </div>
-<p><strong>Example:</strong> $U_{1,-1,7}\\cap U_{8,-8,5}$: $x\\equiv1\\pmod7$, $x\\equiv8\\pmod5$ gives $x^*=43$, intersection $=U_{43,-43,35}$.</p>
-<p><strong>Key:</strong> $N\\cap U_{a,b,c}$ is infinite or empty $\\Rightarrow$ no singleton is open.</p>`,
-lean:`${GH}/TPC/Topology.lean#L75`},
-
-{id:"t8.7",ch:"§8 Topology",b:"b-thm",
- t:`Thm 8.7 — Every nonempty open set in $N$ is infinite; no singleton is open`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">In the subspace topology on $N$, every nonempty open set is infinite. This means no singleton $\\{(x,-x)\\}$ can be open — the key topological fact for the final contradiction.</p>
-<div class="mdisp">$$N\\cap U_{a,b,c}\\neq\\emptyset\\implies|N\\cap U_{a,b,c}|=\\infty$$</div>
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p><strong>Step 1:</strong> Recall $U_{a,b,c}=\\{(a+cz,b-cz):z\\in\\mathbb{Z}\\}$. A point $(x,-x)\\in N$ lies in $U_{a,b,c}$ iff $x=a+cz$ and $-x=b-cz$ for some $z$. Adding: $0=a+b$, i.e., $c\\mid a+b$ is necessary (taking $a+b=0$ in the simplest case).</p>
-<p><strong>Step 2 (nonempty $\\implies$ infinite):</strong> If $c\\mid a+b$, write $a+b=cm$. Then for every $z\\in\\mathbb{Z}$:
-$$(a+cz,\\;b-cz)=(a+cz,\\;-(a+cz)+(a+b))=(a+cz,\\;-(a+cz)+cm)$$
-For this to be in $N$: $b-cz=-(a+cz)$, i.e., $a+b=0$, which holds when $a+b=0$. More generally, when $c\\mid a+b$, the intersection is $\\{(a+cn,-(a+cn)):n\\in\\mathbb{Z}\\}$, parametrised by all $n\\in\\mathbb{Z}$ — an infinite set.</p>
-<p><strong>Step 3 (no singleton open):</strong> If $\\{(x,-x)\\}$ were open, it would contain some basic open set $N\\cap U_{a,-a,c}$ (with $(x,-x)$ as a member). But $N\\cap U_{a,-a,c}$ is infinite by Step 2, contradicting $|\\{(x,-x)\\}|=1$. $\\square$</p>
-<div class="cblk"> N ∩ U_{1,-1,7}:  a+b = 1+(-1) = 0, and 7|0 ✓
- Elements: z=…,-1,0,1,2,3,…
- z=-1: (1-7, -1+7) = (-6, 6)
- z= 0: (1, -1)
- z= 1: (8, -8)
- z= 2: (15,-15)
- z= 3: (22,-22)   — infinite ✓
-
- N ∩ U_{2,-1,5}:  a+b = 2+(-1) = 1, and 5∤1
- Intersection = ∅   — as expected</div>
+<p>Suppose for contradiction that $\\mathrm{Irr}(N)=G$ is finite: $G=\\{q_1,\\ldots,q_n\\}$.</p>
+<p><strong>(H1)</strong> (<a class="iref" onclick="jumpId('t6.1')">Thm 6.1</a>): $N\\setminus\\{(0,0)\\}=q_1\\otimes N\\cup\\cdots\\cup q_n\\otimes N$.</p>
+<p><strong>(H2)</strong> (<a class="iref" onclick="jumpId('t8.1')">Thm 8.1</a>): Each $q_i\\otimes N$ is closed in $N$.</p>
+<p>A finite union of closed sets is closed. Therefore $N\\setminus\\{(0,0)\\}$ is closed, making $\\{(0,0)\\}$ open.</p>
+<p><strong>(H3)</strong> (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>): $\\{(0,0)\\}$ is not open in $N$.</p>
+<p>Contradiction. $\\blacksquare$</p>
 </div>
-<p>This is the property that produces the <a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a> contradiction.</p>`,
-lean:`${GH}/TPC/Topology.lean#L100`},
 
-{id:"l8.9a",ch:"§8 Topology",b:"b-lem",
- t:`Lem 8.9a — $L_p$ is continuous`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Left multiplication $L_p(x,-x)=p\\otimes(x,-x)=(p_1\\mathbin{\\circledast}x,\\,-(p_1\\mathbin{\\circledast}x))$ is continuous on $N$: preimages of basis elements are open.</p>
-<div class="mdisp">$$L_p : N \\to N, \\quad L_p(x,-x) = (p_1\\mathbin{\\circledast}x,\\;-(p_1\\mathbin{\\circledast}x))$$</div>
-<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>Setup:</strong> Fix $p=(p_1,-p_1)\\in N\\setminus\\{(0,0)\\}$. The map $L_p:N\\to N$ is well-defined since $N=\\Delta(\\mathbb{Z})$ is closed under $\\otimes$ (<a class="iref" onclick="jumpId('d2.10')">Def 2.10</a>).</p>
-
-<p><strong>Goal:</strong> A map between topological spaces is continuous iff the preimage of every basis element is open. So we must show: for every basis element $V_{a,c}$ of $N$, the preimage $L_p^{-1}(V_{a,c})$ is open in $N$.</p>
-
-<p><strong>Recall:</strong> The basis elements of $N$ are $V_{a,c}=N\\cap U_{a,-a,c}=\\{(a+cn,\\,-(a+cn)):n\\in\\mathbb{Z}\\}$, i.e., all diagonal points whose first coordinate lies in the arithmetic progression $a+c\\mathbb{Z}$.</p>
-
-<p><strong>Unwind the preimage:</strong> A point $(x,-x)\\in N$ belongs to $L_p^{-1}(V_{a,c})$ exactly when $L_p(x,-x)\\in V_{a,c}$, i.e., when the first coordinate of $L_p(x,-x)$, which is $p_1\\mathbin{\\circledast}x$, satisfies $p_1\\mathbin{\\circledast}x\\equiv a\\pmod{c}$.</p>
-
-<p><strong>Simplify $p_1\\mathbin{\\circledast}x$:</strong> By definition, $a\\mathbin{\\circledast}b=6ab+a+b$. So:</p>
-<p>$$p_1\\mathbin{\\circledast}x = 6p_1 x + p_1 + x$$</p>
-<p>Factor out $x$ from the two terms that contain it:</p>
-<p>$$= (6p_1 + 1)\\,x + p_1$$</p>
-<p>Recognise $6p_1+1=\\phi(p_1)$ (<a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a>):</p>
-<p>$$= \\phi(p_1)\\,x + p_1$$</p>
-
-<p><strong>Translate to a congruence in $x$:</strong> The membership condition $p_1\\mathbin{\\circledast}x\\equiv a\\pmod{c}$ becomes:</p>
-<p>$$\\phi(p_1)\\,x + p_1 \\equiv a \\pmod{c} \\quad\\Longleftrightarrow\\quad \\phi(p_1)\\,x \\equiv a - p_1 \\pmod{c}$$</p>
-<p>This is a standard linear congruence in the unknown $x$, with modulus $c$ and coefficient $\\phi(p_1)$. Its solution set depends on $d := \\gcd(\\phi(p_1),\\,c)$:</p>
-
-<p><em>Case 1 — no solution:</em> If $d\\nmid(a-p_1)$, the congruence $\\phi(p_1)\\,x\\equiv a-p_1\\pmod{c}$ has no integer solutions (a standard fact: $mx\\equiv r\\pmod{c}$ is solvable iff $\\gcd(m,c)\\mid r$). So $L_p^{-1}(V_{a,c})=\\emptyset$, which is open. $\\checkmark$</p>
-
-<p><em>Case 2 — solutions form an arithmetic progression:</em> If $d\\mid(a-p_1)$, then dividing through by $d$ gives $\\tfrac{\\phi(p_1)}{d}\\,x\\equiv\\tfrac{a-p_1}{d}\\pmod{c/d}$, which has a unique solution $x_0$ mod $c/d$ since $\\gcd(\\tfrac{\\phi(p_1)}{d},\\,c/d)=1$. The full integer solution set is $x\\in x_0 + \\tfrac{c}{d}\\,\\mathbb{Z}$, so:</p>
-<p>$$L_p^{-1}(V_{a,c})=\\bigl\\{\\bigl(x_0+\\tfrac{c}{d}\\,n,\\;-(x_0+\\tfrac{c}{d}\\,n)\\bigr):n\\in\\mathbb{Z}\\bigr\\}=V_{x_0,\\;c/d}$$</p>
-<p>This is a basis element of $N$ (arithmetic progression on the diagonal with step $c/d>0$), hence open. $\\checkmark$</p>
-
-<p><strong>Conclusion:</strong> In every case, $L_p^{-1}(V_{a,c})$ is either empty or a basis element — both open in $N$. Since preimages of all basis elements are open, $L_p$ is continuous. $\\square$</p>
-</div>`,
-lean:`${GH}/TPC/Topology.lean#L155`},
-
-{id:"l8.9b",ch:"§8 Topology",b:"b-lem",
- t:`Lem 8.9b — $L_p$ is injective`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Left multiplication $L_p$ is one-to-one: distinct inputs produce distinct outputs. The key tool is the isomorphism $\\phi$, which turns $\\circledast$ into ordinary multiplication where cancellation is straightforward.</p>
-<div class="mdisp">$$p_1\\mathbin{\\circledast}x=p_1\\mathbin{\\circledast}y \\;\\implies\\; x=y$$</div>
-<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>Assume</strong> $p_1\\mathbin{\\circledast}x=p_1\\mathbin{\\circledast}y$. Recall from <a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a> that $\\phi$ is a monoid isomorphism with $\\phi(a\\mathbin{\\circledast}b)=\\phi(a)\\phi(b)$. Applying $\\phi$ to both sides:</p>
-<p>$$\\phi(p_1\\mathbin{\\circledast}x) = \\phi(p_1\\mathbin{\\circledast}y) \\quad\\Longrightarrow\\quad \\phi(p_1)\\,\\phi(x) = \\phi(p_1)\\,\\phi(y)$$</p>
-<p>We need $\\phi(p_1)\\neq 0$ to cancel. Since $\\phi(p_1)=6p_1+1$ and $6p_1+1=0$ would require $p_1=-\\tfrac{1}{6}\\notin\\mathbb{Z}$, we have $\\phi(p_1)\\neq 0$ for all $p_1\\in\\mathbb{Z}$. Cancel to get:</p>
-<p>$$\\phi(x)=\\phi(y) \\quad\\Longrightarrow\\quad x=y$$</p>
-<p>where the last step uses injectivity of $\\phi$ (it is a bijection $\\mathbb{Z}\\to 6\\mathbb{Z}+1$). $\\square$</p>
-</div>`,
-lean:`${GH}/TPC/Topology.lean#L155`},
-
-{id:"l8.9c",ch:"§8 Topology",b:"b-lem",
- t:`Lem 8.9c — $L_p$ is an open map with clopen image $V_{p_1,\\,\\phi(p_1)}$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">$L_p$ maps every basis element of $N$ to a basis element, so it is an open map. Its image is the arithmetic progression $V_{p_1,\\,\\phi(p_1)}$, which is a basis element and therefore clopen.</p>
-<div class="mdisp">$$L_p(V_{x_0,c}) = V_{p_1\\,\\circledast\\, x_0,\\;\\phi(p_1)\\,c}, \\qquad L_p(N)=V_{p_1,\\,\\phi(p_1)}\\text{ (clopen)}$$</div>
-<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>Open map:</strong> Take a basis element $V_{x_0,c}=\\{(x_0+cn,\\,-(x_0+cn)):n\\in\\mathbb{Z}\\}$. For each $n$:</p>
-<p>$$p_1\\mathbin{\\circledast}(x_0+cn) = 6p_1(x_0+cn)+p_1+(x_0+cn)$$</p>
-<p>Expand:</p>
-<p>$$= 6p_1 x_0 + 6p_1 cn + p_1 + x_0 + cn$$</p>
-<p>Group the constant part and the $n$-dependent part:</p>
-<p>$$= \\underbrace{(6p_1 x_0 + p_1 + x_0)}_{=\\,p_1\\,\\circledast\\, x_0} \\;+\\; \\underbrace{(6p_1 + 1)}_{=\\,\\phi(p_1)} \\cdot c \\cdot n$$</p>
-<p>Therefore:</p>
-<p>$$L_p(V_{x_0,c}) = \\{(p_1\\mathbin{\\circledast}x_0 + \\phi(p_1)\\,c\\,n,\\; -(p_1\\mathbin{\\circledast}x_0 + \\phi(p_1)\\,c\\,n)) : n\\in\\mathbb{Z}\\} = V_{p_1\\,\\circledast\\, x_0,\\;\\phi(p_1)\\,c}$$</p>
-<p>This is a basis element of $N$ with starting point $p_1\\mathbin{\\circledast}x_0$ and step size $\\phi(p_1)\\cdot c$. Since $L_p$ maps every basis element to a basis element, $L_p$ is an open map onto its image. $\\checkmark$</p>
-
-<p><strong>Image characterisation:</strong> Setting $c=1$ and $x_0=0$ (so $V_{0,1}=N$):</p>
-<p>$$L_p(N) = V_{p_1\\,\\circledast\\, 0,\\;\\phi(p_1)\\cdot 1} = V_{p_1,\\,\\phi(p_1)}$$</p>
-<p>since $p_1\\mathbin{\\circledast}0 = 6p_1\\cdot 0 + p_1 + 0 = p_1$. This is the arithmetic progression $\\{(p_1+\\phi(p_1)\\,n,\\;-(p_1+\\phi(p_1)\\,n)):n\\in\\mathbb{Z}\\}$, a basis element, hence clopen in $N$. $\\square$</p>
-
-<p><strong>Worked example ($p_1=1$):</strong></p>
-<div class="cblk"> L_{(1,-1)}: (x,-x) ↦ (1⊛x, -(1⊛x))
- φ(1)=7, so image has step size 7:
- x=0: 1⊛0 = 1   → (1,-1)
- x=1: 1⊛1 = 8   → (8,-8)
- x=2: 1⊛2 = 15  → (15,-15)
- x=-1: 1⊛(-1)=-6 → (-6,6)
- Image = V_{1,7} = {(1+7n, -(1+7n)) : n∈ℤ} — clopen ✓</div>
-</div>`,
-lean:`${GH}/TPC/Topology.lean#L155`},
-
-{id:"t8.9",ch:"§8 Topology",b:"b-thm",
- t:`Thm 8.9 — $L_p$ is a homeomorphism $\\implies$ $q\\otimes N$ is closed for every irreducible $q$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Combining the three lemmas above: $L_p$ is a continuous (<a class="iref" onclick="jumpId('l8.9a')">Lem 8.9a</a>), injective (<a class="iref" onclick="jumpId('l8.9b')">Lem 8.9b</a>), open map onto a clopen image (<a class="iref" onclick="jumpId('l8.9c')">Lem 8.9c</a>). This makes it a homeomorphism, and its image — the coset $q\\otimes N$ — is clopen, hence closed.</p>
-<div class="mdisp">$$L_p\\text{ continuous + injective + open + clopen image}\\;\\implies\\;L_p\\text{ homeomorphism}$$
-$$\\implies\\;q\\otimes N = V_{q_1,\\,\\phi(q_1)}\\text{ is clopen (hence closed) for every }q\\in\\mathrm{Irr}(N)$$</div>
-<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>$L_p$ is a homeomorphism onto its image:</strong> By <a class="iref" onclick="jumpId('l8.9a')">Lem 8.9a</a>, $L_p$ is continuous. By <a class="iref" onclick="jumpId('l8.9b')">Lem 8.9b</a>, $L_p$ is injective. By <a class="iref" onclick="jumpId('l8.9c')">Lem 8.9c</a>, $L_p$ is an open map onto the clopen set $V_{p_1,\\,\\phi(p_1)}$. A continuous, injective, open map is a homeomorphism onto its image.</p>
-<p><strong>Cosets are closed:</strong> For any irreducible $q=(q_1,-q_1)\\in\\mathrm{Irr}(N)$, the coset is:</p>
-<p>$$q\\otimes N = L_q(N) = V_{q_1,\\,\\phi(q_1)}$$</p>
-<p>This is a basis element of $N$, hence clopen — in particular, closed. $\\square$</p>
+<p>Since $\\mathrm{Irr}(N)=G=\\{(k,k):(6k-1,6k+1)\\in\\pm\\mathbb{P}^2\\}$:</p>
+<div class="mdisp" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-left-color:#10b981;padding:1rem 1.2rem">
+<strong>Corollary (Twin Prime Conjecture).</strong>
+$$|G|=\\infty \\implies |\\{(p,p+2) : p,p+2\\in\\mathbb{P}\\}| = \\infty$$
 </div>
-<p><strong>Example ($p_1=1$):</strong> $L_{(1,-1)}$ maps $N$ onto $V_{1,7}=\\{(1+7n,-(1+7n))\\}$, step $7=\\phi(1)$.</p>`,
-lean:`${GH}/TPC/Topology.lean#L155`},
 
-{id:"l8.13",ch:"§8 Topology",b:"b-lem",
- t:`Lem 8.13 — $q\\otimes C$ is closed for any $q\\in N\\setminus\\{0\\}$ and closed $C\\subseteq N$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Since $L_q$ is a homeomorphism onto a clopen image (<a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>), it preserves closedness: the image of any closed set under $L_q$ is closed in $N$.</p>
-<div class="mdisp">$$C\\subseteq N\\text{ closed},\\; q\\in N\\setminus\\{(0,0)\\} \\;\\implies\\; q\\otimes C\\text{ is closed in }N$$</div>
-<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>Step 1 — Homeomorphism restricts to closed sets:</strong> By <a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>, $L_q$ is a homeomorphism from $N$ onto its image $L_q(N)=V_{q_1,\\,\\phi(q_1)}$. A homeomorphism maps closed sets to closed sets. So if $C$ is closed in $N$, then $L_q(C)=q\\otimes C$ is closed in $L_q(N)$.</p>
-
-<p><strong>Step 2 — Closed-in-clopen is closed-in-ambient:</strong> By <a class="iref" onclick="jumpId('l8.9c')">Lem 8.9c</a>, $L_q(N)=V_{q_1,\\,\\phi(q_1)}$ is clopen in $N$. In particular it is closed. A set that is closed inside a closed subspace is closed in the ambient space: if $q\\otimes C$ is closed in $L_q(N)$, then $q\\otimes C = L_q(N)\\cap F$ for some $F$ closed in $N$, so $q\\otimes C$ is an intersection of two closed sets in $N$, hence closed in $N$. $\\square$</p>
-
-<p><strong>Corollary (used in <a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>):</strong> Taking $C=N$ (closed in itself): for each irreducible $q$, the coset $q\\otimes N = V_{q_1,\\,\\phi(q_1)}$ is closed. This is the special case already noted in <a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>, but this lemma gives us the stronger general statement.</p>
-</div>`,
-lean:`${GH}/TPC/Topology.lean#L180`},
-
-{id:"t9.1",ch:"§9 Main",b:"b-thm",
- t:`Thm 9.1 — Covering + Closed Cosets + No Open Singletons $\\implies$ $|\\mathrm{Irr}(N)|=\\infty$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">If the set of irreducibles were finite, then $N\\setminus\\{(0,0)\\}$ would be a finite union of closed sets (hence closed), making $\\{(0,0)\\}$ open. But no singleton is open in $N$. Contradiction — so there are infinitely many irreducibles.</p>
-<div class="mdisp">$$N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$$</div>
-<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>Ingredient 1 — Covering (<a class="iref" onclick="jumpId('c7.5')">Cor 7.5</a>):</strong>
-$$N\\setminus\\{(0,0)\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)}q\\otimes N$$
-Every nonidentity element has an irreducible divisor, so it lies in some irreducible coset.</p>
-<p><strong>Ingredient 2 — Each coset is closed (<a class="iref" onclick="jumpId('l8.13')">Lem 8.13</a>):</strong> For each $q\\in\\mathrm{Irr}(N)$, $q\\otimes N$ is closed in $N$ (apply <a class="iref" onclick="jumpId('l8.13')">Lem 8.13</a> with $C=N$).</p>
-<p><strong>Ingredient 3 — No singleton is open (<a class="iref" onclick="jumpId('t8.7')">Thm 8.7</a>):</strong> Every nonempty open set in $N$ is infinite.</p>
-<p><strong>Proof by contradiction:</strong> Suppose $\\mathrm{Irr}(N)$ is finite, say $\\mathrm{Irr}(N)=\\{q_1,\\ldots,q_n\\}$. Then:</p>
-<p>$$N\\setminus\\{(0,0)\\}=q_1\\otimes N\\cup\\cdots\\cup q_n\\otimes N$$</p>
-<p>Each $q_i\\otimes N$ is closed (Ingredient 2). A finite union of closed sets is closed. Therefore $N\\setminus\\{(0,0)\\}$ is closed in $N$.</p>
-<p>But then $\\{(0,0)\\}=N\\setminus(N\\setminus\\{(0,0)\\})$ is open in $N$ — a singleton open set. This contradicts Ingredient 3. $\\blacksquare$</p>
-<p><strong>Summary of the logical chain:</strong></p>
-<div class="cblk"> Finite Irr(N)
-   → N\{0} = finite union of closed sets
-   → N\{0} is closed
+<div class="cblk"> Finite G
+   → N\\{0} = finite union of closed sets
+   → N\\{0} is closed
    → {(0,0)} is open
-   → But every open set in N is infinite (Thm 8.7)
+   → But (0,0) has nonzero elements in every neighbourhood
+     (powers of (1,1) via Euler's theorem)
    → Contradiction!
-   → |Irr(N)| = ∞  □</div>
-<div class="cblk"><span class="kw">theorem</span> <span class="fn">infinitely_many_irred</span>:
-  {q:ℤ|Irred q}.Infinite</div></div>
-<p>This is <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg's argument</a> verbatim.</p>`,
-lean:`${GH}/TPC/Main.lean#L60`},
+   → |G| = ∞
+   → infinitely many twin primes  □</div>
 
-{id:"c9.3",ch:"§9 Main",b:"b-cor",
- t:`Cor 9.3 — Thm 5.4 + Thm 9.1 $\\implies$ Infinitely Many Primes $\\equiv\\pm1\\pmod6$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Combining the corrected algebraic equivalence (irreducibles of $N$ $\\longleftrightarrow$ primes $\\equiv\\pm1\\pmod6$) with the topological result (infinitely many irreducibles): there are infinitely many primes in $6\\mathbb{Z}+1$.</p>
-<div class="mdisp">$$\\boxed{\\bigl|\\{x\\in\\mathbb{Z}:6x+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty}$$</div>
-<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
-<div class="prfbody" style="display:none">
-<p><strong>Step 1 (<a class="iref" onclick="jumpId('t5.4')">Thm 5.4</a>):</strong> Establishes a bijection:
-$$\\mathrm{Irr}(N) \\longleftrightarrow \\{x\\in\\mathbb{Z}: 6x+1\\in\\pm\\mathbb{P}\\}$$
-Each irreducible $(x,-x)\\in N$ corresponds to a prime $p=6x+1\\equiv1\\pmod6$ (or a negative prime $-p\\equiv1\\pmod6$).</p>
-<p><strong>Step 2 (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>):</strong> The topological argument proves $|\\mathrm{Irr}(N)|=\\infty$.</p>
-<p><strong>Conclusion:</strong> Combining Steps 1 and 2:
-$$|\\mathrm{Irr}(N)|=\\infty \\implies |\\{p\\in\\mathbb{P}:p\\equiv\\pm1\\pmod6\\}|=\\infty$$</p>
-</div>
-<p><strong>Status of the twin-prime claim:</strong> The original formulation claimed irreducibles of $N$ correspond to twin prime pairs $(6x-1,6x+1)$. This required $\\star$-irreducibility in addition to $\\circledast$-irreducibility. However, as shown in <a class="iref" onclick="jumpId('p5.1')">Prop 5.1</a>, the identity $(-a)\\star(-b)=-(a\\circledast b)$ collapses the product on $N$ so that only $\\circledast$ matters. The corrected Cor 9.3 establishes infinitely many primes $\\equiv\\pm1\\pmod6$ — a result already known from <a href="https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions" target="_blank">Dirichlet's theorem</a>, but derived here by a purely topological-algebraic method.</p>
-<p><strong>Open question:</strong> Can the monoid construction be modified (e.g., a different product on $M$, or a different submonoid) so that irreducibles genuinely encode twin primes?</p>
 <div class="d-flex flex-wrap gap-1 mt-2">
-<a href="https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions" target="_blank" class="tpill">Dirichlet's Theorem</a>
 <a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank" class="tpill">Twin Prime Conjecture</a>
+<a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof</a>
 <a href="${GH}/TPC/Main.lean" target="_blank" class="tpill"><i class="bi bi-code-slash"></i> Main.lean</a>
 <a href="${GH}/PAPER.md" target="_blank" class="tpill"><i class="bi bi-file-text"></i> PAPER.md</a>
 <a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank" class="tpill">Mathlib4 docs</a>
-</div>`},
+</div>`,
+lean:`${GH}/TPC/Main.lean#L60`},
 
-{id:"gen",ch:"§10 General",b:"b-thm",
+// ═══════════════════════════════════════════════════════════════
+// §11  GENERAL FURSTENBERG THEOREM
+// ═══════════════════════════════════════════════════════════════
+
+{id:"gen",ch:"§11 General",b:"b-thm",
  t:`General Furstenberg Theorem — Topological Monoids with Irreducible Covering have $|\\mathrm{Irr}|=\\infty$`,
- body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The argument used to prove $|\\mathrm{Irr}(\\Delta(\\mathbb{Z}))|=\\infty$ is not specific to $\\Delta(\\mathbb{Z})$. It is an instance of a general theorem about topological monoids. Any commutative monoid satisfying the hypotheses below must have infinitely many irreducibles.</p>
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The argument is an instance of a general theorem about topological monoids.</p>
 
 <p><strong>Theorem (General Furstenberg Criterion).</strong> Let $(N,\\cdot)$ be a commutative monoid equipped with a topology satisfying:</p>
 
 <div class="mdisp">
-$$\\textbf{(H1)}\\quad\\text{Every nonidentity element of } N \\text{ is divisible by some irreducible:}$$
-$$N\\setminus\\{1_N\\}\\;=\\;\\bigcup_{q\\,\\in\\,\\mathrm{Irr}(N)} q\\cdot N$$
+$$\\textbf{(H1)}\\quad N\\setminus\\{1_N\\}=\\bigcup_{q\\in\\mathrm{Irr}(N)} q\\cdot N$$
 </div>
-
 <div class="mdisp">
-$$\\textbf{(H2)}\\quad\\text{For every irreducible } q\\in\\mathrm{Irr}(N),\\; \\text{the coset } q\\cdot N \\text{ is closed in } N$$
+$$\\textbf{(H2)}\\quad\\text{For every }q\\in\\mathrm{Irr}(N),\\; q\\cdot N\\text{ is closed in }N$$
 </div>
-
 <div class="mdisp">
-$$\\textbf{(H3)}\\quad\\text{No singleton of } N \\text{ is open (equivalently, every nonempty open set is infinite)}$$
+$$\\textbf{(H3)}\\quad\\text{No singleton of }N\\text{ is open}$$
 </div>
 
 <p>Then $|\\mathrm{Irr}(N)|=\\infty$.</p>
 
 <button class="btnprf" onclick="tp(this)">▶ Show proof</button>
 <div class="prfbody" style="display:none">
-<p>Suppose for contradiction that $\\mathrm{Irr}(N)$ is finite, say $\\mathrm{Irr}(N)=\\{q_1,\\ldots,q_n\\}$. By <strong>(H1)</strong>:</p>
-<p>$$N\\setminus\\{1_N\\}=q_1\\cdot N\\cup\\cdots\\cup q_n\\cdot N$$</p>
-<p>Each $q_i\\cdot N$ is closed by <strong>(H2)</strong>. A finite union of closed sets is closed. Therefore $N\\setminus\\{1_N\\}$ is closed, which makes $\\{1_N\\}$ open. But this contradicts <strong>(H3)</strong>. $\\blacksquare$</p>
+<p>If $\\mathrm{Irr}(N)=\\{q_1,\\ldots,q_n\\}$ were finite, then $N\\setminus\\{1_N\\}=\\bigcup q_i\\cdot N$ is a finite union of closed sets, hence closed. So $\\{1_N\\}$ is open, contradicting (H3). $\\blacksquare$</p>
 </div>
 
-<p>In this paper, we verify <strong>(H1)</strong>–<strong>(H3)</strong> for the anti-diagonal monoid $N=\\Delta(\\mathbb{Z})\\leqslant(\\mathbb{Z}^2,\\otimes)$:</p>
-<p><strong>(H1)</strong> follows from Noetherian descent on the multiplicative norm $|(x,-x)|=(6x+1)^2$ (<a class="iref" onclick="jumpId('t7.2')">Thm 7.2</a>, <a class="iref" onclick="jumpId('c7.5')">Cor 7.5</a>). Because the norm is multiplicative and strictly decreases under proper division, every nonidentity element eventually factors down to an irreducible divisor.</p>
-<p><strong>(H2)</strong> follows from the fact that left multiplication $L_q$ is a topological embedding with clopen image (<a class="iref" onclick="jumpId('t8.9')">Thm 8.9</a>, <a class="iref" onclick="jumpId('l8.13')">Lem 8.13</a>). The key ingredients are continuity and injectivity of $L_q$ (which uses the no-zero-divisor property of $\\circledast$ established in <a class="iref" onclick="jumpId('l2.8')">Lem 2.8</a>), together with the fact that images of clopen sets under $L_q$ remain clopen.</p>
-<p><strong>(H3)</strong> follows from the structure of the basis sets $U_{a,b,c}=\\{(a+cz,\\,b-cz):z\\in\\mathbb{Z}\\}$, each of which is an infinite arithmetic-progression-like set (<a class="iref" onclick="jumpId('d8.1')">Def 8.1</a>, <a class="iref" onclick="jumpId('t8.7')">Thm 8.7</a>). Since every nonempty open set contains a basis element, no singleton can be open.</p>
-<p>The general theorem then immediately yields $|\\mathrm{Irr}(N)|=\\infty$ (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>), and the algebraic equivalence between irreducibles of $N$ and primes $\\equiv\\pm1\\pmod6$ (<a class="iref" onclick="jumpId('t5.4')">Thm 5.4</a>) gives infinitely many such primes (<a class="iref" onclick="jumpId('c9.3')">Cor 9.3</a>).</p>
+<p><strong>Application to twin primes.</strong> We verify (H1)–(H3) for the generated diagonal submonoid $N=\\langle G\\rangle^{\\otimes}\\subseteq(\\mathbb{Z}^2,\\otimes)$:</p>
+<p><strong>(H1)</strong>: immediate from generation (<a class="iref" onclick="jumpId('t6.1')">Thm 6.1</a>).</p>
+<p><strong>(H2)</strong>: $q\\otimes N$ is clopen via unique factorization and distinct prime $\\phi$-values (<a class="iref" onclick="jumpId('t8.1')">Thm 8.1</a>).</p>
+<p><strong>(H3)</strong>: powers of $(1,1)$ via Euler's theorem, unconditional (<a class="iref" onclick="jumpId('t9.1')">Thm 9.1</a>).</p>
 
 <div class="d-flex flex-wrap gap-1 mt-2">
 <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof (Wikipedia)</a>
 <a href="https://en.wikipedia.org/wiki/Topological_group" target="_blank" class="tpill">Topological Groups</a>
 <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="tpill"><i class="bi bi-github"></i> Lean4TPC</a>
-<a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank" class="tpill"><i class="bi bi-file-text"></i> PAPER.md</a>
+</div>`,lean:null},
+
+// ═══════════════════════════════════════════════════════════════
+// §12  ANTI-DIAGONAL (HISTORICAL)
+// ═══════════════════════════════════════════════════════════════
+
+{id:"hist",ch:"§12 Historical",b:"b-ex",
+ t:`Historical Note — The Anti-Diagonal $\\Delta(\\mathbb{Z})=\\{(x,-x)\\}$ and Why It Falls Short`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">Before arriving at the generated diagonal submonoid, we explored the anti-diagonal — a natural submonoid of $M$ that encodes primes $\\equiv\\pm1\\pmod6$ but <em>not</em> twin primes.</p>
+
+<p><strong>The anti-diagonal submonoid.</strong> Define $\\Delta(\\mathbb{Z})=\\{(x,-x):x\\in\\mathbb{Z}\\}$. This is a submonoid of $M$ because the swap identity $(-a)\\star(-b)=-(a\\circledast b)$ ensures closure:</p>
+<div class="mdisp">$$(x,-x)\\otimes(y,-y)=(x\\circledast y,\\;(-x)\\star(-y))=(x\\circledast y,\\;-(x\\circledast y))$$</div>
+
+<p><strong>The collapse.</strong> The same identity that makes $\\Delta(\\mathbb{Z})$ a submonoid also <em>collapses</em> its structure: every product in $\\Delta(\\mathbb{Z})$ depends only on $\\circledast$. Consequently:</p>
+<div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(\\Delta(\\mathbb{Z})) \\;\\iff\\; 6x+1\\in\\pm\\mathbb{P}$$</div>
+<p>This encodes primes $\\equiv\\pm1\\pmod6$ (not twin primes). For example, $(6,-6)$ is irreducible in $\\Delta(\\mathbb{Z})$ because $\\phi(6)=37$ is prime, even though $\\psi(6)=35=5\\cdot 7$ is composite — so $6$ is NOT a twin-prime generator.</p>
+
+<p><strong>What works for $\\Delta(\\mathbb{Z})$:</strong> the anti-diagonal approach gives a valid Furstenberg-style proof that there are infinitely many primes $\\equiv\\pm1\\pmod6$ — a result already known from Dirichlet's theorem, but rederived here by purely topological-algebraic means.</p>
+
+<p><strong>The fix:</strong> Replace the anti-diagonal (a natural submonoid where $\\star$ collapses) with the generated diagonal submonoid $N=\\langle G\\rangle^{\\otimes}$ (where both $\\circledast$ and $\\star$ contribute independently via the two components).</p>`,
+lean:null},
+
+// ═══════════════════════════════════════════════════════════════
+// CREDITS
+// ═══════════════════════════════════════════════════════════════
+
+{id:"credits",ch:"Credits",b:"b-cred",
+ t:`Credits & Acknowledgements`,
+ body:`<p><strong>Author:</strong> FruitfulApproach</p>
+<p><strong>AI Collaborator:</strong> Claude Sonnet 4.6 (Anthropic) — assisted with proof exploration, error detection, construction of the generated diagonal submonoid approach, and production of this proof-card deck.</p>
+<p><strong>Formalisation:</strong> <a href="https://leanprover-community.github.io/" target="_blank">Lean 4</a> + <a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank">Mathlib4</a>. Source: <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank">github.com/FruitfulApproach/Lean4TPC</a>.</p>
+<p><strong>Key references:</strong></p>
+<ul style="font-size:.9rem;line-height:1.8;color:var(--g600)">
+<li>H. Furstenberg, <em>On the infinitude of primes</em>, Amer. Math. Monthly <strong>62</strong> (1955), 353.</li>
+<li>The twin prime conjecture: $(p,\\,p+2)$ are both prime for infinitely many $p$.</li>
+<li>Euler's theorem: $\\gcd(a,n)=1\\implies a^{\\varphi(n)}\\equiv 1\\pmod n$.</li>
+</ul>
+<p style="margin-top:1rem;font-size:.82rem;color:var(--g400)">This deck presents the construction and proof for peer review. The argument hinges on: (1) the irreducibility characterisation $\\mathrm{Irr}(N)=G$, (2) clopenness of cosets via unique factorisation in $N$, and (3) the unconditional density argument using Euler's theorem. Errors and feedback welcome.</p>
+
+<div class="d-flex flex-wrap gap-1 mt-2">
+<a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="tpill"><i class="bi bi-github"></i> Lean4TPC</a>
 <a href="https://leanprover-community.github.io/mathlib4_docs/" target="_blank" class="tpill">Mathlib4 docs</a>
+<a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tpill">Twin Primes</a>
+<a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tpill">Furstenberg's Proof</a>
 </div>`,lean:null}
+
 ];
 
 const chapters=[...new Set(cards.map(c=>c.ch))];
@@ -1413,13 +860,13 @@ function tp(btn){
   const el=btn.nextElementSibling;
   const open=el.style.display==="none"||!el.style.display;
   el.style.display=open?"block":"none";
-  btn.innerHTML=open?"▼ Hide proof":"▶ Show proof";
+  btn.innerHTML=open?"&#9660; Hide proof":"&#9654; Show proof";
 }
 document.addEventListener("keydown",e=>{
   if(e.key==="ArrowRight"||e.key==="ArrowDown")go(1);
   if(e.key==="ArrowLeft"||e.key==="ArrowUp")go(-1);
 });
-// Deep link via hash (e.g. #t8.9)
+// Deep link via hash (e.g. #t8.1)
 const _hash = location.hash.replace('#','');
 if (_hash) { const hi = cards.findIndex(c=>c.id===_hash); if(hi>=0) cur=hi; }
 // Read jump target from index.html via sessionStorage
@@ -1445,64 +892,44 @@ function toggleGraph(){
 }
 function initGraph(){
   const N=[
-    {id:"d1.1", l:"Def 1.1\nWeak Sat.", t:"def"},
-    {id:"c1.5", l:"Cor 1.5\nIrred ⇔", t:"cor"},
-    {id:"d2.1", l:"Def 2.1\n⊛ and ⋆", t:"def"},
-    {id:"p2.3", l:"Prop 2.3\nCommMonoid", t:"prop"},
-    {id:"eta",  l:"Involution\nη(x)=−x", t:"prop"},
-    {id:"t2.6", l:"Thm 2.6\nφ, ψ isom.", t:"thm"},
-    {id:"l2.8", l:"Lem 2.8\nNo 0-div", t:"lem"},
-    {id:"d2.10",l:"Def 2.10\nM=(ℤ²,⊗)", t:"def"},
-    {id:"d3.1", l:"Def 3.1\nΔ(ℤ)⊂M", t:"def"},
-    {id:"cx",   l:"Cex\nNot Sat.", t:"ex"},
-    {id:"t4.1", l:"Thm 4.1\nWeak Sat.", t:"thm"},
-    {id:"l4.5", l:"Lem 4.5\n⊛-decomp⇔comp", t:"lem"},
-    {id:"l4.6", l:"Lem 4.6\n⋆-decomp⇔comp", t:"lem"},
-    {id:"p5.1", l:"Prop 5.1\nIrred⇔⊛only", t:"prop"},
-    {id:"p5.2", l:"Prop 5.2\n⊛-irred⇔±ℙ", t:"prop"},
-    {id:"p5.3", l:"Prop 5.3\n⋆-irred⇔±ℙ", t:"prop"},
-    {id:"t5.4", l:"Thm 5.4\nIrred⇔Twin", t:"thm"},
-    {id:"d6.1", l:"Def 6.1\nNorm", t:"def"},
-    {id:"n56",  l:"Prop N5–N6\nMult+Desc", t:"prop"},
-    {id:"t7.2", l:"Thm 7.2\nIrred Div", t:"thm"},
-    {id:"c7.5", l:"Cor 7.5\nCovering", t:"cor"},
-    {id:"d8.1", l:"Def 8.1\nU_{a,b,c}", t:"def"},
-    {id:"t8.3", l:"Thm 8.3\nBasis+Clopen", t:"thm"},
-    {id:"t8.7", l:"Thm 8.7\nNo Open {pt}", t:"thm"},
-    {id:"l8.9a",l:"Lem 8.9a\nLp contin.", t:"lem"},
-    {id:"l8.9b",l:"Lem 8.9b\nLp injective", t:"lem"},
-    {id:"l8.9c",l:"Lem 8.9c\nLp open+clopen", t:"lem"},
-    {id:"t8.9", l:"Thm 8.9\nLp homeo.", t:"thm"},
-    {id:"l8.13",l:"Lem 8.13\nq⊗C closed", t:"lem"},
-    {id:"t9.1", l:"Thm 9.1\n|Irr|=∞", t:"thm"},
-    {id:"c9.3", l:"Cor 9.3\n∞ Primes ±1(6)", t:"cor"},
+    {id:"d1.1", l:"Def 1.1\n⊛ and ⋆", t:"def"},
+    {id:"p1.2", l:"Prop 1.2\nCommMonoid", t:"prop"},
+    {id:"t1.3", l:"Thm 1.3\nφ, ψ isom.", t:"thm"},
+    {id:"eta",  l:"Prop 1.4\nη(x)=−x", t:"prop"},
+    {id:"l1.5", l:"Lem 1.5\nNo 0-div", t:"lem"},
+    {id:"d2.1", l:"Def 2.1\nM=(ℤ²,⊗)", t:"def"},
+    {id:"d2.2", l:"Def 2.2\nN=⟨G⟩", t:"def"},
+    {id:"l3.1", l:"Lem 3.1\nDiag closure", t:"lem"},
+    {id:"t3.2", l:"Thm 3.2\nG⊆Irr(N)", t:"thm"},
+    {id:"t3.3", l:"Thm 3.3\nIrr(N)⊆G", t:"thm"},
+    {id:"l4.1", l:"Lem 4.1\n⊛-decomp⇔comp", t:"lem"},
+    {id:"l4.2", l:"Lem 4.2\n⋆-decomp⇔comp", t:"lem"},
+    {id:"l5.1", l:"Lem 5.1\nNo 0-comp", t:"lem"},
+    {id:"p5.2", l:"Prop 5.2\nFree monoid", t:"prop"},
+    {id:"t6.1", l:"Thm 6.1\n(H1) Covering", t:"thm"},
+    {id:"d7.1", l:"Def 7.1\nProd Furst.", t:"def"},
+    {id:"t8.1", l:"Thm 8.1\n(H2) Clopen", t:"thm"},
+    {id:"t9.1", l:"Thm 9.1\n(H3) No sgltn", t:"thm"},
+    {id:"t10.1",l:"Thm 10.1\n∞ Twin Primes", t:"thm"},
     {id:"gen",  l:"General\nFurstenberg", t:"thm"}
   ];
   const E=[
-    ["d1.1","c1.5"],["d1.1","t4.1"],
-    ["d2.1","p2.3"],["d2.1","eta"],["d2.1","t2.6"],["d2.1","l2.8"],["d2.1","d2.10"],
-    ["p2.3","t2.6"],
-    ["eta","d2.10"],["eta","d3.1"],
-    ["d2.10","d3.1"],
-    ["d3.1","cx"],["d3.1","t4.1"],
-    ["l2.8","t4.1"],
-    ["t2.6","l4.5"],["t2.6","l4.6"],
-    ["c1.5","p5.1"],["t4.1","p5.1"],["eta","p5.1"],
-    ["t2.6","p5.2"],["l4.5","p5.2"],["t2.6","p5.3"],["l4.6","p5.3"],["p5.1","t5.4"],["p5.2","t5.4"],["p5.3","t5.4"],
-    ["t2.6","d6.1"],
-    ["t2.6","n56"],["d6.1","n56"],
-    ["n56","t7.2"],["t4.1","t7.2"],
-    ["t7.2","c7.5"],
-    ["d8.1","t8.3"],
-    ["t8.3","t8.7"],
-    ["t2.6","l8.9a"],["t8.3","l8.9a"],["d8.1","l8.9a"],
-    ["t2.6","l8.9b"],
-    ["t2.6","l8.9c"],["d2.1","l8.9c"],
-    ["l8.9a","t8.9"],["l8.9b","t8.9"],["l8.9c","t8.9"],
-    ["t8.9","l8.13"],["l8.9c","l8.13"],
-    ["c7.5","t9.1"],["l8.13","t9.1"],["t8.7","t9.1"],
-    ["t5.4","c9.3"],["t9.1","c9.3"],
-    ["t9.1","gen"],["c9.3","gen"]
+    ["d1.1","p1.2"],["d1.1","t1.3"],["d1.1","eta"],["d1.1","l1.5"],
+    ["p1.2","t1.3"],
+    ["d1.1","d2.1"],["eta","d2.1"],
+    ["d2.1","d2.2"],["t1.3","d2.2"],
+    ["d2.1","l3.1"],
+    ["d2.2","t3.2"],["t1.3","t3.2"],["l1.5","t3.2"],
+    ["d2.2","t3.3"],
+    ["t1.3","l4.1"],["t1.3","l4.2"],
+    ["l4.1","t3.2"],["l4.2","t3.2"],
+    ["d2.2","l5.1"],["l4.2","l5.1"],
+    ["t1.3","p5.2"],["d2.2","p5.2"],
+    ["d2.2","t6.1"],["t3.2","t6.1"],["t3.3","t6.1"],
+    ["d7.1","t8.1"],["p5.2","t8.1"],["t3.2","t8.1"],["t3.3","t8.1"],
+    ["d2.2","t9.1"],["d7.1","t9.1"],
+    ["t6.1","t10.1"],["t8.1","t10.1"],["t9.1","t10.1"],
+    ["t10.1","gen"]
   ];
   const colors={def:"#7c3aed",thm:"#f59e0b",prop:"#a1a1aa",lem:"#52525b",cor:"#3b82f6",ex:"#27272a"};
   cyInst=cytoscape({
@@ -1585,9 +1012,6 @@ function initGraph(){
     document.getElementById("cy").style.cursor="default";
   });
 }
-document.addEventListener("keydown",function(e){
-  if(e.key==="Escape"&&document.getElementById("graphOverlay").classList.contains("active")) toggleGraph();
-});
 </script>
 </body>
 </html>
