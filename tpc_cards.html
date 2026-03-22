@@ -575,8 +575,61 @@ lean:`${GH}/TPC/WeaklySaturated.lean#L45`},
  x=1:  φ(1) = 7 (prime) → NOT decomposable ✓
  x=2:  φ(2) = 13 (prime) → NOT decomposable ✓</div>
 
-<p><strong>Remark:</strong> An identical result holds for $\\star$: $x\\in\\{a\\star b:a,b\\neq0\\}\\iff\\psi(x)=6x-1$ is composite. The proof is the same, using $\\psi$ in place of $\\phi$.</p>
+<p><strong>Remark:</strong> The corresponding result for $\\star$ is <a class="iref" onclick="jumpId('l4.6')">Lem 4.6</a>. The proof is <em>not</em> identical: the sign flip $\\psi(a\\star b)=-\\psi(a)\\psi(b)$ means $\\psi$ maps into $(6\\mathbb{Z}-1,\\,\\bullet\\,)$ where $a\\,\\bullet\\,b:=-ab$, and there is only one residue-class form instead of two.</p>
 </div>`,
+lean:`${GH}/TPC/Irreducible.lean#L10`},
+
+{id:"l4.6",ch:"§4 Weak Sat.",b:"b-lem",
+ t:`Lem 4.6 — $x\\in\\{a\\star b:a,b\\neq0\\}$ $\\iff$ $6x-1$ is composite`,
+ body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">The $\\star$-analogue of <a class="iref" onclick="jumpId('l4.5')">Lem 4.5</a>. An integer $x$ can be written as $a\\star b$ with $a,b\\neq0$ if and only if $\\psi(x)=6x-1$ is composite. Unlike the $\\circledast$ case, $\\psi$ maps into $(6\\mathbb{Z}-1,\\,\\bullet\\,)$ where $a\\,\\bullet\\,b:=-ab$ (negated multiplication), and there is only <em>one</em> residue-class form for composites.</p>
+<div class="mdisp">$$x\\in\\{a\\star b:a,b\\neq0\\} \\;\\iff\\; 6x-1\\text{ is composite}$$</div>
+<button class="btnprf" onclick="tp(this)">▶ Show proof</button>
+<div class="prfbody" style="display:none">
+<p><strong>Setup:</strong> Recall from <a class="iref" onclick="jumpId('t2.6')">Thm 2.6</a> that $\\psi:(\\mathbb{Z},\\star)\\to(6\\mathbb{Z}-1,\\,\\bullet\\,)$ is a monoid isomorphism with $\\psi(x)=6x-1$ and $\\psi(a\\star b)=-\\psi(a)\\psi(b)=\\psi(a)\\,\\bullet\\,\\psi(b)$. The identity of $\\star$ is $0$, and $\\psi(0)=-1$ (the identity of $\\bullet$).</p>
+
+<p><strong>($\\Rightarrow$) Decomposable $\\implies$ composite:</strong></p>
+
+<p>Suppose $x = a\\star b$ with $a,b\\neq0$. Then:</p>
+<p>$$\\psi(x) = \\psi(a)\\,\\bullet\\,\\psi(b) = -(6a-1)(6b-1)$$</p>
+<p>Rewrite as a product in $\\mathbb{Z}$: $\\psi(x) = (6a-1)\\cdot(-(6b-1)) = (6a-1)(6(-b)+1)$.</p>
+<p>Since $a\\neq0$: $\\psi(a)=6a-1\\neq-1$, and $6a-1=1\\implies a=\\tfrac{1}{3}\\notin\\mathbb{Z}$, so $|6a-1|\\geq5$. Since $b\\neq0$: $|6(-b)+1|=|-6b+1|\\geq5$. Therefore $|\\psi(x)|\\geq25$, so $6x-1$ is composite. $\\checkmark$</p>
+
+<p><strong>($\\Leftarrow$) Composite $\\implies$ decomposable:</strong></p>
+
+<p>Suppose $n=6x-1$ is composite. We must find $a,b\\neq0$ with $a\\star b=x$.</p>
+
+<p><em>Step 1 — Residue analysis:</em> Since $n\\in6\\mathbb{Z}-1$, we have $\\gcd(n,6)=1$, so every prime factor satisfies $p\\equiv\\pm1\\pmod{6}$. Since $n$ is composite, write $n=m\\cdot m'$ with $|m|,|m'|>1$. Since $n\\equiv-1\\pmod6$, the product $m\\cdot m'\\equiv-1\\pmod6$ forces exactly one factor $\\equiv1$ and one $\\equiv-1\\pmod6$.</p>
+
+<p><em>Single form — $m\\equiv-1,\\;m'\\equiv1\\pmod6$:</em> Write $m=6\\alpha-1$, $m'=6\\beta+1$. Then:</p>
+<p>$$(6\\alpha-1)(6\\beta+1) = (6\\alpha-1)\\bigl(-(6(-\\beta)-1)\\bigr) = -\\,(6\\alpha-1)(6(-\\beta)-1)$$</p>
+<p>This equals $\\psi(\\alpha)\\,\\bullet\\,\\psi(-\\beta) = \\psi(\\alpha\\star(-\\beta))$. So $\\psi(x)=\\psi(\\alpha\\star(-\\beta))$, giving $x=\\alpha\\star(-\\beta)$ by injectivity of $\\psi$.</p>
+<p>We need $\\alpha\\neq0$ and $-\\beta\\neq0$: since $|m|=|6\\alpha-1|>1$, we have $6\\alpha-1\\neq\\pm1$, so $\\alpha\\neq0$ (and $\\alpha\\neq\\tfrac{1}{3}\\notin\\mathbb{Z}$). Since $|m'|=|6\\beta+1|>1$, we have $6\\beta+1\\neq\\pm1$, so $\\beta\\neq0$ (and $\\beta\\neq-\\tfrac{1}{3}\\notin\\mathbb{Z}$), hence $-\\beta\\neq0$. $\\checkmark$</p>
+
+<p>(No other residue-class pairing works: both $\\equiv1$ gives product $\\equiv1\\pmod6\\neq-1$; both $\\equiv-1$ also gives $\\equiv1$.) $\\checkmark$</p>
+
+<p><strong>Worked examples:</strong></p>
+<div class="cblk"> x=6:  ψ(6) = 35 = 5·7 (composite)
+   m=5 ≡ -1, m'=7 ≡ 1 (mod 6)
+   α=1, β=1: (6·1-1)(6·1+1) = 5·7 = 35 ✓
+   a=α=1, b=-β=-1
+   ψ(1)•ψ(-1) = -(5)(-7) = 35 ✓
+   Check: 1⋆(-1) = -6·1·(-1)+1+(-1) = 6 ✓
+
+ x=8:  ψ(8) = 47 (prime) → NOT decomposable ✓
+
+ x=9:  ψ(9) = 53 (prime) → NOT decomposable ✓
+
+ x=4:  ψ(4) = 23 (prime) → NOT decomposable ✓
+
+ x=14: ψ(14) = 83 (prime) → NOT decomposable ✓
+
+ x=24: ψ(24) = 143 = 11·13 (composite)
+   m=11 ≡ -1, m'=13 ≡ 1 (mod 6)
+   α=2, β=2: (6·2-1)(6·2+1) = 11·13 = 143 ✓
+   a=α=2, b=-β=-2
+   Check: 2⋆(-2) = -6·2·(-2)+2+(-2) = 24 ✓</div>
+</div>
+<p><strong>Contrast with <a class="iref" onclick="jumpId('l4.5')">Lem 4.5</a>:</strong> The $\\circledast$ version has two residue-class forms (both $\\equiv1$ or both $\\equiv-1$). The $\\star$ version has only one form (one $\\equiv1$, one $\\equiv-1$), reflecting the sign flip in $\\psi(a\\star b)=-\\psi(a)\\psi(b)$.</p>`,
 lean:`${GH}/TPC/Irreducible.lean#L10`},
 
 {id:"p5.1",ch:"§5 Irred",b:"b-prop",
@@ -1195,6 +1248,7 @@ function initGraph(){
     {id:"cx",   l:"Cex\nNot Sat.", t:"ex"},
     {id:"t4.1", l:"Thm 4.1\nWeak Sat.", t:"thm"},
     {id:"l4.5", l:"Lem 4.5\n⊛-decomp⇔comp", t:"lem"},
+    {id:"l4.6", l:"Lem 4.6\n⋆-decomp⇔comp", t:"lem"},
     {id:"p5.1", l:"Prop 5.1\nIrred⇔⊛∧⋆", t:"prop"},
     {id:"p5.2", l:"Prop 5.2\n⊛-irred⇔±ℙ", t:"prop"},
     {id:"p5.3", l:"Prop 5.3\n⋆-irred⇔±ℙ", t:"prop"},
@@ -1223,9 +1277,9 @@ function initGraph(){
     ["d2.10","d3.1"],
     ["d3.1","cx"],["d3.1","t4.1"],
     ["l2.8","t4.1"],
-    ["t2.6","l4.5"],
+    ["t2.6","l4.5"],["t2.6","l4.6"],
     ["c1.5","p5.1"],["t4.1","p5.1"],["eta","p5.1"],
-    ["t2.6","p5.2"],["t2.6","p5.3"],["p5.1","t5.4"],["p5.2","t5.4"],["p5.3","t5.4"],
+    ["t2.6","p5.2"],["l4.5","p5.2"],["t2.6","p5.3"],["l4.6","p5.3"],["p5.1","t5.4"],["p5.2","t5.4"],["p5.3","t5.4"],
     ["t2.6","d6.1"],
     ["t2.6","n56"],["d6.1","n56"],
     ["n56","t7.2"],["t4.1","t7.2"],
