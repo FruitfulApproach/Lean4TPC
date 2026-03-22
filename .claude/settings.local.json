@@ -7,7 +7,8 @@
       "Bash(pip install:*)",
       "Bash(python3 compute_identities.py)",
       "Bash(python3 compute_identities2.py)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(find C:__CURRENTTPCLean4TPC -maxdepth 3 -name *.lean -not -path ./.lake/*)"
     ]
   }
 }
