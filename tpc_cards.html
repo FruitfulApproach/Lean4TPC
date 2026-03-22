@@ -272,7 +272,7 @@ $$\\mathrm{Irr}(N) = \\{(x,-x)\\in N : 6x+1\\text{ and }6x-1\\text{ are both pri
 </div>`,lean:null},
 
 {id:"d1.1",ch:"§1 Algebra",b:"b-def",
- t:`Def 1.1 — Weakly Saturated: $ab\\in N \\Rightarrow \\exists\\,a'b'\\in N$`,
+ t:`Def 1.1 — Weakly Saturated: $ab\\in N \\Rightarrow \\exists\\,a',b'\\in N$`,
  body:`<p style="color:#555;font-style:italic;margin-bottom:.6rem">A submonoid $N\\subseteq M$ is <strong>weakly saturated</strong> if: whenever two nontrivial elements of $M$ multiply to land in $N$, there exist two nontrivial elements <em>of $N$</em> with the same product.</p>
 <div class="mdisp">$$\\forall\\,a,b\\in M,\\quad a,b\\neq 1_M,\\quad ab\\in N\\implies\\exists\\,a',b'\\in N,\\;a',b'\\neq 1_N:a'b'=ab$$</div>
 <p>You may change the <em>factors</em> (from $a,b$ to $a',b'$), but the <em>product</em> stays the same.</p>
@@ -544,7 +544,7 @@ lean:`${GH}/TPC/Irreducible.lean#L10`},
 <div class="mdisp">$$(x,-x)\\in\\mathrm{Irr}(N) \\;\\iff\\; x\\in\\mathrm{Irr}(\\mathbb{Z},\\circledast) \\;\\wedge\\; x\\in\\mathrm{Irr}(\\mathbb{Z},\\star)$$</div>
 
 <p><strong>($\\Leftarrow$) Both irreducible $\\implies$ $(x,-x)\\in\\mathrm{Irr}(N)$:</strong></p>
-<p>Suppose $x\\in\\mathrm{Irr}(\\mathbb{Z},\\circledast)$ and $(x,-x)=(a,-a)\\otimes(b,-b)$ is a factorization in $N$ with $a,b\\neq0$. The first component gives $x=a\\mathbin{\\circledast}b$ — a nontrivial $\\circledast$-factorization, contradicting $x\\in\\mathrm{Irr}(\\mathbb{Z},\\circledast)$. So $(x,-x)$ is irreducible in $N$. (The $\\star$-irreducibility is not needed for this direction, but is needed for the converse.)</p>
+<p>Suppose $x\\in\\mathrm{Irr}(\\mathbb{Z},\\circledast)$ and $(x,-x)=(a,-a)\\otimes(b,-b)$ is a factorization in $N$ with $a,b\\neq0$. The first component gives $x=a\\mathbin{\\circledast}b$ — a nontrivial $\\circledast$-factorization, contradicting $x\\in\\mathrm{Irr}(\\mathbb{Z},\\circledast)$. So $(x,-x)$ is irreducible in $N$. (Irreducibility in $N$ depends on both $\\circledast$- and $\\star$-irreducibility.)</p>
 
 <p><strong>($\\Rightarrow$) $(x,-x)\\in\\mathrm{Irr}(N)$ $\\implies$ both irreducible:</strong></p>
 
