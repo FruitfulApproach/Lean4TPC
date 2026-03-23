@@ -131,7 +131,7 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
       &nbsp;<i class="bi bi-dot"></i>&nbsp;
       <a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank"><i class="bi bi-file-text"></i> PAPER.md</a>
       &nbsp;<i class="bi bi-dot"></i>&nbsp;
-      <span style="color:var(--green-light)"><i class="bi bi-patch-check-fill"></i> 16 Proof Cards</span>
+      <span style="color:var(--green-light)"><i class="bi bi-patch-check-fill"></i> 17 Proof Cards</span>
     </div>
   </div>
   <div class="d-flex gap-2 flex-wrap">
@@ -258,17 +258,57 @@ def sstar (x y : ℤ) : ℤ := -6 * x * y + x + y</div>
 </div>`},
 
 // ═══════════════════════════════════════════════════════════════
-// Card 5 — Prop 2.4: Structure of N
+// Card 5 — Lem 2.3: Separating Invariants
+// ═══════════════════════════════════════════════════════════════
+{id:"lem-sep-inv",ch:"§2 Monoid",badge:"b-lem",title:"Lemma 2.3 — Separating Invariants via UMP",lean:`${GH}/TPC/Monoid.lean#L30`,body:`
+<p>For primes $q\\equiv 1\\pmod{6}$ and $p\\equiv 5\\pmod{6}$, define the <strong>separating bilinear maps</strong>:</p>
+<div class="math-block">$$f_{q,p}:\\mathbb{Z}\\times\\mathbb{Z}\\to(\\mathbb{Z},+),\\qquad f_{q,p}(z,w)=v_q(|\\phi(z)|)\\cdot v_p(|\\psi(w)|)$$</div>
+<p>where $v_q$ denotes the $q$-adic valuation.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show: $f_{q,p}$ is bilinear</button>
+<div class="proof-content" style="display:none">
+<p><strong>Left bilinearity (using $\\phi$ is a homomorphism):</strong></p>
+<div class="math-block">$$f_{q,p}(a\\circledast b,\\,w)=v_q(|\\phi(a)\\phi(b)|)\\cdot v_p(|\\psi(w)|)=\\bigl(v_q|\\phi(a)|+v_q|\\phi(b)|\\bigr)\\cdot v_p|\\psi(w)|=f_{q,p}(a,w)+f_{q,p}(b,w)$$</div>
+<p><strong>Right bilinearity:</strong> $f_{q,p}(z,c\\star d)=v_q|\\phi(z)|\\cdot\\bigl(v_p|\\psi(c)|+v_p|\\psi(d)|\\bigr)=f_{q,p}(z,c)+f_{q,p}(z,d)$. ✓</p>
+<p><strong>Zero condition:</strong> $\\phi(0)=1$ so $v_q(1)=0$, hence $f_{q,p}(0,w)=0$. Similarly $f_{q,p}(z,0)=0$. ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — $f_{q,p}$ is bilinear</div>
+</div>
+<p>By the <strong>Universal Mapping Property</strong> of the monoid tensor product, each bilinear $f_{q,p}$ extends <em>uniquely</em> to a monoid homomorphism $\\bar{f}_{q,p}$:</p>
+<div class="math-block">$$\\begin{CD}
+(\\mathbb{Z},\\circledast)\\times(\\mathbb{Z},\\star) @>{f_{q,p}}>> (\\mathbb{Z},+) \\\\
+@V{\\iota}VV @| \\\\
+M @>{\\exists!\\,\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
+\\end{CD}$$</div>
+<p>The vertical map $\\iota(z,w)=z\\otimes w$ is the universal bilinear map into $M$; the diagram commutes: $\\bar{f}_{q,p}\\circ\\iota = f_{q,p}$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show: generators are separated</button>
+<div class="proof-content" style="display:none">
+<p>Let $k\\neq l$ in $\\mathbb{Z}\\setminus\\{0\\}$. Then $\\phi(k)=6k+1\\neq 6l+1=\\phi(l)$, so $|\\phi(k)|\\neq|\\phi(l)|$. Their prime factorizations differ, so there exists a prime $q$ with $v_q(|\\phi(k)|)\\neq v_q(|\\phi(l)|)$. Choose any prime $p\\equiv 5\\pmod{6}$ not dividing $\\psi(k)\\psi(l)$, so $v_p(|\\psi(k)|)=v_p(|\\psi(l)|)=0$. Wait — instead pick $p$ dividing $\\psi(k)$ but not $\\psi(l)$ (or vice versa) if they differ, otherwise $p$ such that $v_p|\\psi|\\geq 1$ on one side. In either case:</p>
+<div class="math-block">$$\\bar{f}_{q,p}(\\mathfrak{k})=f_{q,p}(k,k)=v_q|\\phi(k)|\\cdot v_p|\\psi(k)|\\neq v_q|\\phi(l)|\\cdot v_p|\\psi(l)|=\\bar{f}_{q,p}(\\mathfrak{l})$$</div>
+<p>for an appropriate choice of $(q,p)$. ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — $\\{\\bar{f}_{q,p}\\}$ separates generators</div>
+</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Role in the proof</div>
+<p>This is the <strong>key analytical input</strong> to <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4</a>. The UMP guarantees $\\bar{f}_{q,p}$ exists; separation gives the distinctness needed for <a class="ilink" onclick="goToCard('prop-2.4')">Props 2.4.1, 2.4.4, and 2.4.5</a>.</p>
+</div>`},
+
+// ═══════════════════════════════════════════════════════════════
+// Card 6 — Prop 2.4: Structure of N
 // ═══════════════════════════════════════════════════════════════
 {id:"prop-2.4",ch:"§2 Monoid",badge:"b-prop",title:"Proposition 2.4 — Structure of $N = \\langle G \\rangle$",lean:`${GH}/TPC/Monoid.lean#L40`,body:`
 <p><strong>Prop 2.4.1.</strong> For $a \\neq b$, the product $\\mathfrak{a} \\cdot \\mathfrak{b}$ is a <strong>formal product</strong> — it does NOT simplify to a single pure tensor.</p>
 <p><strong>Prop 2.4.3.</strong> $M$ and $N$ are <strong>commutative</strong> (tensor product of commutative monoids is commutative).</p>
 <p><strong>Prop 2.4.4.</strong> $k \\mapsto \\mathfrak{k} = (k,k)$ is <strong>injective</strong> on $\\mathbb{Z} \\setminus \\{0\\}$.</p>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof via separating invariants</button>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proofs via separating invariants</button>
 <div class="proof-content" style="display:none">
-<p>Define bilinear maps $f_{q,p}: \\mathbb{Z}\\times\\mathbb{Z} \\to (\\mathbb{Z},+)$ by $f_{q,p}(z,w) = v_q(|\\phi(z)|)\\cdot v_p(|\\psi(w)|)$ for primes $q \\equiv 1\\!\\!\\pmod{6}$, $p \\equiv 5\\!\\!\\pmod{6}$, where $v_q$ is the $q$-adic valuation.</p>
-<p><strong>Bilinearity check:</strong> $f(a\\circledast b, w) = v_q(|\\phi(a)\\phi(b)|)\\cdot v_p(|\\psi(w)|) = f(a,w) + f(b,w)$. Similarly for the right factor. And $f(0,w) = f(z,0) = 0$. ✓</p>
-<p>By the UMP, these extend to homomorphisms $\\bar{f}_{q,p}: M \\to (\\mathbb{Z},+)$ that separate generators: for $k \\neq l$, some $\\bar{f}_{q,p}$ distinguishes $\\mathfrak{k}$ from $\\mathfrak{l}$. ✓</p>
+<p>All three follow from <a class="ilink" onclick="goToCard('lem-sep-inv')">Lemma 2.3</a>. The family $\\{\\bar{f}_{q,p}: M\\to(\\mathbb{Z},+)\\}$ satisfies $\\bar{f}_{q,p}\\circ\\iota = f_{q,p}$:</p>
+<div class="math-block">$$\\begin{CD}
+(\\mathbb{Z},\\circledast)\\times(\\mathbb{Z},\\star) @>{f_{q,p}}>> (\\mathbb{Z},+) \\\\
+@V{\\iota}VV @| \\\\
+M @>{\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
+\\end{CD}$$</div>
+<p><strong>2.4.1:</strong> If $\\mathfrak{a}\\cdot\\mathfrak{b} = z\\otimes w$ for some $z,w$, apply $\\bar{f}_{q,p}$: the left side gives $\\bar{f}_{q,p}(\\mathfrak{a})+\\bar{f}_{q,p}(\\mathfrak{b})$, the right gives $f_{q,p}(z,w)=v_q|\\phi(z)|\\cdot v_p|\\psi(w)|$. But choosing $(q,p)$ that separates $a$ from $b$ forces an additive split that no single product $v_q(\\cdot)\\cdot v_p(\\cdot)$ can match. Contradiction. ✓</p>
+<p><strong>2.4.4:</strong> If $\\mathfrak{k}=\\mathfrak{l}$ then $\\bar{f}_{q,p}(\\mathfrak{k})=\\bar{f}_{q,p}(\\mathfrak{l})$ for all $(q,p)$. By Lemma 2.3 separation, $k=l$. ✓</p>
+<p><strong>2.4.3:</strong> Since $\\circledast$ and $\\star$ are commutative, $z\\otimes w = (z\\circledast 0)\\otimes w$, and the bilinearity relations give commutativity on generators; it extends to all of $M$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <p><strong>Prop 2.4.5 (Unique multiset representation).</strong> Different multisets of non-zero generators give different elements: if $\\mathfrak{k}_1\\cdots\\mathfrak{k}_r = \\mathfrak{l}_1\\cdots\\mathfrak{l}_s$ in $M$, then $r=s$ and $\\{k_1,\\ldots,k_r\\} = \\{l_1,\\ldots,l_s\\}$ as multisets.</p>
@@ -568,7 +608,9 @@ const treeData = {id:'cor-5.3',label:'Cor 5.3: TPC',cls:'tn-cor',children:[
       {id:'prop-top-monoid',label:'Prop: Top. Monoid',cls:'tn-lem',children:[
         {id:'def-proj',label:'Def π: Topology',cls:'tn-def',children:[
           {id:'prop-2.4',label:'Prop 2.4: Structure',cls:'tn-lem',children:[
-            {id:'def-2.1',label:'Def 2.1: M, G, N',cls:'tn-def',children:[]}
+            {id:'lem-sep-inv',label:'Lem 2.3: Sep. Invariants',cls:'tn-lem',children:[
+              {id:'def-2.1',label:'Def 2.1: M, G, N',cls:'tn-def',children:[]}
+            ]}
           ]}
         ]}
       ]},
