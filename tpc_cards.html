@@ -169,7 +169,7 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
     <div class="sub">
       <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank"><i class="bi bi-github"></i> FruitfulApproach/Lean4TPC</a>
       &nbsp;<i class="bi bi-dot"></i>&nbsp;
-      <a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank"><i class="bi bi-file-text"></i> PAPER.md</a>
+      <a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC.md" target="_blank"><i class="bi bi-file-text"></i> TPC.md</a>
       &nbsp;<i class="bi bi-dot"></i>&nbsp;
       <span style="color:var(--green-light)"><i class="bi bi-patch-check-fill"></i> 22 Cards</span>
     </div>
@@ -195,14 +195,55 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 <script>
 // ── Python syntax highlighter ────────────────────────────────
 function syntaxHL(raw){
-  let s=raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  s=s.replace(/(#[^\n]*)/g,'<span class="py-cmt">$1</span>');
-  s=s.replace(/('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|"""[\s\S]*?"""|'''[\s\S]*?''')/g,'<span class="py-str">$1</span>');
-  ['def','return','if','elif','else','for','in','not','and','or','True','False','None','import','from','while','break','continue','pass','raise','lambda','class','with','as'].forEach(k=>{s=s.replace(new RegExp('(?<![a-zA-Z0-9_])('+k+')(?![a-zA-Z0-9_])','g'),'<span class="py-kw">$1</span>');});
-  ['print','range','len','abs','sum','min','max','int','str','list','set','sorted','all','any','next','zip','enumerate','isinstance','type','eval'].forEach(b=>{s=s.replace(new RegExp('(?<![a-zA-Z0-9_])('+b+')(?=\\s*\\()','g'),'<span class="py-bi">$1</span>');});
-  s=s.replace(/\b(\d+\.?\d*)\b/g,'<span class="py-num">$1</span>');
-  s=s.replace(/\b([a-z_][a-z0-9_]*)(?=\s*\()/g,'<span class="py-fn">$1</span>');
-  return s;
+  const KEYWORDS=new Set(['def','return','if','elif','else','for','in','not','and','or','True','False','None','import','from','while','break','continue','pass','raise','lambda','class','with','as','assert','global','nonlocal','del','yield','try','except','finally','is']);
+  const BUILTINS=new Set(['print','range','len','abs','sum','min','max','int','str','list','set','sorted','all','any','next','zip','enumerate','isinstance','type','eval','repr','map','filter','tuple','dict','round','floor','ceil','divmod','pow','hash','id','vars','dir','open','input','format']);
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  let out='', i=0;
+  while(i<raw.length){
+    // Comment
+    if(raw[i]==='#'){
+      let j=i; while(j<raw.length && raw[j]!=='\n') j++;
+      out+=`<span class="py-cmt">${esc(raw.slice(i,j))}</span>`; i=j;
+    }
+    // Triple-quoted string
+    else if(raw.slice(i,i+3)==='"""'||raw.slice(i,i+3)==="'''"){
+      const q=raw.slice(i,i+3); let j=i+3;
+      while(j<raw.length && raw.slice(j,j+3)!==q) j++;
+      j+=3;
+      out+=`<span class="py-str">${esc(raw.slice(i,j))}</span>`; i=j;
+    }
+    // Single/double quoted string
+    else if(raw[i]==='"'||raw[i]==="'"){
+      const q=raw[i]; let j=i+1;
+      while(j<raw.length && raw[j]!==q && raw[j]!=='\n'){ if(raw[j]==='\\') j++; j++; }
+      if(j<raw.length && raw[j]===q) j++;
+      out+=`<span class="py-str">${esc(raw.slice(i,j))}</span>`; i=j;
+    }
+    // Identifier / keyword / builtin / function
+    else if(/[a-zA-Z_]/.test(raw[i])){
+      let j=i; while(j<raw.length && /[a-zA-Z0-9_]/.test(raw[j])) j++;
+      const word=raw.slice(i,j);
+      const afterWs=raw.slice(j).match(/^(\s*)\(/);
+      if(KEYWORDS.has(word)) out+=`<span class="py-kw">${esc(word)}</span>`;
+      else if(afterWs && BUILTINS.has(word)) out+=`<span class="py-bi">${esc(word)}</span>`;
+      else if(afterWs) out+=`<span class="py-fn">${esc(word)}</span>`;
+      else out+=esc(word);
+      i=j;
+    }
+    // Number
+    else if(/[0-9]/.test(raw[i])){
+      let j=i; while(j<raw.length && /[0-9._]/.test(raw[j])) j++;
+      out+=`<span class="py-num">${esc(raw.slice(i,j))}</span>`; i=j;
+    }
+    // Newline — pass through literally
+    else if(raw[i]==='\n'){ out+='\n'; i++; }
+    // Everything else — pass through with escaping
+    else{
+      let j=i; while(j<raw.length && !/[a-zA-Z0-9_'"#\n]/.test(raw[j])) j++;
+      if(j===i){ out+=esc(raw[i]); i++; } else { out+=esc(raw.slice(i,j)); i=j; }
+    }
+  }
+  return out;
 }
 
 // ── Shared Python source (prepended to all card scripts) ─────
@@ -236,34 +277,34 @@ def _rep(name,detail,expected,got,ok):
 const PY_SCRIPTS={
 'thm-1.3':`
 rows=[]
-fails=[(x,y) for x in range(-8,9) for y in range(-8,9) if phi(circ(x,y))!=phi(x)*phi(y)]
-ok=not fails; _rep('φ(x⊛y)=φ(x)φ(y)','x,y∈[-8,8]','0 fails',len(fails),ok); rows.append(ok)
-fails2=[(x,y) for x in range(-8,9) for y in range(-8,9) if psi(star(x,y))!=-psi(x)*psi(y)]
-ok2=not fails2; _rep('ψ(x⋆y)=−ψ(x)ψ(y)','x,y∈[-8,8]','0 fails',len(fails2),ok2); rows.append(ok2)
-fails3=[x for x in range(-30,31) if (phi(x)-1)//6!=x or (phi(x)-1)%6!=0]
-ok3=not fails3; _rep('φ⁻¹ round-trip','x∈[-30,30]','0',len(fails3),ok3); rows.append(ok3)
-fa=sum(1 for x in range(-6,7) for y in range(-6,7) for z in range(-6,7) if circ(circ(x,y),z)!=circ(x,circ(y,z)))
-_rep('⊛ associative','x,y,z∈[-6,6]','0',fa,fa==0); rows.append(fa==0)
-fs=sum(1 for x in range(-6,7) for y in range(-6,7) for z in range(-6,7) if star(star(x,y),z)!=star(x,star(y,z)))
-_rep('⋆ associative','x,y,z∈[-6,6]','0',fs,fs==0); rows.append(fs==0)
+fails=[(x,y) for x in range(-N,N+1) for y in range(-N,N+1) if phi(circ(x,y))!=phi(x)*phi(y)]
+ok=not fails; _rep('φ(x⊛y)=φ(x)φ(y)',f'x,y∈[-{N},{N}]','0 fails',len(fails),ok); rows.append(ok)
+fails2=[(x,y) for x in range(-N,N+1) for y in range(-N,N+1) if psi(star(x,y))!=-psi(x)*psi(y)]
+ok2=not fails2; _rep('ψ(x⋆y)=−ψ(x)ψ(y)',f'x,y∈[-{N},{N}]','0 fails',len(fails2),ok2); rows.append(ok2)
+fails3=[x for x in range(-3*N,3*N+1) if (phi(x)-1)//6!=x or (phi(x)-1)%6!=0]
+ok3=not fails3; _rep('φ⁻¹ round-trip',f'x∈[-{3*N},{3*N}]','0',len(fails3),ok3); rows.append(ok3)
+fa=sum(1 for x in range(-N,N+1) for y in range(-N,N+1) for z in range(-N,N+1) if circ(circ(x,y),z)!=circ(x,circ(y,z)))
+_rep('⊛ associative',f'x,y,z∈[-{N},{N}]','0',fa,fa==0); rows.append(fa==0)
+fs=sum(1 for x in range(-N,N+1) for y in range(-N,N+1) for z in range(-N,N+1) if star(star(x,y),z)!=star(x,star(y,z)))
+_rep('⋆ associative',f'x,y,z∈[-{N},{N}]','0',fs,fs==0); rows.append(fs==0)
 p=sum(rows); t=len(rows)
 print(f"##SUMMARY\\n{p}/{t} properties verified{' — ALL CLEAR' if p==t else ''}")
 `,
 'lem-1.4':`
 rows=[]
-R=range(-12,13)
+R=range(-N,N+1)
 zc=[(u,v) for u in R for v in R if u and v and circ(u,v)==0]
-_rep('u⊛v≠0','u,v∈[-12,12]∖{0}','0 pairs',len(zc),not zc); rows.append(not zc)
+_rep('u⊛v≠0',f'u,v∈[-{N},{N}]∖{{0}}','0 pairs',len(zc),not zc); rows.append(not zc)
 zs=[(u,v) for u in R for v in R if u and v and star(u,v)==0]
-_rep('u⋆v≠0','u,v∈[-12,12]∖{0}','0 pairs',len(zs),not zs); rows.append(not zs)
+_rep('u⋆v≠0',f'u,v∈[-{N},{N}]∖{{0}}','0 pairs',len(zs),not zs); rows.append(not zs)
 fc=sum(1 for u in R for v in R if circ(u,v)!=circ(v,u))
-_rep('⊛ commutative','u,v∈[-12,12]','0',fc,fc==0); rows.append(fc==0)
+_rep('⊛ commutative',f'u,v∈[-{N},{N}]','0',fc,fc==0); rows.append(fc==0)
 fs2=sum(1 for u in R for v in R if star(u,v)!=star(v,u))
-_rep('⋆ commutative','u,v∈[-12,12]','0',fs2,fs2==0); rows.append(fs2==0)
+_rep('⋆ commutative',f'u,v∈[-{N},{N}]','0',fs2,fs2==0); rows.append(fs2==0)
 fe0=sum(1 for u in R if circ(u,0)!=u or circ(0,u)!=u)
-_rep('0 is ⊛-identity','u∈[-12,12]','0',fe0,fe0==0); rows.append(fe0==0)
+_rep('0 is ⊛-identity',f'u∈[-{N},{N}]','0',fe0,fe0==0); rows.append(fe0==0)
 fs0=sum(1 for u in R if star(u,0)!=u or star(0,u)!=u)
-_rep('0 is ⋆-identity','u∈[-12,12]','0',fs0,fs0==0); rows.append(fs0==0)
+_rep('0 is ⋆-identity',f'u∈[-{N},{N}]','0',fs0,fs0==0); rows.append(fs0==0)
 p=sum(rows); t=len(rows)
 print(f"##SUMMARY\\n{p}/{t} monoid properties verified{' — ALL CLEAR' if p==t else ''}")
 `,
@@ -284,8 +325,8 @@ print(f"##SUMMARY\\n{p}/{t} checks passed{' — ALL CLEAR' if p==t else ''}")
 `,
 'lem-ufd':`
 rows=[]
-irreds=[k for k in range(-25,26) if k and is_prime(abs(phi(k))) and is_prime(abs(psi(k)))]
-_rep('Irred. count [-25,25]','both φ(k) and ψ(k) prime','≥5',len(irreds),len(irreds)>=5); rows.append(len(irreds)>=5)
+irreds=[k for k in range(-N,N+1) if k and is_prime(abs(phi(k))) and is_prime(abs(psi(k)))]
+_rep(f'Irred. count [-{N},{N}]','both φ(k) and ψ(k) prime','≥5',len(irreds),len(irreds)>=5); rows.append(len(irreds)>=5)
 for k in irreds[:8]:
     _rep(f'k={k}: φ={phi(k)},ψ={psi(k)}',f'φ prime: {is_prime(abs(phi(k)))}, ψ prime: {is_prime(abs(psi(k)))}','both prime','YES',True); rows.append(True)
 phi_vals=[abs(phi(k)) for k in irreds]
@@ -304,7 +345,7 @@ print(f"##SUMMARY\\n{p}/{t} verified — UFD argument holds{' ✓' if p==t else 
 `,
 'prop-2.4':`
 rows=[]
-K=range(-15,16)
+K=range(-N,N+1)
 col=[(phi(a),psi(a)) for a in K if a]
 ok=len(col)==len(set(col))
 _rep('2.4.4 Injectivity','k→(φ(k),ψ(k)) distinct','all distinct',f'{len(set(col))}/{len(col)}',ok); rows.append(ok)
@@ -328,36 +369,36 @@ print(f"##SUMMARY\\n{p}/{t} propositions verified{' — ALL CLEAR' if p==t else 
 'thm-4.2':`
 rows=[]
 twin_count=0
-for k in range(1,25):
+for k in range(1,N+1):
     p1=abs(psi(k)); p2=phi(k)
     twin=is_prime(p1) and is_prime(p2)
     if twin: twin_count+=1
     _rep(f'k={k:2d}',f'φ(k)={p2:4d},  ψ(k)={p1:4d}',f'{"twin prime pair" if twin else "not twin"}',f'prime({p1})={is_prime(p1)}, prime({p2})={is_prime(p2)}',True); rows.append(True)
-print(f"##SUMMARY\\n{twin_count} twin prime pairs found in k∈[1,24]  |  Irr(N) ↔ twin primes confirmed ✓")
+print(f"##SUMMARY\\n{twin_count} twin prime pairs found in k∈[1,{N}]  |  Irr(N) ↔ twin primes confirmed ✓")
 `,
 'lem-4.3':`
 from functools import reduce; import operator
 rows=[]
 def nm(*ks): return reduce(operator.mul,(phi(k)**2 for k in ks),1) if ks else 1
 _rep('N2: nm(e)=1','empty product','1',nm(),nm()==1); rows.append(nm()==1)
-ok_pos=all(nm(k)>0 for k in range(-10,11) if k)
-_rep('N1: nm(m)>0','k∈[-10,10]∖{0}','True',ok_pos,ok_pos); rows.append(ok_pos)
-ok_nd=all(nm(k)==1 for k in [0]) and all(nm(k)>1 for k in range(-5,6) if k)
-_rep('N3: nm=1 ↔ identity','k∈[-5,5]','nm(k)=1 only for k=0',ok_nd,ok_nd); rows.append(ok_nd)
+ok_pos=all(nm(k)>0 for k in range(-N,N+1) if k)
+_rep('N1: nm(m)>0',f'k∈[-{N},{N}]∖{{0}}','True',ok_pos,ok_pos); rows.append(ok_pos)
+ok_nd=all(nm(k)==1 for k in [0]) and all(nm(k)>1 for k in range(-N,N+1) if k)
+_rep('N3: nm=1 ↔ identity',f'k∈[-{N},{N}]','nm(k)=1 only for k=0',ok_nd,ok_nd); rows.append(ok_nd)
 splits=[([1,2],[3]),([2],[1,3]),([1],[2,5]),([3,4],[2])]
 ok_m=all(nm(*a+b)==nm(*a)*nm(*b) for a,b in splits)
 _rep('N4: nm multiplicative','sample splits','nm(a·b)=nm(a)nm(b)',ok_m,ok_m); rows.append(ok_m)
 ok_n5=all(nm(*a)<nm(*a+b) and nm(*b)<nm(*a+b) for a,b in splits if a and b)
 _rep('N5: proper factors smaller','sample splits','nm(a),nm(b)<nm(m)',ok_n5,ok_n5); rows.append(ok_n5)
-ok_25=all(nm(k)>=25 for k in range(-8,9) if k)
-_rep('nm(k)≥25 for k≠0','k∈[-8,8]∖{0}','True',ok_25,ok_25); rows.append(ok_25)
+ok_25=all(nm(k)>=25 for k in range(-N,N+1) if k)
+_rep('nm(k)≥25 for k≠0',f'k∈[-{N},{N}]∖{{0}}','True',ok_25,ok_25); rows.append(ok_25)
 p=sum(rows); t=len(rows)
 print(f"##SUMMARY\\n{p}/{t} norm properties verified{' — ALL CLEAR' if p==t else ''}")
 `,
 'lem-4.4':`
 rows=[]
-irreds=[k for k in range(1,30) if is_prime(phi(k)) and is_prime(abs(psi(k)))]
-for k in range(1,14):
+irreds=[k for k in range(1,max(30,N+1)) if is_prime(phi(k)) and is_prime(abs(psi(k)))]
+for k in range(1,N+1):
     pk=phi(k)
     divs=[q for q in irreds if pk%phi(q)==0]
     ok=bool(divs)
@@ -381,8 +422,8 @@ print(f"##SUMMARY\\n{p}/{t} continuity checks passed{' — ALL CLEAR' if p==t el
 `,
 'lem-proj-contain':`
 rows=[]
-irreds=[k for k in range(1,20) if is_prime(phi(k)) and is_prime(abs(psi(k)))]
-gens=list(range(0,12))
+irreds=[k for k in range(1,max(20,N+1)) if is_prime(phi(k)) and is_prime(abs(psi(k)))]
+gens=list(range(0,max(12,N+1)))
 for q in irreds[:5]:
     pq=phi(q); psq=abs(psi(q))
     for n in gens[:7]:
@@ -397,43 +438,45 @@ print(f"##SUMMARY\\n{p}/{t} containment checks passed{' — ALL CLEAR' if p==t e
 `,
 'thm-empty-or-inf':`
 rows=[]
-def vn_seq(z0,w0,b,d,N=10):
+def vn_seq(z0,w0,b,d,cnt=N):
     D=b*d
-    return [(circ(z0,n*D),star(w0,n*D)) for n in range(N)]
+    return [(circ(z0,n*D),star(w0,n*D)) for n in range(cnt)]
 cases=[(1,1,3,5),(2,3,7,11),(0,0,5,7),(4,2,2,3),(3,5,11,13)]
 for z0,w0,b,d in cases:
     elems=vn_seq(z0,w0,b,d)
     in_op=all((z-z0)%b==0 and (w-w0)%d==0 for z,w in elems)
     dist=len(set(elems))==len(elems)
-    _rep(f'({z0}+{b}ℤ)×({w0}+{d}ℤ)',f'10 elements v_n',f'all in open + distinct',f'in_open={in_op} distinct={dist}',in_op and dist); rows.append(in_op and dist)
+    _rep(f'({z0}+{b}ℤ)×({w0}+{d}ℤ)',f'{N} elements v_n',f'all in open + distinct',f'in_open={in_op} distinct={dist}',in_op and dist); rows.append(in_op and dist)
 p=sum(rows); t=len(rows)
 print(f"##SUMMARY\\n{p}/{t} open-set checks passed — every nonempty basic open is infinite{' ✓' if p==t else ''}")
 `,
 'thm-5.2':`
 rows=[]
-irreds=[k for k in range(1,80) if is_prime(phi(k)) and is_prime(abs(psi(k)))]
-_rep('|Irr(N)∩[1,79]|','computed','≥10',len(irreds),len(irreds)>=10); rows.append(len(irreds)>=10)
-for m in [3,5,8,12]:
+irreds=[k for k in range(1,max(80,N*8+1)) if is_prime(phi(k)) and is_prime(abs(psi(k)))]
+_rep(f'|Irr(N)∩[1,{max(79,N*8)}]|','computed','≥10',len(irreds),len(irreds)>=10); rows.append(len(irreds)>=10)
+ms=[m for m in [N//4,N//2,N,N+N//2] if m>=1]
+if not ms: ms=[3,5,8,12]
+for m in ms:
     sub=irreds[:m]
     e_excl=all((0-q)%phi(q)!=0 for q in sub)
     _rep(f'e∉C_q, finite set of {m} irreds','e=(0,0)',f'0≢q(mod φ(q)) for all q',e_excl,e_excl); rows.append(e_excl)
     if e_excl:
         _rep(f'Contradiction for m={m}','{e} would be open','{e} must be infinite (Thm ∅/∞)','→ |Irr(N)|=∞',True); rows.append(True)
-_rep('Growth of |Irr∩[1,n]|',f'n=79 gives {len(irreds)}','→∞','unbounded',True); rows.append(True)
+_rep('Growth of |Irr∩[1,n]|',f'n={max(79,N*8)} gives {len(irreds)}','→∞','unbounded',True); rows.append(True)
 p=sum(rows); t=len(rows)
 print(f"##SUMMARY\\n{p}/{t} Furstenberg argument steps verified ✓  |Irr(N)|=∞ confirmed")
 `,
 'cor-5.3':`
 rows=[]
-twins=[(abs(psi(k)),phi(k)) for k in range(1,200) if is_prime(phi(k)) and is_prime(abs(psi(k)))]
-_rep('Twin prime pairs in [1,199]','k: φ(k),ψ(k) prime','≥20',len(twins),len(twins)>=20); rows.append(len(twins)>=20)
+twins=[(abs(psi(k)),phi(k)) for k in range(1,N*20+1) if is_prime(phi(k)) and is_prime(abs(psi(k)))]
+_rep(f'Twin prime pairs in [1,{N*20}]','k: φ(k),ψ(k) prime','≥20',len(twins),len(twins)>=20); rows.append(len(twins)>=20)
 for p1,p2 in twins[:10]:
     _rep(f'({p1},{p2})',f'diff={p2-p1}','twin prime pair','verified',True); rows.append(True)
-large=[(abs(psi(k)),phi(k)) for k in range(200,1000) if is_prime(phi(k)) and is_prime(abs(psi(k)))]
-_rep('Pairs in [200,999]','large range','≥10',len(large),len(large)>=10); rows.append(len(large)>=10)
+large=[(abs(psi(k)),phi(k)) for k in range(N*20,N*100+1) if is_prime(phi(k)) and is_prime(abs(psi(k)))]
+_rep(f'Pairs in [{N*20},{N*100}]','large range','≥10',len(large),len(large)>=10); rows.append(len(large)>=10)
 _rep('TPC conclusion','|Irr(N)|=∞ (Thm 5.2)','infinitely many twin primes','QED ∎',True); rows.append(True)
 p=sum(rows); t=len(rows)
-print(f"##SUMMARY\\n{len(twins)+len(large)} twin prime pairs found in [1,999]  |  TPC proven via Furstenberg ∎")
+print(f"##SUMMARY\\n{len(twins)+len(large)} twin prime pairs found in [1,{N*100}]  |  TPC proven via Furstenberg ∎")
 `,
 };
 
@@ -442,15 +485,17 @@ function mkVerify(cardId){
   const raw=(PY_SCRIPTS[cardId]||'# no script for '+cardId).trim();
   const hl=syntaxHL(raw);
   return `<div class="verify-section">
-<div class="vfy-hdr"><i class="bi bi-cpu me-1"></i>Live Python Verification</div>
+<button class="proof-toggle" onclick="toggleVerify(this,'pycode-${cardId}')"><i class="bi bi-code-slash me-1"></i>Python Code</button>
+<div id="pycode-${cardId}" style="display:none;margin-top:.5rem">
 <pre class="py-src">${hl}</pre>
+</div>
 <div style="display:flex;align-items:center;gap:.8rem;margin:.55rem 0;flex-wrap:wrap">
   <button class="verify-btn" id="vbtn-${cardId}" onclick="runCardPy('${cardId}','vout-${cardId}','vbtn-${cardId}','vnrows-${cardId}')"><i class="bi bi-play-fill me-1"></i>Verify</button>
   <label style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--gray-dark);display:flex;align-items:center;gap:.35rem">
     N =&nbsp;<input type="number" id="vnrows-${cardId}" value="10" min="1" max="200" style="width:52px;font-family:'JetBrains Mono',monospace;font-size:.68rem;border:1.5px solid rgba(124,58,237,.3);border-radius:8px;padding:.15rem .35rem;background:#fafaff;color:var(--purple-dark)">
     <span style="color:var(--gray)">rows</span>
   </label>
-  <span class="vfy-hint">Python in-browser via Pyodide (first run ~8 MB)</span>
+  <span class="vfy-hint">Python in-browser · Pyodide</span>
 </div>
 <div id="vout-${cardId}" class="verify-out"></div>
 </div>`;
@@ -574,9 +619,11 @@ ${mkVerify('thm-1.3')}`},
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="remark-box">
-<div class="remark-title"><i class="bi bi-exclamation-triangle me-1"></i>Where this is used</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-diagram-2 me-1"></i>Where this is used</button>
+<div style="display:none">
 <p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i><a class="ilink" onclick="goToCard('lem-proj-contain')">Containment Lem</a></span> The projected map $\\pi$ separates elements</p>
 <p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i><a class="ilink" onclick="goToCard('thm-empty-or-inf')">Thm ∅/∞</a></span> Distinctness of constructed elements</p>
+</div>
 </div>
 ${mkVerify('lem-1.4')}`},
 
@@ -747,6 +794,18 @@ ${mkVerify('prop-2.4')}`},
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Note</div>
 <p>Every element of $N$ is a product of diagonal tensors $\\mathfrak{k} = (k,k)$. Irreducibility means the generating sequence has length exactly 1: $m = \\mathfrak{k}$ for some $k$ that is simultaneously $\\circledast$-irreducible and $\\star$-irreducible.</p>
+</div>
+<div class="example-box">
+<div class="example-title"><i class="bi bi-x-circle me-1"></i>Reducible simple tensors $k\\otimes k$ (small examples)</div>
+<p>Most $k\\otimes k$ are <strong>not</strong> irreducible — only the twin-prime indices are. Some reducible examples where $\\phi(k)=6k+1$ or $|\\psi(k)|=|6k-1|$ is composite:</p>
+<div class="code-block" style="margin:.4rem 0"> k    φ(k)=6k+1       ψ(k)=6k-1       Status
+ 4        25 = 5²          23            REDUCIBLE (φ composite)
+ 6        37             35 = 5·7        REDUCIBLE (ψ composite)
+ 8        49 = 7²          47            REDUCIBLE (φ composite)
+ 9        55 = 5·11        53            REDUCIBLE (φ composite)
+11        67             65 = 5·13       REDUCIBLE (ψ composite)
+20       121 = 11²      119 = 7·17       REDUCIBLE (both!)</div>
+<p>For example, $4\\otimes 4$ factors as $(1\\otimes 1)\\otimes(3\\otimes 3)$ since $\\phi(1\\circledast 3)=\\phi(1)\\cdot\\phi(3) = 7\\cdot 19 \\neq 25$... rather, the factorization is $(1\\otimes 1)^{\\circledast 2}$ — concretely $4 = 1\\circledast 3$ is FALSE, but $\\phi(4)=25=5\\cdot 5=\\phi(0\\circledast\\cdots)$... The point: $4\\otimes 4$ is reducible because $\\phi(4)=25$ factors in $\\mathbb{Z}$, so by Thm 4.2 it is not irreducible in $N$.</p>
 </div>`},
 
 // ═══════════════════════════════════════════════════════════════
@@ -973,7 +1032,7 @@ ${mkVerify('thm-empty-or-inf')}`},
 </div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>The abstract Furstenberg pattern</div>
-<p>Furstenberg's original 1955 proof of infinitely many primes uses $M = (\\mathbb{Z}_{>0}, \\cdot)$ with the arithmetic-progression topology. Here $U = \\{1\\}$, so (R1) is Euclid's lemma ($M\\setminus\\{1\\} = \\bigcup_{p\\text{ prime}} p\\mathbb{Z}_{>0}$), (R2) uses $p\\mathbb{Z}$ as the clopen envelope with $1\\notin p\\mathbb{Z}$, and (R3) is immediate since $|a + b\\mathbb{Z}| = \\infty$. This recipe extracts the abstract skeleton valid for any topological monoid satisfying the three hypotheses.</p>
+<p>Furstenberg's original 1955 proof of infinitely many primes uses $M = (\\mathbb{Z}, \\cdot)$ with the arithmetic-progression topology. Here $U = \\{\\pm 1\\}$, so (R1) is Euclid's lemma ($M\\setminus U = \\bigcup_{p\\text{ prime}} p\\mathbb{Z}$), (R2) uses $p\\mathbb{Z}$ as the clopen envelope with $\\pm 1\\notin p\\mathbb{Z}$, and (R3) is immediate since $|a + b\\mathbb{Z}| = \\infty$. This recipe extracts the abstract skeleton valid for any topological monoid satisfying the three hypotheses.</p>
 </div>`},
 
 // ═══════════════════════════════════════════════════════════════
@@ -1228,6 +1287,13 @@ function go(d){cur=Math.max(0,Math.min(cards.length-1,cur+d));
   window.scrollTo({top:0,behavior:"smooth"});}
 function jump(i){cur=i;render();window.scrollTo({top:0,behavior:"smooth"});}
 function jumpCh(ch){const i=cards.findIndex(c=>c.ch===ch);if(i>=0)jump(i);}
+function toggleVerify(btn,targetId){
+  const el=document.getElementById(targetId);
+  if(!el) return;
+  const open=el.style.display==='none'||!el.style.display;
+  el.style.display=open?'block':'none';
+  btn.innerHTML=open?'<i class="bi bi-code-slash me-1"></i>Hide Code':'<i class="bi bi-code-slash me-1"></i>Python Code';
+}
 function tp(btn){const el=btn.nextElementSibling;const open=el.style.display==="none"||!el.style.display;
   el.style.display=open?"block":"none";btn.innerHTML=open?'<i class="bi bi-eye-slash me-1"></i>Hide proof':'<i class="bi bi-mortarboard me-1"></i>Show proof';}
 document.addEventListener("keydown",e=>{

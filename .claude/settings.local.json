@@ -19,7 +19,9 @@
       "Bash(grep -n \"begin{CD}\\\\|\\\\\\\\hline\\\\|\\\\to\\\\|commut\\\\|\\\\downarrow\\\\|\\\\uparrow\\\\|array.*cc\" \"C:\\\\__CURRENT\\\\TPC\\\\Lean4TPC\\\\tpc_cards.html\")",
       "Bash(python3 -c \":*)",
       "Bash(echo \"exit: $?\")",
-      "Bash(where pdflatex:*)"
+      "Bash(where pdflatex:*)",
+      "Bash(git mv:*)",
+      "Bash(python:*)"
     ]
   }
 }

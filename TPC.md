@@ -167,13 +167,13 @@ Then:
 ### Theorem 5.1 (Furstenberg's Irreducible Infinitude Recipe)
 
 Let $(M, \cdot)$ be a topological monoid with identity $e$. If:
-- **(R1)** $M \setminus \{e\} = \bigcup_{q \in \mathrm{Irr}(M)} q \cdot M$
-- **(R2)** $\forall q \in \mathrm{Irr}(M)$, $\exists$ clopen $C_q \subseteq M$ with $q \cdot M \subseteq C_q$ and $e \notin C_q$
+- **(R1)** $M \setminus U = \bigcup_{q \in \mathrm{Irr}(M)} q \cdot M$ where $U = M^\times$ is the (finite) unit group
+- **(R2)** $\forall q \in \mathrm{Irr}(M)$, $\exists$ clopen $C_q \subseteq M$ with $q \cdot M \subseteq C_q$ and $U \cap C_q = \varnothing$
 - **(R3)** Every nonempty open set in $M$ is infinite
 
 then $|\mathrm{Irr}(M)| = \infty$.
 
-*Proof.* If $\mathrm{Irr}(M) = \{q_1, \ldots, q_m\}$ is finite: $M \setminus \{e\} \subseteq \bigcup C_{q_i}$ (using R1, R2). Since $e \notin C_{q_i}$ for all $i$, we get $M \setminus \bigcup C_{q_i} = \{e\}$. A finite union of clopens is clopen, so $\{e\}$ is open — contradicting (R3). $\blacksquare$
+*Proof.* If $\mathrm{Irr}(M) = \{q_1, \ldots, q_m\}$ is finite: $M \setminus U \subseteq \bigcup C_{q_i}$ (using R1, R2). Since $U \cap C_{q_i} = \varnothing$ for all $i$, we get $M \setminus \bigcup C_{q_i} = U$. A finite union of clopens is clopen, so $U$ is open — but $U$ is finite and nonempty, contradicting (R3). $\blacksquare$
 
 ### Proposition 5.2 ($N$ Satisfies the Recipe)
 

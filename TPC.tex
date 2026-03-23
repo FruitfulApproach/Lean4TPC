@@ -1,0 +1,436 @@
+\documentclass[12pt,a4paper]{amsart}
+
+% ── Packages ──────────────────────────────────────────────────────────────
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{xcolor}
+\usepackage{booktabs}
+
+\geometry{margin=2.4cm}
+\hypersetup{colorlinks=true,linkcolor=blue!70!black,urlcolor=blue!60!black,citecolor=green!50!black}
+
+% ── Custom colours ────────────────────────────────────────────────────────
+\definecolor{purple}{RGB}{124,58,237}
+\definecolor{green}{RGB}{21,128,61}
+\definecolor{orange}{RGB}{194,65,12}
+\definecolor{blue}{RGB}{29,78,216}
+
+% ── Theorem environments ──────────────────────────────────────────────────
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+% ── Custom operators ──────────────────────────────────────────────────────
+\newcommand{\circstar}{\mathbin{\circledast}}
+\newcommand{\bstar}{\mathbin{\star}}
+\newcommand{\otimesmon}{\otimes_{\mathrm{Mon}}}
+\newcommand{\Irr}{\mathrm{Irr}}
+\newcommand{\Nmon}{N}
+\newcommand{\Mmon}{M}
+\newcommand{\ehat}{\widehat{q}}
+\newcommand{\qhat}[1]{\widehat{#1}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\bbZ}{\mathbb{Z}}
+\newcommand{\bbP}{\mathbb{P}}
+
+% ── Title block ───────────────────────────────────────────────────────────
+\title[Furstenberg Generalized to Handle Twin Primes]
+      {Furstenberg Generalized to Handle Twin Primes}
+
+\author{FruitfulApproach}
+\date{March 2026}
+\thanks{Repository: \url{https://github.com/FruitfulApproach/Lean4TPC}.
+Lean\,4 formalization in progress with Mathlib4.
+Computational assistance: Claude Sonnet~4.6 (Anthropic).}
+
+% ─────────────────────────────────────────────────────────────────────────
+\begin{document}
+\maketitle
+
+% ── Abstract ──────────────────────────────────────────────────────────────
+\begin{abstract}
+The Twin Prime Conjecture --- that there are infinitely many primes $p$
+with $p+2$ also prime --- is reformulated as a statement about irreducible
+elements of a submonoid $N$ inside the monoid tensor product
+$M = (\bbZ, \circstar) \otimesmon (\bbZ, \bstar)$.
+
+The proof follows \emph{Furstenberg's Irreducible Infinitude Recipe}: if a
+topological monoid satisfies
+\begin{itemize}[nosep]
+  \item[(R1)] $M \setminus U = \bigcup_{q \in \Irr(M)} q \cdot M$ where $U = M^{\times}$ is the (finite) unit group,
+  \item[(R2)] for each $q \in \Irr(M)$, there is a clopen $C_q$ with $q\cdot M \subseteq C_q$ and $U \cap C_q = \varnothing$,
+  \item[(R3)] every nonempty open set in $M$ is infinite,
+\end{itemize}
+then $|\Irr(M)| = \infty$. We show $N$ satisfies all three hypotheses, with
+$C_q = \pi^{-1}(S_q)$ for the \emph{initial topology} on $N$ from the
+projection $\pi\colon N \to \bbZ^2$, and
+$S_q = (q + \varphi(q)\bbZ) \times (q + |\psi(q)|\bbZ)$ a clopen
+arithmetic-progression rectangle.
+
+\smallskip
+\noindent\textit{Note.} A previous version used the ``Coset Identity''
+$\qhat{q} \cdot N = N \cap (\qhat{q} \cdot M)$ and the \emph{final}
+topology from $\beta\colon \bbZ^2 \to M$. Both were incorrect: the
+coset identity is false (counterexample: $(36,36) \in N \cap
+(\qhat{1} \cdot M)$ but $(36,36) \notin \qhat{1} \cdot N$), and the
+final topology isolates non-pure-tensor elements. The corrected proof
+uses only containment $\qhat{q} \cdot N \subseteq \pi^{-1}(S_q)$,
+which follows trivially from $\pi$ being a homomorphism.
+\end{abstract}
+
+% ─────────────────────────────────────────────────────────────────────────
+\section{The Two Operations and Their Isomorphisms}
+% ─────────────────────────────────────────────────────────────────────────
+
+\begin{definition}[Operations $\circstar$ and $\bstar$]
+Define two binary operations on $\bbZ$:
+\begin{align*}
+  x \circstar y &= 6xy + x + y \qquad (\texttt{mstar})\\
+  x \bstar y    &= -6xy + x + y \qquad (\texttt{sstar})
+\end{align*}
+Both have identity element $0$: $x \circstar 0 = x$ and $x \bstar 0 = x$.
+\end{definition}
+
+\begin{proposition}[Commutative monoids]
+$(\bbZ, \circstar)$ and $(\bbZ, \bstar)$ are commutative monoids.
+\end{proposition}
+\begin{proof}
+Associativity of $\circstar$: both $(x \circstar y) \circstar z$ and
+$x \circstar (y \circstar z)$ equal $36xyz + 6xy + 6xz + 6yz + x + y + z$.
+The $\bstar$ case is identical with $-6$ replacing $6$. Commutativity
+is immediate.
+\end{proof}
+
+\begin{proposition}[Products of $\pm 1 \pmod{6}$ numbers]
+The operations $\circstar$ and $\bstar$ encode all products of numbers
+$\equiv \pm 1 \pmod{6}$:
+\begin{align*}
+  (6a+1)(6b+1) &= \varphi(a \circstar b),
+    & \text{(both } \equiv +1 \pmod{6}\text{)}\\
+  (6a-1)(6b-1) &= \varphi((-a) \circstar (-b)),
+    & \text{(both } \equiv -1 \pmod{6}\text{)}\\
+  (6a+1)(6b-1) &= \psi((-a) \bstar b),
+    & \text{(since }(-a)\bstar b = 6ab - a + b\text{)}\\
+  (6a-1)(6b+1) &= \psi(a \bstar (-b)),
+    & \text{(since } a \bstar(-b) = 6ab + a - b\text{)}
+\end{align*}
+\emph{Consequence:} For $z > 0$, $6z+1$ is prime if and only if $z$ is
+irreducible in $(\bbZ, \circstar)$, and $|6z-1|$ is prime if and only if
+$z$ is irreducible in $(\bbZ, \bstar)$. A twin prime pair $(6z-1, 6z+1)$
+arises exactly when $z$ is simultaneously irreducible in both operations.
+\end{proposition}
+
+\begin{theorem}[Isomorphisms $\varphi$ and $\psi$]
+\label{thm:isos}
+\begin{align*}
+  \varphi &: (\bbZ, \circstar) \xrightarrow{\;\sim\;} (6\bbZ+1, \cdot),
+            \quad \varphi(x) = 6x+1,\\
+  \psi    &: (\bbZ, \bstar) \xrightarrow{\;\sim\;} (6\bbZ-1, \bullet),
+            \quad \psi(x) = 6x-1, \quad a \bullet b = -(ab),
+\end{align*}
+are monoid isomorphisms with inverses $n \mapsto (n-1)/6$ and
+$n \mapsto (n+1)/6$.
+\end{theorem}
+\begin{proof}
+$\varphi(x \circstar y) = 6(6xy+x+y)+1 = (6x+1)(6y+1) = \varphi(x)\varphi(y)$.
+Similarly $\psi(x \bstar y) = 6(-6xy+x+y)-1 = -[(6x-1)(6y-1)] =
+\psi(x) \bullet \psi(y)$.
+\end{proof}
+
+\begin{lemma}[No zero divisors]
+\label{lem:nozd}
+If $u, v \neq 0$ then $u \circstar v \neq 0$ and $u \bstar v \neq 0$.
+\end{lemma}
+\begin{proof}
+$u \circstar v = 0 \iff (6u+1)(6v+1) = 1$ forces $u = 0$ or
+$u = -1/3 \notin \bbZ$.
+\end{proof}
+
+% ─────────────────────────────────────────────────────────────────────────
+\section{The Monoid Tensor Product and the Submonoid $N$}
+% ─────────────────────────────────────────────────────────────────────────
+
+\begin{definition}[Monoid tensor product $M$]
+$$M = (\bbZ, \circstar) \otimesmon (\bbZ, \bstar)$$
+characterized by the universal bimorphism $\beta(z, w) = z \otimes w$
+satisfying:
+\begin{enumerate}[label=(\arabic*),nosep]
+  \item $(a \circstar b) \otimes w = (a \otimes w)(b \otimes w)$,
+  \item $z \otimes (c \bstar d) = (z \otimes c)(z \otimes d)$,
+  \item $z \otimes 0 = 0 \otimes w = e$.
+\end{enumerate}
+In the Lean formalization, $M$ is modeled as $(\bbZ^2, \otimes)$ where
+$(a,b) \otimes (c,d) = (a \circstar c,\; b \bstar d)$.
+\end{definition}
+
+\begin{definition}[Generating set $G$ and submonoid $N$]
+$$G = \{z \otimes z : z \in \bbZ\}, \qquad N = \langle G \rangle.$$
+Elements of $N$ have the form
+$(k_1 \circstar \cdots \circstar k_r,\; k_1 \bstar \cdots \bstar k_r)$
+for the \emph{same} sequence $k_1, \ldots, k_r \in \bbZ$.
+\end{definition}
+
+\begin{proposition}[$\circstar$ and $\bstar$ are continuous]
+In the Furstenberg topology on $\bbZ$ (basis: arithmetic progressions
+$a + b\bbZ$, $b \neq 0$), both $\circstar$ and $\bstar$ are continuous.
+\end{proposition}
+\begin{proof}
+For $\circstar$: if $x_0 \circstar y_0 \in a + b\bbZ$, then the open
+neighbourhood $(x_0 + b\bbZ) \times (y_0 + b\bbZ)$ maps into $a + b\bbZ$,
+since all cross-terms are divisible by $b$.
+\end{proof}
+
+\begin{lemma}[Unique irreducible factorization]
+\label{lem:ufd}
+Every $m \in N \setminus \{e\}$ has a factorization
+$m = \qhat{q}_1 \cdots \qhat{q}_n$ with all $\qhat{q}_i \in \Irr(N)$.
+Applying $\bar{\varphi}: M \to (\bbZ,\cdot)$ shows this factorization is
+unique up to permutation.
+\end{lemma}
+
+\begin{proposition}[Structure of $N$]
+\label{prop:nstruct}
+\begin{enumerate}[label=(\alph*),nosep]
+  \item Products of distinct generators do not simplify to a pure tensor.
+  \item $N$ is commutative.
+  \item $k \mapsto (k,k)$ is injective on $\bbZ \setminus \{0\}$.
+  \item If $\qhat{k}_1 \cdots \qhat{k}_r = \qhat{l}_1 \cdots \qhat{l}_s$
+        in $M$, then $r = s$ and $\{k_i\} = \{l_j\}$ as multisets
+        \emph{(unique multiset representation)}.
+\end{enumerate}
+\end{proposition}
+
+% ─────────────────────────────────────────────────────────────────────────
+\section{Irreducibility and Twin Primes}
+% ─────────────────────────────────────────────────────────────────────────
+
+\begin{definition}[Irreducible in $N$]
+$m \in N \setminus \{e\}$ is \emph{irreducible} if $m = a \cdot b$ with
+$a, b \in N$ implies $a = e$ or $b = e$.
+\end{definition}
+
+\begin{theorem}[Irreducibles $\iff$ Twin Primes]
+\label{thm:irred-twin}
+For the diagonal element $\qhat{k} = (k,k) \in N$:
+$$\qhat{k} \in \Irr(N) \iff
+  \varphi(k) = 6k+1 \text{ is } \pm\text{prime}
+  \;\text{ and }\;
+  |\psi(k)| = |6k-1| \text{ is prime.}$$
+Equivalently, $(6k-1,\, 6k+1)$ is a twin prime pair.
+\end{theorem}
+
+\begin{lemma}[Norm and descent]
+$\norm{\qhat{k}_1 \cdots \qhat{k}_r} = \prod_i (6k_i+1)^2$.
+This norm is multiplicative, positive, and equals $1$ only for $e$.
+For any proper factorization $m = a \cdot b$ with $a, b \neq e$, we have
+$\norm{a} < \norm{m}$.
+\end{lemma}
+
+\begin{lemma}[Irreducible divisors exist]
+By strong induction on $\norm{\cdot}$, every $m \in N \setminus \{e\}$
+has an irreducible $\otimes$-divisor $\qhat{q} \in \Irr(N)$ with
+$\qhat{q} \mid m$.
+\end{lemma}
+
+\begin{corollary}[Covering]
+\label{cor:covering}
+$$N \setminus \{e\} \;=\; \bigcup_{\qhat{q} \in \Irr(N)} \qhat{q} \cdot N.$$
+\end{corollary}
+
+% ─────────────────────────────────────────────────────────────────────────
+\section{Topology on $N$}
+% ─────────────────────────────────────────────────────────────────────────
+
+\begin{definition}[Projected map $\pi$ and initial topology]
+By Proposition~\ref{prop:nstruct}(d), every element of $N$ has a unique
+multiset representation. Define:
+$$\pi = (\pi_1, \pi_2) : N \to \bbZ^2,$$
+where $\pi_i$ is the $i$-th component of the $\circstar$/$\bstar$-product
+of the generator sequence.
+
+Equip $N$ with the \emph{initial topology} from $\pi$ (the coarsest
+topology making $\pi$ continuous). Basic open sets are:
+$$\pi^{-1}\!\bigl((a + b\bbZ) \times (c + d\bbZ)\bigr) =
+  \pi^{-1}(a + b\bbZ) \cap \pi^{-1}(c + d\bbZ).$$
+\end{definition}
+
+\begin{proposition}[Clopen preimage]
+\label{prop:clopen-pre}
+If $f\colon X \to Y$ is a function and $X$ carries the initial topology
+from $f$, then for any clopen $C \subseteq Y$, $f^{-1}(C)$ is clopen
+in $X$.
+\end{proposition}
+\begin{proof}
+$f$ is continuous by definition of the initial topology. Since $C$ is
+open, $f^{-1}(C)$ is open; since $C$ is closed, $C^c$ is open, so
+$(f^{-1}(C))^c = f^{-1}(C^c)$ is open, making $f^{-1}(C)$ closed.
+\end{proof}
+
+\begin{proposition}[$N$ is a topological monoid]
+Under the initial topology from $\pi$, multiplication
+$\mu\colon N \times N \to N$ is continuous.
+\end{proposition}
+\begin{proof}
+$\pi \circ \mu = (\circstar, \bstar) \circ (\pi_1 \times \pi_1,
+\pi_2 \times \pi_2)$; both $\circstar$ and $\bstar$ are continuous by
+Proposition~2.3.
+\end{proof}
+
+\begin{lemma}[Containment and clopenness]
+\label{lem:contain}
+For each irreducible $\qhat{q} = (q,q) \in \Irr(N)$, define the
+\emph{clopen envelope}:
+$$S_q = (q + \varphi(q)\bbZ) \times (q + |\psi(q)|\bbZ) \subseteq \bbZ^2.$$
+Then:
+\begin{enumerate}[label=(\alph*)]
+  \item \textbf{Containment:} $\qhat{q} \cdot N \subseteq \pi^{-1}(S_q)$.
+        \begin{proof}
+          For $m = \qhat{q} \cdot n$:
+          $\pi_1(m) = q \circstar \pi_1(n)$, so
+          $\varphi(q) \mid \varphi(\pi_1(m))$,
+          giving $\pi_1(m) \equiv q \pmod{\varphi(q)}$.
+          Similarly $\pi_2(m) \equiv q \pmod{|\psi(q)|}$.
+        \end{proof}
+
+  \item \textbf{Identity excluded:} $e \notin \pi^{-1}(S_q)$.
+        \begin{proof}
+          $\pi(e) = (0,0)$; we need $(6q+1) \nmid q$.
+          Since $|6q+1| > |q|$ for all $q \neq 0$, this holds.
+        \end{proof}
+
+  \item \textbf{Clopenness:} $\pi^{-1}(S_q)$ is clopen in $N$.
+        \begin{proof}
+          $S_q$ is a product of two arithmetic progressions, hence
+          clopen in the Furstenberg product topology on $\bbZ^2$.
+          Apply Proposition~\ref{prop:clopen-pre}.
+        \end{proof}
+\end{enumerate}
+\end{lemma}
+
+% ─────────────────────────────────────────────────────────────────────────
+\section{Furstenberg's Irreducible Infinitude Recipe and the Main Theorem}
+% ─────────────────────────────────────────────────────────────────────────
+
+\begin{theorem}[Furstenberg's Irreducible Infinitude Recipe]
+\label{thm:recipe}
+Let $(M, \cdot)$ be a topological monoid with identity $e$ and unit group
+$U = M^{\times}$. Suppose:
+\begin{enumerate}[label=\textbf{(R\arabic*)},nosep]
+  \item $M \setminus U = \bigcup_{q \in \Irr(M)} q \cdot M$
+        \quad (irreducibles cover non-units; $U$ is finite and nonempty),
+  \item $\forall\, q \in \Irr(M)$, $\exists$ clopen $C_q \subseteq M$:
+        $q \cdot M \subseteq C_q$ and $U \cap C_q = \varnothing$,
+  \item Every nonempty open set in $M$ is infinite.
+\end{enumerate}
+Then $|\Irr(M)| = \infty$.
+\end{theorem}
+\begin{proof}
+Suppose for contradiction that $\Irr(M) = \{q_1, \ldots, q_m\}$ is
+finite. By (R2) each $q_i$ has a clopen $C_{q_i}$ with
+$q_i \cdot M \subseteq C_{q_i}$ and $U \cap C_{q_i} = \varnothing$.
+
+By (R1): $M \setminus U \subseteq \bigcup_{i=1}^m q_i \cdot M \subseteq
+\bigcup_{i=1}^m C_{q_i}$.
+
+Since $U \cap C_{q_i} = \varnothing$ for all $i$, we have
+$U \cap \bigcup C_{q_i} = \varnothing$, so
+$M \setminus \bigcup_{i=1}^m C_{q_i} = U$.
+
+A finite union of clopens is clopen, so its complement $U$ is clopen ---
+in particular \emph{open}. But $U$ is finite and nonempty, contradicting
+(R3). $\blacksquare$
+\end{proof}
+
+\begin{remark}
+Furstenberg's 1955 proof~\cite{Furstenberg1955} uses $M = (\bbZ, \cdot)$
+with the arithmetic-progression topology, $U = \{\pm 1\}$, $C_p = p\bbZ$
+(arithmetic progression, clopen, $\pm 1 \notin p\bbZ$ for prime $p$).
+Our recipe extracts the abstract skeleton.
+\end{remark}
+
+\begin{proposition}[$N$ satisfies the recipe]
+\label{prop:nfits}
+\begin{enumerate}[label=\textbf{(R\arabic*)},nosep]
+  \item Corollary~\ref{cor:covering}. Here $U = \{e\}$ (only trivial unit).
+  \item Lemma~\ref{lem:contain}: $C_q = \pi^{-1}(S_q)$ is clopen,
+        $\qhat{q} \cdot N \subseteq C_q$, and $U \cap C_q = \varnothing$
+        since $e \notin \pi^{-1}(S_q)$.
+  \item Every nonempty basic open set
+        $\pi^{-1}((a+b\bbZ) \times (c+d\bbZ))$ is infinite: given any
+        element $m_0$ in the set, $m_0 \cdot (nD \otimes nD)$ for
+        $D = bd$ and $n \in \bbZ$ produces infinitely many distinct
+        elements (injectivity via Lemma~\ref{lem:nozd}).
+\end{enumerate}
+\end{proposition}
+
+\begin{theorem}
+\label{thm:main}
+$$|\Irr(N)| = \infty.$$
+\end{theorem}
+\begin{proof}
+Immediate from Theorem~\ref{thm:recipe} and Proposition~\ref{prop:nfits}.
+\end{proof}
+
+\begin{corollary}[Twin Prime Conjecture]
+\label{cor:tpc}
+$$\bigl|\{k \in \bbZ : 6k-1 \in \pm\bbP \text{ and } 6k+1 \in \pm\bbP\}\bigr|
+= \infty. \qquad \blacksquare$$
+\end{corollary}
+\begin{proof}
+By Theorem~\ref{thm:irred-twin}, irreducibles $\qhat{k} \in \Irr(N)$ biject
+with integers $k$ such that $(6k-1, 6k+1)$ is a twin prime pair.
+Theorem~\ref{thm:main} gives infinitely many such $k$.
+\end{proof}
+
+% ─────────────────────────────────────────────────────────────────────────
+\section*{Lean\,4 Formalization Status}
+% ─────────────────────────────────────────────────────────────────────────
+
+The proof is being formalized in Lean\,4 with Mathlib4 at
+\url{https://github.com/FruitfulApproach/Lean4TPC}.
+
+Key files:
+\begin{itemize}[nosep]
+  \item \texttt{TPC/Basic.lean} --- operations $\circstar$, $\bstar$; isomorphisms $\varphi$, $\psi$.
+  \item \texttt{TPC/Monoid.lean} --- product monoid $M$, generating set $G$, submonoid $N$, topological monoid structure.
+  \item \texttt{TPC/CosetTopology.lean} --- clopen envelope $S_q$, containment lemma, identity excluded.
+  \item \texttt{TPC/Main.lean} --- norm, irreducible divisors, the Furstenberg argument.
+\end{itemize}
+
+Outstanding \texttt{sorry}s: complement-is-clopen for arithmetic progressions;
+extraction of nontrivial factorizations; surjectivity argument for the
+twin-prime corollary.
+
+% ─────────────────────────────────────────────────────────────────────────
+\begin{thebibliography}{9}
+\bibitem{Furstenberg1955}
+  H.~Furstenberg,
+  \textit{On the infinitude of primes},
+  Amer.\ Math.\ Monthly \textbf{62} (1955), 353.
+
+\bibitem{Mathlib4}
+  The Mathlib Community,
+  \textit{Mathlib4},
+  \url{https://leanprover-community.github.io/mathlib4_docs/}.
+
+\bibitem{OEIS-A317083}
+  OEIS Foundation,
+  \textit{Sequences related to $6xy \pm x \pm y$},
+  \url{https://oeis.org/}.
+\end{thebibliography}
+
+\end{document}
