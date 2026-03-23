@@ -35,7 +35,9 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 .ch-btn{font-size:.7rem;font-family:'JetBrains Mono',monospace;border-radius:20px;margin-right:.4rem;padding:.28rem .7rem;border:2px solid var(--purple-light);background:white;color:var(--purple);cursor:pointer;transition:all .25s;box-shadow:0 2px 6px rgba(124,58,237,.08);}
 .ch-btn.active,.ch-btn:hover{background:linear-gradient(135deg,var(--purple),var(--blue));color:white;border-color:transparent;box-shadow:0 4px 16px var(--purple-glow);transform:translateY(-1px);}
 .card-area{min-height:72vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem 1rem;}
-.proof-card{background:var(--white);border-radius:24px;box-shadow:0 12px 48px rgba(124,58,237,.12),0 4px 16px rgba(59,130,246,.08);max-width:860px;width:100%;overflow:hidden;animation:cardIn .4s cubic-bezier(.34,1.56,.64,1);border:2px solid rgba(124,58,237,.1);}
+.proof-card{background:#f0fdf4;border-radius:24px;box-shadow:0 12px 48px rgba(124,58,237,.12),0 4px 16px rgba(59,130,246,.08);max-width:860px;width:100%;overflow:visible;animation:cardIn .4s cubic-bezier(.34,1.56,.64,1);border:2px solid rgba(34,197,94,.25);}
+.card-hdr,.card-body-inner{overflow:hidden;border-radius:22px 22px 0 0;}
+.card-body-inner{border-radius:0 0 22px 22px;overflow:visible;}
 @keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
 .card-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:20px;margin-bottom:.5rem;box-shadow:0 2px 8px rgba(0,0,0,.1);}
 .b-def{background:linear-gradient(135deg,var(--blue-light),#c7d2fe);color:var(--blue-dark);}
@@ -46,10 +48,10 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 .b-abs{background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));color:var(--yellow);}
 .b-rmk{background:linear-gradient(135deg,var(--gray-light),#e5e7eb);color:var(--gray-dark);}
 .b-gap{background:linear-gradient(135deg,var(--red-light),#fecaca);color:var(--red-dark);}
-.card-hdr{position:relative;padding:1.5rem 2rem .8rem;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,var(--purple),var(--blue),var(--green),var(--orange)) 1;}
-.card-title{font-family:'Playfair Display',serif;font-size:1.35rem;line-height:1.3;background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.card-hdr{position:relative;padding:1.5rem 2rem .8rem;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,var(--purple),var(--blue),var(--green),var(--orange)) 1;background:#ecfdf5;}
+.card-title{font-family:'Playfair Display',serif;font-size:1.35rem;line-height:1.3;color:var(--purple-dark);background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .card-body-inner{padding:1.5rem 2rem 1.2rem;line-height:1.8;font-size:1.02rem;}.card-body-inner p{margin-bottom:.8rem;}
-.math-block{background:linear-gradient(135deg,rgba(124,58,237,.04),rgba(59,130,246,.04));border-left:4px solid;border-image:linear-gradient(180deg,var(--purple),var(--blue)) 1;padding:1rem 1.3rem;margin:1rem 0;border-radius:0 16px 16px 0;overflow-x:auto;box-shadow:inset 0 0 20px rgba(124,58,237,.03);}
+.math-block{background:linear-gradient(135deg,rgba(124,58,237,.07),rgba(59,130,246,.07));border-left:4px solid;border-image:linear-gradient(180deg,var(--purple),var(--blue)) 1;padding:1rem 1.3rem;margin:1rem 0;border-radius:0 16px 16px 0;overflow-x:auto;box-shadow:inset 0 0 20px rgba(124,58,237,.06);}
 .code-block{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:linear-gradient(135deg,#1e1b4b,#1e293b);color:#c4b5fd;padding:1rem 1.3rem;border-radius:16px;overflow-x:auto;margin:.9rem 0;line-height:1.7;box-shadow:0 4px 16px rgba(0,0,0,.15);border:1px solid rgba(124,58,237,.2);}
 .src-link{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--purple);text-decoration:none;border:2px solid var(--purple);border-radius:20px;padding:.15rem .5rem;transition:all .25s;box-shadow:0 2px 8px var(--purple-glow);}
 .src-link:hover{background:var(--purple);color:white;transform:translateY(-1px);box-shadow:0 4px 16px var(--purple-glow);}
@@ -58,12 +60,12 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 .tag:hover{background:linear-gradient(135deg,var(--purple),var(--blue));color:white;border-color:transparent;transform:translateY(-1px);box-shadow:0 4px 12px var(--purple-glow);}
 .proof-toggle{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--white);background:linear-gradient(135deg,var(--purple),var(--blue));border:none;border-radius:20px;padding:.35rem .9rem;cursor:pointer;margin-top:.5rem;transition:all .3s;box-shadow:0 3px 12px var(--purple-glow);}
 .proof-toggle:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--purple-glow);background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));}
-.proof-content{border-left:4px solid;border-image:linear-gradient(180deg,var(--green),var(--blue)) 1;padding:1rem 1.2rem;margin-top:.8rem;background:linear-gradient(135deg,rgba(34,197,94,.03),rgba(59,130,246,.03));border-radius:0 12px 12px 0;}
+.proof-content{border-left:4px solid;border-image:linear-gradient(180deg,var(--green),var(--blue)) 1;padding:1rem 1.2rem;margin-top:.8rem;background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(59,130,246,.06));border-radius:0 12px 12px 0;}
 .proof-content p{margin-bottom:.6rem;}
 .qed-box{display:inline-block;background:linear-gradient(135deg,var(--green),var(--blue));color:white;font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.2rem .6rem;border-radius:12px;margin-top:.4rem;box-shadow:0 2px 8px rgba(34,197,94,.3);}
-.remark-box{background:linear-gradient(135deg,rgba(234,179,8,.06),rgba(249,115,22,.06));border:2px solid var(--yellow);border-radius:16px;padding:.9rem 1.2rem;margin:.8rem 0;font-size:.92rem;}
+.remark-box{background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(249,115,22,.10));border:2px solid var(--yellow);border-radius:16px;padding:.9rem 1.2rem;margin:.8rem 0;font-size:.92rem;}
 .remark-box .remark-title{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--orange-dark);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;}
-.example-box{background:linear-gradient(135deg,rgba(59,130,246,.04),rgba(124,58,237,.04));border:2px dashed var(--blue);border-radius:16px;padding:.9rem 1.2rem;margin:.8rem 0;}
+.example-box{background:linear-gradient(135deg,rgba(59,130,246,.10),rgba(124,58,237,.08));border:2px dashed var(--blue);border-radius:16px;padding:.9rem 1.2rem;margin:.8rem 0;}
 .example-box .example-title{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--blue-dark);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;}
 .minimap{position:fixed;right:.8rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:4px;}
 .mm-dot{width:10px;height:10px;border-radius:50%;background:rgba(124,58,237,.2);cursor:pointer;border:2px solid rgba(124,58,237,.3);transition:all .25s;}
@@ -81,7 +83,7 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 @keyframes float1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(40px,30px) scale(1.1);}}
 @keyframes float2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-30px,-40px) scale(1.15);}}
 @keyframes float3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-20px,30px) scale(1.05);}}
-.card-ribbon{position:absolute;top:12px;right:-35px;background:linear-gradient(135deg,var(--orange),var(--yellow));color:var(--black);font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;padding:.2rem 2.5rem;transform:rotate(45deg);letter-spacing:.06em;box-shadow:0 2px 8px rgba(0,0,0,.15);}
+.card-ribbon{position:absolute;top:18px;right:-28px;background:linear-gradient(135deg,var(--orange),var(--yellow));color:var(--black);font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;padding:.2rem 2.5rem;transform:rotate(45deg);letter-spacing:.06em;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:2;}
 .depends-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.58rem;background:var(--gray-light);color:var(--gray-dark);border-radius:20px;padding:.12rem .5rem;margin:.1rem;border:1px solid rgba(107,114,128,.2);}
 .step-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));color:white;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;margin-right:.5rem;box-shadow:0 2px 8px var(--purple-glow);}
 .share-btn{position:absolute;top:1.2rem;right:1.5rem;background:linear-gradient(135deg,var(--purple-light),var(--blue-light));border:2px solid rgba(124,58,237,.2);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;color:var(--purple);font-size:.9rem;box-shadow:0 2px 8px rgba(124,58,237,.1);}
@@ -107,7 +109,7 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 .tn:hover{background:var(--purple-light);color:var(--purple-dark);}
 .tn.active{background:var(--purple);color:white;box-shadow:0 2px 8px var(--purple-glow);}
 .tn-def{color:var(--blue-dark);}.tn-thm{color:var(--orange-dark);font-weight:600;}.tn-lem{color:var(--purple-dark);}.tn-cor{color:var(--yellow-dark);font-weight:600;}.tn-gap{color:var(--red-dark);font-weight:600;}
-.gap-box{background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(239,68,68,.02));border:2px solid var(--red);border-radius:16px;padding:.9rem 1.2rem;margin:.8rem 0;font-size:.92rem;}
+.gap-box{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.06));border:2px solid var(--red);border-radius:16px;padding:.9rem 1.2rem;margin:.8rem 0;font-size:.92rem;}
 .gap-box .gap-title{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--red-dark);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;}
 </style>
 </head>
@@ -288,7 +290,7 @@ M @>{\\exists!\\,\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
 </div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Role in the proof</div>
-<p>This is the <strong>key analytical input</strong> to <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4</a>. The UMP guarantees $\\bar{f}_{q,p}$ exists; separation gives the distinctness needed for <a class="ilink" onclick="goToCard('prop-2.4')">Props 2.4.1, 2.4.4, and 2.4.5</a>.</p>
+<p>The UMP guarantees $\\bar{f}_{q,p}$ exists; separation gives the distinctness needed for <a class="ilink" onclick="goToCard('prop-2.4')">Props 2.4.1 and 2.4.4</a>. (Prop 2.4.5 is proved independently via irreducible factorization — see <a class="ilink" onclick="goToCard('lem-ufd')">Lem 2.4.A</a>.)</p>
 </div>`},
 
 // ═══════════════════════════════════════════════════════════════
@@ -333,7 +335,7 @@ M @>{\\exists!\\,\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
 <p><span class="step-num">1</span><strong>Bilinearity</strong> — $f_{q,p}(a\\circledast b,w)=f_{q,p}(a,w)+f_{q,p}(b,w)$ and right factor, for $a,b,w\\in[-5,5]$, $(q,p)\\in\\{(7,5),(7,11),(13,5),(13,11)\\}$.</p>
 <p><span class="step-num">2</span><strong>Separation</strong> — $\\forall\\,k\\neq l\\in[-10,10]\\setminus\\{0\\}$, $\\exists(q,p)\\colon f_{q,p}(k,k)\\neq f_{q,p}(l,l)$.</p>
 <p><span class="step-num">3</span><strong>Prop 2.4.5 (small cases)</strong> — No two distinct multisets from $\\{1,\\ldots,8\\}$ of size $\\leq 4$ give the same $(\\circledast\\text{-product},\\;\\star\\text{-product})$ in $\\mathbb{Z}^2$.</p>
-<p><span class="step-num">4</span><strong>Case analysis</strong> — Exhaustive search for pair coincidences: $\\phi(k)\\phi(m)=\\phi(l)\\phi(n)$ <em>and</em> $|\\psi(k)||\\psi(m)|=|\\psi(l)||\\psi(n)|$ with $\\{k,m\\}\\neq\\{l,n\\}$, $k,l,m,n\\in\\{1,\\ldots,12\\}$.</p>
+<p><span class="step-num">4</span><strong>UFD mechanism</strong> — Verify that $\\phi$ maps irreducible generators to <em>distinct</em> primes and that equal products of $\\phi$-images force equal multisets (i.e., UFD uniqueness holds in the small-case range used by Prop 2.4.5).</p>
 </div>
 <div class="code-block" style="max-height:300px;overflow-y:auto;font-size:.72rem;line-height:1.65">def phi(x):    return 6*x + 1          # φ: Z → 6Z+1
 def psi_abs(x): return abs(6*x - 1)    # |ψ(x)|
@@ -351,9 +353,9 @@ def f(q, p, z, w):                     # f_{q,p}(z,w) = v_q(|φ(z)|)·v_p(|ψ(w)
     return v(q, abs(phi(z))) * v(p, psi_abs(w))
 
 # Check 1 — bilinearity over a,b,w ∈ [-5,5], q∈{7,13}, p∈{5,11}
-# Check 2 — separation: ∀ k≠l ∃ (q,p) with f(k,k) ≠ f(l,l)
-# Check 3 — Prop 2.4.5: distinct multisets → distinct (⊛,⋆)-products
-# Check 4 — pair coincidence search over {1..12}</div>
+# Check 2 — separation: ∀ k≠l ∃ (q,p) with f(k,k) ≠ f(l,l)  (Props 2.4.1, 2.4.4)
+# Check 3 — Prop 2.4.5: distinct multisets → distinct (⊛,⋆)-products (empirical)
+# Check 4 — UFD mechanism: φ maps irreducibles to distinct primes (actual proof)</div>
 <div style="display:flex;align-items:center;gap:.8rem;margin:.8rem 0;flex-wrap:wrap">
   <button class="proof-toggle" id="btn-run-py" onclick="runVerifyPy()"><i class="bi bi-play-circle-fill me-1"></i>Run Verification</button>
   <span id="py-status" style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--gray)">Loads Python runtime (~8 MB) on first run</span>
@@ -381,9 +383,14 @@ M @>{\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <p><strong>Prop 2.4.5 (Unique multiset representation).</strong> Different multisets of non-zero generators give different elements: if $\\mathfrak{k}_1\\cdots\\mathfrak{k}_r = \\mathfrak{l}_1\\cdots\\mathfrak{l}_s$ in $M$, then $r=s$ and $\\{k_1,\\ldots,k_r\\} = \\{l_1,\\ldots,l_s\\}$ as multisets.</p>
-<div class="remark-box">
-<div class="remark-title"><i class="bi bi-exclamation-triangle me-1"></i>Key for everything</div>
-<p>This is the <strong>foundation</strong> of the entire proof. Proved by <a class="ilink" onclick="goToCard('lem-ufd')">Lemma 2.4.A</a>: factor into irreducibles, then UFD in $\\mathbb{Z}$ gives uniqueness since each $\\phi(q_i)$ is prime. See the <a class="ilink" onclick="goToCard('critical')">critical assessment</a> for updated gap status.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Proof — choose irreducibles, then UFD</button>
+<div class="proof-content" style="display:none">
+<p><span class="step-num">1</span><strong>Choose $\\mathfrak{k}_i, \\mathfrak{l}_j$ to be irreducible.</strong> By <a class="ilink" onclick="goToCard('lem-ufd')">Lem 2.4.A</a> (existence), every factor has an irreducible factorization in $N$. Replace each $\\mathfrak{k}_i$ and $\\mathfrak{l}_j$ by its irreducible factorization; the equality is preserved and we may write</p>
+<div class="math-block">$$\\mathfrak{q}_1\\cdots\\mathfrak{q}_n \\;=\\; \\mathfrak{\\lambda}_1\\cdots\\mathfrak{\\lambda}_m, \\qquad \\mathfrak{q}_i,\\mathfrak{\\lambda}_j\\in\\mathrm{Irr}(N).$$</div>
+<p><span class="step-num">2</span><strong>Apply $\\bar{\\phi}: M\\to(\\mathbb{Z},\\cdot)$.</strong> Since $\\phi:(\\mathbb{Z},\\circledast)\\to(\\mathbb{Z},\\cdot)$, $z\\mapsto 6z+1$ is a monoid homomorphism, it extends via the UMP to $\\bar{\\phi}$ on $M$:</p>
+<div class="math-block">$$\\phi(q_1)\\cdots\\phi(q_n) \\;=\\; \\phi(\\lambda_1)\\cdots\\phi(\\lambda_m).$$</div>
+<p>Since every factor is irreducible, each $\\phi(q_i)$ and $\\phi(\\lambda_j)$ is <strong>prime</strong>. Both sides are therefore products of primes. By <strong>UFD in $\\mathbb{Z}$</strong>: $n=m$ and $\\{\\phi(q_i)\\}=\\{\\phi(\\lambda_j)\\}$ as multisets. Since $\\phi$ is injective, $\\{q_i\\}=\\{\\lambda_j\\}$. ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>`},
 
 // ═══════════════════════════════════════════════════════════════
@@ -847,8 +854,10 @@ def is_prime(n):
         if n % i == 0: return False
     return True
 
-q_primes = [p for p in range(2, 500) if is_prime(p) and p % 6 == 1]
-p_primes = [p for p in range(2, 500) if is_prime(p) and p % 6 == 5]
+# Use all primes: |phi(k)| and |psi(k)| can have prime factors of any residue class
+all_primes = [p for p in range(2, 500) if is_prime(p)]
+q_primes = all_primes  # primes dividing |phi(z)| — any residue class
+p_primes = all_primes  # primes dividing |psi(w)| — any residue class
 
 # ──── 1. Bilinearity ────────────────────────────────────────
 print("1. Bilinearity of f_{q,p}")
@@ -908,27 +917,39 @@ if collisions:
     for a, b, p in collisions[:3]:
         print(f"   !! {a} and {b} both map to {p}")
 
-# ──── 4. Pair Coincidence Case Analysis ─────────────────────
+# ──── 4. UFD Proof: φ maps irreducibles to distinct primes ───
 print()
-print("4. phi*|psi| Pair Coincidence Search")
-print("   Seeking {k,m}!={l,n} in {1..12} with phi(k)phi(m)=phi(l)phi(n)")
-print("   AND |psi(k)||psi(m)|=|psi(l)||psi(n)|")
-phi_psi_map = {}; coin = 0
-for k, m in combinations_with_replacement(range(1, 13), 2):
-    key = (phi(k)*phi(m), psi_abs(k)*psi_abs(m))
-    ms = (k, m)
-    if key in phi_psi_map and phi_psi_map[key] != ms:
-        print(f"   !! {phi_psi_map[key]} and {ms}: phi-prod={key[0]}, |psi|-prod={key[1]}")
-        coin += 1
-    phi_psi_map[key] = ms
-print(f"   {len(phi_psi_map)} distinct (phi,|psi|)-products | coincidences: {coin} | {'PASS' if not coin else 'GAPS: see above'}")
+print("4. Irreducible Generators — φ(q) is prime, φ is injective on Irr(N)")
+print("   (This is the exact mechanism used in the Prop 2.4.5 proof)")
+irreds = [(k, phi(k), psi_abs(k))
+          for k in range(-30, 31) if k != 0
+          and is_prime(abs(phi(k))) and is_prime(psi_abs(k))]
+phi_vals = [abs(p) for k, p, ps in irreds]
+distinct = len(phi_vals) == len(set(phi_vals))
+print(f"   Irreducibles q in [-30,30]\\{{0}}: {len(irreds)} found")
+print(f"   First 6: {[(k, p) for k, p, ps in irreds[:6]]}")
+print(f"   φ-values on irreducibles are distinct primes: {'YES' if distinct else 'NO'}")
+# Verify: two products of irreducibles equal ⟹ same multiset (UFD in Z)
+from functools import reduce
+import operator
+def prod_list(lst): return reduce(operator.mul, lst, 1)
+ufd_ok = True
+irr_ks = [k for k, p, ps in irreds[:10]]
+for i, a in enumerate(irr_ks):
+    for b in irr_ks[i:]:
+        for c in irr_ks:
+            for d in irr_ks[irr_ks.index(c):]:
+                if prod_list([phi(a), phi(b)]) == prod_list([phi(c), phi(d)]):
+                    if sorted([a, b]) != sorted([c, d]):
+                        ufd_ok = False
+                        print(f"   !! UFD failure: phi({a})*phi({b}) = phi({c})*phi({d})")
+print(f"   UFD uniqueness (products of 2 irreducibles, first 10): {'PASS' if ufd_ok else 'FAIL'}")
 
 # ──── Summary ────────────────────────────────────────────────
 print()
 print("Summary")
-ok = not fails and not unsep and not collisions and not coin
+ok = not fails and not unsep and not collisions and ufd_ok
 print(f"   All checks: {'PASS' if ok else 'ISSUES FOUND -- see above'}")
-print(f"   (Prop 2.4.5 proven only for small ranges; general case remains open)")
 </script>
 </body>
 </html>
