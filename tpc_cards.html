@@ -50,6 +50,7 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 .b-gap{background:linear-gradient(135deg,var(--red-light),#fecaca);color:var(--red-dark);}
 .card-hdr{position:relative;padding:1.5rem 2rem .8rem;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,var(--purple),var(--blue),var(--green),var(--orange)) 1;background:#ecfdf5;}
 .card-title{font-family:'Playfair Display',serif;font-size:1.35rem;line-height:1.3;color:var(--purple-dark);background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.card-title .katex,.card-title .katex *{-webkit-text-fill-color:var(--purple-dark);background:none;-webkit-background-clip:unset;background-clip:unset;}
 .card-body-inner{padding:1.5rem 2rem 1.2rem;line-height:1.8;font-size:1.02rem;}.card-body-inner p{margin-bottom:.8rem;}
 .math-block{background:linear-gradient(135deg,rgba(124,58,237,.07),rgba(59,130,246,.07));border-left:4px solid;border-image:linear-gradient(180deg,var(--purple),var(--blue)) 1;padding:1rem 1.3rem;margin:1rem 0;border-radius:0 16px 16px 0;overflow-x:auto;box-shadow:inset 0 0 20px rgba(124,58,237,.06);}
 .code-block{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:linear-gradient(135deg,#1e1b4b,#1e293b);color:#c4b5fd;padding:1rem 1.3rem;border-radius:16px;overflow-x:auto;margin:.9rem 0;line-height:1.7;box-shadow:0 4px 16px rgba(0,0,0,.15);border:1px solid rgba(124,58,237,.2);}
@@ -70,7 +71,7 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 .minimap{position:fixed;right:.8rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:4px;}
 .mm-dot{width:10px;height:10px;border-radius:50%;background:rgba(124,58,237,.2);cursor:pointer;border:2px solid rgba(124,58,237,.3);transition:all .25s;}
 .mm-dot.active{background:var(--purple);border-color:var(--yellow);transform:scale(1.6);box-shadow:0 0 12px var(--purple-glow);}.mm-dot:hover{background:var(--blue);border-color:var(--blue);transform:scale(1.4);}
-@media(max-width:860px){.minimap{display:none;}.sidebar{display:none !important;}.sb-toggle{display:none !important;}}
+@media(max-width:860px){.minimap{display:none;}.sb-toggle{display:none !important;}}
 .nav-footer{background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark),var(--purple));padding:1rem 1.5rem;position:sticky;bottom:0;border-top:4px solid var(--yellow);z-index:100;border-radius:24px 24px 0 0;box-shadow:0 -8px 32px var(--purple-glow);}
 .btn-nav{font-family:'JetBrains Mono',monospace;font-size:.8rem;border-radius:20px;padding:.5rem 1.5rem;border:2px solid var(--yellow);background:transparent;color:var(--yellow);cursor:pointer;transition:all .25s;box-shadow:0 2px 12px rgba(234,179,8,.15);}
 .btn-nav:hover{background:var(--yellow);color:var(--black);transform:translateY(-2px);box-shadow:0 6px 20px rgba(234,179,8,.3);}.btn-nav:disabled{opacity:.3;cursor:not-allowed;transform:none;box-shadow:none;}
@@ -91,24 +92,19 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 .share-btn.copied{background:var(--green);color:white;border-color:var(--green);}
 .ilink{color:var(--purple);font-weight:600;text-decoration:none;border-bottom:2px dashed rgba(124,58,237,.3);cursor:pointer;transition:all .2s;}
 .ilink:hover{color:var(--orange);border-bottom-color:var(--orange);}
-/* ── Sidebar proof tree ── */
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:280px;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-right:3px solid rgba(124,58,237,.15);z-index:200;overflow-y:auto;transform:translateX(-100%);transition:transform .3s ease;padding:0;box-shadow:4px 0 24px rgba(0,0,0,.08);}
-.sidebar.open{transform:translateX(0);}
-.sb-hdr{background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));color:var(--yellow);padding:.8rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:600;display:flex;justify-content:space-between;align-items:center;letter-spacing:.05em;}
-.sb-close{background:none;border:none;color:var(--yellow);font-size:1.2rem;cursor:pointer;line-height:1;}
-.sb-close:hover{color:var(--orange);}
+/* ── Proof Map overlay ── */
 .sb-toggle{position:fixed;left:12px;top:12px;z-index:201;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));color:white;border:2px solid var(--yellow);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;box-shadow:0 3px 12px var(--purple-glow);transition:all .3s;}
 .sb-toggle:hover{transform:scale(1.15);box-shadow:0 6px 20px var(--purple-glow);}
-.ptree{padding:.8rem .6rem .8rem 0;font-family:'JetBrains Mono',monospace;font-size:.68rem;}
-.ptree ul{list-style:none;padding-left:1rem;margin:0;border-left:2px solid rgba(124,58,237,.15);}
-.ptree>ul{border-left:none;padding-left:.6rem;}
-.ptree li{position:relative;padding:3px 0 3px 10px;line-height:1.5;}
-.ptree li::before{content:'';position:absolute;left:-1rem;top:0;bottom:50%;border-left:2px solid rgba(124,58,237,.15);border-bottom:2px solid rgba(124,58,237,.15);width:10px;height:50%;}
-.ptree>ul>li::before{display:none;}
-.tn{cursor:pointer;padding:2px 6px;border-radius:8px;transition:all .2s;display:inline-block;}
-.tn:hover{background:var(--purple-light);color:var(--purple-dark);}
-.tn.active{background:var(--purple);color:white;box-shadow:0 2px 8px var(--purple-glow);}
-.tn-def{color:var(--blue-dark);}.tn-thm{color:var(--orange-dark);font-weight:600;}.tn-lem{color:var(--purple-dark);}.tn-cor{color:var(--yellow-dark);font-weight:600;}.tn-gap{color:var(--red-dark);font-weight:600;}
+.pm-overlay{position:fixed;inset:0;background:rgba(17,24,39,.88);backdrop-filter:blur(10px);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;}
+.pm-panel{background:#fafaff;border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.45);width:min(860px,98vw);overflow:hidden;}
+.pm-hdr{background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));color:var(--yellow);padding:.75rem 1.2rem;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:600;letter-spacing:.05em;}
+.pm-body{padding:.8rem 1rem;overflow-x:auto;background:#fafaff;}
+.pm-body svg{display:block;margin:0 auto;}
+.pm-close{background:none;border:none;color:var(--yellow);font-size:1.3rem;cursor:pointer;line-height:1;padding:.1rem .4rem;border-radius:6px;transition:background .2s;}
+.pm-close:hover{background:rgba(255,255,255,.15);}
+.pm-legend{display:flex;gap:.9rem;flex-wrap:wrap;padding:.5rem 1rem;border-top:1px solid rgba(124,58,237,.1);background:#fff;font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--gray-dark);}
+.pm-leg{display:inline-flex;align-items:center;gap:.3rem;}
+.pm-swatch{width:11px;height:11px;border-radius:3px;display:inline-block;}
 .gap-box{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.06));border:2px solid var(--red);border-radius:16px;padding:.9rem 1.2rem;margin:.8rem 0;font-size:.92rem;}
 .gap-box .gap-title{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--red-dark);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;}
 </style>
@@ -118,12 +114,25 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 <div class="bubble bubble-2"></div>
 <div class="bubble bubble-3"></div>
 <div class="bubble bubble-4"></div>
-<!-- Sidebar toggle -->
-<button class="sb-toggle" id="sbToggle" onclick="toggleSB()" title="Proof Tree"><i class="bi bi-diagram-3"></i></button>
-<!-- Sidebar proof tree -->
-<div class="sidebar" id="sidebar">
-  <div class="sb-hdr"><span><i class="bi bi-diagram-3 me-1"></i>Proof Tree</span><button class="sb-close" onclick="toggleSB()">&times;</button></div>
-  <div class="ptree" id="ptree"></div>
+<!-- Proof map toggle -->
+<button class="sb-toggle" id="pmToggle" onclick="togglePM()" title="Proof Dependency Map"><i class="bi bi-diagram-3-fill"></i></button>
+<!-- Proof map overlay -->
+<div class="pm-overlay" id="pmOverlay" style="display:none" onclick="if(event.target===this)togglePM()">
+  <div class="pm-panel">
+    <div class="pm-hdr">
+      <span><i class="bi bi-diagram-3-fill me-2"></i>Proof Dependency Map — click any node to navigate</span>
+      <button class="pm-close" onclick="togglePM()">&times;</button>
+    </div>
+    <div class="pm-body"><svg id="pm-svg" viewBox="0 0 800 400" width="800" height="400"></svg></div>
+    <div class="pm-legend">
+      <span class="pm-leg"><span class="pm-swatch" style="background:#dbeafe;border:1.5px solid #1d4ed8"></span>Definition</span>
+      <span class="pm-leg"><span class="pm-swatch" style="background:#ffedd5;border:1.5px solid #c2410c"></span>Theorem</span>
+      <span class="pm-leg"><span class="pm-swatch" style="background:#ede9fe;border:1.5px solid #5b21b6"></span>Lemma</span>
+      <span class="pm-leg"><span class="pm-swatch" style="background:#dcfce7;border:1.5px solid #15803d"></span>Proposition</span>
+      <span class="pm-leg"><span class="pm-swatch" style="background:#fef9c3;border:1.5px solid #a16207"></span>Corollary</span>
+      <span style="color:var(--purple-dark);font-weight:600">★ highlighted = current card</span>
+    </div>
+  </div>
 </div>
 <header class="site-header d-flex justify-content-between align-items-start flex-wrap gap-2">
   <div>
@@ -230,8 +239,8 @@ def sstar (x y : ℤ) : ℤ := -6 * x * y + x + y</div>
 <p><strong>Statement:</strong> If $u,v\\neq 0$ then $u\\circledast v\\neq 0$ and $u\\star v\\neq 0$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>For $\\circledast$:</strong> If $u\\circledast v = 0$, applying $\\phi$: $(6u+1)(6v+1) = 1$. In $\\mathbb{Z}$: $a b=1$ forces $a=b=\\pm1$, giving $u=v=0$ or $u=v=-1/3\\notin\\mathbb{Z}$. Contradiction. ✓</p>
-<p><strong>For $\\star$:</strong> If $u\\star v = 0$, then $(6u-1)(6v-1)=1$, giving $u=v=0$ or $u=v=1/3\\notin\\mathbb{Z}$. Contradiction. ✓</p>
+<p><em>Proof.</em> <strong>For $\\circledast$:</strong> Suppose $u\\circledast v = 0$ with $u,v\\neq 0$. Apply $\\phi$: $\\phi(u\\circledast v)=\\phi(u)\\phi(v)=(6u+1)(6v+1)=\\phi(0)=1$. In $\\mathbb{Z}$, $ab=1$ requires $\\{a,b\\}=\\{1,1\\}$ or $\\{-1,-1\\}$. So $(6u+1,6v+1)\\in\\{(1,1),(-1,-1)\\}$, giving $u=v=0$ (contradicts $u\\neq 0$) or $u=v=-1/3\\notin\\mathbb{Z}$. Contradiction. ✓</p>
+<p><strong>For $\\star$:</strong> Suppose $u\\star v=0$ with $u,v\\neq 0$. Apply $\\psi$: $\\psi(u)\\bullet\\psi(v)=-(6u-1)(6v-1)=1$, so $(6u-1)(6v-1)=-1$, giving $\\{6u-1,6v-1\\}=\\{1,-1\\}$. Then $u=1/3$ or $u=0$; both are not nonzero integers. Contradiction. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="remark-box">
@@ -283,9 +292,9 @@ M @>{\\exists!\\,\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
 <p>The vertical map $\\iota(z,w)=z\\otimes w$ is the universal bilinear map into $M$; the diagram commutes: $\\bar{f}_{q,p}\\circ\\iota = f_{q,p}$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show: generators are separated</button>
 <div class="proof-content" style="display:none">
-<p>Let $k\\neq l$ in $\\mathbb{Z}\\setminus\\{0\\}$. Then $\\phi(k)=6k+1\\neq 6l+1=\\phi(l)$, so $|\\phi(k)|\\neq|\\phi(l)|$. Their prime factorizations differ, so there exists a prime $q$ with $v_q(|\\phi(k)|)\\neq v_q(|\\phi(l)|)$. Choose any prime $p\\equiv 5\\pmod{6}$ not dividing $\\psi(k)\\psi(l)$, so $v_p(|\\psi(k)|)=v_p(|\\psi(l)|)=0$. Wait — instead pick $p$ dividing $\\psi(k)$ but not $\\psi(l)$ (or vice versa) if they differ, otherwise $p$ such that $v_p|\\psi|\\geq 1$ on one side. In either case:</p>
-<div class="math-block">$$\\bar{f}_{q,p}(\\mathfrak{k})=f_{q,p}(k,k)=v_q|\\phi(k)|\\cdot v_p|\\psi(k)|\\neq v_q|\\phi(l)|\\cdot v_p|\\psi(l)|=\\bar{f}_{q,p}(\\mathfrak{l})$$</div>
-<p>for an appropriate choice of $(q,p)$. ✓</p>
+<p><em>Proof.</em> Let $k\\neq l$ in $\\mathbb{Z}\\setminus\\{0\\}$. Since $\\phi$ is injective, $|\\phi(k)|\\neq|\\phi(l)|$, so their prime factorizations differ. Choose a prime $q_0$ with $v_{q_0}(|\\phi(k)|)\\neq v_{q_0}(|\\phi(l)|)$; WLOG $v_{q_0}(|\\phi(k)|) > v_{q_0}(|\\phi(l)|)$.</p>
+<p><strong>Case A: $v_{q_0}(|\\phi(l)|)=0$.</strong> Since $|\\psi(k)|=|6k-1|\\geq 2$ for $k\\in\\mathbb{Z}\\setminus\\{0\\}$, choose any prime $p_0\\mid |\\psi(k)|$. Then $\\bar{f}_{q_0,p_0}(\\mathfrak{k}) = v_{q_0}(|\\phi(k)|)\\cdot v_{p_0}(|\\psi(k)|) \\geq 1$, while $\\bar{f}_{q_0,p_0}(\\mathfrak{l}) = 0\\cdot v_{p_0}(|\\psi(l)|) = 0$. ✓</p>
+<p><strong>Case B: $v_{q_0}(|\\phi(l)|)\\geq 1$.</strong> Since $|\\psi(k)|=|6k-1|\\neq|6l-1|=|\\psi(l)|$ (injectivity: $|6k-1|=|6l-1|$ and $k,l\\in\\mathbb{Z}$ forces $k=l$), their factorizations differ. Choose a prime $p_0$ with $v_{p_0}(|\\psi(k)|)\\geq 1$ and $v_{p_0}(|\\psi(l)|)=0$ (or vice versa; such $p_0$ exists since otherwise $|\\psi(k)|$ and $|\\psi(l)|$ share all prime factors, forcing $|\\psi(k)|=|\\psi(l)|$ — contradiction). In either sub-case one of $\\bar{f}_{q_0,p_0}(\\mathfrak{k}), \\bar{f}_{q_0,p_0}(\\mathfrak{l})$ is zero and the other is positive. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — $\\{\\bar{f}_{q,p}\\}$ separates generators</div>
 </div>
 <div class="remark-box">
@@ -302,9 +311,10 @@ M @>{\\exists!\\,\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
 <p><strong>Lemma.</strong> Every $m\\in N\\setminus\\{e\\}$ has a <em>unique</em> factorization $m = \\hat{q}_1\\cdots\\hat{q}_n$ with all $\\hat{q}_i\\in\\mathrm{Irr}(N)$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>Part 1 — Existence</strong> (norm induction). Working in $(\\mathbb{Z}^2,\\circledast\\times\\star)$, define the norm directly:</p>
-<div class="math-block">$$\\|(z,w)\\| = \\phi(z)^2 = (6z+1)^2$$</div>
-<p>This is well-defined on $\\mathbb{Z}^2$ without any representation — no Prop 2.4.5 needed here. It is multiplicative: $\\|a\\cdot b\\| = \\|a\\|\\cdot\\|b\\|$. If $m = a\\cdot b$ with $a,b\\neq e$ then $\\|a\\|,\\|b\\| &lt; \\|m\\|$. Induct on $\\|m\\|\\geq 25$. ✓</p>
+<p><strong>Part 1 — Existence</strong> (strong induction on norm). For a generator $\\mathfrak{k}=(k,k)$ define its <em>norm</em>:</p>
+<div class="math-block">$$\\|\\mathfrak{k}\\| = \\phi(k)^2 = (6k+1)^2 \\geq 25 \\quad\\text{for }k\\neq 0.$$</div>
+<p>Extend multiplicatively to $N$: $\\|\\mathfrak{k}_1\\cdots\\mathfrak{k}_r\\|=\\prod_i\\phi(k_i)^2$. (Well-defined without Prop 2.4.5: use it as a function on words, noting it equals $\\phi(\\pi_1(m))^2$ which is intrinsic.) By Lem 4.3 N5, if $m=a\\cdot b$ with $a,b\\neq e$ then $\\|a\\|,\\|b\\|<\\|m\\|$.</p>
+<p><em>Induction:</em> If $m$ is irreducible, done. Otherwise $m=a\\cdot b$ with $a,b\\neq e$ and $\\|a\\|,\\|b\\|<\\|m\\|$; by induction each of $a,b$ factors into irreducibles, so $m$ does too. ✓</p>
 <p><strong>Part 2 — Uniqueness</strong> (induction + UFD). Suppose</p>
 <div class="math-block">$$\\hat{q}_1\\cdots\\hat{q}_n \\;=\\; \\hat{\\lambda}_1\\cdots\\hat{\\lambda}_m \\quad\\text{all factors irreducible, }n\\leq m.$$</div>
 <p><span class="step-num">1</span><strong>$n=m$, proved by induction on $n$:</strong></p>
@@ -420,7 +430,7 @@ M @>{\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
 <p><strong>($\\Leftarrow$) Both irreducible $\\Rightarrow$ $z\\otimes w$ irreducible:</strong></p>
 <p><span class="step-num">3</span><strong>Left-splitting:</strong> $z\\otimes w = (a\\otimes w)(b\\otimes w)$ requires $z = a\\circledast b$. Irreducibility of $z$: $a=0$ or $b=0$. Trivial.</p>
 <p><span class="step-num">4</span><strong>Right-splitting:</strong> $z\\otimes w = (z\\otimes c)(z\\otimes d)$ requires $w = c\\star d$. Irreducibility of $w$: $c=0$ or $d=0$. Trivial.</p>
-<p><span class="step-num">5</span><strong>Mixed splitting:</strong> A product $(a\\otimes c)(b\\otimes d)$ with $a \\neq b$ AND $c \\neq d$ remains a formal product in $M$ — it cannot equal a single pure tensor.</p>
+<p><span class="step-num">5</span><strong>Mixed splitting:</strong> If $z\\otimes w = (a\\otimes c)(b\\otimes d)$ with $a,b,c,d \\neq 0$, apply $\\bar{f}_{q,p}$ for any primes $q,p$: the left side gives $v_q|\\phi(z)|\\cdot v_p|\\psi(w)|$; the right gives $v_q|\\phi(a)|\\cdot v_p|\\psi(c)| + v_q|\\phi(b)|\\cdot v_p|\\psi(d)|$. A single product $v_q(\\cdot)\\cdot v_p(\\cdot)$ cannot equal a sum of two such products for all choices of $(q,p)$ unless both summands are zero — but then $v_q|\\phi(a)|=0$ or $v_p|\\psi(c)|=0$ for all $q,p$, implying $|\\phi(a)|=1$ (impossible for $a\\neq 0$ integer) or $|\\psi(c)|=1$ (impossible for $c\\neq 0$ integer). Contradiction.</p>
 <p>Therefore $z\\otimes w$ is irreducible. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
@@ -448,7 +458,7 @@ M @>{\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
 <p><strong>N2. Identity:</strong> $\\|e\\| = 1$ (empty product). ✓</p>
 <p><strong>N3. Non-degenerate:</strong> $\\|m\\|=1 \\iff$ all $(6k_i+1)^2 = 1 \\iff$ all $k_i=0 \\iff m = e$. ✓</p>
 <p><strong>N4. Multiplicative:</strong> $\\|a \\cdot b\\| = \\|a\\|\\cdot\\|b\\|$. ✓</p>
-<p><strong>N5. Proper factors have smaller norm:</strong> If $m = a \\cdot b$ with $a, b \\neq e$, then $\\|a\\| \\geq 25$ (since $|\\phi(k)|\\geq 5$ for $k\\neq 0$), so $\\|a\\| = \\|m\\|/\\|b\\| \\leq \\|m\\|/25 < \\|m\\|$. ✓</p>
+<p><strong>N5. Proper factors have smaller norm:</strong> If $m = a \\cdot b$ with $a, b \\neq e$, then by N4, $\\|a\\|\\cdot\\|b\\|=\\|m\\|$. Each $|\\phi(k_i)|=|6k_i+1|\\geq 5$ for $k_i\\in\\mathbb{Z}\\setminus\\{0\\}$ (since $|6k+1|=1$ requires $k=-1/3\\notin\\mathbb{Z}$), so $\\|b\\|\\geq 25$. Hence $\\|a\\|=\\|m\\|/\\|b\\|\\leq\\|m\\|/25 < \\|m\\|$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>`},
 
@@ -563,13 +573,15 @@ M @>{\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
 </div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p>Suppose the set is nonempty. Pick $m_0 \\in N$ with $\\pi(m_0) = (z_0, w_0)$ in the basic open.</p>
-<p><span class="step-num">1</span><strong>Construct new elements:</strong> For each $n \\in \\mathbb{Z}$, define $v_n = m_0 \\cdot \\mathfrak{(nbd)}$. Since $\\mathfrak{(nbd)} \\in G \\subseteq N$, we have $v_n \\in N$. ✓</p>
-<p><span class="step-num">2</span><strong>First projected component stays in $a + b\\mathbb{Z}$:</strong></p>
-<p>$\\pi_1(v_n) = z_0 \\circledast (nbd) = nbd(6z_0 + 1) + z_0 \\equiv z_0 \\equiv a \\pmod{b}$ (since $b \\mid nbd$). ✓</p>
-<p><span class="step-num">3</span><strong>Second projected component stays in $c + d\\mathbb{Z}$:</strong></p>
-<p>$\\pi_2(v_n) = w_0 \\star (nbd) = nbd(-6w_0 + 1) + w_0 \\equiv w_0 \\equiv c \\pmod{d}$ (since $d \\mid nbd$). ✓</p>
-<p><span class="step-num">4</span><strong>Distinctness:</strong> $\\phi(\\pi_1(v_n)) = \\phi(z_0)(6nbd + 1)$. Since $\\phi(z_0) \\neq 0$, distinct $n$ give distinct $\\pi_1$-values, hence distinct elements (by well-definedness of $\\pi$). ✓</p>
+<p><em>Proof.</em> Suppose the set is nonempty; pick $m_0 \\in N$ with $\\pi(m_0) = (z_0, w_0) \\in (a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})$. Set $D = bd$ (the product of both moduli).</p>
+<p><span class="step-num">1</span><strong>Construct infinitely many elements.</strong> For each $n \\in \\mathbb{Z}$ define the generator $\\mathfrak{\\delta}_n := nD \\otimes nD \\in G$ and set $v_n := m_0 \\cdot \\mathfrak{\\delta}_n \\in N$.</p>
+<p><span class="step-num">2</span><strong>$\\pi_1(v_n) \\in a + b\\mathbb{Z}$:</strong> Since $\\pi$ is a homomorphism and $b \\mid D$:</p>
+<div class="math-block">$$\\pi_1(v_n) = z_0 \\circledast nD = 6z_0(nD)+z_0+nD \\equiv z_0 \\equiv a\\pmod{b}.$$</div>
+<p><span class="step-num">3</span><strong>$\\pi_2(v_n) \\in c + d\\mathbb{Z}$:</strong> Since $d \\mid D$:</p>
+<div class="math-block">$$\\pi_2(v_n) = w_0 \\star nD = -6w_0(nD)+w_0+nD \\equiv w_0 \\equiv c\\pmod{d}.$$</div>
+<p><span class="step-num">4</span><strong>Distinct $n$ give distinct elements.</strong> Apply $\\phi$ to $\\pi_1$:</p>
+<div class="math-block">$$\\phi(\\pi_1(v_n)) = \\phi(z_0 \\circledast nD) = \\phi(z_0)\\cdot\\phi(nD) = \\phi(z_0)(6nD+1).$$</div>
+<p>Since $\\phi(z_0) = 6z_0+1 \\neq 0$ for all $z_0 \\in \\mathbb{Z}$, distinct $n$ give distinct $\\phi(\\pi_1(v_n))$, hence distinct $v_n \\in N$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="remark-box">
@@ -676,60 +688,116 @@ M @>{\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
 // ═══════════════════════════════════════════════════════════════
 // Proof tree data (DAG as tree with back-references)
 // ═══════════════════════════════════════════════════════════════
-const treeData = {id:'cor-5.3',label:'Cor 5.3: TPC',cls:'tn-cor',children:[
-  {id:'thm-5.2',label:'Thm 5.2: |Irr|=∞',cls:'tn-thm',children:[
-    {id:'lem-proj-contain',label:'Containment Lem',cls:'tn-lem',children:[
-      {id:'prop-top-monoid',label:'Prop: Top. Monoid',cls:'tn-lem',children:[
-        {id:'def-proj',label:'Def π: Topology',cls:'tn-def',children:[
-          {id:'prop-2.4',label:'Prop 2.4: Structure',cls:'tn-lem',children:[
-            {id:'lem-ufd',label:'Lem 2.4.A: Irred. UFD',cls:'tn-lem',children:[
-              {id:'_thm-1.3b',label:'Thm 1.3 ↑',cls:'tn-thm',ref:'thm-1.3',children:[]},
-              {id:'_lem-4.3b',label:'Lem 4.3: Norm ↑',cls:'tn-lem',ref:'lem-4.3',children:[]}
-            ]},
-            {id:'lem-sep-inv',label:'Lem 2.3: Sep. Invariants',cls:'tn-lem',children:[
-              {id:'def-2.1',label:'Def 2.1: M, G, N',cls:'tn-def',children:[]}
-            ]}
-          ]}
-        ]}
-      ]},
-      {id:'thm-4.2',label:'Thm 4.2: Irred↔Twins',cls:'tn-thm',children:[
-        {id:'thm-1.3',label:'Thm 1.3: φ,ψ isos',cls:'tn-thm',children:[
-          {id:'def-1.1',label:'Def 1.1: ⊛,⋆',cls:'tn-def',children:[]}
-        ]},
-        {id:'def-4.1',label:'Def 4.1: Irreducibility',cls:'tn-def',children:[]}
-      ]}
-    ]},
-    {id:'lem-4.4',label:'Cor 4.5: Covering',cls:'tn-lem',children:[
-      {id:'lem-4.3',label:'Lem 4.3: Norm',cls:'tn-lem',children:[
-        {id:'_prop-2.4',label:'Prop 2.4 ↑',cls:'tn-def',ref:'prop-2.4',children:[]}
-      ]},
-      {id:'_def-4.1',label:'Def 4.1 ↑',cls:'tn-def',ref:'def-4.1',children:[]}
-    ]},
-    {id:'thm-empty-or-inf',label:'Thm ∅/∞: No finite open',cls:'tn-thm',children:[
-      {id:'_def-proj',label:'Def π ↑',cls:'tn-def',ref:'def-proj',children:[]},
-      {id:'lem-1.4',label:'Lem 1.4: No 0-div',cls:'tn-lem',children:[
-        {id:'_thm-1.3',label:'Thm 1.3 ↑',cls:'tn-thm',ref:'thm-1.3',children:[]}
-      ]}
-    ]}
-  ]},
-  {id:'_thm-4.2',label:'Thm 4.2 ↑',cls:'tn-thm',ref:'thm-4.2',children:[]}
-]};
-
-function buildTree(node){
-  const targetId = node.ref || node.id;
-  const opacity = node.ref ? ' style="opacity:.5"' : '';
-  let html = `<li><span class="tn ${node.cls}" data-id="${targetId}"${opacity}>${node.label}</span>`;
-  if(node.children && node.children.length){
-    html += '<ul>' + node.children.map(buildTree).join('') + '</ul>';
-  }
-  html += '</li>';
-  return html;
+// ── Proof Dependency Map ─────────────────────────────────────
+const PM_NODES=[
+  {id:'def-1.1',      l1:'Def 1.1',   l2:'⊛ and ⋆',       t:'def', c:0,r:0},
+  {id:'thm-1.3',      l1:'Thm 1.3',   l2:'φ, ψ  isos',     t:'thm', c:0,r:1},
+  {id:'lem-1.4',      l1:'Lem 1.4',   l2:'No zero-divs',   t:'lem', c:0,r:2},
+  {id:'def-2.1',      l1:'Def 2.1',   l2:'M, G, N',        t:'def', c:1,r:0},
+  {id:'lem-sep-inv',  l1:'Lem 2.3',   l2:'Sep. Invariants', t:'lem', c:1,r:1},
+  {id:'lem-ufd',      l1:'Lem 2.4.A', l2:'Irred. UFD',     t:'lem', c:1,r:2},
+  {id:'prop-2.4',     l1:'Prop 2.4',  l2:'N structure',    t:'prop',c:1,r:3},
+  {id:'def-4.1',      l1:'Def 4.1',   l2:'Irreducible',    t:'def', c:2,r:0},
+  {id:'thm-4.2',      l1:'Thm 4.2',   l2:'Irred ↔ Twins',  t:'thm', c:2,r:1},
+  {id:'lem-4.3',      l1:'Lem 4.3',   l2:'Norm ‖·‖',        t:'lem', c:2,r:2},
+  {id:'lem-4.4',      l1:'Cor 4.5',   l2:'Covering',       t:'cor', c:2,r:3},
+  {id:'def-proj',     l1:'Def π',     l2:'Topology on N',  t:'def', c:3,r:0},
+  {id:'prop-top-monoid',l1:'Prop',    l2:'Top. Monoid',    t:'prop',c:3,r:1},
+  {id:'lem-proj-contain',l1:'Lem',    l2:'Containment',    t:'lem', c:3,r:2},
+  {id:'thm-empty-or-inf',l1:'Thm ∅/∞',l2:'No finite open', t:'thm', c:3,r:3},
+  {id:'thm-5.2',      l1:'Thm 5.2',   l2:'|Irr(N)| = ∞',  t:'thm', c:4,r:1},
+  {id:'cor-5.3',      l1:'Cor 5.3',   l2:'TPC  ∎',         t:'cor', c:4,r:2},
+];
+const PM_EDGES=[
+  ['def-1.1','thm-1.3'],
+  ['thm-1.3','lem-1.4'],['thm-1.3','thm-4.2'],['thm-1.3','lem-ufd'],
+  ['def-2.1','lem-sep-inv'],['def-2.1','prop-2.4'],
+  ['lem-sep-inv','prop-2.4'],['lem-ufd','prop-2.4'],
+  ['prop-2.4','def-proj'],['prop-2.4','lem-4.3'],
+  ['def-4.1','thm-4.2'],['def-4.1','lem-4.4'],
+  ['lem-4.3','lem-4.4'],
+  ['thm-4.2','lem-proj-contain'],['thm-4.2','cor-5.3'],
+  ['def-proj','prop-top-monoid'],['def-proj','lem-proj-contain'],['def-proj','thm-empty-or-inf'],
+  ['prop-top-monoid','lem-proj-contain'],
+  ['lem-1.4','thm-empty-or-inf'],
+  ['lem-4.4','thm-5.2'],['lem-proj-contain','thm-5.2'],
+  ['thm-empty-or-inf','thm-5.2'],['thm-5.2','cor-5.3'],
+];
+const PM_COL=[80,225,370,515,660];
+const PM_ROW=[32,122,212,302];
+const NW=120,NH=42;
+const PM_CLR={
+  def: {f:'#dbeafe',s:'#1d4ed8',t:'#1d4ed8'},
+  thm: {f:'#ffedd5',s:'#c2410c',t:'#c2410c'},
+  lem: {f:'#ede9fe',s:'#5b21b6',t:'#5b21b6'},
+  prop:{f:'#dcfce7',s:'#15803d',t:'#15803d'},
+  cor: {f:'#fef9c3',s:'#a16207',t:'#a16207'},
+};
+function pmC(n){return{x:PM_COL[n.c]-NW/2, y:PM_ROW[n.r], cx:PM_COL[n.c], cy:PM_ROW[n.r]+NH/2};}
+function renderProofMap(){
+  const svg=document.getElementById('pm-svg'); if(!svg)return;
+  const nm={}; PM_NODES.forEach(n=>nm[n.id]=n);
+  const activeId=cards[cur].id;
+  const secs=['§1 Algebra','§2 Monoid','§3 Irred.','§4 Topology','§5 Proof'];
+  let out=`<defs>
+    <marker id="arr" markerWidth="7" markerHeight="7" refX="7" refY="3.5" orient="auto">
+      <path d="M0,1 L7,3.5 L0,6 Z" fill="#94a3b8"/>
+    </marker>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>`;
+  // section headers
+  PM_COL.forEach((cx,i)=>{ out+=`<text x="${cx}" y="18" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" font-weight="700" fill="#7c3aed" opacity=".65">${secs[i]}</text>`; });
+  // column dividers
+  for(let i=1;i<PM_COL.length;i++){const mx=(PM_COL[i-1]+PM_COL[i])/2; out+=`<line x1="${mx}" y1="24" x2="${mx}" y2="378" stroke="#e5e7eb" stroke-width="1"/>`;}
+  // edges
+  PM_EDGES.forEach(([a,b])=>{
+    const s=nm[a],t=nm[b]; if(!s||!t)return;
+    const sc=pmC(s),tc=pmC(t);
+    const x1=sc.cx+(NW/2),y1=sc.cy, x2=tc.cx-(NW/2),y2=tc.cy;
+    const mx=(x1+x2)/2;
+    out+=`<path d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-opacity=".55" marker-end="url(#arr)"/>`;
+  });
+  // nodes
+  PM_NODES.forEach(n=>{
+    const {x,y,cx}=pmC(n);
+    const cl=PM_CLR[n.t];
+    const active=n.id===activeId;
+    const sw=active?3:1.5;
+    const filt=active?' filter="url(#glow)"':'';
+    out+=`<g class="pm-node" data-id="${n.id}" style="cursor:pointer">
+      <rect x="${x}" y="${y}" width="${NW}" height="${NH}" rx="9" fill="${cl.f}" stroke="${cl.s}" stroke-width="${sw}"${filt}/>
+      <text x="${cx}" y="${y+15}" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10.5" font-weight="700" fill="${cl.t}">${n.l1}</text>
+      <text x="${cx}" y="${y+29}" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8.5" fill="${cl.t}" opacity=".8">${n.l2}</text>
+    </g>`;
+  });
+  svg.innerHTML=out;
+  svg.querySelectorAll('.pm-node').forEach(el=>{
+    el.addEventListener('click',()=>{const id=el.dataset.id;if(id){goToCard(id);togglePM();}});
+    el.addEventListener('mouseenter',()=>{el.querySelector('rect').style.opacity='.7';});
+    el.addEventListener('mouseleave',()=>{el.querySelector('rect').style.opacity='';});
+  });
+}
+function togglePM(){
+  const ov=document.getElementById('pmOverlay');
+  const open=ov.style.display==='none'||!ov.style.display;
+  if(open)renderProofMap();
+  ov.style.display=open?'flex':'none';
 }
 
 let cur=0;
 const chapters=[...new Set(cards.map(c=>c.ch))];
 function goToCard(id){const i=cards.findIndex(c=>c.id===id);if(i>=0)jump(i);}
-function toggleSB(){document.getElementById('sidebar').classList.toggle('open');}
+function shareCard(){
+  const url=window.location.origin+window.location.pathname+"#"+cards[cur].id;
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=document.querySelector(".share-btn");
+    btn.classList.add("copied");btn.innerHTML='<i class="bi bi-check-lg"></i>';
+    setTimeout(()=>{btn.classList.remove("copied");btn.innerHTML='<i class="bi bi-link-45deg"></i>';},1500);
+  }).catch(()=>{prompt("Copy link:",url);});
+}
 function shareCard(){
   const url=window.location.origin+window.location.pathname+"#"+cards[cur].id;
   navigator.clipboard.writeText(url).then(()=>{
@@ -757,10 +825,8 @@ function render(){
     `<button class="ch-btn${cards[cur].ch===ch?" active":""}" onclick="jumpCh('${ch}')">${ch}</button>`).join("");
   document.getElementById("mm").innerHTML=cards.map((c,i)=>
     `<div class="mm-dot${i===cur?" active":""}" onclick="jump(${i})" title="Card ${i+1}: ${c.title.replace(/\$/g,'').replace(/\\\\/g,'').substring(0,30)}"></div>`).join("");
-  // highlight active tree node
-  document.querySelectorAll('.tn').forEach(el=>{
-    el.classList.toggle('active', el.dataset.id===c.id);
-  });
+  // refresh proof map highlight if open
+  if(document.getElementById('pmOverlay')&&document.getElementById('pmOverlay').style.display==='flex')renderProofMap();
   if(window.renderMathInElement)
     renderMathInElement(document.getElementById("mc"),{
       delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],throwOnError:false});
@@ -776,15 +842,6 @@ function tp(btn){const el=btn.nextElementSibling;const open=el.style.display==="
 document.addEventListener("keydown",e=>{
   if(e.key==="ArrowRight"||e.key==="ArrowDown")go(1);
   if(e.key==="ArrowLeft"||e.key==="ArrowUp")go(-1);});
-// Build proof tree
-document.getElementById("ptree").innerHTML='<ul>'+buildTree(treeData)+'</ul>';
-document.querySelectorAll('.tn').forEach(el=>{
-  el.addEventListener('click',e=>{
-    e.stopPropagation();
-    const id=el.dataset.id;
-    if(id)goToCard(id);
-  });
-});
 // Init
 if(window.location.hash){const h=window.location.hash.slice(1);const hi=cards.findIndex(c=>c.id===h);if(hi>=0)cur=hi;}
 window.addEventListener("hashchange",()=>{const h=window.location.hash.slice(1);const hi=cards.findIndex(c=>c.id===h);if(hi>=0&&hi!==cur)jump(hi);});
