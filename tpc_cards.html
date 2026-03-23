@@ -508,7 +508,7 @@ const cards=[
 // Card 0 — Abstract
 // ═══════════════════════════════════════════════════════════════
 {id:"abstract",ch:"Abstract",badge:"b-abs",title:"Abstract — The Monoid Tensor Product Approach",lean:null,body:`
-<p>We prove there are <strong>infinitely many twin prime pairs</strong> via the monoid tensor product $M = (\\mathbb{Z},\\circledast) \\otimes_{\\mathrm{Mon}} (\\mathbb{Z},\\star)$ and the submonoid $N = \\langle \\{\\mathfrak{k} = (k,k) : k \\in \\mathbb{Z}\\} \\rangle \\leqslant M$.</p>
+<p>We prove there are <strong>infinitely many twin prime pairs</strong> via the monoid tensor product $M = (\\mathbb{Z},\\circledast) \\otimes_{\\mathrm{Mon}} (\\mathbb{Z},\\star)$ and the submonoid $N = \\langle \\{\\mathfrak{r} = (k,k) : k \\in \\mathbb{Z}\\} \\rangle \\leqslant M$.</p>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Core Strategy</div>
 <p>We transfer the twin-prime question into an algebraic/topological setting where Furstenberg's classic proof-technique applies. The map $\\phi(x)=6x+1$ converts $(\\mathbb{Z},\\circledast)$ into ordinary multiplication in $6\\mathbb{Z}+1$. The monoid tensor product $M$ has bilinearity relations $(a \\circledast b) \\otimes w = (a \\otimes w)(b \\otimes w)$ and $z \\otimes (c \\star d) = (z \\otimes c)(z \\otimes d)$, with $z \\otimes 0 = 0 \\otimes w = e$ (identity). Irreducible elements of $N$ correspond exactly to twin prime pairs.</p>
@@ -638,11 +638,11 @@ ${mkVerify('lem-1.4')}`},
 <div class="math-block">$$z \\otimes 0 = 0 \\otimes w = e \\quad\\text{(identity)}$$</div>
 <p><strong>Definition 2.2.</strong> The <strong>generating set</strong> and <strong>diagonal submonoid</strong>:</p>
 <div class="math-block">$$G = \\{ z \\otimes z : z \\in \\mathbb{Z} \\}, \\qquad N = \\langle G \\rangle$$</div>
-<p>Elements of $N$ are formal products of diagonal tensors $\\mathfrak{k}_1 \\cdots \\mathfrak{k}_r$. A product of distinct generators does <strong>not</strong> simplify to a pure tensor (see <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4</a>). The multiset $\\{k_1,\\ldots,k_r\\}$ uniquely determines the element of $N$.</p>
+<p>Elements of $N$ are formal products of diagonal tensors $\\mathfrak{r}_1 \\cdots \\mathfrak{r}_r$. A product of distinct generators does <strong>not</strong> simplify to a pure tensor (see <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4</a>). The multiset $\\{k_1,\\ldots,k_r\\}$ uniquely determines the element of $N$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show that $N$ is a submonoid</button>
 <div class="proof-content" style="display:none">
 <p><strong>Identity:</strong> The empty product ($r=0$) gives $e \\in N$. ✓</p>
-<p><strong>Closure:</strong> If $\\mathfrak{k}_1\\cdots\\mathfrak{k}_r \\in N$ and $\\mathfrak{l}_1\\cdots\\mathfrak{l}_s \\in N$, their product $\\mathfrak{k}_1\\cdots\\mathfrak{k}_r\\mathfrak{l}_1\\cdots\\mathfrak{l}_s \\in N$. ✓</p>
+<p><strong>Closure:</strong> If $\\mathfrak{r}_1\\cdots\\mathfrak{r}_r \\in N$ and $\\mathfrak{l}_1\\cdots\\mathfrak{l}_s \\in N$, their product $\\mathfrak{r}_1\\cdots\\mathfrak{r}_r\\mathfrak{l}_1\\cdots\\mathfrak{l}_s \\in N$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>`},
 
@@ -671,8 +671,8 @@ M @>{\\exists!\\,\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show: generators are separated</button>
 <div class="proof-content" style="display:none">
 <p><em>Proof.</em> Let $k\\neq l$ in $\\mathbb{Z}\\setminus\\{0\\}$. Since $\\phi$ is injective, $|\\phi(k)|\\neq|\\phi(l)|$, so their prime factorizations differ. Choose a prime $q_0$ with $v_{q_0}(|\\phi(k)|)\\neq v_{q_0}(|\\phi(l)|)$; WLOG $v_{q_0}(|\\phi(k)|) > v_{q_0}(|\\phi(l)|)$.</p>
-<p><strong>Case A: $v_{q_0}(|\\phi(l)|)=0$.</strong> Since $|\\psi(k)|=|6k-1|\\geq 2$ for $k\\in\\mathbb{Z}\\setminus\\{0\\}$, choose any prime $p_0\\mid |\\psi(k)|$. Then $\\bar{f}_{q_0,p_0}(\\mathfrak{k}) = v_{q_0}(|\\phi(k)|)\\cdot v_{p_0}(|\\psi(k)|) \\geq 1$, while $\\bar{f}_{q_0,p_0}(\\mathfrak{l}) = 0\\cdot v_{p_0}(|\\psi(l)|) = 0$. ✓</p>
-<p><strong>Case B: $v_{q_0}(|\\phi(l)|)\\geq 1$.</strong> Since $|\\psi(k)|=|6k-1|\\neq|6l-1|=|\\psi(l)|$ (injectivity: $|6k-1|=|6l-1|$ and $k,l\\in\\mathbb{Z}$ forces $k=l$), their factorizations differ. Choose a prime $p_0$ with $v_{p_0}(|\\psi(k)|)\\geq 1$ and $v_{p_0}(|\\psi(l)|)=0$ (or vice versa; such $p_0$ exists since otherwise $|\\psi(k)|$ and $|\\psi(l)|$ share all prime factors, forcing $|\\psi(k)|=|\\psi(l)|$ — contradiction). In either sub-case one of $\\bar{f}_{q_0,p_0}(\\mathfrak{k}), \\bar{f}_{q_0,p_0}(\\mathfrak{l})$ is zero and the other is positive. ✓</p>
+<p><strong>Case A: $v_{q_0}(|\\phi(l)|)=0$.</strong> Since $|\\psi(k)|=|6k-1|\\geq 2$ for $k\\in\\mathbb{Z}\\setminus\\{0\\}$, choose any prime $p_0\\mid |\\psi(k)|$. Then $\\bar{f}_{q_0,p_0}(\\mathfrak{r}) = v_{q_0}(|\\phi(k)|)\\cdot v_{p_0}(|\\psi(k)|) \\geq 1$, while $\\bar{f}_{q_0,p_0}(\\mathfrak{l}) = 0\\cdot v_{p_0}(|\\psi(l)|) = 0$. ✓</p>
+<p><strong>Case B: $v_{q_0}(|\\phi(l)|)\\geq 1$.</strong> Since $|\\psi(k)|=|6k-1|\\neq|6l-1|=|\\psi(l)|$ (injectivity: $|6k-1|=|6l-1|$ and $k,l\\in\\mathbb{Z}$ forces $k=l$), their factorizations differ. Choose a prime $p_0$ with $v_{p_0}(|\\psi(k)|)\\geq 1$ and $v_{p_0}(|\\psi(l)|)=0$ (or vice versa; such $p_0$ exists since otherwise $|\\psi(k)|$ and $|\\psi(l)|$ share all prime factors, forcing $|\\psi(k)|=|\\psi(l)|$ — contradiction). In either sub-case one of $\\bar{f}_{q_0,p_0}(\\mathfrak{r}), \\bar{f}_{q_0,p_0}(\\mathfrak{l})$ is zero and the other is positive. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — $\\{\\bar{f}_{q,p}\\}$ separates generators</div>
 </div>
 <div class="remark-box">
@@ -690,9 +690,9 @@ ${mkVerify('lem-sep-inv')}`},
 <p><strong>Lemma.</strong> Every $m\\in N\\setminus\\{e\\}$ has a <em>unique</em> factorization $m = \\hat{q}_1\\cdots\\hat{q}_n$ with all $\\hat{q}_i\\in\\mathrm{Irr}(N)$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>Part 1 — Existence</strong> (strong induction on norm). For a generator $\\mathfrak{k}=(k,k)$ define its <em>norm</em>:</p>
-<div class="math-block">$$\\|\\mathfrak{k}\\| = \\phi(k)^2 = (6k+1)^2 \\geq 25 \\quad\\text{for }k\\neq 0.$$</div>
-<p>Extend multiplicatively to $N$: $\\|\\mathfrak{k}_1\\cdots\\mathfrak{k}_r\\|=\\prod_i\\phi(k_i)^2$. (Well-defined without Prop 2.4.5: use it as a function on words, noting it equals $\\phi(\\pi_1(m))^2$ which is intrinsic.) By Lem 4.3 N5, if $m=a\\cdot b$ with $a,b\\neq e$ then $\\|a\\|,\\|b\\|<\\|m\\|$.</p>
+<p><strong>Part 1 — Existence</strong> (strong induction on norm). For a generator $\\mathfrak{r}=(k,k)$ define its <em>norm</em>:</p>
+<div class="math-block">$$\\|\\mathfrak{r}\\| = \\phi(k)^2 = (6k+1)^2 \\geq 25 \\quad\\text{for }k\\neq 0.$$</div>
+<p>Extend multiplicatively to $N$: $\\|\\mathfrak{r}_1\\cdots\\mathfrak{r}_r\\|=\\prod_i\\phi(k_i)^2$. (Well-defined without Prop 2.4.5: use it as a function on words, noting it equals $\\phi(\\pi_1(m))^2$ which is intrinsic.) By Lem 4.3 N5, if $m=a\\cdot b$ with $a,b\\neq e$ then $\\|a\\|,\\|b\\|<\\|m\\|$.</p>
 <p><em>Induction:</em> If $m$ is irreducible, done. Otherwise $m=a\\cdot b$ with $a,b\\neq e$ and $\\|a\\|,\\|b\\|<\\|m\\|$; by induction each of $a,b$ factors into irreducibles, so $m$ does too. ✓</p>
 <p><strong>Part 2 — Uniqueness</strong> (induction + UFD). Suppose</p>
 <div class="math-block">$$\\hat{q}_1\\cdots\\hat{q}_n \\;=\\; \\hat{\\lambda}_1\\cdots\\hat{\\lambda}_m \\quad\\text{all factors irreducible, }n\\leq m.$$</div>
@@ -758,7 +758,7 @@ def f(q, p, z, w):                     # f_{q,p}(z,w) = v_q(|φ(z)|)·v_p(|ψ(w)
 {id:"prop-2.4",ch:"§2 Monoid",badge:"b-prop",title:"Proposition 2.4 — Structure of $N = \\langle G \\rangle$",lean:`${GH}/TPC/Monoid.lean#L40`,body:`
 <p><strong>Prop 2.4.1.</strong> For $a \\neq b$, the product $\\mathfrak{a} \\cdot \\mathfrak{b}$ is a <strong>formal product</strong> — it does NOT simplify to a single pure tensor.</p>
 <p><strong>Prop 2.4.3.</strong> $M$ and $N$ are <strong>commutative</strong> (tensor product of commutative monoids is commutative).</p>
-<p><strong>Prop 2.4.4.</strong> $k \\mapsto \\mathfrak{k} = (k,k)$ is <strong>injective</strong> on $\\mathbb{Z} \\setminus \\{0\\}$.</p>
+<p><strong>Prop 2.4.4.</strong> $k \\mapsto \\mathfrak{r} = (k,k)$ is <strong>injective</strong> on $\\mathbb{Z} \\setminus \\{0\\}$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proofs via separating invariants</button>
 <div class="proof-content" style="display:none">
 <p>All three follow from <a class="ilink" onclick="goToCard('lem-sep-inv')">Lemma 2.3</a>. The family $\\{\\bar{f}_{q,p}: M\\to(\\mathbb{Z},+)\\}$ satisfies $\\bar{f}_{q,p}\\circ\\iota = f_{q,p}$:</p>
@@ -768,14 +768,14 @@ def f(q, p, z, w):                     # f_{q,p}(z,w) = v_q(|φ(z)|)·v_p(|ψ(w)
 M @>{\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
 \\end{CD}$$</div>
 <p><strong>2.4.1:</strong> If $\\mathfrak{a}\\cdot\\mathfrak{b} = z\\otimes w$ for some $z,w$, apply $\\bar{f}_{q,p}$: the left side gives $\\bar{f}_{q,p}(\\mathfrak{a})+\\bar{f}_{q,p}(\\mathfrak{b})$, the right gives $f_{q,p}(z,w)=v_q|\\phi(z)|\\cdot v_p|\\psi(w)|$. But choosing $(q,p)$ that separates $a$ from $b$ forces an additive split that no single product $v_q(\\cdot)\\cdot v_p(\\cdot)$ can match. Contradiction. ✓</p>
-<p><strong>2.4.4:</strong> If $\\mathfrak{k}=\\mathfrak{l}$ then $\\bar{f}_{q,p}(\\mathfrak{k})=\\bar{f}_{q,p}(\\mathfrak{l})$ for all $(q,p)$. By Lemma 2.3 separation, $k=l$. ✓</p>
+<p><strong>2.4.4:</strong> If $\\mathfrak{r}=\\mathfrak{l}$ then $\\bar{f}_{q,p}(\\mathfrak{r})=\\bar{f}_{q,p}(\\mathfrak{l})$ for all $(q,p)$. By Lemma 2.3 separation, $k=l$. ✓</p>
 <p><strong>2.4.3:</strong> Since $\\circledast$ and $\\star$ are commutative, $z\\otimes w = (z\\circledast 0)\\otimes w$, and the bilinearity relations give commutativity on generators; it extends to all of $M$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
-<p><strong>Prop 2.4.5 (Unique multiset representation).</strong> Different multisets of non-zero generators give different elements: if $\\mathfrak{k}_1\\cdots\\mathfrak{k}_r = \\mathfrak{l}_1\\cdots\\mathfrak{l}_s$ in $M$, then $r=s$ and $\\{k_1,\\ldots,k_r\\} = \\{l_1,\\ldots,l_s\\}$ as multisets.</p>
+<p><strong>Prop 2.4.5 (Unique multiset representation).</strong> Different multisets of non-zero generators give different elements: if $\\mathfrak{r}_1\\cdots\\mathfrak{r}_r = \\mathfrak{l}_1\\cdots\\mathfrak{l}_s$ in $M$, then $r=s$ and $\\{k_1,\\ldots,k_r\\} = \\{l_1,\\ldots,l_s\\}$ as multisets.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Proof — choose irreducibles, then UFD</button>
 <div class="proof-content" style="display:none">
-<p><span class="step-num">1</span><strong>Choose $\\mathfrak{k}_i, \\mathfrak{l}_j$ to be irreducible.</strong> By <a class="ilink" onclick="goToCard('lem-ufd')">Lem 2.4.A</a> (existence), every factor has an irreducible factorization in $N$. Replace each $\\mathfrak{k}_i$ and $\\mathfrak{l}_j$ by its irreducible factorization; the equality is preserved and we may write</p>
+<p><span class="step-num">1</span><strong>Choose $\\mathfrak{r}_i, \\mathfrak{l}_j$ to be irreducible.</strong> By <a class="ilink" onclick="goToCard('lem-ufd')">Lem 2.4.A</a> (existence), every factor has an irreducible factorization in $N$. Replace each $\\mathfrak{r}_i$ and $\\mathfrak{l}_j$ by its irreducible factorization; the equality is preserved and we may write</p>
 <div class="math-block">$$\\mathfrak{q}_1\\cdots\\mathfrak{q}_n \\;=\\; \\mathfrak{\\lambda}_1\\cdots\\mathfrak{\\lambda}_m, \\qquad \\mathfrak{q}_i,\\mathfrak{\\lambda}_j\\in\\mathrm{Irr}(N).$$</div>
 <p><span class="step-num">2</span><strong>Apply $\\bar{\\phi}: M\\to(\\mathbb{Z},\\cdot)$.</strong> Since $\\phi:(\\mathbb{Z},\\circledast)\\to(\\mathbb{Z},\\cdot)$, $z\\mapsto 6z+1$ is a monoid homomorphism, it extends via the UMP to $\\bar{\\phi}$ on $M$:</p>
 <div class="math-block">$$\\phi(q_1)\\cdots\\phi(q_n) \\;=\\; \\phi(\\lambda_1)\\cdots\\phi(\\lambda_m).$$</div>
@@ -793,34 +793,34 @@ ${mkVerify('prop-2.4')}`},
 <p>In other words, $m$ cannot be decomposed as a nontrivial product of two elements of $N$.</p>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Note</div>
-<p>Every element of $N$ is a product of diagonal tensors $\\mathfrak{k} = (k,k)$. Irreducibility means the generating sequence has length exactly 1: $m = \\mathfrak{k}$ for some $k$ that is simultaneously $\\circledast$-irreducible and $\\star$-irreducible.</p>
+<p>Every element of $N$ is a product of diagonal tensors $\\mathfrak{r} = (k,k)$. Irreducibility means the generating sequence has length exactly 1: $m = \\mathfrak{r}$ for some $k$ that is simultaneously $\\circledast$-irreducible and $\\star$-irreducible.</p>
 </div>
 <div class="example-box">
-<div class="example-title"><i class="bi bi-x-circle me-1"></i>Reducible simple tensors $\\mathfrak{k}=k\\otimes k$</div>
-<p>By Thm 4.2, $\\mathfrak{k}\\in\\mathrm{Irr}(N)$ iff <em>both</em> $\\phi(k)=6k+1$ and $\\psi(k)=6k-1$ are $\\pm$prime. If either is composite, $\\mathfrak{k}$ is reducible:</p>
+<div class="example-title"><i class="bi bi-x-circle me-1"></i>Reducible diagonal tensors $\\mathfrak{r}_k = (k,k)$</div>
+<p>By Thm 4.2, $\\mathfrak{r}\\in\\mathrm{Irr}(N)$ iff <em>both</em> $\\phi(k)=6k+1$ and $\\psi(k)=6k-1$ are $\\pm$prime. If either is composite, $\\mathfrak{r}$ is reducible:</p>
 <div class="code-block" style="margin:.4rem 0"> k    φ(k)=6k+1        ψ(k)=6k-1       Status
   4       25 = 5²           23          REDUCIBLE (φ composite)
   6       37              35 = 5·7      REDUCIBLE (ψ composite)
   8       49 = 7²           47          REDUCIBLE (φ composite)
  11       67              65 = 5·13     REDUCIBLE (ψ composite)
 141      847 = 7·11²      845 = 5·13²   REDUCIBLE (both)</div>
-<p><strong>Explicit factorization: $\\mathfrak{141} = \\mathfrak{1}\\cdot\\mathfrak{-2}\\cdot\\mathfrak{-2}$</strong> (generator sequence $(1,-2,-2)$)</p>
+<p><strong>Explicit factorization: $\\mathfrak{r}_{141} = \\mathfrak{r}_1\\cdot\\mathfrak{r}_{-2}\\cdot\\mathfrak{r}_{-2}$</strong> &nbsp;(generator sequence $(1,-2,-2)$)</p>
 <p>Both components must equal $141$. Verify with $x\\circledast y=6xy+x+y$ and $x\\star y=-6xy+x+y$:</p>
 <div class="code-block" style="margin:.4rem 0">Component 1 (⊛):  1 ⊛ (-2) = 6(1)(-2)+1+(-2) = -13
                  (-13) ⊛ (-2) = 6(-13)(-2)+(-13)+(-2) = 141  ✓
 Component 2 (⋆):  1 ⋆ (-2) = -6(1)(-2)+1+(-2) =  11
                   11 ⋆ (-2) = -6(11)(-2)+11+(-2) = 141  ✓</div>
-<p>Breaking it into two factors: $(-2)\\circledast(-2)=20$, $(-2)\\star(-2)=-28$, so $\\mathfrak{-2}^2=(20,-28)$. Then:</p>
-<div class="math-block">$$\\mathfrak{141} = \\underbrace{(1,1)}_{\\mathfrak{1}}\\cdot\\underbrace{(20,-28)}_{\\mathfrak{-2}^2} = \\mathfrak{1}\\cdot\\mathfrak{-2}\\cdot\\mathfrak{-2}$$</div>
-<p>Each factor $\\mathfrak{1}=(1,1)$ and $\\mathfrak{-2}=(-2,-2)$ is itself <em>irreducible</em> — both $\\phi(1)=7,\\psi(1)=5$ and $\\phi(-2)=-11,\\psi(-2)=-13$ are $\\pm$prime. So $\\mathfrak{141}$ is reducible but factors into irreducibles.</p>
+<p>Grouping: $\\mathfrak{r}_{-2}^2 = ((-2)\\circledast(-2),\\,(-2)\\star(-2)) = (20,-28)$. Then:</p>
+<div class="math-block">$$\\mathfrak{r}_{141} = \\underbrace{(1,1)}_{\\mathfrak{r}_1}\\cdot\\underbrace{(20,-28)}_{\\mathfrak{r}_{-2}^{\\,2}} = \\mathfrak{r}_1\\cdot\\mathfrak{r}_{-2}\\cdot\\mathfrak{r}_{-2}$$</div>
+<p>Each factor is irreducible: $\\phi(1)=7,\\,\\psi(1)=5$ and $\\phi(-2)=-11,\\,\\psi(-2)=-13$ are all $\\pm$prime. So $\\mathfrak{r}_{141}$ is reducible but factors into three irreducibles.</p>
 </div>`},
 
 // ═══════════════════════════════════════════════════════════════
 // Card 7 — Thm 4.2: Irreducibles ⟺ Twin Primes
 // ═══════════════════════════════════════════════════════════════
 {id:"thm-4.2",ch:"§3 Irred",badge:"b-thm",title:"Theorem 4.2 — Irreducibles $\\Longleftrightarrow$ Twin Primes",lean:`${GH}/TPC/Main.lean#L8`,body:`
-<p>A pure tensor $z\\otimes w$ is irreducible in $M$ iff $z$ is $\\circledast$-irreducible and $w$ is $\\star$-irreducible. For diagonal elements $\\mathfrak{k} = (k,k) \\in N$:</p>
-<div class="math-block">$$\\mathfrak{k} \\in \\mathrm{Irr}(N) \\iff \\phi(k)=6k+1 \\text{ is } \\pm\\text{prime and } \\psi(k)=6k-1 \\text{ is } \\pm\\text{prime}$$</div>
+<p>A pure tensor $z\\otimes w$ is irreducible in $M$ iff $z$ is $\\circledast$-irreducible and $w$ is $\\star$-irreducible. For diagonal elements $\\mathfrak{r} = (k,k) \\in N$:</p>
+<div class="math-block">$$\\mathfrak{r} \\in \\mathrm{Irr}(N) \\iff \\phi(k)=6k+1 \\text{ is } \\pm\\text{prime and } \\psi(k)=6k-1 \\text{ is } \\pm\\text{prime}$$</div>
 <p>i.e., $(6k-1, 6k+1)$ is a <strong>twin prime pair</strong>.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
@@ -852,7 +852,7 @@ ${mkVerify('thm-4.2')}`},
 // ═══════════════════════════════════════════════════════════════
 {id:"lem-4.3",ch:"§3 Irred",badge:"b-lem",title:"Lemma 4.3 — The Norm Function",lean:`${GH}/TPC/Main.lean#L40`,body:`
 <p>Define the <strong>norm</strong> on $N$ (well-defined by <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4.5</a>):</p>
-<div class="math-block">$$\\|\\mathfrak{k}_1 \\cdots \\mathfrak{k}_r\\| = \\prod_{i=1}^r \\phi(k_i)^2 = \\prod_{i=1}^r (6k_i+1)^2$$</div>
+<div class="math-block">$$\\|\\mathfrak{r}_1 \\cdots \\mathfrak{r}_r\\| = \\prod_{i=1}^r \\phi(k_i)^2 = \\prod_{i=1}^r (6k_i+1)^2$$</div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show properties</button>
 <div class="proof-content" style="display:none">
 <p><strong>N1. Non-negative:</strong> Product of squares. ✓</p>
@@ -895,8 +895,8 @@ ${mkVerify('lem-4.4')}`},
 // Card 10 — Def: Projected Map π and Topology on N
 // ═══════════════════════════════════════════════════════════════
 {id:"def-proj",ch:"§4 Topology",badge:"b-def",title:"Definition — Projected Map $\\pi$ and Topology on $N$",lean:null,body:`
-<p>By <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4.5</a>, every element of $N$ has a <strong>unique multiset representation</strong> $\\mathfrak{k}_1\\cdots\\mathfrak{k}_r$. Define the <strong>projected map</strong>:</p>
-<div class="math-block">$$\\pi = (\\pi_1, \\pi_2): N \\to \\mathbb{Z}^2, \\qquad \\pi(\\mathfrak{k}_1\\cdots\\mathfrak{k}_r) = (k_1 \\circledast \\cdots \\circledast k_r,\\; k_1 \\star \\cdots \\star k_r)$$</div>
+<p>By <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4.5</a>, every element of $N$ has a <strong>unique multiset representation</strong> $\\mathfrak{r}_1\\cdots\\mathfrak{r}_r$. Define the <strong>projected map</strong>:</p>
+<div class="math-block">$$\\pi = (\\pi_1, \\pi_2): N \\to \\mathbb{Z}^2, \\qquad \\pi(\\mathfrak{r}_1\\cdots\\mathfrak{r}_r) = (k_1 \\circledast \\cdots \\circledast k_r,\\; k_1 \\star \\cdots \\star k_r)$$</div>
 <p>with $\\pi(e) = (0, 0)$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show that $\\pi$ is well-defined and a homomorphism</button>
 <div class="proof-content" style="display:none">
