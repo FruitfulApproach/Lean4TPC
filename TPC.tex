@@ -39,6 +39,7 @@
 \newcommand{\bstar}{\mathbin{\star}}
 \newcommand{\otimesmon}{\otimes_{\mathrm{Mon}}}
 \newcommand{\Irr}{\mathrm{Irr}}
+\newcommand{\IrrM}{\mathrm{Irr}_M}
 \newcommand{\Nmon}{N}
 \newcommand{\Mmon}{M}
 \newcommand{\ehat}{\widehat{q}}
@@ -223,14 +224,25 @@ $m \in N \setminus \{e\}$ is \emph{irreducible} if $m = a \cdot b$ with
 $a, b \in N$ implies $a = e$ or $b = e$.
 \end{definition}
 
-\begin{theorem}[Irreducibles $\iff$ Twin Primes]
+\begin{theorem}[M-Irreducible Generators $\iff$ Twin Primes]
 \label{thm:irred-twin}
-For the diagonal element $\qhat{k} = (k,k) \in N$:
-$$\qhat{k} \in \Irr(N) \iff
+Define $\IrrM(G) = \{\qhat{k} \in G : \qhat{k} \in \Irr(M)\}$.
+For the diagonal generator $\qhat{k} = (k,k) \in G$:
+$$\qhat{k} \in \IrrM(G) \iff
   \varphi(k) = 6k+1 \text{ is } \pm\text{prime}
   \;\text{ and }\;
   |\psi(k)| = |6k-1| \text{ is prime.}$$
 Equivalently, $(6k-1,\, 6k+1)$ is a twin prime pair.
+
+\begin{remark}
+Since $N$ is the free commutative monoid on $G$ (Prop.~2.4.5), every
+generator is N-irreducible: $\Irr(N) = G$.
+Hence $\IrrM(G) \subsetneq \Irr(N)$ whenever some generator is
+M-reducible (e.g.\ $\qhat{4}$, since $\varphi(4)=25$ is composite).
+The Twin Prime Conjecture is $|\IrrM(G)| = \infty$; the Furstenberg
+argument on $N$ gives only $|\Irr(N)| = \infty$ (trivially true).
+Bridging these requires reformulating the topological argument for $M$.
+\end{remark}
 \end{theorem}
 
 \begin{lemma}[Norm and descent]

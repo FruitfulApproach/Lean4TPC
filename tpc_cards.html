@@ -686,8 +686,8 @@ ${mkVerify('lem-sep-inv')}`},
 // ═══════════════════════════════════════════════════════════════
 {id:"lem-ufd",ch:"§2 Monoid",badge:"b-lem",title:"Lemma 2.4.A — Unique Irreducible Factorization in $N$",lean:`${GH}/TPC/Monoid.lean#L50`,body:`
 <p>Working exclusively with <strong>irreducible generators</strong> reduces Prop 2.4.5 to a one-paragraph argument using UFD in $\\mathbb{Z}$. This closes the main proof gap.</p>
-<div class="math-block">$$\\hat{q}=(q,q)\\in\\mathrm{Irr}(N)\\iff \\phi(q)=6q+1\\text{ is prime and }|\\psi(q)|=|6q-1|\\text{ is prime}$$</div>
-<p><strong>Lemma.</strong> Every $m\\in N\\setminus\\{e\\}$ has a <em>unique</em> factorization $m = \\hat{q}_1\\cdots\\hat{q}_n$ with all $\\hat{q}_i\\in\\mathrm{Irr}(N)$.</p>
+<div class="math-block">$$\\hat{q}=(q,q)\\in\\mathrm{Irr}_M(G)\\iff \\phi(q)=6q+1\\text{ is prime and }|\\psi(q)|=|6q-1|\\text{ is prime}$$</div>
+<p><strong>Lemma.</strong> Every $m\\in N\\setminus\\{e\\}$ has a <em>unique</em> factorization $m = \\hat{q}_1\\cdots\\hat{q}_n$ with all $\\hat{q}_i\\in\\mathrm{Irr}(N)=G$ (all generators are N-irreducible). The factors $\\hat{q}_i$ need not be in $\\mathrm{Irr}_M(G)$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
 <p><strong>Part 1 — Existence</strong> (strong induction on norm). For a generator $\\mathfrak{r}=(k,k)$ define its <em>norm</em>:</p>
@@ -792,19 +792,21 @@ ${mkVerify('prop-2.4')}`},
 <div class="math-block">$$m = a \\cdot b\\text{ with }a,b\\in N \\implies a = e\\text{ or }b = e$$</div>
 <p>In other words, $m$ cannot be decomposed as a nontrivial product of two elements of $N$.</p>
 <div class="remark-box">
-<div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Note</div>
-<p>Every element of $N$ is a product of diagonal tensors $\\mathfrak{r} = (k,k)$. Irreducibility means the generating sequence has length exactly 1: $m = \\mathfrak{r}$ for some $k$ that is simultaneously $\\circledast$-irreducible and $\\star$-irreducible.</p>
+<div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>N-irreducibility vs. M-irreducibility</div>
+<p>By Prop 2.4.5, $N$ is a <strong>free commutative monoid</strong> on $G = \\{k{\\otimes}k : k\\neq 0\\}$. Every generator $k{\\otimes}k$ has multiset $\\{k\\}$ of size 1, which cannot be split into two non-empty sub-multisets. Therefore <strong>every generator is N-irreducible</strong>: $\\mathrm{Irr}(N) = G$, trivially infinite.</p>
+<p>The twin prime condition characterises a <em>different</em> notion: <strong>M-irreducibility</strong>. Write $\\mathrm{Irr}_M(G) = \\{\\hat k \\in G : \\hat k \\in \\mathrm{Irr}(M)\\}$. By Thm 4.2, $\\hat k \\in \\mathrm{Irr}_M(G)$ iff $(6k-1,\\,6k+1)$ is a twin prime pair. The TPC is $|\\mathrm{Irr}_M(G)| = \\infty$.</p>
 </div>
 <div class="example-box">
-<div class="example-title"><i class="bi bi-x-circle me-1"></i>Reducible diagonal tensors $\\mathfrak{r}_k = (k,k)$</div>
-<p>By Thm 4.2, $\\mathfrak{r}\\in\\mathrm{Irr}(N)$ iff <em>both</em> $\\phi(k)=6k+1$ and $\\psi(k)=6k-1$ are $\\pm$prime. If either is composite, $\\mathfrak{r}$ is reducible:</p>
-<div class="code-block" style="margin:.4rem 0"> k    φ(k)=6k+1        ψ(k)=6k-1       Status
-  4       25 = 5²           23          REDUCIBLE (φ composite)
-  6       37              35 = 5·7      REDUCIBLE (ψ composite)
-  8       49 = 7²           47          REDUCIBLE (φ composite)
- 11       67              65 = 5·13     REDUCIBLE (ψ composite)
-141      847 = 7·11²      845 = 5·13²   REDUCIBLE (both)</div>
-<p><strong>Explicit factorization: $\\mathfrak{r}_{141} = \\mathfrak{r}_1\\cdot\\mathfrak{r}_{-2}\\cdot\\mathfrak{r}_{-2}$</strong> &nbsp;(generator sequence $(1,-2,-2)$)</p>
+<div class="example-title"><i class="bi bi-info-circle me-1"></i>N-irreducible vs. M-reducible generators</div>
+<p>A generator $\\hat k = k{\\otimes}k$ (multiset size 1) is <strong>always N-irreducible</strong>. It is M-reducible when $\\phi(k)$ or $|\\psi(k)|$ is composite, because the bilinearity of $M$ then gives a factorisation in $M$ (using non-$N$ factors):</p>
+<div class="code-block" style="margin:.4rem 0"> k    φ(k)=6k+1        |ψ(k)|=|6k-1|   N-status       M-status
+  4       25 = 5²           23          N-IRREDUCIBLE   M-REDUCIBLE (φ composite)
+  6       37              35 = 5·7      N-IRREDUCIBLE   M-REDUCIBLE (ψ composite)
+  8       49 = 7²           47          N-IRREDUCIBLE   M-REDUCIBLE (φ composite)
+ 11       67              65 = 5·13     N-IRREDUCIBLE   M-REDUCIBLE (ψ composite)
+141      847 = 7·121      845 = 5·169   N-REDUCIBLE     M-REDUCIBLE (both, multiset {1,-2,-2})</div>
+<p>Key: $\\mathfrak{r}_{141}$ is <em>N-reducible</em> because it is a product of <em>three</em> generators in $N$ (multiset $\\{1,-2,-2\\}$, size 3). The single generators $\\mathfrak{r}_4, \\mathfrak{r}_6, \\ldots$ are N-irreducible despite being M-reducible — their M-factorisations use elements <em>outside</em> $N$.</p>
+<p><strong>Explicit N-factorisation of $\\mathfrak{r}_{141} = \\mathfrak{r}_1\\cdot\\mathfrak{r}_{-2}\\cdot\\mathfrak{r}_{-2}$</strong> &nbsp;(generator sequence $(1,-2,-2)$)</p>
 <p>Both components must equal $141$. Verify with $x\\circledast y=6xy+x+y$ and $x\\star y=-6xy+x+y$:</p>
 <div class="code-block" style="margin:.4rem 0">Component 1 (⊛):  1 ⊛ (-2) = 6(1)(-2)+1+(-2) = -13
                  (-13) ⊛ (-2) = 6(-13)(-2)+(-13)+(-2) = 141  ✓
@@ -819,9 +821,11 @@ Component 2 (⋆):  1 ⋆ (-2) = -6(1)(-2)+1+(-2) =  11
 // Card 7 — Thm 4.2: Irreducibles ⟺ Twin Primes
 // ═══════════════════════════════════════════════════════════════
 {id:"thm-4.2",ch:"§3 Irred",badge:"b-thm",title:"Theorem 4.2 — Irreducibles $\\Longleftrightarrow$ Twin Primes",lean:`${GH}/TPC/Main.lean#L8`,body:`
-<p>A pure tensor $z\\otimes w$ is irreducible in $M$ iff $z$ is $\\circledast$-irreducible and $w$ is $\\star$-irreducible. For diagonal elements $\\mathfrak{r} = (k,k) \\in N$:</p>
-<div class="math-block">$$\\mathfrak{r} \\in \\mathrm{Irr}(N) \\iff \\phi(k)=6k+1 \\text{ is } \\pm\\text{prime and } \\psi(k)=6k-1 \\text{ is } \\pm\\text{prime}$$</div>
-<p>i.e., $(6k-1, 6k+1)$ is a <strong>twin prime pair</strong>.</p>
+<p>A pure tensor $z\\otimes w$ is irreducible in $M$ iff $z$ is $\\circledast$-irreducible and $w$ is $\\star$-irreducible. For diagonal generators $\\hat{k} = k{\\otimes}k \\in G \\subseteq N$:</p>
+<div class="math-block">$$\\hat{k} \\in \\mathrm{Irr}(M) \\iff \\phi(k)=6k+1 \\text{ is } \\pm\\text{prime and } |\\psi(k)|=|6k-1| \\text{ is prime}$$</div>
+<p>Defining $\\mathrm{Irr}_M(G) = \\{\\hat k \\in G : \\hat k \\in \\mathrm{Irr}(M)\\}$, this says $\\hat k \\in \\mathrm{Irr}_M(G)$ iff $(6k-1, 6k+1)$ is a <strong>twin prime pair</strong>.</p>
+<div class="remark-box" style="margin-top:.6rem"><div class="remark-title"><i class="bi bi-exclamation-triangle-fill me-1"></i>Gap — N-irred ≠ M-irred</div>
+<p>Since $N$ is the free commutative monoid on $G$ (Prop 2.4.5), <em>every</em> generator is N-irreducible: $\\mathrm{Irr}(N)=G$. The proof below characterises $\\mathrm{Irr}_M(G)\\subsetneq G$. The TPC requires $|\\mathrm{Irr}_M(G)|=\\infty$; the Furstenberg argument on $N$ gives only $|\\mathrm{Irr}(N)|=|G|=\\infty$ (trivially). Bridging these requires applying the topological argument directly to $M$ or $\\mathbb{Z}^2$.</p></div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
 <p><strong>($\\Rightarrow$) $z\\otimes w$ irreducible $\\Rightarrow$ both components irreducible:</strong></p>
@@ -844,7 +848,7 @@ Component 2 (⋆):  1 ⋆ (-2) = -6(1)(-2)+1+(-2) =  11
  5      31         29       YES  (29, 31)
  7      43         41       YES  (41, 43)</div>
 </div>
-<p>So $|\\mathrm{Irr}(N)|=\\infty$ (restricted to diagonal tensors) is <strong>exactly</strong> the Twin Prime Conjecture.</p>
+<p>So $|\\mathrm{Irr}_M(G)|=\\infty$ is <strong>exactly</strong> the Twin Prime Conjecture. Note: $|\\mathrm{Irr}(N)|=|G|=\\infty$ trivially (all generators are N-irreducible); the non-trivial claim is that infinitely many of those generators are also M-irreducible.</p>
 ${mkVerify('thm-4.2')}`},
 
 // ═══════════════════════════════════════════════════════════════
@@ -1068,13 +1072,16 @@ ${mkVerify('thm-empty-or-inf')}`},
 <p>Every nonempty basic open set $\\pi^{-1}((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z}))$ in $N$ is infinite. ✓</p>
 </div>
 <p><strong>Conclusion:</strong> By the <a class="ilink" onclick="goToCard('thm-furstenberg-recipe')">Irreducible Infinitude Recipe</a>: $|\\mathrm{Irr}(N)| = \\infty$.</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>All three hypotheses verified — Recipe applies</div>`},
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>All three hypotheses verified — Recipe applies</div>
+<div class="remark-box" style="margin-top:.7rem"><div class="remark-title"><i class="bi bi-exclamation-triangle-fill me-1"></i>What this proves vs. what TPC needs</div>
+<p>The Recipe gives $|\\mathrm{Irr}(N)|=\\infty$, but $\\mathrm{Irr}(N)=G$ (all generators — trivially infinite). The TPC requires $|\\mathrm{Irr}_M(G)|=\\infty$ (infinitely many <em>M-irreducible</em> generators). The covering (R1) uses all of $\\mathrm{Irr}(N)=G$, including M-reducible generators like $\\hat{\\mathfrak{r}}_4$. Replacing $\\mathrm{Irr}(N)$ by $\\mathrm{Irr}_M(G)$ breaks (R1): $\\hat{\\mathfrak{r}}_4 \\in N\\setminus\\{e\\}$ has no $\\mathrm{Irr}_M(G)$-divisor in $N$. The proof needs to be reformulated — likely by applying the topological argument to $M$ rather than $N$.</p></div>`},
 
 // ═══════════════════════════════════════════════════════════════
 // Card — Thm 5.2: |Irr(N)| = ∞ (Corrected Furstenberg Argument)
 // ═══════════════════════════════════════════════════════════════
 {id:"thm-5.2",ch:"§5 Proof",badge:"b-thm",title:"Theorem 5.2 — $|\\mathrm{Irr}(N)|=\\infty$ (The Furstenberg Argument)",lean:`${GH}/TPC/Main.lean#L88`,body:`
-<div class="math-block">$$|\\mathrm{Irr}(N)| = \\infty$$</div>
+<div class="math-block">$$|\\mathrm{Irr}(N)| = \\infty \\quad\\text{(trivially, since }\\mathrm{Irr}(N)=G\\text{)}$$</div>
+<div class="remark-box" style="margin-bottom:.6rem"><div class="remark-title"><i class="bi bi-exclamation-triangle-fill me-1"></i>This is not the TPC</div><p>$\\mathrm{Irr}(N)=G$ because $N$ is a free commutative monoid on $G$ (Prop 2.4.5). The Furstenberg argument below <em>is valid</em> but proves a trivially true statement. For the TPC we need $|\\mathrm{Irr}_M(G)|=\\infty$, which requires a reformulation targeting $M$ directly.</p></div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
 <p><strong>Proof by contradiction.</strong> Assume $\\mathrm{Irr}(N)$ is finite: $\\mathrm{Irr}(N)=\\{\\mathfrak{q}_1,\\ldots,\\mathfrak{q}_m\\}$.</p>
@@ -1106,8 +1113,8 @@ ${mkVerify('thm-5.2')}`},
 <div class="math-block">$$\\bigl|\\{k\\in\\mathbb{Z}:6k-1\\in\\pm\\mathbb{P}\\text{ and }6k+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty$$</div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p>By <a class="ilink" onclick="goToCard('thm-4.2')">Theorem 4.2</a>: $\\mathrm{Irr}(N) = \\{(k,k) : 6k+1\\in\\pm\\mathbb{P}\\text{ and }6k-1\\in\\pm\\mathbb{P}\\}$.</p>
-<p>By <a class="ilink" onclick="goToCard('thm-5.2')">Theorem 5.2</a>: $|\\mathrm{Irr}(N)|=\\infty$.</p>
+<p><strong>⚠ Gap:</strong> By <a class="ilink" onclick="goToCard('thm-4.2')">Theorem 4.2</a>: $\\mathrm{Irr}_M(G) = \\{(k,k) : 6k+1\\in\\pm\\mathbb{P}\\text{ and }|6k-1|\\in\\mathbb{P}\\}$ (M-irreducible generators = twin prime generators).</p>
+<p>By <a class="ilink" onclick="goToCard('thm-5.2')">Theorem 5.2</a>: $|\\mathrm{Irr}(N)|=\\infty$ — but $\\mathrm{Irr}(N)=G\\supsetneq\\mathrm{Irr}_M(G)$, so this does not directly give $|\\mathrm{Irr}_M(G)|=\\infty$. The argument must be extended to $M$.</p>
 <p>For each such $k>0$, the pair $(6k-1, 6k+1)$ is a <strong>twin prime pair</strong>.</p>
 <p>Since infinitely many such $k$ exist, there are <strong>infinitely many twin prime pairs</strong>.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — Twin Prime Conjecture ∎</div>

@@ -21,7 +21,11 @@
       "Bash(echo \"exit: $?\")",
       "Bash(where pdflatex:*)",
       "Bash(git mv:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(grep -c \"\\\\\\\\mathfrak{k}\" tpc_cards.html)",
+      "Bash(grep -c \"\\\\\\\\mathfrak{l}\" tpc_cards.html)",
+      "Bash(sed -i 's/\\\\\\\\\\\\\\\\mathfrak{k}/\\\\\\\\\\\\\\\\mathfrak{r}/g' tpc_cards.html)",
+      "Bash(grep -c \"\\\\\\\\mathfrak{r}\" tpc_cards.html)"
     ]
   }
 }
