@@ -137,7 +137,7 @@ const cards=[
 </div>
 <p><strong>Key identity:</strong> For each irreducible $\\widehat{q} = q \\otimes q \\in \\mathrm{Irr}(N)$:</p>
 <div class="math-block">$$\\widehat{q} \\cdot N = N \\cap (\\widehat{q} \\cdot M)$$</div>
-<p>Since $\\widehat{q} \\cdot M$ is <a class="ilink" onclick="goToCard('lem-3.1')">clopen</a> in the <strong>final topology</strong> on $M$ (induced by the canonical bilinear map $\\beta: \\mathbb{Z} \\times \\mathbb{Z} \\to M$), each coset $\\widehat{q} \\cdot N$ is <a class="ilink" onclick="goToCard('cor-3.3')"><strong>clopen in $N$</strong></a>. The <a class="ilink" onclick="goToCard('thm-5.2')">Furstenberg argument</a> then forces $|\\mathrm{Irr}(N)|=\\infty$.</p>
+<p>In the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a> on $N$, each coset $\\widehat{q} \\cdot N = \\sigma^{-1}\\!\\bigl((q+\\phi(q)\\mathbb{Z})\\times(q+\\psi(q)\\mathbb{Z})\\bigr)$ is <a class="ilink" onclick="goToCard('cor-shadow-clopen')"><strong>clopen in $N$</strong></a> (preimage of a clopen product of arithmetic progressions). The <a class="ilink" onclick="goToCard('thm-5.2')">Furstenberg argument</a> then forces $|\\mathrm{Irr}(N)|=\\infty$.</p>
 <p><strong>Additionally:</strong> We prove that $N \\cap \\beta^{-1}(U)$ for any basic open $U$ is either <a class="ilink" onclick="goToCard('thm-empty-or-inf')"><strong>empty or infinite</strong></a> — a fundamental property of $N$'s interaction with the final topology that underpins the entire argument.</p>
 <div class="d-flex flex-wrap gap-1 mt-3">
 <a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tag"><i class="bi bi-stars me-1"></i>Twin Primes</a>
@@ -443,6 +443,37 @@ Step sizes: φ(a) = 6a+1, ψ(a) = 6a−1  ← the isomorphism values!</div>
 <iframe class="quiver-embed" src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJOIl0sWzIsMCwiXFxtYXRoYmJ7Wn1eMiJdLFswLDIsIk4iXSxbMiwyLCJcXG1hdGhiYntafV4yIl0sWzAsMSwiXFxzaWdtYSIsMF0sWzIsMywiXFxzaWdtYSIsMF0sWzAsMiwiXFxjZG90XFxoYXR7cX0iLDFdLFsxLDMsIkxfcSIsMV1d&embed" width="300" height="260" style="border-radius: 8px; border: none;"></iframe>
 <p style="font-size:.85rem;color:var(--gray);">Commutative square: $\\sigma$ intertwines $\\cdot\\widehat{q}$ with $L_q(z,w) = (q \\circledast z,\\, q \\star w)$.</p>`},
 
+{id:"cor-shadow-clopen",ch:"§3½ New",badge:"b-cor",title:"Corollary — $\\widehat{q} \\cdot N$ is Clopen in the Shadow Topology",lean:null,body:`
+<p>For each $\\widehat{q} = q \\otimes q \\in \\mathrm{Irr}(N)$ (i.e., $\\phi(q)$ and $\\psi(q)$ both prime), the coset $\\widehat{q} \\cdot N$ is <strong>clopen</strong> in the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a> on $N$:</p>
+<div class="math-block">$$\\widehat{q} \\cdot N = \\sigma^{-1}\\!\\bigl((q + \\phi(q)\\mathbb{Z}) \\times (q + \\psi(q)\\mathbb{Z})\\bigr)$$</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-star-fill me-1"></i>Why this matters</div>
+<p>This is the shadow-topology analogue of <a class="ilink" onclick="goToCard('cor-3.3')">Cor 3.3</a>. While Cor 3.3 proves clopenness in the subspace topology inherited from $M$'s final topology, that topology has the wrong behavior on non-pure-tensor elements of $N$. Here we prove clopenness directly in the shadow topology — the topology actually used by the <a class="ilink" onclick="goToCard('thm-5.2')">Furstenberg argument</a>. The proof is cleaner: $\\widehat{q} \\cdot N$ is literally the $\\sigma$-preimage of a product of two arithmetic progressions.</p>
+</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p><strong>Claim:</strong> $\\widehat{q} \\cdot N = \\sigma^{-1}\\!\\bigl((q + \\phi(q)\\mathbb{Z}) \\times (q + \\psi(q)\\mathbb{Z})\\bigr)$.</p>
+<p><strong>Direction ($\\subseteq$):</strong></p>
+<p><span class="step-num">1</span>Let $m \\in \\widehat{q} \\cdot N$, so $m = \\widehat{q} \\cdot n$ for some $n \\in N$. Since $\\sigma$ is a <a class="ilink" onclick="goToCard('def-shadow')">homomorphism</a>:</p>
+<p>$\\sigma_1(m) = q \\circledast \\sigma_1(n)$, so $\\phi(\\sigma_1(m)) = \\phi(q) \\cdot \\phi(\\sigma_1(n))$. Hence $\\phi(q) \\mid \\phi(\\sigma_1(m))$.</p>
+<p>Now $\\phi(q) \\mid (6\\sigma_1(m)+1)$ means $6\\sigma_1(m)+1 \\equiv 0 \\pmod{\\phi(q)}$, i.e., $\\sigma_1(m) \\equiv q \\pmod{\\phi(q)}$ (since $6q+1 \\mid 6\\sigma_1(m)+1$ iff $\\sigma_1(m) \\in q + (6q+1)\\mathbb{Z}$). So $\\sigma_1(m) \\in q + \\phi(q)\\mathbb{Z}$. ✓</p>
+<p><span class="step-num">2</span>Similarly: $\\sigma_2(m) = q \\star \\sigma_2(n)$, so $\\psi(q) \\mid \\psi(\\sigma_2(m))$, giving $\\sigma_2(m) \\in q + \\psi(q)\\mathbb{Z}$. ✓</p>
+<p><strong>Direction ($\\supseteq$):</strong></p>
+<p><span class="step-num">3</span>Let $m \\in N$ with $\\sigma_1(m) \\in q + \\phi(q)\\mathbb{Z}$ and $\\sigma_2(m) \\in q + \\psi(q)\\mathbb{Z}$.</p>
+<p>Then $\\phi(q) \\mid \\phi(\\sigma_1(m))$, i.e., $\\phi(q) \\mid \\phi(k_1)\\cdots\\phi(k_r)$ where $m = \\widehat{k_1}\\cdots\\widehat{k_r}$.</p>
+<p><span class="step-num">4</span>Since $\\widehat{q} \\in \\mathrm{Irr}(N)$, $\\phi(q)$ is <strong>prime</strong> (<a class="ilink" onclick="goToCard('thm-4.2')">Thm 4.2</a>). By Euclid's lemma, $\\phi(q) \\mid \\phi(k_i)$ for some $i$.</p>
+<p><span class="step-num">5</span>Since $\\phi(k_i) \\in 6\\mathbb{Z}+1$ and $\\phi(q)$ is a prime dividing $\\phi(k_i)$, and both are $\\equiv 1 \\pmod{6}$, we get $\\phi(k_i) = \\phi(q)$ (negative prime factors would be $\\equiv -1 \\pmod{6}$, contradicting $\\phi(k_i) \\equiv 1$). So $k_i = q$.</p>
+<p><span class="step-num">6</span>Reorder: $m = \\widehat{q} \\cdot (\\widehat{k_1}\\cdots\\widehat{k_{i-1}}\\widehat{k_{i+1}}\\cdots\\widehat{k_r})$. The parenthesized product is in $N$, so $m \\in \\widehat{q} \\cdot N$. ✓</p>
+<p><strong>Clopenness:</strong></p>
+<p><span class="step-num">7</span>The set $(q + \\phi(q)\\mathbb{Z}) \\times (q + \\psi(q)\\mathbb{Z})$ is a product of two arithmetic progressions, hence <strong>clopen</strong> in the Furstenberg product topology on $\\mathbb{Z}^2$.</p>
+<p><span class="step-num">8</span>By definition of the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a> (initial topology from $\\sigma$), the preimage $\\sigma^{-1}(\\text{clopen}) = \\widehat{q} \\cdot N$ is <strong>clopen in $N$</strong>. ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Explicit preimage</div>
+<p>Concretely, $m \\in \\widehat{q} \\cdot N$ iff $\\sigma_1(m) \\equiv q \\pmod{6q+1}$ and $\\sigma_2(m) \\equiv q \\pmod{6q-1}$. For $q=1$ (twin pair $(5,7)$): $\\sigma_1(m) \\equiv 1 \\pmod{7}$ and $\\sigma_2(m) \\equiv 1 \\pmod{5}$.</p>
+</div>`},
+
 {id:"thm-empty-or-inf",ch:"§3½ New",badge:"b-thm",title:"Theorem — Every Nonempty Open Set in $N$ is Infinite",lean:null,body:`
 <p>In the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a> on $N$:</p>
 <div class="math-block">$$\\text{For any }a,b,c,d\\in\\mathbb{Z}\\text{ with }b,d\\neq 0:\\quad \\sigma^{-1}\\bigl((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})\\bigr)\\text{ is either }\\emptyset\\text{ or infinite.}$$</div>
@@ -626,7 +657,7 @@ Step sizes: φ(a) = 6a+1, ψ(a) = 6a−1  ← the isomorphism values!</div>
 <p><strong>Proof by contradiction.</strong> Assume $\\mathrm{Irr}(N)$ is finite: $\\mathrm{Irr}(N)=\\{\\widehat{q}_1,\\ldots,\\widehat{q}_m\\}$ where each $\\widehat{q}_i = q_i \\otimes q_i$.</p>
 <p><span class="step-num">1</span><strong>Apply the covering (<a class="ilink" onclick="goToCard('lem-4.4')">Cor 4.5</a>):</strong></p>
 <p>$N\\setminus\\{e\\} = \\bigcup_{i=1}^{m} \\widehat{q}_i \\cdot N$</p>
-<p><span class="step-num">2</span><strong>Each coset is clopen (<a class="ilink" onclick="goToCard('cor-3.3')">Cor 3.3</a>):</strong> Each $\\widehat{q}_i \\cdot N$ is clopen in the subspace topology on $N$.</p>
+<p><span class="step-num">2</span><strong>Each coset is clopen (<a class="ilink" onclick="goToCard('cor-shadow-clopen')">Shadow Clopenness</a>):</strong> Each $\\widehat{q}_i \\cdot N = \\sigma^{-1}\\!\\bigl((q_i + \\phi(q_i)\\mathbb{Z}) \\times (q_i + \\psi(q_i)\\mathbb{Z})\\bigr)$ is clopen in the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a> on $N$.</p>
 <p><span class="step-num">3</span><strong>Finite union of clopen = clopen:</strong> A finite union of clopen sets is clopen. So $N\\setminus\\{e\\}$ is clopen in $N$.</p>
 <p><span class="step-num">4</span><strong>Complement is open:</strong> Since $N\\setminus\\{e\\}$ is closed, $\\{e\\} = N\\setminus(N\\setminus\\{e\\})$ is <strong>open</strong> in $N$.</p>
 <p><span class="step-num">5</span><strong>Contradiction:</strong> But $\\{e\\}$ is a singleton, and by <a class="ilink" onclick="goToCard('lem-5.1')">Lemma 5.1</a>, every nonempty open set in $N$ is infinite. A singleton cannot be infinite. <strong>Contradiction!</strong></p>
@@ -636,7 +667,7 @@ Step sizes: φ(a) = 6a+1, ψ(a) = 6a−1  ← the isomorphism values!</div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-diagram-3 me-1"></i>Proof Ingredients</div>
 <p>This proof uses exactly four facts:</p>
-<p><span class="depends-badge"><a class="ilink" onclick="goToCard('cor-3.3')">Cor 3.3</a>: cosets clopen</span> <span class="depends-badge"><a class="ilink" onclick="goToCard('lem-4.4')">Cor 4.5</a>: covering</span> <span class="depends-badge"><a class="ilink" onclick="goToCard('lem-5.1')">Lem 5.1</a>: no singleton open</span> <span class="depends-badge">Finite union of clopen = clopen</span></p>
+<p><span class="depends-badge"><a class="ilink" onclick="goToCard('cor-shadow-clopen')">Shadow Clopenness</a>: cosets clopen in $\\sigma$-topology</span> <span class="depends-badge"><a class="ilink" onclick="goToCard('lem-4.4')">Cor 4.5</a>: covering</span> <span class="depends-badge"><a class="ilink" onclick="goToCard('lem-5.1')">Lem 5.1</a>: no singleton open</span> <span class="depends-badge">Finite union of clopen = clopen</span></p>
 </div>`},
 
 {id:"cor-5.3",ch:"§5 Main",badge:"b-cor",title:"Corollary 5.3 — Infinitely Many Twin Primes $\\blacksquare$",lean:`${GH}/TPC/Main.lean#L110`,body:`
@@ -688,7 +719,7 @@ Step sizes: φ(a) = 6a+1, ψ(a) = 6a−1  ← the isomorphism values!</div>
 </div>
 <p><strong>Three pillars of the proof:</strong></p>
 <p><span class="step-num">1</span><strong>Algebraic pillar — The Coset Identity (<a class="ilink" onclick="goToCard('thm-3.2')">Thm 3.2</a>):</strong> $\\widehat{q} \\cdot N = N \\cap (\\widehat{q} \\cdot M)$ for $\\widehat{q} = q \\otimes q$ with $\\phi(q)$ prime. This converts the algebraic coset into a topological intersection, bridging the two worlds.</p>
-<p><span class="step-num">2</span><strong>Topological pillar — Clopenness (<a class="ilink" onclick="goToCard('cor-3.3')">Cor 3.3</a>):</strong> Since $\\beta^{-1}(\\widehat{q} \\cdot M)$ is clopen (product of arithmetic progressions in $\\mathbb{Z}^2$), the final topology makes $\\widehat{q} \\cdot M$ clopen in $M$, and the identity makes $\\widehat{q} \\cdot N$ clopen in the subspace topology on $N$.</p>
+<p><span class="step-num">2</span><strong>Topological pillar — Clopenness (<a class="ilink" onclick="goToCard('cor-shadow-clopen')">Shadow Clopenness</a>):</strong> In the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a>, $\\widehat{q} \\cdot N = \\sigma^{-1}\\!\\bigl((q + \\phi(q)\\mathbb{Z}) \\times (q + \\psi(q)\\mathbb{Z})\\bigr)$ — the $\\sigma$-preimage of a product of arithmetic progressions, hence clopen. The proof uses primality of $\\phi(q)$ via Euclid's lemma (<a class="ilink" onclick="goToCard('thm-3.2')">Thm 3.2</a>-style argument) to show the set identity.</p>
 <p><span class="step-num">3</span><strong>Combinatorial pillar — Covering + No Singletons:</strong> Every nonidentity element has an irreducible divisor (by norm descent), giving the covering. No singleton is open (by the empty-or-infinite theorem). Together: finite $\\mathrm{Irr}(N)$ would force $\\{e\\}$ open — contradiction.</p>
 <div class="example-box">
 <div class="example-title"><i class="bi bi-key-fill me-1"></i>Novel Contribution</div>
