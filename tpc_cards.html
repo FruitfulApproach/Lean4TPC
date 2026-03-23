@@ -796,16 +796,23 @@ ${mkVerify('prop-2.4')}`},
 <p>Every element of $N$ is a product of diagonal tensors $\\mathfrak{k} = (k,k)$. Irreducibility means the generating sequence has length exactly 1: $m = \\mathfrak{k}$ for some $k$ that is simultaneously $\\circledast$-irreducible and $\\star$-irreducible.</p>
 </div>
 <div class="example-box">
-<div class="example-title"><i class="bi bi-x-circle me-1"></i>Reducible simple tensors $k\\otimes k$ (small examples)</div>
-<p>Most $k\\otimes k$ are <strong>not</strong> irreducible — only the twin-prime indices are. Some reducible examples where $\\phi(k)=6k+1$ or $|\\psi(k)|=|6k-1|$ is composite:</p>
-<div class="code-block" style="margin:.4rem 0"> k    φ(k)=6k+1       ψ(k)=6k-1       Status
- 4        25 = 5²          23            REDUCIBLE (φ composite)
- 6        37             35 = 5·7        REDUCIBLE (ψ composite)
- 8        49 = 7²          47            REDUCIBLE (φ composite)
- 9        55 = 5·11        53            REDUCIBLE (φ composite)
-11        67             65 = 5·13       REDUCIBLE (ψ composite)
-20       121 = 11²      119 = 7·17       REDUCIBLE (both!)</div>
-<p>For example, $4\\otimes 4$ factors as $(1\\otimes 1)\\otimes(3\\otimes 3)$ since $\\phi(1\\circledast 3)=\\phi(1)\\cdot\\phi(3) = 7\\cdot 19 \\neq 25$... rather, the factorization is $(1\\otimes 1)^{\\circledast 2}$ — concretely $4 = 1\\circledast 3$ is FALSE, but $\\phi(4)=25=5\\cdot 5=\\phi(0\\circledast\\cdots)$... The point: $4\\otimes 4$ is reducible because $\\phi(4)=25$ factors in $\\mathbb{Z}$, so by Thm 4.2 it is not irreducible in $N$.</p>
+<div class="example-title"><i class="bi bi-x-circle me-1"></i>Reducible simple tensors $\\mathfrak{k}=k\\otimes k$</div>
+<p>By Thm 4.2, $\\mathfrak{k}\\in\\mathrm{Irr}(N)$ iff <em>both</em> $\\phi(k)=6k+1$ and $\\psi(k)=6k-1$ are $\\pm$prime. If either is composite, $\\mathfrak{k}$ is reducible:</p>
+<div class="code-block" style="margin:.4rem 0"> k    φ(k)=6k+1        ψ(k)=6k-1       Status
+  4       25 = 5²           23          REDUCIBLE (φ composite)
+  6       37              35 = 5·7      REDUCIBLE (ψ composite)
+  8       49 = 7²           47          REDUCIBLE (φ composite)
+ 11       67              65 = 5·13     REDUCIBLE (ψ composite)
+141      847 = 7·11²      845 = 5·13²   REDUCIBLE (both)</div>
+<p><strong>Explicit factorization: $\\mathfrak{141} = \\mathfrak{1}\\cdot\\mathfrak{-2}\\cdot\\mathfrak{-2}$</strong> (generator sequence $(1,-2,-2)$)</p>
+<p>Both components must equal $141$. Verify with $x\\circledast y=6xy+x+y$ and $x\\star y=-6xy+x+y$:</p>
+<div class="code-block" style="margin:.4rem 0">Component 1 (⊛):  1 ⊛ (-2) = 6(1)(-2)+1+(-2) = -13
+                 (-13) ⊛ (-2) = 6(-13)(-2)+(-13)+(-2) = 141  ✓
+Component 2 (⋆):  1 ⋆ (-2) = -6(1)(-2)+1+(-2) =  11
+                  11 ⋆ (-2) = -6(11)(-2)+11+(-2) = 141  ✓</div>
+<p>Breaking it into two factors: $(-2)\\circledast(-2)=20$, $(-2)\\star(-2)=-28$, so $\\mathfrak{-2}^2=(20,-28)$. Then:</p>
+<div class="math-block">$$\\mathfrak{141} = \\underbrace{(1,1)}_{\\mathfrak{1}}\\cdot\\underbrace{(20,-28)}_{\\mathfrak{-2}^2} = \\mathfrak{1}\\cdot\\mathfrak{-2}\\cdot\\mathfrak{-2}$$</div>
+<p>Each factor $\\mathfrak{1}=(1,1)$ and $\\mathfrak{-2}=(-2,-2)$ is itself <em>irreducible</em> — both $\\phi(1)=7,\\psi(1)=5$ and $\\phi(-2)=-11,\\psi(-2)=-13$ are $\\pm$prime. So $\\mathfrak{141}$ is reducible but factors into irreducibles.</p>
 </div>`},
 
 // ═══════════════════════════════════════════════════════════════

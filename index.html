@@ -435,7 +435,7 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
     <div class="stitle" style="color:var(--purple-light);">Proof Dependency Map</div>
     <p style="color:var(--gray);max-width:640px;line-height:1.7;margin-bottom:1.5rem;">Click any node to jump to that card in the proof deck. The map shows how each result builds on previous ones.</p>
     <div class="dep-map-wrap">
-      <svg id="depMapSvg" width="820" height="420" xmlns="http://www.w3.org/2000/svg" style="background:linear-gradient(135deg,#0a041e,#070c25);"></svg>
+      <svg id="depMapSvg" width="1060" height="530" xmlns="http://www.w3.org/2000/svg" style="background:linear-gradient(135deg,#0a041e,#070c25);"></svg>
     </div>
   </div>
 </section>
@@ -547,15 +547,16 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
     ['thm-furstenberg-recipe','prop-n-satisfies'],
     ['prop-n-satisfies','thm-5.2'],['thm-5.2','cor-5.3'],
   ];
-  const PM_COL=[80,225,370,515,660];
-  const PM_ROW=[30,106,182,258,334];
-  const NW=120,NH=42;
+  // Layout: NW×NH nodes, columns/rows with generous spacing
+  const NW=122, NH=40;
+  const PM_COL=[50, 248, 446, 644, 842]; // 5 cols, gap 198 (node 122 + 76 lane)
+  const PM_ROW=[30, 128, 226, 324, 422]; // 5 rows, gap 98 (node 40 + 58 lane)
   const PM_CLR={
-    def: {f:'#dbeafe',s:'#1d4ed8',t:'#1d4ed8'},
-    thm: {f:'#ffedd5',s:'#c2410c',t:'#c2410c'},
-    lem: {f:'#ede9fe',s:'#5b21b6',t:'#5b21b6'},
-    prop:{f:'#dcfce7',s:'#15803d',t:'#15803d'},
-    cor: {f:'#fef9c3',s:'#a16207',t:'#a16207'},
+    def: {f:'#dbeafe',s:'#1d4ed8',t:'#1e3a8a'},
+    thm: {f:'#ffedd5',s:'#c2410c',t:'#7c2d12'},
+    lem: {f:'#ede9fe',s:'#5b21b6',t:'#3b0764'},
+    prop:{f:'#dcfce7',s:'#15803d',t:'#14532d'},
+    cor: {f:'#fef9c3',s:'#a16207',t:'#78350f'},
   };
 
   const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -563,12 +564,58 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
 
   // Build id -> position map
   const pos = {};
-  PM_NODES.forEach(n => {
-    pos[n.id] = {
-      x: PM_COL[n.c],
-      y: PM_ROW[n.r]
-    };
-  });
+  PM_NODES.forEach(n => { pos[n.id] = {x:PM_COL[n.c], y:PM_ROW[n.r], col:n.c, row:n.r}; });
+
+  // --- Elbow routing: right→left with rounded 90° corners ---
+  // For same-column: bottom-center → top-center (straight vertical)
+  // For cross-column: right-center → elbow → left-center
+  const R = 10; // corner radius
+
+  function elbowPath(s, d) {
+    const sameCol = (s.col === d.col);
+    if (sameCol) {
+      // straight vertical, bottom of source → top of dest
+      const cx = s.x + NW/2, cy1 = s.y + NH, cy2 = d.y;
+      return { d:`M${cx},${cy1} V${cy2}`, x1:cx, y1:cy1, x2:cx, y2:cy2 };
+    }
+    // cross-column elbow: right-center of src → left-center of dst
+    const x1 = s.x + NW,  y1 = s.y + NH/2;
+    const x2 = d.x,        y2 = d.y + NH/2;
+    const mid = (x1 + x2) / 2;
+    const dy = y2 - y1;
+    if (Math.abs(dy) < 2) {
+      // same row — straight line
+      return { d:`M${x1},${y1} H${x2}`, x1, y1, x2, y2 };
+    }
+    // clamp radius
+    const rr = Math.min(R, Math.abs(x2-x1)/2 - 1, Math.abs(dy)/2 - 1);
+    const r = Math.max(2, rr);
+    let pd;
+    if (dy > 0) {
+      // going down-right
+      pd = `M${x1},${y1} H${mid-r} A${r},${r} 0 0,1 ${mid},${y1+r} V${y2-r} A${r},${r} 0 0,0 ${mid+r},${y2} H${x2}`;
+    } else {
+      // going up-right
+      pd = `M${x1},${y1} H${mid-r} A${r},${r} 0 0,0 ${mid},${y1-r} V${y2+r} A${r},${r} 0 0,1 ${mid+r},${y2} H${x2}`;
+    }
+    return { d:pd, x1, y1, x2, y2 };
+  }
+
+  // Arrow marker (defined first via defs)
+  const defs = document.createElementNS(SVG_NS, 'defs');
+  const marker = document.createElementNS(SVG_NS, 'marker');
+  marker.setAttribute('id', 'arrowhead');
+  marker.setAttribute('markerWidth', '9');
+  marker.setAttribute('markerHeight', '7');
+  marker.setAttribute('refX', '8');
+  marker.setAttribute('refY', '3.5');
+  marker.setAttribute('orient', 'auto-start-reverse');
+  const poly = document.createElementNS(SVG_NS, 'polygon');
+  poly.setAttribute('points', '0 0, 9 3.5, 0 7');
+  poly.setAttribute('fill', 'rgba(139,92,246,0.75)');
+  marker.appendChild(poly);
+  defs.appendChild(marker);
+  svg.appendChild(defs);
 
   // Column labels
   const colLabels = ['§1 Algebra','§2 Monoid','§4 Irred.','§3 Topology','§5 Furstenberg'];
@@ -585,49 +632,21 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
     svg.appendChild(t);
   });
 
-  // Draw edges (bezier)
+  // Draw edges with elbow routing
   PM_EDGES.forEach(([srcId, dstId]) => {
-    const s = pos[srcId];
-    const d = pos[dstId];
+    const s = pos[srcId], d = pos[dstId];
     if(!s || !d) return;
-    const x1 = s.x + NW;
-    const y1 = s.y + NH/2;
-    const x2 = d.x;
-    const y2 = d.y + NH/2;
-    // If same column, draw curved down
-    const sameCol = (Math.abs(s.x - d.x) < 5);
-    let pathD;
-    if(sameCol){
-      const cx = s.x + NW + 25;
-      pathD = `M${s.x+NW},${s.y+NH/2} C${cx},${s.y+NH/2} ${cx},${d.y+NH/2} ${d.x+NW},${d.y+NH/2}`;
-    } else {
-      const mx = (x1 + x2) / 2;
-      pathD = `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`;
-    }
+    const ep = elbowPath(s, d);
     const path = document.createElementNS(SVG_NS, 'path');
-    path.setAttribute('d', pathD);
+    path.setAttribute('d', ep.d);
     path.setAttribute('fill', 'none');
-    path.setAttribute('stroke', 'rgba(139,92,246,0.35)');
-    path.setAttribute('stroke-width', '1.5');
+    path.setAttribute('stroke', 'rgba(139,92,246,0.5)');
+    path.setAttribute('stroke-width', '1.6');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-linejoin', 'round');
     path.setAttribute('marker-end', 'url(#arrowhead)');
     svg.appendChild(path);
   });
-
-  // Arrow marker
-  const defs = document.createElementNS(SVG_NS, 'defs');
-  const marker = document.createElementNS(SVG_NS, 'marker');
-  marker.setAttribute('id', 'arrowhead');
-  marker.setAttribute('markerWidth', '8');
-  marker.setAttribute('markerHeight', '6');
-  marker.setAttribute('refX', '7');
-  marker.setAttribute('refY', '3');
-  marker.setAttribute('orient', 'auto');
-  const poly = document.createElementNS(SVG_NS, 'polygon');
-  poly.setAttribute('points', '0 0, 8 3, 0 6');
-  poly.setAttribute('fill', 'rgba(139,92,246,0.6)');
-  marker.appendChild(poly);
-  defs.appendChild(marker);
-  svg.insertBefore(defs, svg.firstChild);
 
   // Draw nodes
   PM_NODES.forEach(n => {
@@ -641,19 +660,11 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
       window.location.href = 'tpc_cards.html#' + n.id;
     });
 
-    // Shadow rect
-    const shadow = document.createElementNS(SVG_NS, 'rect');
-    shadow.setAttribute('x', x+2); shadow.setAttribute('y', y+3);
-    shadow.setAttribute('width', NW); shadow.setAttribute('height', NH);
-    shadow.setAttribute('rx', '8'); shadow.setAttribute('ry', '8');
-    shadow.setAttribute('fill', 'rgba(0,0,0,0.35)');
-    g.appendChild(shadow);
-
     // Main rect
     const rect = document.createElementNS(SVG_NS, 'rect');
     rect.setAttribute('x', x); rect.setAttribute('y', y);
     rect.setAttribute('width', NW); rect.setAttribute('height', NH);
-    rect.setAttribute('rx', '8'); rect.setAttribute('ry', '8');
+    rect.setAttribute('rx', '7'); rect.setAttribute('ry', '7');
     rect.setAttribute('fill', clr.f);
     rect.setAttribute('stroke', clr.s);
     rect.setAttribute('stroke-width', '1.8');
@@ -674,7 +685,7 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
     // Bottom label (l2)
     const t2 = document.createElementNS(SVG_NS, 'text');
     t2.setAttribute('x', x + NW/2);
-    t2.setAttribute('y', y + 29);
+    t2.setAttribute('y', y + 28);
     t2.setAttribute('text-anchor', 'middle');
     t2.setAttribute('font-family', 'Source Sans 3, sans-serif');
     t2.setAttribute('font-size', '8.5');
@@ -691,7 +702,7 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
     // Hover highlight
     g.addEventListener('mouseenter', () => {
       rect.setAttribute('stroke-width', '3');
-      rect.setAttribute('filter', 'brightness(1.1)');
+      rect.setAttribute('filter', 'brightness(1.08)');
     });
     g.addEventListener('mouseleave', () => {
       rect.setAttribute('stroke-width', '1.8');
