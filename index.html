@@ -169,8 +169,8 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
     <div class="ey"><i class="bi bi-stars me-1"></i>Lean 4 + Mathlib4 &nbsp;·&nbsp;
       <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" style="color:var(--yellow-light)"><i class="bi bi-github"></i> FruitfulApproach/Lean4TPC</a>
       &nbsp;·&nbsp; <span style="color:var(--green-light)"><i class="bi bi-patch-check-fill"></i> 20 Proof Cards</span></div>
-    <h1 class="ht">Weakly Saturated Submonoids<br/>&amp; the <span class="ac">Twin Prime Conjecture</span></h1>
-    <p class="hs">A <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg-style</a> topological proof that the submonoid $N=\langle G\rangle\leqslant(\mathbb{Z}^2,\otimes)$ has infinitely many irreducibles — each corresponding to a twin prime pair. Proving that $N\cap(a+b\mathbb{Z})\times(c+d\mathbb{Z})$ is either empty or infinite is a key structural lemma. Formalized in <a href="https://leanprover.github.io/" target="_blank">Lean 4</a>.</p>
+    <h1 class="ht">Coset Topologies on Monoid Tensor Products<br/>&amp; the <span class="ac">Twin Prime Conjecture</span></h1>
+    <p class="hs">A <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg-style</a> topological proof that the submonoid $N=\langle\{k\otimes k\}\rangle$ of the monoid tensor product $M=(\mathbb{Z},\circledast)\otimes_{\mathrm{Mon}}(\mathbb{Z},\star)$ has infinitely many irreducibles — each corresponding to a twin prime pair. Proving that $N\cap(a+b\mathbb{Z})\times(c+d\mathbb{Z})$ is either empty or infinite is a key structural lemma. Formalized in <a href="https://leanprover.github.io/" target="_blank">Lean 4</a>.</p>
     <div class="heq">$$\widehat{q}\otimes N = N\cap(\widehat{q}\otimes M)\quad\Rightarrow\quad |\mathrm{Irr}(N)|=\infty\quad\Rightarrow\quad\text{infinitely many twin primes}$$</div>
     <div class="hctas">
       <a href="tpc_cards.html" class="btn-ph"><i class="bi bi-play-circle-fill me-1"></i>Start Proof Deck</a>
@@ -215,7 +215,7 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
       <h3><i class="bi bi-key-fill me-2" style="color:var(--yellow)"></i>The Coset Identity (Theorem 3.2)</h3>
       <p>For any irreducible $\widehat{q}=(q,q)\in\mathrm{Irr}(N)$:</p>
       <div class="math-block">$$\widehat{q}\otimes N = N\cap(\widehat{q}\otimes M)$$</div>
-      <p style="color:var(--gray);font-size:.9rem;">This identity bridges algebra (the coset $\widehat{q}\otimes N$) and topology (the intersection $N\cap(\widehat{q}\otimes M)$). It is the engine that powers the entire Furstenberg argument for twin primes.</p>
+      <p style="color:var(--gray);font-size:.9rem;">This identity bridges algebra (the coset $\widehat{q}\otimes N$) and topology (the intersection $N\cap(\widehat{q}\otimes M)$) inside the tensor product $M=(\mathbb{Z},\circledast)\otimes_{\mathrm{Mon}}(\mathbb{Z},\star)$. The bilinearity of $\otimes$ is the engine that powers the entire Furstenberg argument for twin primes.</p>
     </div>
 
     <div class="proof-highlight">
@@ -246,8 +246,8 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
       <a href="tpc_cards.html" class="fc fc-def" data-card="1"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 01</div><div class="fc-type t-def">DEF 1.1</div><div class="fc-title">Operations $\circledast$ and $\star$</div><div class="fc-body">$x\circledast y=6xy+x+y$, $x\star y=-6xy+x+y$.</div></a>
       <a href="tpc_cards.html" class="fc fc-thm" data-card="2"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 02</div><div class="fc-type t-thm">THM 1.3</div><div class="fc-title">Isomorphisms $\phi,\psi$</div><div class="fc-body">$\phi(x)=6x+1:(ℤ,\circledast)\cong(6ℤ+1,\cdot)$.</div></a>
       <a href="tpc_cards.html" class="fc fc-lem" data-card="3"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 03</div><div class="fc-type t-lem">LEM 1.4</div><div class="fc-title">No Zero Divisors</div><div class="fc-body">$u,v\neq 0\Rightarrow u\circledast v\neq 0$.</div></a>
-      <a href="tpc_cards.html" class="fc fc-def" data-card="4"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 04</div><div class="fc-type t-def">DEF 2.1–2.2</div><div class="fc-title">$M$, $G$, and $N=\langle G\rangle$</div><div class="fc-body">Product monoid, diagonal generators, submonoid.</div></a>
-      <a href="tpc_cards.html" class="fc fc-prop" data-card="5"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 05</div><div class="fc-type t-prop">PROP 2.3</div><div class="fc-title">$M$ Topological Monoid</div><div class="fc-body">$\otimes$ continuous in Furstenberg product topology.</div></a>
+      <a href="tpc_cards.html" class="fc fc-def" data-card="4"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 04</div><div class="fc-type t-def">DEF 2.1–2.2</div><div class="fc-title">$M$, $N$ in $\otimes_{\mathrm{Mon}}$</div><div class="fc-body">Product monoid, diagonal generators, submonoid.</div></a>
+      <a href="tpc_cards.html" class="fc fc-prop" data-card="5"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 05</div><div class="fc-type t-prop">PROP 2.3</div><div class="fc-title">$M$ Topological Monoid</div><div class="fc-body">$\otimes$ continuous in UMP topology (Furstenberg product).</div></a>
       <a href="tpc_cards.html" class="fc fc-lem" data-card="6"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 06</div><div class="fc-type t-lem">LEM 3.1</div><div class="fc-title">$\widehat{a}\otimes M$ is Clopen</div><div class="fc-body">$(a_1{+}(6a_1{+}1)ℤ)\times(a_2{+}(6a_2{-}1)ℤ)$.</div></a>
       <a href="tpc_cards.html" class="fc fc-thm" data-card="7"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 07</div><div class="fc-type t-thm">THM 3.2 ★</div><div class="fc-title">The Coset Identity</div><div class="fc-body">$\widehat{q}\otimes N=N\cap(\widehat{q}\otimes M)$.</div></a>
       <a href="tpc_cards.html" class="fc fc-cor" data-card="8"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 08</div><div class="fc-type t-cor">COR 3.3</div><div class="fc-title">$\widehat{q}\otimes N$ Clopen in $N$</div><div class="fc-body">Subspace topology preserves clopenness.</div></a>
@@ -284,7 +284,7 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
       <div class="accordion-item">
         <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc2"><i class="bi bi-2-circle-fill me-2" style="color:var(--blue)"></i>§2 — Product Monoid $M$ and Submonoid $N$</button></h2>
         <div id="acc2" class="accordion-collapse collapse" data-bs-parent="#proofAccordion"><div class="accordion-body">
-          <p>$M=(\mathbb{Z}^2,\otimes)$ with $\otimes=\circledast\times\star$. The diagonal generators $G=\{(k,k)\}$ generate the submonoid $N=\langle G\rangle$. Equip $\mathbb{Z}$ with the <strong>Furstenberg topology</strong> (basis = arithmetic progressions). Then $(M,\otimes)$ is a topological monoid.</p>
+          <p>$M = (\mathbb{Z},\circledast)\otimes_{\mathrm{Mon}}(\mathbb{Z},\star)$ is the monoid tensor product. The diagonal generators $G=\{k\otimes k\}$ generate the submonoid $N=\langle G\rangle$. Equip $\mathbb{Z}$ with the <strong>Furstenberg topology</strong> (basis = arithmetic progressions). Then $(M,\otimes)$ is a topological monoid.</p>
         </div></div>
       </div>
       <div class="accordion-item">
@@ -297,6 +297,12 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
         <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc3b"><i class="bi bi-star-fill me-2" style="color:var(--orange)"></i>NEW — Empty or Infinite + No Isolated Points</button></h2>
         <div id="acc3b" class="accordion-collapse collapse" data-bs-parent="#proofAccordion"><div class="accordion-body">
           <p>$N\cap(a+b\mathbb{Z})\times(c+d\mathbb{Z})$ is either empty or infinite. Proof: if $(z_0,w_0)$ is in the intersection, multiplying by $\Delta(nbd)$ stays in the box and gives infinitely many distinct elements (injectivity via $\phi$). Consequence: $N$ has <strong>no isolated points</strong> — it's a perfect set in the subspace topology.</p>
+        </div></div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accTensor"><i class="bi bi-diamond-fill me-2" style="color:var(--purple)"></i>Tensor Product Irreducibility</button></h2>
+        <div id="accTensor" class="accordion-collapse collapse" data-bs-parent="#proofAccordion"><div class="accordion-body">
+          <p>In the tensor product $M=(\mathbb{Z},\circledast)\otimes_{\mathrm{Mon}}(\mathbb{Z},\star)$, an element $k\otimes k\in N$ is <strong>irreducible</strong> precisely when it cannot be non-trivially factored within $N$. The bilinearity of the tensor product ensures that the coset identity $\widehat{q}\otimes N = N\cap(\widehat{q}\otimes M)$ respects the universal property, and irreducibility in $N$ corresponds exactly to twin primality via $\phi$ and $\psi$.</p>
         </div></div>
       </div>
       <div class="accordion-item">
@@ -365,11 +371,10 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
 ├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank"><i class="bi bi-file-text me-1"></i>PAPER.md</a></span>  <span class="comment">-- full paper</span><br/>
 └── <span class="dir"><i class="bi bi-folder2 me-1"></i>TPC/</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Basic.lean" target="_blank">Basic.lean</a></span>  <span class="comment">-- mstar, sstar, φ, ψ, η, no-zero-div</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Monoid.lean" target="_blank">Monoid.lean</a></span>  <span class="comment">-- M=(ℤ²,⊗), G, N=⟨G⟩, top. monoid</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Monoid.lean" target="_blank">Monoid.lean</a></span>  <span class="comment">-- M=(ℤ,⊛)⊗(ℤ,⋆), G, N=⟨G⟩, tensor product monoid</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Diagonal.lean" target="_blank">Diagonal.lean</a></span>  <span class="comment">-- twin-prime-indexed generators</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Norm.lean" target="_blank">Norm.lean</a></span>  <span class="comment">-- norm function, well-founded descent</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Topology.lean" target="_blank">Topology.lean</a></span>  <span class="comment">-- coset-closed topology</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/WeaklySaturated.lean" target="_blank">WeaklySaturated.lean</a></span>  <span class="comment">-- weak saturation property</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/CosetTopology.lean" target="_blank">CosetTopology.lean</a></span>  <span class="comment">-- q̂⊗M clopen, coset identity</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file"><a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/TPC/Main.lean" target="_blank">Main.lean</a></span>  <span class="comment">-- norm, descent, covering, main thm</span>
     </div>

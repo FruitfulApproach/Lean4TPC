@@ -1,4 +1,4 @@
-# TPC — Twin Prime Conjecture via Weakly Saturated Submonoids
+# TPC — Twin Prime Conjecture via Coset Topologies on Monoid Tensor Products
 
 **[Homepage](https://fruitfulapproach.github.io/Lean4TPC/)**
 
@@ -21,11 +21,10 @@ TPC/
 ├── TPC.lean               -- Root import file
 └── TPC/
     ├── Basic.lean         -- Operations ⊛, ⋆, maps φ, ψ, η
-    ├── Monoid.lean        -- CommMonoid instances; product monoid M
-    ├── AntiDiagonal.lean  -- Δ(ℤ) = {(x,-x)}, closure, irred equivalence
-    ├── WeaklySaturated.lean -- Abstract defn; proof N is WS, not saturated
-    ├── Norm.lean          -- Norm |(x,-x)| = (6x+1)², axioms N1–N8
-    ├── Topology.lean      -- U_{a,b,c} basis, clopen, topological monoid
+    ├── Monoid.lean        -- MonTensor = (ℤ,⊛) ⊗_Mon (ℤ,⋆), diagGen, N
+    ├── Diagonal.lean      -- Twin-prime-indexed generators
+    ├── Norm.lean          -- Norm function, well-founded descent
+    ├── Topology.lean      -- UMP topology, coset-closed topology
     └── Main.lean          -- Main theorem + twin prime corollary
 ```
 
@@ -34,11 +33,10 @@ TPC/
 | File | Status |
 |------|--------|
 | Basic.lean | Mostly complete; `mstar_no_zero_div` has `sorry` |
-| Monoid.lean | Complete |
-| AntiDiagonal.lean | Core lemmas complete; `weakSaturation` has `sorry` stubs |
-| WeaklySaturated.lean | Abstract defn complete; counterexample complete |
-| Norm.lean | N1–N7 complete; `exists_irred_dvd` needs well-founded induction |
-| Topology.lean | Definitions complete; continuity proofs have `sorry` |
+| Monoid.lean | Axiomatized MonTensor with bilinearity relations |
+| Diagonal.lean | Twin-prime-indexed generators |
+| Norm.lean | Norm axioms; `exists_irred_dvd` needs well-founded induction |
+| Topology.lean | UMP topology definitions; continuity proofs have `sorry` |
 | Main.lean | Structure complete; Furstenberg argument has `sorry` stubs |
 
 ## Setup
@@ -74,11 +72,9 @@ twin prime pairs, conditional on the full characterisation
 ## The Core Argument
 
 1. **`Basic.lean`**: φ(x⊛y) = φ(x)φ(y) — one `ring` tactic.
-2. **`AntiDiagonal.lean`**: Δ(x)⊗Δ(y) = Δ(x⊛y) — one `ring` tactic.
-3. **`WeaklySaturated.lean`**: counterexample (1,0)⊗(1,-8)=(8,-8) — `norm_num`.
-4. **`Norm.lean`**: |(x,-x)⊗(y,-y)| = |(x,-x)|·|(y,-y)| — one `ring`.
-5. **`Topology.lean`**: U_{a,b,c} clopen — complement is finite union of translates.
-6. **`Main.lean`**: Furstenberg — finite Irr ⟹ {(0,0)} open ⟹ contradiction.
+2. **`Monoid.lean`**: MonTensor with bilinearity: mk(a⊛b, w) = mk(a,w)·mk(b,w).
+3. **`Norm.lean`**: ‖k⊗k‖ = (6k+1)² multiplicative — one `ring`.
+4. **`Topology.lean`**: UMP final topology from β: ℤ×ℤ → M, cosets clopen.
+5. **`Main.lean`**: Furstenberg — finite Irr(N) ⟹ {e} open ⟹ contradiction.
 
 ---
-

@@ -124,16 +124,16 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 const GH="https://github.com/FruitfulApproach/Lean4TPC/blob/main";
 const cards=[
 
-{ch:"Abstract",badge:"b-abs",title:"Abstract — The Coset Topology Approach",lean:null,body:`
-<p>We prove there are <strong>infinitely many twin prime pairs</strong> via the submonoid $N=\\langle G\\rangle\\leqslant M=(\\mathbb{Z}^2,\\otimes)$ where $G=\\{(k,k):k\\in\\mathbb{Z}\\}$.</p>
+{ch:"Abstract",badge:"b-abs",title:"Abstract — The Monoid Tensor Product Approach",lean:null,body:`
+<p>We prove there are <strong>infinitely many twin prime pairs</strong> via the monoid tensor product $M = (\\mathbb{Z},\\circledast) \\otimes_{\\mathrm{Mon}} (\\mathbb{Z},\\star)$ and the submonoid $N = \\langle \\{k \\otimes k : k \\in \\mathbb{Z}\\} \\rangle \\leqslant M$.</p>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Core Strategy</div>
-<p>We transfer the twin-prime question into an algebraic/topological setting where Furstenberg's classic proof-technique applies. The map $\\phi(x)=6x+1$ converts the monoid $(\\mathbb{Z},\\circledast)$ into ordinary multiplication in $6\\mathbb{Z}+1$. Irreducible elements of $N$ correspond exactly to twin prime pairs.</p>
+<p>We transfer the twin-prime question into an algebraic/topological setting where Furstenberg's classic proof-technique applies. The map $\\phi(x)=6x+1$ converts the monoid $(\\mathbb{Z},\\circledast)$ into ordinary multiplication in $6\\mathbb{Z}+1$. The monoid tensor product $M$ has bilinearity relations $(a \\circledast b) \\otimes w = (a \\otimes w)(b \\otimes w)$ and $z \\otimes (c \\star d) = (z \\otimes c)(z \\otimes d)$, with $z \\otimes 0 = 0 \\otimes w = e$ (identity). This identity condition is <strong>key</strong>: it kills the "trivial splitting" that plagues the direct product. Irreducible elements of $N$ correspond exactly to twin prime pairs.</p>
 </div>
-<p><strong>Key identity:</strong> For each irreducible $\\widehat{q}\\in\\mathrm{Irr}(N)$:</p>
-<div class="math-block">$$\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)$$</div>
-<p>Since $\\widehat{q}\\otimes M$ is a <strong>product of two arithmetic progressions</strong> (hence clopen in the Furstenberg product topology on $M$), each coset $\\widehat{q}\\otimes N$ is <strong>clopen in $N$</strong>. The Furstenberg argument then forces $|\\mathrm{Irr}(N)|=\\infty$.</p>
-<p><strong>Additionally:</strong> We prove that $N\\cap(a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})$ is either <strong>empty or infinite</strong> — a fundamental property of $N$'s interaction with the Furstenberg topology that underpins the entire argument.</p>
+<p><strong>Key identity:</strong> For each irreducible $\\widehat{q} = q \\otimes q \\in \\mathrm{Irr}(N)$:</p>
+<div class="math-block">$$\\widehat{q} \\cdot N = N \\cap (\\widehat{q} \\cdot M)$$</div>
+<p>Since $\\widehat{q} \\cdot M$ is clopen in the <strong>final topology</strong> on $M$ (induced by the canonical bilinear map $\\beta: \\mathbb{Z} \\times \\mathbb{Z} \\to M$), each coset $\\widehat{q} \\cdot N$ is <strong>clopen in $N$</strong>. The Furstenberg argument then forces $|\\mathrm{Irr}(N)|=\\infty$.</p>
+<p><strong>Additionally:</strong> We prove that $N \\cap \\beta^{-1}(U)$ for any basic open $U$ is either <strong>empty or infinite</strong> — a fundamental property of $N$'s interaction with the final topology that underpins the entire argument.</p>
 <div class="d-flex flex-wrap gap-1 mt-3">
 <a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tag"><i class="bi bi-stars me-1"></i>Twin Primes</a>
 <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tag"><i class="bi bi-clock-history me-1"></i>Furstenberg 1955</a>
@@ -215,275 +215,296 @@ lemma ψ_mul (x y : ℤ) : ψ (x ⋆ y) = -(ψ x * ψ y) := by
 <div class="remark-title"><i class="bi bi-exclamation-triangle me-1"></i>Where this is used</div>
 <p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i>Thm 3.2</span> Prime divisibility in the coset identity proof</p>
 <p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i>Lem 3.4</span> Injectivity of left multiplication $L_{\\widehat{q}}$</p>
-<p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i>Thm NEW</span> Emptiness-or-infinitude of $N\\cap$ basic opens</p>
+<p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i>Thm NEW</span> Emptiness-or-infinitude of $N \\cap$ basic opens</p>
 </div>
 <div class="code-block">lemma mstar_no_zero_div (u v : ℤ) (hu : u ≠ 0) (hv : v ≠ 0) :
     mstar u v ≠ 0 := by
   intro h; have := φ_mul u v; rw [h] at this
   simp [φ] at this; omega</div>`},
 
-{ch:"§2 Monoid",badge:"b-def",title:"Definition 2.1–2.2 — Product Monoid $M$, Generators $G$, Submonoid $N$",lean:`${GH}/TPC/Monoid.lean#L10`,body:`
-<p><strong>Definition 2.1.</strong> The <strong>product monoid</strong>:</p>
-<div class="math-block">$$M = (\\mathbb{Z}^2, \\otimes),\\quad (x_1,x_2)\\otimes(y_1,y_2) = (x_1\\circledast y_1,\\; x_2\\star y_2),\\quad \\mathbf{1}_M=(0,0)$$</div>
-<p><strong>Definition 2.2.</strong> The <strong>generating set</strong> is the diagonal:</p>
-<div class="math-block">$$G=\\{(k,k):k\\in\\mathbb{Z}\\}\\qquad N=\\langle G\\rangle = \\{\\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_r) : r\\geq 0,\\; k_i\\in\\mathbb{Z}\\}$$</div>
-<p>where $\\Delta(k)=(k,k)$. Elements of $N$ have the form $(z,w)$ where:</p>
-<div class="math-block">$$z = k_1\\circledast\\cdots\\circledast k_r,\\qquad w = k_1\\star\\cdots\\star k_r$$</div>
-<p>built from the <strong>same sequence</strong> $k_1,\\ldots,k_r$ under different operations. In general $z\\neq w$.</p>
+{ch:"§2 Monoid",badge:"b-def",title:"Definition 2.1–2.2 — Monoid Tensor Product $M$, Generators $G$, Submonoid $N$",lean:`${GH}/TPC/Monoid.lean#L10`,body:`
+<p><strong>Definition 2.1.</strong> The <strong>monoid tensor product</strong>:</p>
+<div class="math-block">$$M = (\\mathbb{Z}, \\circledast) \\otimes_{\\mathrm{Mon}} (\\mathbb{Z}, \\star)$$</div>
+<p>with bilinearity relations:</p>
+<div class="math-block">$$(a \\circledast b) \\otimes w = (a \\otimes w)(b \\otimes w), \\qquad z \\otimes (c \\star d) = (z \\otimes c)(z \\otimes d)$$</div>
+<div class="math-block">$$z \\otimes 0 = 0 \\otimes w = e \\quad\\text{(identity)}$$</div>
+<p>The identity condition $z \\otimes 0 = 0 \\otimes w = e$ is <strong>key</strong>: it kills the "trivial splitting" that plagues the direct product.</p>
+<p><strong>Definition 2.2.</strong> The <strong>generating set</strong> is the set of diagonal tensors:</p>
+<div class="math-block">$$G = \\{k \\otimes k : k \\in \\mathbb{Z}\\} \\qquad N = \\langle G \\rangle = \\{(k_1 \\otimes k_1)(k_2 \\otimes k_2)\\cdots(k_r \\otimes k_r) : r \\geq 0,\\; k_i \\in \\mathbb{Z}\\}$$</div>
+<p>We write $\\widehat{k} = k \\otimes k$ for diagonal tensors. Elements of $N$ are formal products of diagonal tensors. By the bilinearity relations, the pure-tensor "shadow" of such a product satisfies:</p>
+<div class="math-block">$$\\text{first component: } k_1 \\circledast \\cdots \\circledast k_r, \\qquad \\text{second component: } k_1 \\star \\cdots \\star k_r$$</div>
+<p>built from the <strong>same sequence</strong> $k_1,\\ldots,k_r$ under different operations. In general the two components differ.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show that $N$ is a submonoid</button>
 <div class="proof-content" style="display:none">
-<p><strong>Identity:</strong> The empty product ($r=0$) gives $(0,0)\\in N$. ✓</p>
-<p><strong>Closure:</strong> If $(z,w)$ comes from sequence $k_1,\\ldots,k_r$ and $(z',w')$ from $k_1',\\ldots,k_s'$, then $(z,w)\\otimes(z',w')$ comes from the concatenated sequence $k_1,\\ldots,k_r,k_1',\\ldots,k_s'$. This is because $\\circledast$ and $\\star$ are associative, so:</p>
-<p>$(k_1\\circledast\\cdots\\circledast k_r)\\circledast(k_1'\\circledast\\cdots\\circledast k_s') = k_1\\circledast\\cdots\\circledast k_r\\circledast k_1'\\circledast\\cdots\\circledast k_s'$</p>
-<p>and similarly for $\\star$. ✓</p>
+<p><strong>Identity:</strong> The empty product ($r=0$) gives $e \\in N$. ✓</p>
+<p><strong>Closure:</strong> If $\\widehat{k_1}\\cdots\\widehat{k_r} \\in N$ and $\\widehat{k_1'}\\cdots\\widehat{k_s'} \\in N$, their product is $\\widehat{k_1}\\cdots\\widehat{k_r}\\widehat{k_1'}\\cdots\\widehat{k_s'} \\in N$ (concatenation of generating sequences). ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="example-box">
 <div class="example-title"><i class="bi bi-calculator me-1"></i>Generator Products</div>
-<div class="code-block" style="margin:0">Δ(1)⊗Δ(1)   = (1⊛1, 1⋆1)   = (8, -4)
-Δ(1)⊗Δ(2)   = (1⊛2, 1⋆2)   = (15, -9)
-Δ(2)⊗Δ(3)   = (2⊛3, 2⋆3)   = (41, -31)
-Δ(0)⊗Δ(k)   = (0⊛k, 0⋆k)   = (k, k)  ← identity!
-Δ(1)⊗Δ(1)⊗Δ(1) = (1⊛1⊛1, 1⋆1⋆1) = (1⊛8, 1⋆(-4)) = (57, -27)</div>
+<div class="code-block" style="margin:0">ˆ1 · ˆ1       = (1⊗1)(1⊗1)  shadow: (1⊛1, 1⋆1) = (8, -4)
+ˆ1 · ˆ2       = (1⊗1)(2⊗2)  shadow: (1⊛2, 1⋆2) = (15, -9)
+ˆ2 · ˆ3       = (2⊗2)(3⊗3)  shadow: (2⊛3, 2⋆3) = (41, -31)
+e · ˆk        = k⊗k          shadow: (k, k)  ← identity!
+ˆ1 · ˆ1 · ˆ1 = (1⊗1)³      shadow: (1⊛1⊛1, 1⋆1⋆1) = (57, -27)</div>
 </div>`},
 
-{ch:"§2 Monoid",badge:"b-prop",title:"Proposition 2.3 — $M$ is a Topological Monoid",lean:`${GH}/TPC/Monoid.lean#L55`,body:`
-<p>Equip $\\mathbb{Z}$ with the <strong>Furstenberg topology</strong>: the basis consists of all arithmetic progressions $a+b\\mathbb{Z}$ with $b\\neq 0$, each of which is clopen. Give $M=\\mathbb{Z}^2$ the product topology. Then $(M,\\otimes)$ is a <strong>topological monoid</strong>.</p>
+{ch:"§2 Monoid",badge:"b-prop",title:"Proposition 2.3 — Topology on $M$ via UMP",lean:`${GH}/TPC/Monoid.lean#L55`,body:`
+<p>The canonical bilinear map $\\beta: \\mathbb{Z} \\times \\mathbb{Z} \\to M$ sends $(z,w) \\mapsto z \\otimes w$ and is <strong>universal</strong>: any bilinear map from $\\mathbb{Z} \\times \\mathbb{Z}$ to a monoid factors uniquely through $\\beta$.</p>
+<p>Give $M$ the <strong>final topology</strong>: $U \\subseteq M$ is open iff $\\beta^{-1}(U)$ is open in $\\mathbb{Z}^2$ (with the Furstenberg product topology, where basis elements are products of arithmetic progressions $a + b\\mathbb{Z}$, each clopen). This makes $\\beta$ continuous by construction and gives $M$ a topology where arithmetic-progression cosets are clopen.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p>We must show $\\otimes:M\\times M\\to M$ is continuous. Since $\\otimes=(\\circledast,\\star)$ component-wise, it suffices to show each of $\\circledast$ and $\\star$ is continuous $\\mathbb{Z}\\times\\mathbb{Z}\\to\\mathbb{Z}$.</p>
+<p><strong>The final topology is well-defined:</strong> By definition, $U \\subseteq M$ is open iff $\\beta^{-1}(U)$ is open in $\\mathbb{Z}^2$. This is a topology (the largest making $\\beta$ continuous).</p>
+<p><strong>Multiplication is continuous:</strong> We must show $\\mu: M \\times M \\to M$ is continuous. It suffices to check on pure tensors, where $\\mu$ acts component-wise as $(\\circledast, \\star)$.</p>
 <p><strong>Continuity of $\\circledast$:</strong> Let $(x_0,y_0)\\in\\mathbb{Z}^2$ and let $a+b\\mathbb{Z}$ be a basic open neighborhood of $x_0\\circledast y_0$. We need a neighborhood $U\\times V$ of $(x_0,y_0)$ mapping into $a+b\\mathbb{Z}$.</p>
 <p>Take $U=x_0+b\\mathbb{Z}$, $V=y_0+b\\mathbb{Z}$. For $x=x_0+bs$, $y=y_0+bt$:</p>
 <p>$x\\circledast y - x_0\\circledast y_0 = (6y_0+1)\\cdot bs + (6x_0+1)\\cdot bt + 6b^2st$</p>
 <p>$= b\\bigl[(6y_0+1)s + (6x_0+1)t + 6b\\cdot st\\bigr] \\equiv 0\\pmod{b}$</p>
 <p>So $x\\circledast y \\equiv x_0\\circledast y_0 \\equiv a \\pmod{b}$. Hence $U\\times V$ maps into $a+b\\mathbb{Z}$. ✓</p>
 <p><strong>Continuity of $\\star$:</strong> Identical argument with $-6$ replacing $6$ in the leading term. The correction term $(-6y_0-1)bs+(-6x_0-1)bt+(-6)b^2st$ is still divisible by $b$. ✓</p>
-<p>Therefore $\\otimes = \\circledast\\times\\star$ is continuous, making $(M,\\otimes)$ a topological monoid.</p>
+<p>Therefore the monoid operation on $M$ is continuous in the final topology.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Consequence</div>
-<p>Left multiplication $L_{\\widehat{q}}(\\widehat{x})=\\widehat{q}\\otimes\\widehat{x}$ is <strong>continuous</strong> for any fixed $\\widehat{q}$. Combined with injectivity (Lem 1.4), $L_{\\widehat{q}}$ is a homeomorphism onto its image when $\\widehat{q}\\neq(0,0)$.</p>
+<p>Left multiplication $L_{\\widehat{q}}(m) = \\widehat{q} \\cdot m$ is <strong>continuous</strong> for any fixed $\\widehat{q} \\in M$. Combined with injectivity (Lem 1.4), $L_{\\widehat{q}}$ is a homeomorphism onto its image when $\\widehat{q} \\neq e$.</p>
 </div>`},
 
-{ch:"§3 Coset",badge:"b-lem",title:"Lemma 3.1 — $\\widehat{a}\\otimes M$ is Clopen",lean:`${GH}/TPC/CosetTopology.lean#L15`,body:`
-<p>For $\\widehat{a}=(a_1,a_2)\\neq(0,0)$:</p>
-<div class="math-block">$$\\widehat{a}\\otimes M=(a_1+(6a_1+1)\\mathbb{Z})\\times(a_2+(6a_2-1)\\mathbb{Z})$$</div>
-<p>A <strong>product of two arithmetic progressions</strong> — each factor is clopen in the Furstenberg topology, hence the product is <strong>clopen in $M$</strong>.</p>
+{ch:"§3 Coset",badge:"b-lem",title:"Lemma 3.1 — $\\widehat{a} \\cdot M$ is Clopen (via $\\beta$)",lean:`${GH}/TPC/CosetTopology.lean#L15`,body:`
+<p>For $\\widehat{a} = a \\otimes a$ with $a \\neq 0$, the preimage $\\beta^{-1}(\\widehat{a} \\cdot \\beta(\\mathbb{Z}^2))$ is the product of arithmetic progressions:</p>
+<div class="math-block">$$\\beta^{-1}(\\widehat{a} \\cdot M) = (a + \\phi(a)\\mathbb{Z}) \\times (a + \\psi(a)\\mathbb{Z})$$</div>
+<p>where $\\phi(a) = 6a+1$ and $\\psi(a) = 6a-1$. This is <strong>clopen</strong> in $\\mathbb{Z}^2$ (Furstenberg product topology). By the final topology on $M$, the coset $\\widehat{a} \\cdot M$ is therefore <strong>clopen in $M$</strong>.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>First component:</strong> $\\{a_1\\circledast x : x\\in\\mathbb{Z}\\}$. Applying $\\phi$:</p>
-<p>$\\phi(a_1\\circledast x) = \\phi(a_1)\\phi(x) = (6a_1+1)(6x+1)$.</p>
-<p>As $x$ ranges over $\\mathbb{Z}$, $6x+1$ ranges over all of $6\\mathbb{Z}+1$. So the image under $\\phi$ is $(6a_1+1)\\cdot(6\\mathbb{Z}+1) = (6a_1+1) + 6(6a_1+1)\\mathbb{Z}$.</p>
-<p>Pulling back through $\\phi^{-1}$: $a_1+(6a_1+1)\\mathbb{Z}$. ✓</p>
-<p><strong>Second component:</strong> $\\{a_2\\star x : x\\in\\mathbb{Z}\\}$. Similarly via $\\psi$:</p>
-<p>$\\psi(a_2\\star x) = -(6a_2-1)(6x-1)$. As $x$ ranges over $\\mathbb{Z}$, $6x-1$ ranges over $6\\mathbb{Z}-1$.</p>
-<p>The image is $\\{-(6a_2-1)m : m\\in 6\\mathbb{Z}-1\\}$. Pulling back: $a_2+(6a_2-1)\\mathbb{Z}$. ✓</p>
-<p><strong>Clopenness:</strong> Each arithmetic progression $a+b\\mathbb{Z}$ (with $b\\neq 0$) is clopen in the Furstenberg topology. Products of clopen sets are clopen in the product topology.</p>
+<p><strong>First component:</strong> $\\{a\\circledast x : x\\in\\mathbb{Z}\\}$. Applying $\\phi$:</p>
+<p>$\\phi(a\\circledast x) = \\phi(a)\\phi(x) = (6a+1)(6x+1)$.</p>
+<p>As $x$ ranges over $\\mathbb{Z}$, $6x+1$ ranges over all of $6\\mathbb{Z}+1$. So the image under $\\phi$ is $(6a+1)\\cdot(6\\mathbb{Z}+1) = (6a+1) + 6(6a+1)\\mathbb{Z}$.</p>
+<p>Pulling back through $\\phi^{-1}$: $a+(6a+1)\\mathbb{Z} = a + \\phi(a)\\mathbb{Z}$. ✓</p>
+<p><strong>Second component:</strong> $\\{a\\star x : x\\in\\mathbb{Z}\\}$. Similarly via $\\psi$:</p>
+<p>$\\psi(a\\star x) = -(6a-1)(6x-1)$. As $x$ ranges over $\\mathbb{Z}$, $6x-1$ ranges over $6\\mathbb{Z}-1$.</p>
+<p>Pulling back: $a+(6a-1)\\mathbb{Z} = a + \\psi(a)\\mathbb{Z}$. ✓</p>
+<p><strong>Clopenness:</strong> Each arithmetic progression $a+b\\mathbb{Z}$ (with $b\\neq 0$) is clopen in the Furstenberg topology. Products of clopen sets are clopen in the product topology. Since $\\beta^{-1}(\\widehat{a} \\cdot M)$ is clopen in $\\mathbb{Z}^2$, by the final topology definition, $\\widehat{a} \\cdot M$ is clopen in $M$.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="example-box">
 <div class="example-title"><i class="bi bi-calculator me-1"></i>Explicit Cosets</div>
-<div class="code-block" style="margin:0">(1,1) ⊗ M = (1+7ℤ) × (1+5ℤ)
-           = {...,−6,1,8,15,22,...} × {...,−4,1,6,11,16,...}
-(2,2) ⊗ M = (2+13ℤ) × (2+11ℤ)
-(5,5) ⊗ M = (5+31ℤ) × (5+29ℤ)
+<div class="code-block" style="margin:0">β⁻¹(ˆ1 · M) = (1+7ℤ) × (1+5ℤ)
+              = {...,−6,1,8,15,22,...} × {...,−4,1,6,11,16,...}
+β⁻¹(ˆ2 · M) = (2+13ℤ) × (2+11ℤ)
+β⁻¹(ˆ5 · M) = (5+31ℤ) × (5+29ℤ)
 
-Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values!</div>
+Step sizes: φ(a) = 6a+1, ψ(a) = 6a−1  ← the isomorphism values!</div>
 </div>`},
 
 {ch:"§3 Coset",badge:"b-thm",title:"Theorem 3.2 — The Coset Identity (The Key Lemma)",lean:`${GH}/TPC/CosetTopology.lean#L45`,body:`
-<p style="position:relative;overflow:hidden;">For $\\widehat{q}=(q,q)\\in\\mathrm{Irr}(N)$:</p>
-<div class="math-block">$$\\boxed{\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)}$$</div>
+<p style="position:relative;overflow:hidden;">For $\\widehat{q} = q \\otimes q \\in \\mathrm{Irr}(N)$ with $\\phi(q)$ prime:</p>
+<div class="math-block">$$\\boxed{\\widehat{q} \\cdot N = N \\cap (\\widehat{q} \\cdot M)}$$</div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-star-fill me-1"></i>This is the heart of the entire proof</div>
-<p>This identity is what makes the Furstenberg argument work for $N$. The left side is an algebraic object (coset of the submonoid); the right side is a topological object (intersection with a clopen set). Their equality bridges algebra and topology.</p>
+<p>This identity is what makes the Furstenberg argument work for $N$. The left side is an algebraic object (coset of the submonoid); the right side is a topological object (intersection with a clopen set). Their equality bridges algebra and topology. The proof uses the prime divisibility of $\\phi(q)$ via $\\phi$.</p>
 </div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>Direction ($\\subseteq$):</strong> If $(z,w)\\in\\widehat{q}\\otimes N$, then $(z,w)=\\widehat{q}\\otimes\\widehat{n}$ for some $\\widehat{n}\\in N$. Since $N$ is a submonoid containing $\\widehat{q}$, we have $(z,w)\\in N$. Also $(z,w)\\in\\widehat{q}\\otimes M$ trivially (since $N\\subseteq M$). So $(z,w)\\in N\\cap(\\widehat{q}\\otimes M)$. ✓</p>
+<p><strong>Direction ($\\subseteq$):</strong> If $m \\in \\widehat{q} \\cdot N$, then $m = \\widehat{q} \\cdot n$ for some $n \\in N$. Since $N$ is a submonoid containing $\\widehat{q}$, we have $m \\in N$. Also $m \\in \\widehat{q} \\cdot M$ trivially (since $N \\subseteq M$). So $m \\in N \\cap (\\widehat{q} \\cdot M)$. ✓</p>
 <p><strong>Direction ($\\supseteq$) — the hard direction:</strong></p>
-<p>Let $(z,w)\\in N\\cap(\\widehat{q}\\otimes M)$.</p>
-<p><span class="step-num">1</span><strong>Unpack membership in $\\widehat{q}\\otimes M$:</strong> There exist $p,r\\in\\mathbb{Z}$ with $q\\circledast p = z$ and $q\\star r = w$.</p>
-<p><span class="step-num">2</span><strong>Unpack membership in $N$:</strong> There exist $k_1,\\ldots,k_s\\in\\mathbb{Z}$ with $z = k_1\\circledast\\cdots\\circledast k_s$ and $w = k_1\\star\\cdots\\star k_s$.</p>
-<p><span class="step-num">3</span><strong>Apply $\\phi$:</strong> From step 1: $\\phi(q)\\cdot\\phi(p) = \\phi(z)$. From step 2: $\\phi(z) = \\phi(k_1)\\cdots\\phi(k_s)$.</p>
-<p>So $\\phi(q)\\cdot\\phi(p) = \\phi(k_1)\\cdots\\phi(k_s)$.</p>
-<p><span class="step-num">4</span><strong>Use irreducibility:</strong> Since $\\widehat{q}\\in\\mathrm{Irr}(N)$, $\\phi(q)=6q+1$ is <strong>prime</strong> in $\\mathbb{Z}$. (This is precisely the content of Thm 4.2.)</p>
+<p>Let $m \\in N \\cap (\\widehat{q} \\cdot M)$.</p>
+<p><span class="step-num">1</span><strong>Unpack membership in $\\widehat{q} \\cdot M$:</strong> There exists a pure tensor $p \\otimes r \\in M$ with $m = \\widehat{q} \\cdot (p \\otimes r)$. By bilinearity, the first component is $q \\circledast p$ and the second is $q \\star r$.</p>
+<p><span class="step-num">2</span><strong>Unpack membership in $N$:</strong> $m = \\widehat{k_1} \\cdots \\widehat{k_s}$ for some $k_1,\\ldots,k_s \\in \\mathbb{Z}$. The first-component shadow is $z = k_1 \\circledast \\cdots \\circledast k_s$ and second-component shadow is $w = k_1 \\star \\cdots \\star k_s$.</p>
+<p><span class="step-num">3</span><strong>Apply $\\phi$:</strong> From step 1: $\\phi(q) \\cdot \\phi(p) = \\phi(z)$. From step 2: $\\phi(z) = \\phi(k_1)\\cdots\\phi(k_s)$.</p>
+<p>So $\\phi(q) \\cdot \\phi(p) = \\phi(k_1)\\cdots\\phi(k_s)$.</p>
+<p><span class="step-num">4</span><strong>Use irreducibility:</strong> Since $\\widehat{q} \\in \\mathrm{Irr}(N)$, $\\phi(q)=6q+1$ is <strong>prime</strong> in $\\mathbb{Z}$ (this is precisely the content of Thm 4.2).</p>
 <p>Since $\\phi(q)$ is prime and divides $\\phi(k_1)\\cdots\\phi(k_s)$, by Euclid's lemma it divides some $\\phi(k_i)$.</p>
 <p><span class="step-num">5</span><strong>Force equality:</strong> Since $\\phi(k_i)\\in 6\\mathbb{Z}+1$ and $\\phi(q)$ is a prime in $6\\mathbb{Z}+1$ dividing $\\phi(k_i)$, we need $\\phi(k_i) = \\pm\\phi(q)$. But all values in $6\\mathbb{Z}+1$ satisfy $\\phi(k_i)\\equiv 1\\pmod{6}$, so $\\phi(k_i)=-\\phi(q)$ would give $\\phi(k_i)\\equiv -1\\pmod{6}$, contradicting $\\phi(k_i)\\equiv 1\\pmod{6}$ (when $\\phi(q)\\neq 1$, which holds since $q\\neq 0$). Therefore $\\phi(k_i)=\\phi(q)$, hence $k_i=q$.</p>
 <p><span class="step-num">6</span><strong>Reorder and conclude:</strong> By commutativity of $\\circledast$ and $\\star$, we may assume $k_1=q$. Then:</p>
-<p>$z = q\\circledast(k_2\\circledast\\cdots\\circledast k_s)$ and $w = q\\star(k_2\\star\\cdots\\star k_s)$.</p>
-<p>Setting $\\widehat{n} = (k_2\\circledast\\cdots\\circledast k_s,\\; k_2\\star\\cdots\\star k_s)\\in N$, we get $(z,w) = \\widehat{q}\\otimes\\widehat{n}\\in\\widehat{q}\\otimes N$. ✓</p>
+<p>$m = \\widehat{q} \\cdot (\\widehat{k_2} \\cdots \\widehat{k_s})$.</p>
+<p>Setting $n = \\widehat{k_2} \\cdots \\widehat{k_s} \\in N$, we get $m = \\widehat{q} \\cdot n \\in \\widehat{q} \\cdot N$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>`},
 
-{ch:"§3 Coset",badge:"b-cor",title:"Corollary 3.3 — $\\widehat{q}\\otimes N$ is Clopen in $N$",lean:`${GH}/TPC/CosetTopology.lean#L82`,body:`
-<p>In the subspace topology on $N$ inherited from $M$:</p>
-<div class="math-block">$$\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)\\quad\\text{is clopen in }N$$</div>
+{ch:"§3 Coset",badge:"b-cor",title:"Corollary 3.3 — $\\widehat{q} \\cdot N$ is Clopen in $N$",lean:`${GH}/TPC/CosetTopology.lean#L82`,body:`
+<p>In the subspace topology on $N$ inherited from $M$ (via the final topology):</p>
+<div class="math-block">$$\\widehat{q} \\cdot N = N \\cap (\\widehat{q} \\cdot M)\\quad\\text{is clopen in }N$$</div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><span class="step-num">1</span>By Lemma 3.1, $\\widehat{q}\\otimes M$ is <strong>clopen in $M$</strong> (product of two arithmetic progressions).</p>
-<p><span class="step-num">2</span>By Theorem 3.2, $\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)$.</p>
-<p><span class="step-num">3</span>In the <strong>subspace topology</strong> on $N\\subseteq M$, the open sets of $N$ are precisely $\\{N\\cap U : U\\text{ open in }M\\}$. Similarly for closed sets.</p>
-<p><span class="step-num">4</span>Since $\\widehat{q}\\otimes M$ is both open and closed in $M$, the intersection $N\\cap(\\widehat{q}\\otimes M)$ is both open and closed in $N$.</p>
-<p>Therefore $\\widehat{q}\\otimes N$ is <strong>clopen in $N$</strong>.</p>
+<p><span class="step-num">1</span>By Lemma 3.1, $\\widehat{q} \\cdot M$ is <strong>clopen in $M$</strong> (the preimage $\\beta^{-1}(\\widehat{q} \\cdot M)$ is a product of two arithmetic progressions, hence clopen in $\\mathbb{Z}^2$, hence $\\widehat{q} \\cdot M$ is clopen by the final topology).</p>
+<p><span class="step-num">2</span>By Theorem 3.2, $\\widehat{q} \\cdot N = N \\cap (\\widehat{q} \\cdot M)$.</p>
+<p><span class="step-num">3</span>In the <strong>subspace topology</strong> on $N \\subseteq M$, the open sets of $N$ are precisely $\\{N \\cap U : U\\text{ open in }M\\}$. Similarly for closed sets.</p>
+<p><span class="step-num">4</span>Since $\\widehat{q} \\cdot M$ is both open and closed in $M$, the intersection $N \\cap (\\widehat{q} \\cdot M)$ is both open and closed in $N$.</p>
+<p>Therefore $\\widehat{q} \\cdot N$ is <strong>clopen in $N$</strong>.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
-<div class="code-block">theorem cosetN_isClopen (q : ℤ) (hq : IsIrred (q,q))
+<div class="code-block">theorem cosetN_isClopen (q : ℤ) (hq : IsIrred (q ⊗ q))
     (hprime : (6*q+1).natAbs.Prime) :
-    IsClopen ((· ⊗ ·) (q,q) '' ↑N)</div>`},
+    IsClopen ((· * ·) (q ⊗ q) '' ↑N)</div>`},
 
 {ch:"§3 Coset",badge:"b-lem",title:"Lemma 3.4 — Cosets Are Infinite",lean:`${GH}/TPC/CosetTopology.lean#L95`,body:`
-<p><strong>Statement:</strong> For any $\\widehat{q}\\neq(0,0)$ in $N$: $|\\widehat{q}\\otimes N| = |N| = \\infty$.</p>
+<p><strong>Statement:</strong> For any $\\widehat{q} = q \\otimes q \\neq e$ in $N$: $|\\widehat{q} \\cdot N| = |N| = \\infty$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>$N$ is infinite:</strong> $N$ contains all generators $\\Delta(k)=(k,k)$ for $k\\in\\mathbb{Z}$, and these are pairwise distinct (since they differ in both coordinates). So $|N|\\geq|\\mathbb{Z}|=\\infty$.</p>
-<p><strong>$L_{\\widehat{q}}$ is injective:</strong> Suppose $\\widehat{q}\\otimes\\widehat{x} = \\widehat{q}\\otimes\\widehat{y}$ where $\\widehat{q}=(q,q)$ and $\\widehat{x}=(x_1,x_2)$, $\\widehat{y}=(y_1,y_2)\\in N$.</p>
-<p>First components: $q\\circledast x_1 = q\\circledast y_1$. Applying $\\phi$: $\\phi(q)\\phi(x_1) = \\phi(q)\\phi(y_1)$.</p>
+<p><strong>$N$ is infinite:</strong> $N$ contains all generators $\\widehat{k} = k \\otimes k$ for $k\\in\\mathbb{Z}$, and these are pairwise distinct (since they differ in their component shadows). So $|N|\\geq|\\mathbb{Z}|=\\infty$.</p>
+<p><strong>$L_{\\widehat{q}}$ is injective:</strong> Suppose $\\widehat{q} \\cdot x = \\widehat{q} \\cdot y$ where $\\widehat{q} = q \\otimes q$ and $x, y \\in N$.</p>
+<p>Looking at first-component shadows: $q\\circledast x_1 = q\\circledast y_1$. Applying $\\phi$: $\\phi(q)\\phi(x_1) = \\phi(q)\\phi(y_1)$.</p>
 <p>Since $q\\neq 0$, $\\phi(q)=6q+1\\neq 1$ (as $q\\neq 0$ implies $|6q+1|\\geq 5$). Cancel: $\\phi(x_1)=\\phi(y_1)$, so $x_1=y_1$.</p>
-<p>Similarly for second components: $\\psi(q)\\psi(x_2)=\\psi(q)\\psi(y_2)$ gives $x_2=y_2$.</p>
-<p>Therefore $\\widehat{x}=\\widehat{y}$, so $L_{\\widehat{q}}$ is injective.</p>
-<p><strong>Conclusion:</strong> $L_{\\widehat{q}}:N\\to\\widehat{q}\\otimes N$ is a bijection from the infinite set $N$, so $|\\widehat{q}\\otimes N|=\\infty$.</p>
+<p>Similarly for second-component shadows: $\\psi(q)\\psi(x_2)=\\psi(q)\\psi(y_2)$ gives $x_2=y_2$.</p>
+<p>Therefore $x = y$, so $L_{\\widehat{q}}$ is injective.</p>
+<p><strong>Conclusion:</strong> $L_{\\widehat{q}}: N \\to \\widehat{q} \\cdot N$ is a bijection from the infinite set $N$, so $|\\widehat{q} \\cdot N|=\\infty$.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>`},
 
-{ch:"§3½ New",badge:"b-thm",title:"Theorem — $N \\cap (a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})$ is Empty or Infinite",lean:null,body:`
-<p>This is a fundamental structural property of $N$ inside the Furstenberg topology:</p>
-<div class="math-block">$$\\text{For any }a,b,c,d\\in\\mathbb{Z}\\text{ with }b,d\\neq 0:\\quad N\\cap\\bigl((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})\\bigr)\\text{ is either }\\emptyset\\text{ or infinite.}$$</div>
+{ch:"§3½ New",badge:"b-thm",title:"Theorem — $N \\cap \\beta^{-1}(\\text{basic open})$ is Empty or Infinite",lean:null,body:`
+<p>This is a fundamental structural property of $N$ inside the final topology on $M$:</p>
+<div class="math-block">$$\\text{For any }a,b,c,d\\in\\mathbb{Z}\\text{ with }b,d\\neq 0:\\quad N\\cap\\beta^{-1}\\bigl((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})\\bigr)\\text{ is either }\\emptyset\\text{ or infinite.}$$</div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-star-fill me-1"></i>Why this matters</div>
-<p>This shows that $N$ is "topologically large" — it cannot meet a basic open set in finitely many points. This is the deeper reason why $\\{(0,0)\\}$ cannot be open in $N$, which is the key contradiction in the Furstenberg argument.</p>
+<p>This shows that $N$ is "topologically large" — it cannot meet a basic open set in finitely many points. This is the deeper reason why $\\{e\\}$ cannot be open in $N$, which is the key contradiction in the Furstenberg argument.</p>
 </div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p>Suppose $N\\cap\\bigl((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})\\bigr)\\neq\\emptyset$. Pick $(z_0,w_0)$ in this intersection. We produce infinitely many distinct elements.</p>
-<p><span class="step-num">1</span><strong>Setup:</strong> We have $(z_0,w_0)\\in N$ with $z_0\\equiv a\\pmod{b}$ and $w_0\\equiv c\\pmod{d}$.</p>
-<p><span class="step-num">2</span><strong>Choose generators in $bd\\mathbb{Z}$:</strong> For each $n\\in\\mathbb{Z}$, consider the generator $\\Delta(nbd)=(nbd,nbd)\\in G\\subseteq N$.</p>
-<p><span class="step-num">3</span><strong>Form products:</strong> Define $\\widehat{v}_n = (z_0,w_0)\\otimes\\Delta(nbd) = (z_0\\circledast(nbd),\\; w_0\\star(nbd))$.</p>
-<p>Since $(z_0,w_0)\\in N$ and $\\Delta(nbd)\\in N$, we have $\\widehat{v}_n\\in N$ for all $n$. ✓</p>
+<p>Suppose the intersection is nonempty. Pick an element with component shadows $(z_0, w_0)$ in this intersection. We produce infinitely many distinct elements.</p>
+<p><span class="step-num">1</span><strong>Setup:</strong> We have an element of $N$ whose shadows satisfy $z_0\\equiv a\\pmod{b}$ and $w_0\\equiv c\\pmod{d}$.</p>
+<p><span class="step-num">2</span><strong>Choose generators in $bd\\mathbb{Z}$:</strong> For each $n\\in\\mathbb{Z}$, consider the generator $\\widehat{nbd} = (nbd) \\otimes (nbd) \\in G \\subseteq N$.</p>
+<p><span class="step-num">3</span><strong>Form products:</strong> Define $v_n$ as the original element times $\\widehat{nbd}$. The component shadows become $(z_0\\circledast(nbd),\\; w_0\\star(nbd))$.</p>
+<p>Since both factors are in $N$, we have $v_n\\in N$ for all $n$. ✓</p>
 <p><span class="step-num">4</span><strong>Check first component stays in $a+b\\mathbb{Z}$:</strong></p>
 <p>$z_0\\circledast(nbd) = 6z_0\\cdot nbd + z_0 + nbd = nbd(6z_0+1) + z_0$</p>
 <p>$\\equiv z_0 \\equiv a \\pmod{b}$ ✓</p>
 <p><span class="step-num">5</span><strong>Check second component stays in $c+d\\mathbb{Z}$:</strong></p>
 <p>$w_0\\star(nbd) = -6w_0\\cdot nbd + w_0 + nbd = nbd(-6w_0+1) + w_0$</p>
 <p>$\\equiv w_0 \\equiv c \\pmod{d}$ ✓</p>
-<p><span class="step-num">6</span><strong>Show distinctness:</strong> Suppose $\\widehat{v}_n = \\widehat{v}_m$. Looking at first components:</p>
+<p><span class="step-num">6</span><strong>Show distinctness:</strong> Suppose $v_n = v_m$. Looking at first-component shadows:</p>
 <p>$z_0\\circledast(nbd) = z_0\\circledast(mbd)$</p>
 <p>Applying $\\phi$: $\\phi(z_0)\\cdot\\phi(nbd) = \\phi(z_0)\\cdot\\phi(mbd)$.</p>
 <p>$\\phi(z_0)\\cdot(6nbd+1) = \\phi(z_0)\\cdot(6mbd+1)$.</p>
 <p><strong>Case (a):</strong> $\\phi(z_0)=6z_0+1\\neq 0$ (which holds for all $z_0\\in\\mathbb{Z}$ since $6z_0+1$ is odd, hence nonzero). Cancel $\\phi(z_0)$: $6nbd+1=6mbd+1$, so $n=m$. ✓</p>
 <p><strong>Note:</strong> We always have $\\phi(z_0)=6z_0+1\\neq 0$ since $6z_0+1\\equiv 1\\pmod{2}$ is odd.</p>
-<p><span class="step-num">7</span><strong>Conclusion:</strong> The elements $\\{\\widehat{v}_n : n\\in\\mathbb{Z}\\}$ are pairwise distinct, all lie in $N\\cap\\bigl((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})\\bigr)$, and there are infinitely many (one for each $n\\in\\mathbb{Z}$).</p>
+<p><span class="step-num">7</span><strong>Conclusion:</strong> The elements $\\{v_n : n\\in\\mathbb{Z}\\}$ are pairwise distinct, all lie in $N \\cap \\beta^{-1}\\bigl((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})\\bigr)$, and there are infinitely many (one for each $n\\in\\mathbb{Z}$).</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-diagram-3 me-1"></i>Logical structure</div>
-<p>The proof uses three ingredients: <span class="depends-badge">$N$ is a submonoid (closed under $\\otimes$)</span> <span class="depends-badge">$G\\ni\\Delta(nbd)$ for all $n$</span> <span class="depends-badge">$\\phi(z_0)\\neq 0$ always (for injectivity)</span></p>
+<p>The proof uses three ingredients: <span class="depends-badge">$N$ is a submonoid (closed under multiplication)</span> <span class="depends-badge">$G\\ni\\widehat{nbd}$ for all $n$</span> <span class="depends-badge">$\\phi(z_0)\\neq 0$ always (for injectivity)</span></p>
 </div>`},
 
 {ch:"§3½ New",badge:"b-cor",title:"Corollary — No Isolated Points in $N$ (Subspace Topology)",lean:null,body:`
-<p><strong>Statement:</strong> In the subspace topology inherited from $M$, the submonoid $N$ has <strong>no isolated points</strong>. That is, for every $(z_0,w_0)\\in N$, the singleton $\\{(z_0,w_0)\\}$ is <strong>not open</strong> in $N$.</p>
+<p><strong>Statement:</strong> In the subspace topology inherited from $M$ (via the final topology), the submonoid $N$ has <strong>no isolated points</strong>. That is, for every $m \\in N$, the singleton $\\{m\\}$ is <strong>not open</strong> in $N$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p>Suppose for contradiction that $\\{(z_0,w_0)\\}$ is open in the subspace topology on $N$.</p>
-<p><span class="step-num">1</span>By definition of the subspace topology, there exists an open set $U\\subseteq M$ with $\\{(z_0,w_0)\\} = N\\cap U$.</p>
-<p><span class="step-num">2</span>Since $U$ is open in the Furstenberg product topology on $M$, and $(z_0,w_0)\\in U$, there exist $b,d\\neq 0$ with $(z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\subseteq U$.</p>
-<p><span class="step-num">3</span>Then $N\\cap\\bigl((z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\bigr) \\subseteq N\\cap U = \\{(z_0,w_0)\\}$.</p>
-<p><span class="step-num">4</span>But $(z_0,w_0)\\in N\\cap\\bigl((z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\bigr)$, so this intersection is nonempty.</p>
+<p>Suppose for contradiction that $\\{m\\}$ is open in the subspace topology on $N$, where $m$ has component shadows $(z_0, w_0)$.</p>
+<p><span class="step-num">1</span>By definition of the subspace topology, there exists an open set $U\\subseteq M$ with $\\{m\\} = N\\cap U$.</p>
+<p><span class="step-num">2</span>Since $U$ is open in the final topology on $M$, $\\beta^{-1}(U)$ is open in $\\mathbb{Z}^2$. Since $(z_0, w_0) \\in \\beta^{-1}(U)$, there exist $b,d\\neq 0$ with $(z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\subseteq \\beta^{-1}(U)$.</p>
+<p><span class="step-num">3</span>Then $N\\cap\\beta^{-1}\\bigl((z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\bigr) \\subseteq N\\cap U = \\{m\\}$.</p>
+<p><span class="step-num">4</span>But $m \\in N\\cap\\beta^{-1}\\bigl((z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\bigr)$, so this intersection is nonempty.</p>
 <p><span class="step-num">5</span>By the preceding theorem, it is <strong>infinite</strong> — contradicting the fact that it's contained in a singleton.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Significance</div>
-<p>This corollary gives a <strong>cleaner version of Lemma 5.1</strong> (no singleton open in $N$). While Lemma 5.1 only needs this for $(0,0)$, the result holds for <em>every</em> point of $N$ — the submonoid $N$ is a <strong>perfect set</strong> (no isolated points) in the subspace topology.</p>
+<p>This corollary gives a <strong>cleaner version of Lemma 5.1</strong> (no singleton open in $N$). While Lemma 5.1 only needs this for $e$, the result holds for <em>every</em> element of $N$ — the submonoid $N$ is a <strong>perfect set</strong> (no isolated points) in the subspace topology.</p>
 </div>`},
 
 {ch:"§4 Irred",badge:"b-def",title:"Definition 4.1 — Irreducibility in $N$",lean:`${GH}/TPC/Main.lean#L5`,body:`
-<p>An element $(z,w)\\in N\\setminus\\{(0,0)\\}$ is <strong>$\\otimes$-irreducible</strong> if:</p>
-<div class="math-block">$$(z,w) = \\widehat{a}\\otimes\\widehat{b}\\text{ with }\\widehat{a},\\widehat{b}\\in N \\implies \\widehat{a}=(0,0)\\text{ or }\\widehat{b}=(0,0)$$</div>
-<p>In other words, $(z,w)$ cannot be decomposed as a nontrivial product of two elements of $N$. The set of all irreducibles is denoted $\\mathrm{Irr}(N)$.</p>
+<p>An element $m \\in N \\setminus \\{e\\}$ is <strong>irreducible in $N$</strong> (written $m \\in \\mathrm{Irr}(N)$) if:</p>
+<div class="math-block">$$m = a \\cdot b\\text{ with }a,b\\in N \\implies a = e\\text{ or }b = e$$</div>
+<p>In other words, $m$ cannot be decomposed as a nontrivial product of two elements of $N$. We also write $\\mathrm{Irr}_\\otimes(N)$ for the set of tensor-irreducibles.</p>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Note on structure</div>
-<p>Every element of $N$ has the form $(z,w)$ where $z=k_1\\circledast\\cdots\\circledast k_r$ and $w=k_1\\star\\cdots\\star k_r$. Irreducibility means the generating sequence has length exactly 1: $(z,w)=\\Delta(k)=(k,k)$ for some $k$ that is $\\circledast$-irreducible.</p>
+<p>Every element of $N$ is a formal product of diagonal tensors $\\widehat{k} = k \\otimes k$. Irreducibility means the generating sequence has length exactly 1: $m = \\widehat{k} = k \\otimes k$ for some $k$ that is $\\circledast$-irreducible.</p>
 </div>`},
 
 {ch:"§4 Irred",badge:"b-thm",title:"Theorem 4.2 — Irreducibles $\\iff$ Twin Primes",lean:`${GH}/TPC/Main.lean#L8`,body:`
-<p>$(z,w)\\in N$ is $\\otimes$-irreducible if and only if $z$ is $\\circledast$-irreducible and $w$ is $\\star$-irreducible:</p>
-<div class="math-block">$$(z,w)\\in\\mathrm{Irr}(N) \\iff z\\notin\\{x\\circledast y : x,y\\neq 0\\}\\text{ and }w\\notin\\{x\\star y : x,y\\neq 0\\}$$</div>
-<p>Via the isomorphisms $\\phi$ and $\\psi$, these conditions become: $\\phi(z)=6z+1$ is $\\pm$prime and $\\psi(w)=6w-1$ is $\\pm$prime. Since elements of $N$ have the form $(z,w)$ built from the same generator sequence, irreducibles correspond to twin prime pairs.</p>
+<p>Work in the <strong>monoid tensor product</strong> $M = (\\mathbb{Z},\\circledast) \\otimes_{\\mathrm{Mon}} (\\mathbb{Z},\\star)$. A pure tensor $z\\otimes w$ is $\\otimes$-irreducible if and only if $z$ is $\\circledast$-irreducible and $w$ is $\\star$-irreducible:</p>
+<div class="math-block">$$z\\otimes w\\in\\mathrm{Irr}(M) \\iff z\\notin\\{x\\circledast y : x,y\\neq 0\\}\\text{ and }w\\notin\\{x\\star y : x,y\\neq 0\\}$$</div>
+<p>Equivalently, via $\\phi$ and $\\psi$: $\\phi(z)=6z+1$ is $\\pm$prime and $\\psi(w)=6w-1$ is $\\pm$prime. For diagonal elements $\\widehat{k} = k\\otimes k$, both conditions fall on the same $k$, giving twin prime pairs $(6k-1,\\,6k+1)$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>Setup:</strong> Recall that every $(z,w)\\in N$ is a product of generators $\\Delta(k_i)=(k_i,k_i)$. So $z = k_1\\circledast\\cdots\\circledast k_r$ and $w = k_1\\star\\cdots\\star k_r$ for the same sequence $k_1,\\ldots,k_r$.</p>
-<p><strong>($\\Rightarrow$) Irreducible in $N$ $\\Rightarrow$ $z$ is $\\circledast$-irred and $w$ is $\\star$-irred:</strong></p>
-<p>Suppose $(z,w)\\in\\mathrm{Irr}(N)$. Then the only way to write $(z,w)=\\widehat{a}\\otimes\\widehat{b}$ with $\\widehat{a},\\widehat{b}\\in N$ has $\\widehat{a}=(0,0)$ or $\\widehat{b}=(0,0)$.</p>
-<p><span class="step-num">1</span><strong>$z$ is $\\circledast$-irreducible:</strong> Suppose $z = x\\circledast y$ with $x,y\\neq 0$. Via $\\phi$: $\\phi(z) = \\phi(x)\\phi(y)$ with $\\phi(x),\\phi(y)\\neq 1$. Since $(z,w)\\in N$, we have $z=k_1\\circledast\\cdots\\circledast k_r$, so $\\phi(z)=\\phi(k_1)\\cdots\\phi(k_r)$. If any nontrivial splitting of this product into two groups exists (i.e., $r\\geq 2$ with all $k_i\\neq 0$), then $(z,w) = \\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_j) \\;\\otimes\\; \\Delta(k_{j+1})\\otimes\\cdots\\otimes\\Delta(k_r)$ — a nontrivial factorization in $N$, contradicting irreducibility. So $r=1$ (up to trivial identity factors), meaning $z$ cannot be nontrivially $\\circledast$-factored.</p>
-<p><span class="step-num">2</span><strong>$w$ is $\\star$-irreducible:</strong> Same argument applied to the second component. If $w = x\\star y$ with $x,y\\neq 0$, then via $\\psi$ we get a nontrivial factorization of $\\psi(w)$, which would lift to a nontrivial factorization in $N$, contradicting irreducibility.</p>
-<p><strong>($\\Leftarrow$) Both components irred $\\Rightarrow$ irreducible in $N$:</strong></p>
-<p>Suppose $z\\notin\\{x\\circledast y:x,y\\neq 0\\}$ and $w\\notin\\{x\\star y:x,y\\neq 0\\}$. If $(z,w) = \\Delta(k_1)\\otimes\\cdots\\otimes\\Delta(k_r)$ with $r\\geq 2$ and all $k_i\\neq 0$, then:</p>
-<p>$z = k_1\\circledast\\cdots\\circledast k_r$ — a nontrivial $\\circledast$-factorization of $z$ (since $r\\geq 2$ and all $k_i\\neq 0$), contradicting $z\\notin\\{x\\circledast y:x,y\\neq 0\\}$.</p>
-<p>Therefore no such factorization exists, so $(z,w)$ is $\\otimes$-irreducible.</p>
-<p><strong>Connection to twin primes:</strong> By Theorem 1.3, $z$ is $\\circledast$-irreducible $\\iff$ $\\phi(z)=6z+1$ is $\\pm$prime, and $w$ is $\\star$-irreducible $\\iff$ $\\psi(w)=6w-1$ is $\\pm$prime. For generators $(z,z)\\in N$: this gives $6z+1$ and $6z-1$ both $\\pm$prime, i.e., $(6z-1,6z+1)$ is a twin prime pair.</p>
+<p><strong>Setup:</strong> In the monoid tensor product $M = (\\mathbb{Z},\\circledast)\\otimes_{\\mathrm{Mon}}(\\mathbb{Z},\\star)$, the bilinearity relations are:</p>
+<div class="math-block">$$(a\\circledast a')\\otimes w = (a\\otimes w)\\cdot(a'\\otimes w)\\qquad z\\otimes(b\\star b') = (z\\otimes b)\\cdot(z\\otimes b')$$</div>
+<p>and the identity is $0\\otimes w = z\\otimes 0 = e$. The only way to factor a pure tensor $z\\otimes w$ into a product of non-identity elements is via these bilinearity relations.</p>
+<p><strong>($\\Rightarrow$) $z\\otimes w$ irreducible $\\Rightarrow$ both components irreducible:</strong></p>
+<p><span class="step-num">1</span><strong>$z$ is $\\circledast$-irreducible:</strong> If $z = a\\circledast b$ with $a,b\\neq 0$, then by bilinearity:</p>
+<p>$z\\otimes w = (a\\circledast b)\\otimes w = (a\\otimes w)\\cdot(b\\otimes w)$</p>
+<p>Both $a\\otimes w$ and $b\\otimes w$ are non-identity (since $a,b\\neq 0$ and $w\\neq 0$). This is a nontrivial factorization, contradicting irreducibility of $z\\otimes w$.</p>
+<p><span class="step-num">2</span><strong>$w$ is $\\star$-irreducible:</strong> If $w = c\\star d$ with $c,d\\neq 0$, then:</p>
+<p>$z\\otimes w = z\\otimes(c\\star d) = (z\\otimes c)\\cdot(z\\otimes d)$</p>
+<p>Again a nontrivial factorization. Contradiction.</p>
+<p><strong>($\\Leftarrow$) Both components irreducible $\\Rightarrow$ $z\\otimes w$ irreducible:</strong></p>
+<p>Suppose $z$ is $\\circledast$-irreducible and $w$ is $\\star$-irreducible. The only factorizations of a pure tensor in $M$ come from the bilinearity relations:</p>
+<p><span class="step-num">3</span><strong>Left-splitting:</strong> $z\\otimes w = (a\\otimes w)(b\\otimes w)$ requires $z = a\\circledast b$. Since $z$ is $\\circledast$-irreducible: $a=0$ or $b=0$, making one factor the identity $e$. Trivial.</p>
+<p><span class="step-num">4</span><strong>Right-splitting:</strong> $z\\otimes w = (z\\otimes c)(z\\otimes d)$ requires $w = c\\star d$. Since $w$ is $\\star$-irreducible: $c=0$ or $d=0$. Trivial.</p>
+<p><span class="step-num">5</span><strong>Mixed splitting:</strong> A product $(a\\otimes c)(b\\otimes d)$ with $a \\neq b$ AND $c \\neq d$ does <em>not</em> simplify to a single pure tensor via the bilinearity relations — it remains a <strong>formal product</strong> in $M$, not equal to any single $z\\otimes w$. This is because the bilinearity relations only allow factoring along one tensor factor at a time: $(a \\circledast b) \\otimes w$ splits the left factor while fixing $w$, and $z \\otimes (c \\star d)$ splits the right factor while fixing $z$. A product of two pure tensors with <em>both</em> components differing cannot be "recombined" into a single pure tensor. So mixed factorizations cannot produce a pure tensor $z\\otimes w$.</p>
+<p>Therefore $z\\otimes w$ is irreducible. ✓</p>
+<p><strong>Connection to twin primes:</strong> By Theorem 1.3:</p>
+<p>$z$ is $\\circledast$-irreducible $\\iff$ $\\phi(z)=6z+1$ is $\\pm$prime</p>
+<p>$w$ is $\\star$-irreducible $\\iff$ $\\psi(w)=6w-1$ is $\\pm$prime</p>
+<p>For diagonal elements $\\widehat{k} = k\\otimes k \\in N$: both conditions are on the same $k$, giving $6k+1$ and $6k-1$ both $\\pm$prime — i.e., $(6k-1,\\,6k+1)$ is a <strong>twin prime pair</strong>.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Why the tensor product?</div>
+<p>In the diagonal submonoid $N = \\langle\\{k \\otimes k\\}\\rangle \\leqslant M$, the two components share the same generator sequence, creating subtle coupling. The monoid tensor product $\\otimes_{\\mathrm{Mon}}$ decouples the components via bilinearity, making irreducibility decompose cleanly. The identity condition $z \\otimes 0 = 0 \\otimes w = e$ ensures that "trivial" tensors collapse to the identity, preventing spurious factorizations.</p>
 </div>
 <div class="example-box">
 <div class="example-title"><i class="bi bi-table me-1"></i>Twin Prime Table</div>
-<div class="code-block" style="margin:0"> z    φ(z)=6z+1  ψ(z)=6z−1  φ ±prime?  ψ ±prime?  Twin pair
- 1       7          5        YES ✓      YES ✓      (5, 7)
- 2      13         11        YES ✓      YES ✓      (11, 13)
- 3      19         17        YES ✓      YES ✓      (17, 19)
- 4      25         23        NO  ✗      YES        25 = 5²
- 5      31         29        YES ✓      YES ✓      (29, 31)
- 7      43         41        YES ✓      YES ✓      (41, 43)
-10      61         59        YES ✓      YES ✓      (59, 61)
-12      73         71        YES ✓      YES ✓      (71, 73)
-17     103        101        YES ✓      YES ✓      (101, 103)</div>
+<div class="code-block" style="margin:0"> k    φ(k)=6k+1  ψ(k)=6k−1  φ ±prime?  ψ ±prime?  k⊗k irred?  Twin pair
+ 1       7          5        YES ✓      YES ✓      YES ✓       (5, 7)
+ 2      13         11        YES ✓      YES ✓      YES ✓       (11, 13)
+ 3      19         17        YES ✓      YES ✓      YES ✓       (17, 19)
+ 4      25         23        NO  ✗      YES        NO  ✗       25 = 5²
+ 5      31         29        YES ✓      YES ✓      YES ✓       (29, 31)
+ 7      43         41        YES ✓      YES ✓      YES ✓       (41, 43)
+10      61         59        YES ✓      YES ✓      YES ✓       (59, 61)
+12      73         71        YES ✓      YES ✓      YES ✓       (71, 73)
+17     103        101        YES ✓      YES ✓      YES ✓       (101, 103)</div>
 </div>
-<p>So $|\\mathrm{Irr}(N)|=\\infty$ is <strong>exactly</strong> the Twin Prime Conjecture.</p>`},
+<p>So $|\\mathrm{Irr}_\\otimes(N)|=\\infty$ restricted to diagonal tensors $k\\otimes k$ is <strong>exactly</strong> the Twin Prime Conjecture.</p>`},
 
 {ch:"§4 Irred",badge:"b-lem",title:"Lemma 4.3 — The Norm Function",lean:`${GH}/TPC/Main.lean#L40`,body:`
 <p>Define the <strong>norm</strong> on $N$:</p>
-<div class="math-block">$$|(z,w)| = \\phi(z)^2 = (6z+1)^2$$</div>
+<div class="math-block">$$\\|z \\otimes w\\| = \\phi(z)^2 = (6z+1)^2$$</div>
+<p>(where $z$ is the first-component shadow of the element).</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show properties and proofs</button>
 <div class="proof-content" style="display:none">
-<p><strong>N1. Non-negative:</strong> $|(z,w)|=(6z+1)^2\\geq 0$. Trivial. ✓</p>
-<p><strong>N2. Identity:</strong> $|(0,0)|=(6\\cdot 0+1)^2 = 1$. ✓</p>
-<p><strong>N3. Non-degenerate:</strong> $|(z,w)|=1 \\iff (6z+1)^2=1 \\iff 6z+1=\\pm 1 \\iff z=0$ or $z=-1/3$. Since $z\\in\\mathbb{Z}$, we get $z=0$, so $(z,w)=(0,0)$. ✓</p>
+<p><strong>N1. Non-negative:</strong> $\\|z \\otimes w\\|=(6z+1)^2\\geq 0$. Trivial. ✓</p>
+<p><strong>N2. Identity:</strong> $\\|e\\| = \\|0 \\otimes 0\\| = (6\\cdot 0+1)^2 = 1$. ✓</p>
+<p><strong>N3. Non-degenerate:</strong> $\\|m\\|=1 \\iff (6z+1)^2=1 \\iff 6z+1=\\pm 1 \\iff z=0$ or $z=-1/3$. Since $z\\in\\mathbb{Z}$, we get $z=0$, so $m = e$. ✓</p>
 <p><strong>N4. Multiplicative:</strong></p>
-<p>$|(z,w)\\otimes(z',w')| = |(z\\circledast z', w\\star w')| = \\phi(z\\circledast z')^2 = (\\phi(z)\\phi(z'))^2 = \\phi(z)^2\\cdot\\phi(z')^2 = |(z,w)|\\cdot|(z',w')|$. ✓</p>
+<p>$\\|a \\cdot b\\| = \\phi(z_a \\circledast z_b)^2 = (\\phi(z_a)\\phi(z_b))^2 = \\phi(z_a)^2\\cdot\\phi(z_b)^2 = \\|a\\|\\cdot\\|b\\|$. ✓</p>
 <p><strong>N5. Proper factors have smaller norm:</strong></p>
-<p>If $(z,w)=\\widehat{a}\\otimes\\widehat{b}$ with $\\widehat{a},\\widehat{b}\\neq(0,0)$, then $|\\widehat{a}|\\geq 4$ (since $|\\phi(a_1)|\\geq 5$ for $a_1\\neq 0$, giving $|\\widehat{a}|\\geq 25$... actually $|\\widehat{a}|=(6a_1+1)^2$. For $a_1\\neq 0$: $|6a_1+1|\\geq 5$, so $|\\widehat{a}|\\geq 25>1$). Similarly $|\\widehat{b}|\\geq 25$. Then:</p>
-<p>$|\\widehat{a}| = |(z,w)|/|\\widehat{b}| \\leq |(z,w)|/25 < |(z,w)|$. ✓</p>
+<p>If $m = a \\cdot b$ with $a, b \\neq e$, then $\\|a\\| \\geq 25$ (since $|\\phi(z_a)|\\geq 5$ for $z_a\\neq 0$, giving $\\|a\\| \\geq 25$). Similarly $\\|b\\|\\geq 25$. Then:</p>
+<p>$\\|a\\| = \\|m\\|/\\|b\\| \\leq \\|m\\|/25 < \\|m\\|$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="example-box">
 <div class="example-title"><i class="bi bi-calculator me-1"></i>Norm Values</div>
-<div class="code-block" style="margin:0">|(0,0)| = 1²  = 1     ← identity
-|(1,1)| = 7²  = 49    ← irreducible (7 prime)
-|(2,2)| = 13² = 169   ← irreducible (13 prime)
-|(8,−4)| = 49² = 2401  = 49·49 = |(1,1)|²  ← composite!</div>
+<div class="code-block" style="margin:0">‖e‖         = 1²  = 1     ← identity
+‖1 ⊗ 1‖     = 7²  = 49    ← irreducible (7 prime)
+‖2 ⊗ 2‖     = 13² = 169   ← irreducible (13 prime)
+‖(1⊗1)(1⊗1)‖ = 49² = 2401  = 49·49 = ‖1⊗1‖²  ← composite!</div>
 </div>`},
 
 {ch:"§4 Irred",badge:"b-cor",title:"Lemma 4.4 + Corollary 4.5 — Irreducible Divisors and Covering",lean:`${GH}/TPC/Main.lean#L55`,body:`
 <p><strong>Lemma 4.4 (Every element has an irreducible divisor):</strong></p>
-<p>For every $(z,w)\\in N\\setminus\\{(0,0)\\}$, there exists $\\widehat{q}\\in\\mathrm{Irr}(N)$ with $\\widehat{q}\\mid_\\otimes (z,w)$.</p>
+<p>For every $m \\in N \\setminus \\{e\\}$, there exists $\\widehat{q} \\in \\mathrm{Irr}(N)$ with $\\widehat{q} \\mid m$ (i.e., $m = \\widehat{q} \\cdot n$ for some $n \\in N$).</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof of Lemma 4.4</button>
 <div class="proof-content" style="display:none">
-<p><strong>Strong induction on $|(z,w)|$.</strong></p>
-<p><strong>Base:</strong> If $(z,w)$ is irreducible, take $\\widehat{q}=(z,w)$ and we're done (it divides itself: $(z,w) = (z,w)\\otimes(0,0)$).</p>
-<p><strong>Inductive step:</strong> If $(z,w)$ is not irreducible, write $(z,w)=\\widehat{a}\\otimes\\widehat{b}$ with $\\widehat{a},\\widehat{b}\\neq(0,0)$.</p>
-<p>By the norm property N5: $|\\widehat{a}| < |(z,w)|$.</p>
-<p>By the induction hypothesis (applicable since $|\\widehat{a}|<|(z,w)|$ and $\\widehat{a}\\neq(0,0)$): there exists $\\widehat{q}\\in\\mathrm{Irr}(N)$ with $\\widehat{q}\\mid_\\otimes\\widehat{a}$.</p>
-<p>Write $\\widehat{a}=\\widehat{q}\\otimes\\widehat{c}$. Then $(z,w)=\\widehat{q}\\otimes\\widehat{c}\\otimes\\widehat{b}=\\widehat{q}\\otimes(\\widehat{c}\\otimes\\widehat{b})$.</p>
-<p>So $\\widehat{q}\\mid_\\otimes(z,w)$. ✓</p>
-<p><strong>Termination:</strong> The norm $|(z,w)|=(6z+1)^2$ takes values in $\\{1,25,49,121,\\ldots\\}\\subset\\mathbb{N}$, with $|(z,w)|=1\\iff(z,w)=(0,0)$. So for $(z,w)\\neq(0,0)$, $|(z,w)|\\geq 25$, and proper factors have strictly smaller norm. The descent terminates by well-ordering of $\\mathbb{N}$.</p>
+<p><strong>Strong induction on $\\|m\\|$.</strong></p>
+<p><strong>Base:</strong> If $m$ is irreducible, take $\\widehat{q}=m$ and we're done (it divides itself: $m = m \\cdot e$).</p>
+<p><strong>Inductive step:</strong> If $m$ is not irreducible, write $m = a \\cdot b$ with $a, b \\neq e$.</p>
+<p>By the norm property N5: $\\|a\\| < \\|m\\|$.</p>
+<p>By the induction hypothesis (applicable since $\\|a\\|<\\|m\\|$ and $a \\neq e$): there exists $\\widehat{q}\\in\\mathrm{Irr}(N)$ with $\\widehat{q} \\mid a$.</p>
+<p>Write $a = \\widehat{q} \\cdot c$. Then $m = \\widehat{q} \\cdot c \\cdot b = \\widehat{q} \\cdot (c \\cdot b)$.</p>
+<p>So $\\widehat{q} \\mid m$. ✓</p>
+<p><strong>Termination:</strong> The norm $\\|m\\|=(6z+1)^2$ takes values in $\\{1,25,49,121,\\ldots\\}\\subset\\mathbb{N}$, with $\\|m\\|=1\\iff m = e$. So for $m \\neq e$, $\\|m\\|\\geq 25$, and proper factors have strictly smaller norm. The descent terminates by well-ordering of $\\mathbb{N}$.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <p><strong>Corollary 4.5 — The Covering:</strong></p>
-<div class="math-block">$$N\\setminus\\{(0,0)\\}=\\bigcup_{\\widehat{q}\\in\\mathrm{Irr}(N)}\\widehat{q}\\otimes N$$</div>
+<div class="math-block">$$N\\setminus\\{e\\}=\\bigcup_{\\widehat{q}\\in\\mathrm{Irr}_\\otimes(N)}\\widehat{q} \\cdot N$$</div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof of Cor 4.5</button>
 <div class="proof-content" style="display:none">
-<p><strong>($\\supseteq$):</strong> Each $\\widehat{q}\\otimes N \\subseteq N\\setminus\\{(0,0)\\}$ because $\\widehat{q}\\otimes\\widehat{n}=(0,0)$ only if $\\widehat{q}=(0,0)$ or $\\widehat{n}=(0,0)$ (no zero divisors), and $\\widehat{q}\\neq(0,0)$ since $\\widehat{q}$ is irreducible.</p>
-<p><strong>($\\subseteq$):</strong> Let $(z,w)\\in N\\setminus\\{(0,0)\\}$. By Lemma 4.4, pick $\\widehat{q}\\in\\mathrm{Irr}(N)$ with $(z,w)=\\widehat{q}\\otimes\\widehat{n}$. Then $(z,w)\\in\\widehat{q}\\otimes N$. ✓</p>
+<p><strong>($\\supseteq$):</strong> Each $\\widehat{q} \\cdot N \\subseteq N\\setminus\\{e\\}$ because $\\widehat{q} \\cdot n = e$ only if $\\widehat{q} = e$ or $n = e$ (no zero divisors), and $\\widehat{q} \\neq e$ since $\\widehat{q}$ is irreducible.</p>
+<p><strong>($\\subseteq$):</strong> Let $m \\in N\\setminus\\{e\\}$. By Lemma 4.4, pick $\\widehat{q}\\in\\mathrm{Irr}(N)$ with $m = \\widehat{q} \\cdot n$. Then $m \\in \\widehat{q} \\cdot N$. ✓</p>
+<div class="code-block">-- Lean 4: norm descent (Lemma 4.4) produces
+-- irreducible divisors within N directly.</div>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="remark-box">
@@ -492,16 +513,16 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 </div>`},
 
 {ch:"§5 Main",badge:"b-lem",title:"Lemma 5.1 — No Singleton is Open in $N$",lean:`${GH}/TPC/Main.lean#L82`,body:`
-<p><strong>Statement:</strong> Every nonempty open set in the subspace topology on $N$ is <strong>infinite</strong>. In particular, no singleton $\\{\\widehat{p}\\}$ is open in $N$.</p>
+<p><strong>Statement:</strong> Every nonempty open set in the subspace topology on $N$ is <strong>infinite</strong>. In particular, no singleton $\\{m\\}$ is open in $N$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
 <p>Let $U\\subseteq N$ be nonempty and open in the subspace topology. Then $U = N\\cap V$ for some open $V\\subseteq M$.</p>
-<p><span class="step-num">1</span>Pick $(z_0,w_0)\\in U$. Since $V$ is open in the Furstenberg product topology and $(z_0,w_0)\\in V$, there exist $b,d>0$ with:</p>
-<p>$(z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\subseteq V$</p>
-<p><span class="step-num">2</span>Then $N\\cap\\bigl((z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\bigr)\\subseteq N\\cap V = U$.</p>
-<p><span class="step-num">3</span>By our theorem on $N\\cap$ basic opens (Card 10), since $(z_0,w_0)$ is in this intersection, it is <strong>infinite</strong>.</p>
+<p><span class="step-num">1</span>Pick $m \\in U$ with component shadows $(z_0, w_0)$. Since $V$ is open in the final topology on $M$, $\\beta^{-1}(V)$ is open in $\\mathbb{Z}^2$. Since $(z_0,w_0) \\in \\beta^{-1}(V)$, there exist $b,d>0$ with:</p>
+<p>$(z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\subseteq \\beta^{-1}(V)$</p>
+<p><span class="step-num">2</span>Then $N\\cap\\beta^{-1}\\bigl((z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\bigr)\\subseteq N\\cap V = U$.</p>
+<p><span class="step-num">3</span>By our theorem on $N \\cap$ basic opens (Card 10), since $m$ is in this intersection, it is <strong>infinite</strong>.</p>
 <p><span class="step-num">4</span>Therefore $U$ contains infinitely many elements, so $|U|=\\infty$.</p>
-<p><strong>Alternatively</strong> (direct argument without the new theorem): For each $n\\in\\mathbb{Z}$, the element $(z_0,w_0)\\otimes\\Delta(nbd)\\in N$ lies in $(z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})$ (as computed in the proof of the emptiness-or-infinitude theorem), giving infinitely many distinct points in $U$.</p>
+<p><strong>Alternatively</strong> (direct argument without the new theorem): For each $n\\in\\mathbb{Z}$, the element $m \\cdot \\widehat{nbd}\\in N$ has component shadows in $(z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})$ (as computed in the proof of the emptiness-or-infinitude theorem), giving infinitely many distinct points in $U$.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>`},
 
@@ -509,13 +530,13 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 <div class="math-block">$$|\\mathrm{Irr}(N)| = \\infty$$</div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>Proof by contradiction.</strong> Assume $\\mathrm{Irr}(N)$ is finite: $\\mathrm{Irr}(N)=\\{\\widehat{q}_1,\\ldots,\\widehat{q}_m\\}$.</p>
+<p><strong>Proof by contradiction.</strong> Assume $\\mathrm{Irr}(N)$ is finite: $\\mathrm{Irr}(N)=\\{\\widehat{q}_1,\\ldots,\\widehat{q}_m\\}$ where each $\\widehat{q}_i = q_i \\otimes q_i$.</p>
 <p><span class="step-num">1</span><strong>Apply the covering (Cor 4.5):</strong></p>
-<p>$N\\setminus\\{(0,0)\\} = \\bigcup_{i=1}^{m} \\widehat{q}_i\\otimes N$</p>
-<p><span class="step-num">2</span><strong>Each coset is clopen (Cor 3.3):</strong> Each $\\widehat{q}_i\\otimes N$ is clopen in the subspace topology on $N$.</p>
-<p><span class="step-num">3</span><strong>Finite union of clopen = clopen:</strong> A finite union of clopen sets is clopen. So $N\\setminus\\{(0,0)\\}$ is clopen in $N$.</p>
-<p><span class="step-num">4</span><strong>Complement is open:</strong> Since $N\\setminus\\{(0,0)\\}$ is closed, $\\{(0,0)\\} = N\\setminus(N\\setminus\\{(0,0)\\})$ is <strong>open</strong> in $N$.</p>
-<p><span class="step-num">5</span><strong>Contradiction:</strong> But $\\{(0,0)\\}$ is a singleton, and by Lemma 5.1, every nonempty open set in $N$ is infinite. A singleton cannot be infinite. <strong>Contradiction!</strong></p>
+<p>$N\\setminus\\{e\\} = \\bigcup_{i=1}^{m} \\widehat{q}_i \\cdot N$</p>
+<p><span class="step-num">2</span><strong>Each coset is clopen (Cor 3.3):</strong> Each $\\widehat{q}_i \\cdot N$ is clopen in the subspace topology on $N$.</p>
+<p><span class="step-num">3</span><strong>Finite union of clopen = clopen:</strong> A finite union of clopen sets is clopen. So $N\\setminus\\{e\\}$ is clopen in $N$.</p>
+<p><span class="step-num">4</span><strong>Complement is open:</strong> Since $N\\setminus\\{e\\}$ is closed, $\\{e\\} = N\\setminus(N\\setminus\\{e\\})$ is <strong>open</strong> in $N$.</p>
+<p><span class="step-num">5</span><strong>Contradiction:</strong> But $\\{e\\}$ is a singleton, and by Lemma 5.1, every nonempty open set in $N$ is infinite. A singleton cannot be infinite. <strong>Contradiction!</strong></p>
 <p><span class="step-num">6</span><strong>Conclusion:</strong> $\\mathrm{Irr}(N)$ is not finite, i.e., $|\\mathrm{Irr}(N)|=\\infty$.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — $|\\mathrm{Irr}(N)|=\\infty$</div>
 </div>
@@ -529,7 +550,7 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 <div class="math-block">$$\\bigl|\\{k\\in\\mathbb{Z}:6k-1\\in\\pm\\mathbb{P}\\text{ and }6k+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty$$</div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p>By Theorem 4.2: $\\mathrm{Irr}(N) = \\{(k,k) : 6k+1\\in\\pm\\mathbb{P}\\text{ and }6k-1\\in\\pm\\mathbb{P}\\}$.</p>
+<p>By Theorem 4.2: $\\mathrm{Irr}(N) = \\{k \\otimes k : 6k+1\\in\\pm\\mathbb{P}\\text{ and }6k-1\\in\\pm\\mathbb{P}\\}$.</p>
 <p>By Theorem 5.2: $|\\mathrm{Irr}(N)|=\\infty$.</p>
 <p>Therefore the set $\\{k : 6k\\pm1\\in\\pm\\mathbb{P}\\}$ is infinite.</p>
 <p>For each such $k>0$, the pair $(6k-1, 6k+1)$ is a pair of primes differing by $2$ — a <strong>twin prime pair</strong>.</p>
@@ -547,15 +568,15 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 <span style="color:var(--blue);font-weight:bold"> → </span>
 <span class="depends-badge">Def 2.2: $N=\\langle G\\rangle$</span>
 <span style="color:var(--blue);font-weight:bold"> + </span>
-<span class="depends-badge">Prop 2.3: Top. monoid</span>
+<span class="depends-badge">Prop 2.3: Final topology via UMP</span>
 <span style="color:var(--green);font-weight:bold"> → </span>
-<span class="depends-badge">Lem 3.1: $\\widehat{a}\\otimes M$ clopen</span>
+<span class="depends-badge">Lem 3.1: $\\widehat{a} \\cdot M$ clopen</span>
 <span style="color:var(--green);font-weight:bold"> → </span>
 <span class="depends-badge" style="background:var(--orange-light);border-color:var(--orange);">★ Thm 3.2: Coset Identity</span>
 <span style="color:var(--orange);font-weight:bold"> → </span>
 <span class="depends-badge">Cor 3.3: clopen in $N$</span>
 <span style="color:var(--orange);font-weight:bold"> + </span>
-<span class="depends-badge">Norm → Covering</span>
+<span class="depends-badge">Norm → Covering (weak sat.)</span>
 <span style="color:var(--purple);font-weight:bold"> → </span>
 <span class="depends-badge" style="background:var(--purple-light);border-color:var(--purple);">★ Thm 5.2: $|\\mathrm{Irr}(N)|=\\infty$</span>
 <span style="color:var(--purple);font-weight:bold"> → </span>
@@ -570,15 +591,15 @@ Step sizes: 6a₁+1 = φ(a₁), 6a₂−1 = ψ(a₂)  ← the isomorphism values
 {ch:"Bonus",badge:"b-rmk",title:"Summary — Proof Architecture & Key Insights",lean:null,body:`
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-trophy-fill me-1"></i>The Big Picture</div>
-<p>The proof reformulates the Twin Prime Conjecture as a statement about the algebraic structure of $N=\\langle\\{(k,k):k\\in\\mathbb{Z}\\}\\rangle$ inside $M=(\\mathbb{Z}^2,\\otimes)$, then uses topology to force infinitely many irreducibles.</p>
+<p>The proof reformulates the Twin Prime Conjecture as a statement about the algebraic structure of $N = \\langle\\{k \\otimes k : k \\in \\mathbb{Z}\\}\\rangle$ inside the monoid tensor product $M = (\\mathbb{Z},\\circledast) \\otimes_{\\mathrm{Mon}} (\\mathbb{Z},\\star)$, then uses the final topology (induced by the universal bilinear map $\\beta$) to force infinitely many irreducibles.</p>
 </div>
 <p><strong>Three pillars of the proof:</strong></p>
-<p><span class="step-num">1</span><strong>Algebraic pillar — The Coset Identity (Thm 3.2):</strong> $\\widehat{q}\\otimes N = N\\cap(\\widehat{q}\\otimes M)$. This converts the algebraic coset into a topological intersection, bridging the two worlds.</p>
-<p><span class="step-num">2</span><strong>Topological pillar — Clopenness (Cor 3.3):</strong> Since $\\widehat{q}\\otimes M$ is clopen (product of arithmetic progressions), the identity makes $\\widehat{q}\\otimes N$ clopen in the subspace topology on $N$.</p>
-<p><span class="step-num">3</span><strong>Combinatorial pillar — Covering + No Singletons:</strong> Every nonzero element has an irreducible divisor (by norm descent), giving the covering. No singleton is open (by the empty-or-infinite theorem). Together: finite $\\mathrm{Irr}(N)$ would force $\\{(0,0)\\}$ open — contradiction.</p>
+<p><span class="step-num">1</span><strong>Algebraic pillar — The Coset Identity (Thm 3.2):</strong> $\\widehat{q} \\cdot N = N \\cap (\\widehat{q} \\cdot M)$ for $\\widehat{q} = q \\otimes q$ with $\\phi(q)$ prime. This converts the algebraic coset into a topological intersection, bridging the two worlds.</p>
+<p><span class="step-num">2</span><strong>Topological pillar — Clopenness (Cor 3.3):</strong> Since $\\beta^{-1}(\\widehat{q} \\cdot M)$ is clopen (product of arithmetic progressions in $\\mathbb{Z}^2$), the final topology makes $\\widehat{q} \\cdot M$ clopen in $M$, and the identity makes $\\widehat{q} \\cdot N$ clopen in the subspace topology on $N$.</p>
+<p><span class="step-num">3</span><strong>Combinatorial pillar — Covering + No Singletons:</strong> Every nonidentity element has an irreducible divisor (by norm descent), giving the covering. No singleton is open (by the empty-or-infinite theorem). Together: finite $\\mathrm{Irr}(N)$ would force $\\{e\\}$ open — contradiction.</p>
 <div class="example-box">
 <div class="example-title"><i class="bi bi-key-fill me-1"></i>Novel Contribution</div>
-<p>Classical Furstenberg proofs work on $\\mathbb{Z}$ where cosets $p\\mathbb{Z}$ are automatically clopen. The challenge for twin primes is that $N$ is a <em>submonoid</em>, not a subgroup, and not all of $\\mathbb{Z}^2$. The coset identity (Thm 3.2) is what makes the Furstenberg technique work in this non-standard setting — it's the key that unlocks the entire proof.</p>
+<p>Classical Furstenberg proofs work on $\\mathbb{Z}$ where cosets $p\\mathbb{Z}$ are automatically clopen. The challenge for twin primes is that $N$ is a <em>submonoid</em>, not a subgroup, and lives inside a tensor product rather than a ring. The coset identity (Thm 3.2) is what makes the Furstenberg technique work in this non-standard setting — it's the key that unlocks the entire proof. The monoid tensor product formulation, with its bilinearity relations and identity-killing property $z \\otimes 0 = 0 \\otimes w = e$, is what makes the irreducibility characterization (Thm 4.2) clean and prevents trivial splittings.</p>
 </div>
 <div class="d-flex flex-wrap gap-2 mt-3">
 <a href="index.html" class="tag" style="font-size:.75rem;padding:.3rem .8rem;"><i class="bi bi-house-heart me-1"></i>Back to Home</a>

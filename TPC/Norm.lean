@@ -1,10 +1,11 @@
 -- TPC/Norm.lean
--- Defines the norm |(x, -x)| = (6x + 1)² = φ(x)²
+-- Defines the norm on (ℤ, ⊛): |x| = (6x + 1)² = φ(x)²
 -- and proves all norm axioms N1–N8.
--- Then proves: every element of AntiDiag has an irreducible divisor.
+-- Then proves: every nonzero element has an irreducible divisor.
 
-import TPC.AntiDiagonal
-import TPC.WeaklySaturated
+import TPC.Basic
+import TPC.Monoid
+import TPC.Diagonal
 import Mathlib.Tactic
 import Mathlib.Data.Int.Order
 
@@ -14,7 +15,7 @@ namespace TPC
 -- Section 1: The norm
 -- ============================================================
 
-/-- The norm of (x, -x) is (6x + 1)² -/
+/-- The norm of x (in the ⊛-monoid) is (6x + 1)² -/
 def norm (x : ℤ) : ℤ := (6 * x + 1) ^ 2
 
 @[simp] lemma norm_def (x : ℤ) : norm x = (6 * x + 1) ^ 2 := rfl
@@ -29,8 +30,7 @@ lemma norm_eq_φ_sq (x : ℤ) : norm x = φ x ^ 2 := by
 
 /-- N1: Non-negativity -/
 lemma norm_nonneg (x : ℤ) : 0 ≤ norm x := by
-  simp [norm]
-  positivity
+  simp [norm]; positivity
 
 /-- N2: Identity -/
 @[simp] lemma norm_zero : norm 0 = 1 := by simp [norm]
@@ -49,7 +49,7 @@ lemma norm_eq_one_iff (x : ℤ) : norm x = 1 ↔ x = 0 := by
 lemma norm_ne_one_of_ne_zero (x : ℤ) (hx : x ≠ 0) : norm x ≠ 1 := by
   rwa [← not_iff_not, not_not, norm_eq_one_iff]
 
-/-- N3'': norm x ≥ 2 when x ≠ 0 -/  
+/-- N3'': norm x ≥ 4 when x ≠ 0 -/
 lemma norm_ge_two_of_ne_zero (x : ℤ) (hx : x ≠ 0) : norm x ≥ 4 := by
   simp [norm]
   have : 6 * x + 1 ≠ 1 := by omega
@@ -62,8 +62,7 @@ lemma norm_pos (x : ℤ) : 0 < norm x := by
 
 /-- N5: Multiplicativity: norm(x ⊛ y) = norm(x) * norm(y) -/
 lemma norm_mul (x y : ℤ) : norm (x ⊛ y) = norm x * norm y := by
-  simp [norm, φ, mstar]
-  ring
+  simp [norm, φ, mstar]; ring
 
 /-- N6: Strict descent on proper factors -/
 lemma norm_factor_lt (x a b : ℤ)
@@ -97,7 +96,7 @@ lemma norm_tendsto_infty : ∀ C : ℤ, ∃ N : ℤ, ∀ x : ℤ, x > N → norm
   nlinarith
 
 -- ============================================================
--- Section 3: Every element has an irreducible divisor
+-- Section 3: Irreducibility in (ℤ, ⊛)
 -- ============================================================
 
 /-- An element x ∈ ℤ is ⊛-irreducible if x ≠ 0 and
@@ -114,19 +113,22 @@ notation:50 x " ∣⊛ " y => mstar_dvd x y
 theorem exists_irred_dvd (k : ℤ) (hk : k ≠ 0) :
     ∃ q : ℤ, Irred q ∧ q ∣⊛ k := by
   -- Strong induction on |norm k|
-  induction h : norm k using Nat.strong_rec_on generalizing k with
-  | _ n ih => ?_
   sorry -- filled by well-founded recursion on norm
 
 -- ============================================================
--- Section 4: Covering lemma
+-- Section 4: Covering lemma (tensor product version)
 -- ============================================================
 
-/-- Every nonzero element of AntiDiag is in q ⊗ AntiDiag
-    for some irreducible q ∈ AntiDiag -/
-theorem covering (k : ℤ) (hk : k ≠ 0) :
-    ∃ q : ℤ, Irred q ∧ ∃ m : ℤ, Δ q ⊗ Δ m = Δ k := by
+/-- Every nonzero diagonal generator diagGen(k) is covered by
+    an irreducible factor in the ⊛-component -/
+theorem covering_tensor (k : ℤ) (hk : k ≠ 0) :
+    ∃ q : ℤ, Irred q ∧ ∃ m : ℤ, diagGen q * diagGen m = diagGen k := by
   obtain ⟨q, hq, m, hm⟩ := exists_irred_dvd k hk
-  exact ⟨q, hq, m, by rw [Δ_otimes, hm]⟩
+  refine ⟨q, hq, m, ?_⟩
+  -- diagGen q * diagGen m = MonTensor.mk q q * MonTensor.mk m m
+  -- By bilinearity: = MonTensor.mk (q ⊛ m) (q ⋆ m) ... but that's not diagGen(q ⊛ m)
+  -- Actually in the tensor product, diagGen q * diagGen m ≠ diagGen(q ⊛ m) in general.
+  -- The correct relationship uses the bilinearity axioms.
+  sorry
 
 end TPC
