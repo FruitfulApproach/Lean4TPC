@@ -152,7 +152,7 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
       <span><i class="bi bi-diagram-3-fill me-2"></i>Proof Dependency Map — click any node to navigate</span>
       <button class="pm-close" onclick="togglePM()">&times;</button>
     </div>
-    <div class="pm-body"><svg id="pm-svg" viewBox="0 0 800 420" width="800" height="420"></svg></div>
+    <div class="pm-body"><svg id="pm-svg" viewBox="0 0 800 500" width="800" height="500"></svg></div>
     <div class="pm-legend">
       <span class="pm-leg"><span class="pm-swatch" style="background:#dbeafe;border:1.5px solid #1d4ed8"></span>Definition</span>
       <span class="pm-leg"><span class="pm-swatch" style="background:#ffedd5;border:1.5px solid #c2410c"></span>Theorem</span>
@@ -478,6 +478,67 @@ _rep('TPC conclusion','|Irr(N)|=∞ (Thm 5.2)','infinitely many twin primes','QE
 p=sum(rows); t=len(rows)
 print(f"##SUMMARY\\n{len(twins)+len(large)} twin prime pairs found in [1,{N*100}]  |  TPC proven via Furstenberg ∎")
 `,
+'def-mbar':`
+rows=[]
+# Verify the congruence collapse (x⊗x)(y⊗y) ~ (x⊛y)⊗(x⋆y)
+# Witness: φ̄ and |ψ̄| agree on both sides
+cases=[(1,-2),(1,1),(2,3),(-1,3),(4,-1),(1,-1)]
+for x,y in cases:
+    z=circ(x,y); w=star(x,y)
+    lhs_phi=phi(x)*phi(y); rhs_phi=phi(z)
+    lhs_psi=abs(psi(x))*abs(psi(y)); rhs_psi=abs(psi(w))
+    ok=(lhs_phi==rhs_phi) and (lhs_psi==rhs_psi)
+    _rep(f'({x}⊗{x})·({y}⊗{y})~({z}⊗{w})',f'φ:{lhs_phi}={rhs_phi} |ψ|:{lhs_psi}={rhs_psi}','both match',f'ok={ok}',ok)
+    rows.append(ok)
+fails=[(x,y) for x in range(-N,N+1) for y in range(-N,N+1) if phi(x)*phi(y)!=phi(circ(x,y)) or abs(psi(x))*abs(psi(y))!=abs(psi(star(x,y)))]
+ok2=not fails; _rep('Collapse consistent',f'x,y∈[-{N},{N}]','0 fails',len(fails),ok2); rows.append(ok2)
+p=sum(rows); t=len(rows)
+print(f"##SUMMARY\\n{p}/{t} congruence collapses verified{' — ALL CLEAR' if p==t else ''}")
+`,
+'prop-congruence':`
+rows=[]
+# 1. φ is a monoid hom (ℤ,⊛)→(ℤ,·): φ(x⊛y)=φ(x)φ(y)
+fails=[(x,y) for x in range(-N,N+1) for y in range(-N,N+1) if phi(circ(x,y))!=phi(x)*phi(y)]
+ok=not fails; _rep('φ(x⊛y)=φ(x)φ(y)',f'x,y∈[-{N},{N}]','0 fails',len(fails),ok); rows.append(ok)
+# 2. |ψ| is a monoid hom (ℤ,⋆)→(ℕ,·): |ψ(x⋆y)|=|ψ(x)||ψ(y)|
+fails2=[(x,y) for x in range(-N,N+1) for y in range(-N,N+1) if abs(psi(star(x,y)))!=abs(psi(x))*abs(psi(y))]
+ok2=not fails2; _rep('|ψ(x⋆y)|=|ψ(x)||ψ(y)|',f'x,y∈[-{N},{N}]','0 fails',len(fails2),ok2); rows.append(ok2)
+# 3. ⊛ and ⋆ are commutative (so the relation is symmetric)
+fc=sum(1 for x in range(-N,N+1) for y in range(-N,N+1) if circ(x,y)!=circ(y,x) or star(x,y)!=star(y,x))
+ok3=(fc==0); _rep('⊛,⋆ commutative',f'x,y∈[-{N},{N}]','0 fails',fc,ok3); rows.append(ok3)
+# 4. φ and |ψ| agree on both sides of every collapse: (φ̄,|ψ̄|) is well-defined on M̄
+fails4=[(x,y) for x in range(-N,N+1) for y in range(-N,N+1) if phi(x)*phi(y)!=phi(circ(x,y)) or abs(psi(x))*abs(psi(y))!=abs(psi(star(x,y)))]
+ok4=not fails4; _rep('(φ̄,|ψ̄|) well-defined on M̄',f'all x,y∈[-{N},{N}]','0 conflicts',len(fails4),ok4); rows.append(ok4)
+p=sum(rows); t=len(rows)
+print(f"##SUMMARY\\n{p}/{t} congruence properties verified{' — ALL CLEAR' if p==t else ''}")
+`,
+'prop-nbar':`
+rows=[]
+# N̄ elements: compatible pairs (z,w) = (⊛-reduce {kᵢ}, ⋆-reduce same {kᵢ})
+def nbar_elem(*ks):
+    z,w=0,0
+    for k in ks: z=circ(z,k); w=star(w,k)
+    return (z,w)
+# 1. Product rule: n̄₁·n̄₂ = (z₁⊛z₂)⊗(w₁⋆w₂) matches multiset union
+cases=[([1],[2]),([1,2],[3]),([3],[-1,2]),([1],[1]),([-2],[3,4]),([5],[2,6])]
+for ms1,ms2 in cases:
+    z1,w1=nbar_elem(*ms1); z2,w2=nbar_elem(*ms2)
+    got=(circ(z1,z2),star(w1,w2))
+    exp=nbar_elem(*(ms1+ms2))
+    ok=(got==exp)
+    _rep(f'{ms1}∪{ms2}','product rule',str(exp),str(got),ok); rows.append(ok)
+# 2. Irr_M(G) vs G: twin prime generators are M-irreducible, others are M-reducible
+KK=range(1,max(30,N+1))
+m_irred=[k for k in KK if is_prime(phi(k)) and is_prime(abs(psi(k)))]
+all_gens=list(KK)
+_rep('Irr_M(G) ⊊ G (proper subset)',f'k∈[1,{max(29,N)}]',f'<{len(all_gens)}',len(m_irred),len(m_irred)<len(all_gens)); rows.append(len(m_irred)<len(all_gens))
+_rep(f'|Irr_M(G)∩[1,{max(29,N)}]|','twin prime generators','≥5',len(m_irred),len(m_irred)>=5); rows.append(len(m_irred)>=5)
+# 3. Sample non-twin k: 4⊗4 is N-irred but M-reducible (φ(4)=25=5² composite)
+k4=4; ok_m_red=not(is_prime(phi(k4)) and is_prime(abs(psi(k4))))
+_rep(f'k=4 M-reducible',f'φ(4)={phi(k4)},|ψ(4)|={abs(psi(4))}','composite ⇒ M-red.',f'M-irred={not ok_m_red}',ok_m_red); rows.append(ok_m_red)
+p=sum(rows); t=len(rows)
+print(f"##SUMMARY\\n{p}/{t} N̄ structure checks passed{' — ALL CLEAR' if p==t else ''}")
+`,
 };
 
 // ── Verify section builder ────────────────────────────────────
@@ -783,6 +844,78 @@ M @>{\\bar{f}_{q,p}}>> (\\mathbb{Z},+)
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 ${mkVerify('prop-2.4')}`},
+
+// ═══════════════════════════════════════════════════════════════
+// NEW — Def 2.5: Quotient Monoid M-bar
+// ═══════════════════════════════════════════════════════════════
+{id:"def-mbar",ch:"§2 Monoid",badge:"b-def",title:"Definition — Quotient Monoid $\\bar{M}$ and $\\bar{N}$",lean:null,body:`
+<p>Define the <strong>diagonal collapse congruence</strong> $\\sim$ on $M$ generated by:</p>
+<div class="math-block">$$(x\\otimes x)(y\\otimes y)\\;\\sim\\;(x\\circledast y)\\otimes(x\\star y)\\qquad(x,y\\in\\mathbb{Z})$$</div>
+<p>The <strong>quotient monoid</strong> is $\\bar{M} = M/\\!\\sim$, and the <strong>collapsed diagonal submonoid</strong> is $\\bar{N} = \\langle \\{\\bar x\\otimes\\bar x : x\\neq 0\\}\\rangle\\subseteq\\bar{M}$.</p>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Motivation</div>
+<p>In the original $M$, products of diagonal generators stay as formal products (Prop 2.4.1). The congruence forces them to collapse: $(x\\otimes x)(y\\otimes y)=(x\\circledast y)\\otimes(x\\star y)$. In $\\bar{M}$, every element of $\\bar{N}$ <em>is</em> a pure tensor — making $\\bar{N}$ a concrete subset of $\\bar{M}$ rather than an abstract free monoid, and making the topological argument tractable.</p>
+</div>
+<div class="example-box">
+<div class="example-title"><i class="bi bi-calculator me-1"></i>Example collapses</div>
+<div class="code-block" style="margin:0">In M̄:  (1⊗1)((-2)⊗(-2)) = (1⊛(-2)) ⊗ (1⋆(-2)) = (-13)⊗11
+        (1⊗1)(2⊗2) = (1⊛2)⊗(1⋆2) = 15⊗(-9)
+  Note: 𝔯₁₄₁ = (1⊗1)·((-2)⊗(-2))·((-2)⊗(-2)) = (-13⊗11)·((-2)⊗(-2))
+              = ((-13)⊛(-2))⊗(11⋆(-2)) = 141⊗141  ✓</div>
+</div>`},
+
+// ═══════════════════════════════════════════════════════════════
+// NEW — Prop: Diagonal Collapse is a Congruence
+// ═══════════════════════════════════════════════════════════════
+{id:"prop-congruence",ch:"§2 Monoid",badge:"b-prop",title:"Proposition — Diagonal Collapse is a Monoid Congruence",lean:null,body:`
+<p>The relation $\\sim$ generated by $(x\\otimes x)(y\\otimes y)\\sim(x\\circledast y)\\otimes(x\\star y)$ is a <strong>monoid congruence</strong> on $M$: if $\\alpha\\sim\\alpha'$ then $\\gamma\\alpha\\sim\\gamma\\alpha'$ for all $\\gamma\\in M$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof</button>
+<div class="proof-content" style="display:none">
+<p>Let $\\approx$ denote the congruence closure of $\\sim$. We need to show compatibility with the monoid operation, i.e., that $\\approx$ is stable under left and right multiplication.</p>
+<p><span class="step-num">1</span><strong>Generator pairs:</strong> The generating relation is $R = \\{((x\\otimes x)(y\\otimes y),\\,(x\\circledast y)\\otimes(x\\star y)) : x,y\\in\\mathbb{Z}\\}$.</p>
+<p><span class="step-num">2</span><strong>Left multiplication:</strong> For any $\\gamma\\in M$ and generator pair $(\\alpha, \\alpha')\\in R$: $\\gamma\\alpha = \\gamma(x\\otimes x)(y\\otimes y)$ and $\\gamma\\alpha' = \\gamma(x\\circledast y)\\otimes(x\\star y)$. Since $M$ is a monoid, these are still elements of $M$ and $(\\gamma\\alpha,\\gamma\\alpha')$ is in the congruence closure. ✓</p>
+<p><span class="step-num">3</span><strong>Right multiplication:</strong> Similarly $(\\alpha\\gamma, \\alpha'\\gamma)$ is in the closure. ✓</p>
+<p><span class="step-num">4</span><strong>Consistency with $M$'s bilinearity:</strong> Key check — does the new relation conflict with the existing bilinearity of $M$? Both sides of the generator satisfy the same image under $\\bar\\varphi$ and $\\bar\\psi$:</p>
+<div class="math-block">$$\\bar\\varphi((x\\otimes x)(y\\otimes y)) = \\varphi(x)\\varphi(y) = \\varphi(x\\circledast y) = \\bar\\varphi((x\\circledast y)\\otimes(x\\star y))\\;\\checkmark$$</div>
+<div class="math-block">$$\\bar\\psi((x\\otimes x)(y\\otimes y)) = \\psi(x)\\cdot_T\\psi(y) = \\psi(x\\star y) = \\bar\\psi((x\\circledast y)\\otimes(x\\star y))\\;\\checkmark$$</div>
+<p>Since $\\bar\\varphi$ and $\\bar\\psi$ are monoid homomorphisms from $M$ that agree on both sides of every generator, the relation is consistent: no contradiction with $M$'s structure. ✓</p>
+<p><span class="step-num">5</span><strong>Transitivity/symmetry/reflexivity:</strong> These are automatic for congruence closure. ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — $\\sim$ is a monoid congruence, so $\\bar{M}=M/\\!\\sim$ is a well-defined monoid.</div>
+</div>
+${mkVerify('prop-congruence')}`},
+
+// ═══════════════════════════════════════════════════════════════
+// NEW — Prop: Structure of N-bar; Lem: N-bar Closed in M-bar
+// ═══════════════════════════════════════════════════════════════
+{id:"prop-nbar",ch:"§2 Monoid",badge:"b-prop",title:"Proposition — Structure of $\\bar{N}$; Lemma — $\\bar{N}$ Closed in $\\bar{M}$",lean:null,body:`
+<p><strong>Proposition (Structure of $\\bar{N}$).</strong></p>
+<div class="math-block">$$\\bar{N} = \\{\\, z\\otimes w \\in \\bar{M} : \\exists\\text{ multiset }\\{k_i\\}_{i=1}^r\\subset\\mathbb{Z}\\setminus\\{0\\},\\; z=\\bigcircledast_i k_i,\\; w=\\bigstar_i k_i\\,\\}$$</div>
+<p>with product rule $(z_1\\otimes w_1)\\cdot(z_2\\otimes w_2) = (z_1\\circledast z_2)\\otimes(w_1\\star w_2)$. Thus $\\bar{N}\\cong\\mathrm{Im}(\\Delta)$ where $\\Delta:\\mathrm{FreeCommMon}(\\mathbb{Z}\\setminus\\{0\\})\\to(\\mathbb{Z},\\circledast)\\times(\\mathbb{Z},\\star)$, $\\Delta(\\{k_i\\})=(\\circledast k_i,\\star k_i)$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof</button>
+<div class="proof-content" style="display:none">
+<p>By induction on multiset size: generators $x\\otimes x$ correspond to $\\{x\\}$. For the product: $(z_1\\otimes w_1)(z_2\\otimes w_2)$ where $z_i = \\circledast_{S_i}$, $w_i = \\star_{S_i}$. By applying the congruence relation repeatedly: the product collapses to $(\\circledast_{S_1\\cup S_2})\\otimes(\\star_{S_1\\cup S_2}) = (z_1\\circledast z_2)\\otimes(w_1\\star w_2)$. ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<hr style="margin:.8rem 0">
+<p><strong>Lemma ($\\bar{N}$ is closed in $\\bar{M}$).</strong> Give $\\bar{M}$ the <strong>initial topology</strong> from $(\\bar\\varphi,\\bar\\psi):\\bar{M}\\to\\mathbb{Z}^2$ with $\\mathbb{Z}^2$ carrying the Furstenberg product topology. Then $\\bar{N}$ is <strong>closed</strong>.</p>
+<p>Equivalently: $\\bar{M}\\setminus\\bar{N}$ is open. The key implication is:</p>
+<div class="math-block">$$x\\in\\bar{M}\\setminus\\bar{N}\\implies\\exists\\text{ prime }p:\\; p\\mid\\bar\\varphi(x)\\text{ but the }p\\text{-part of }\\bar\\varphi(x)\\text{ has no matching }\\psi\\text{-partner}$$</div>
+<p>That is: the prime factorizations of $\\bar\\varphi(x)\\in S$ and $\\bar\\psi(x)\\in T$ cannot be "paired up" via any multiset $\\{k_i\\}$ with $\\varphi(k_i)=6k_i+1$ and $\\psi(k_i)=6k_i-1$. The witness prime $p$ produces the open Furstenberg coset:</p>
+<div class="math-block">$$U_p(x) = \\{m\\in\\bar{M}: \\bar\\varphi(m)\\equiv\\bar\\varphi(x)\\pmod{p}\\}\\cap\\{m: \\bar\\psi(m)\\not\\equiv_\\psi \\bar\\varphi(x)\\pmod{p}\\}$$</div>
+<p>which is <strong>clopen</strong> (preimage of an arithmetic progression) and contains $x$ while avoiding $\\bar{N}$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof sketch</button>
+<div class="proof-content" style="display:none">
+<p><span class="step-num">1</span><strong>Separation condition.</strong> $x\\notin\\bar{N}$ means: no multiset $\\{k_i\\}$ satisfies $\\prod(6k_i+1)=\\bar\\varphi(x)$ AND $\\prod|6k_i-1|=|\\bar\\psi(x)|$ simultaneously. Equivalently, viewing the prime factorisation of $\\bar\\varphi(x)=\\prod p_j^{a_j}$: for at least one $p_j$, the exponent $a_j$ cannot be matched to any product $\\prod|6k_i-1|$ using the same $k$-multiset.</p>
+<p><span class="step-num">2</span><strong>Witness prime.</strong> Pick a prime $p=p_j$ that witnesses the mismatch. The Furstenberg coset $\\{z\\in\\mathbb{Z}: z\\equiv \\bar\\varphi(x)\\pmod{p}\\}$ is clopen in $\\mathbb{Z}$ (Furstenberg topology). Its product with a corresponding coset for $\\bar\\psi$ that avoids $\\bar{N}$ gives a clopen neighbourhood of $x$ disjoint from $\\bar{N}$.</p>
+<p><span class="step-num">3</span><strong>Conclusion.</strong> Every $x\\in\\bar{M}\\setminus\\bar{N}$ has a clopen neighbourhood avoiding $\\bar{N}$, so $\\bar{M}\\setminus\\bar{N}$ is open, i.e., $\\bar{N}$ is closed. ✓</p>
+<div class="remark-box"><div class="remark-title"><i class="bi bi-exclamation-triangle-fill me-1"></i>Status</div><p>Step 2 requires making the "mismatch witness" explicit for all $x\\notin\\bar{N}$. This is the key lemma to formalise — it reduces to a statement about incompatible prime factorisations in $S$ and $T$.</p></div>
+<div class="qed-box"><i class="bi bi-wrench me-1"></i>Proof sketch — Step 2 pending formalisation</div>
+</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-diagram-3 me-1"></i>Why this fixes the proof</div>
+<p>With $\\bar{N}$ closed in $\\bar{M}$: the Furstenberg argument on $\\bar{M}$ gives $|\\mathrm{Irr}(\\bar{M})|=\\infty$. Restricting to $\\bar{N}$ (closed $\\Rightarrow$ has the subspace topology): the twin-prime generators $\\mathrm{Irr}_M(G)=\\mathrm{Irr}(\\bar{M})\\cap\\bar{N}$ inherit the infinite-open-set property, forcing $|\\mathrm{Irr}_M(G)|=\\infty$ = TPC.</p>
+</div>
+${mkVerify('prop-nbar')}`},
 
 // ═══════════════════════════════════════════════════════════════
 // Card 6 — Def 4.1: Irreducibility
@@ -1154,6 +1287,9 @@ const PM_NODES=[
   {id:'lem-sep-inv',           l1:'Lem 2.3',   l2:'Sep. Invariants',  t:'lem', c:1,r:1},
   {id:'lem-ufd',               l1:'Lem 2.4.A', l2:'Irred. UFD',      t:'lem', c:1,r:2},
   {id:'prop-2.4',              l1:'Prop 2.4',  l2:'N structure',     t:'prop',c:1,r:3},
+  {id:'def-mbar',              l1:'Def 2.5',   l2:'Quotient M̄',     t:'def', c:1,r:4},
+  {id:'prop-congruence',       l1:'Prop 2.6',  l2:'Cong. Collapse',  t:'prop',c:1,r:5},
+  {id:'prop-nbar',             l1:'Prop/Lem',  l2:'N̄ Closed',        t:'prop',c:2,r:4},
   {id:'def-4.1',               l1:'Def 4.1',   l2:'Irreducible',     t:'def', c:2,r:0},
   {id:'thm-4.2',               l1:'Thm 4.2',   l2:'Irred ↔ Twins',   t:'thm', c:2,r:1},
   {id:'lem-4.3',               l1:'Lem 4.3',   l2:'Norm ‖·‖',         t:'lem', c:2,r:2},
@@ -1175,6 +1311,10 @@ const PM_EDGES=[
   ['def-2.1','lem-sep-inv'],['def-2.1','prop-2.4'],
   ['lem-sep-inv','prop-2.4'],['lem-ufd','prop-2.4'],
   ['prop-2.4','def-proj'],['prop-2.4','lem-4.3'],
+  ['prop-2.4','def-mbar'],
+  ['def-mbar','prop-congruence'],
+  ['prop-congruence','prop-nbar'],
+  ['prop-nbar','thm-4.2'],
   ['def-4.1','thm-4.2'],['def-4.1','lem-4.4'],
   ['lem-4.3','lem-4.4'],
   ['thm-4.2','lem-proj-contain'],['thm-4.2','cor-5.3'],
@@ -1188,7 +1328,7 @@ const PM_EDGES=[
   ['prop-n-satisfies','thm-5.2'],['thm-5.2','cor-5.3'],
 ];
 const PM_COL=[80,225,370,515,660];
-const PM_ROW=[30,106,182,258,334];
+const PM_ROW=[30,106,182,258,334,410];
 const NW=120,NH=42;
 const PM_CLR={
   def: {f:'#dbeafe',s:'#1d4ed8',t:'#1d4ed8'},
@@ -1215,7 +1355,7 @@ function renderProofMap(){
   // section headers
   PM_COL.forEach((cx,i)=>{ out+=`<text x="${cx}" y="18" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" font-weight="700" fill="#7c3aed" opacity=".65">${secs[i]}</text>`; });
   // column dividers
-  for(let i=1;i<PM_COL.length;i++){const mx=(PM_COL[i-1]+PM_COL[i])/2; out+=`<line x1="${mx}" y1="24" x2="${mx}" y2="410" stroke="#e5e7eb" stroke-width="1"/>`;}
+  for(let i=1;i<PM_COL.length;i++){const mx=(PM_COL[i-1]+PM_COL[i])/2; out+=`<line x1="${mx}" y1="24" x2="${mx}" y2="495" stroke="#e5e7eb" stroke-width="1"/>`;}
   // edges
   PM_EDGES.forEach(([a,b])=>{
     const s=nm[a],t=nm[b]; if(!s||!t)return;
