@@ -19,6 +19,7 @@
   --orange:#f97316;--orange-light:#ffedd5;--orange-dark:#c2410c;
   --yellow:#eab308;--yellow-light:#fef9c3;--yellow-dark:#a16207;
   --gray:#6b7280;--gray-light:#f3f4f6;--gray-dark:#374151;
+  --red:#ef4444;--red-light:#fee2e2;--red-dark:#b91c1c;
   --black:#111827;--white:#ffffff;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -44,6 +45,7 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 .b-cor{background:linear-gradient(135deg,var(--yellow-light),#fde68a);color:var(--yellow-dark);}
 .b-abs{background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));color:var(--yellow);}
 .b-rmk{background:linear-gradient(135deg,var(--gray-light),#e5e7eb);color:var(--gray-dark);}
+.b-gap{background:linear-gradient(135deg,var(--red-light),#fecaca);color:var(--red-dark);}
 .card-hdr{position:relative;padding:1.5rem 2rem .8rem;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,var(--purple),var(--blue),var(--green),var(--orange)) 1;}
 .card-title{font-family:'Playfair Display',serif;font-size:1.35rem;line-height:1.3;background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .card-body-inner{padding:1.5rem 2rem 1.2rem;line-height:1.8;font-size:1.02rem;}.card-body-inner p{margin-bottom:.8rem;}
@@ -66,7 +68,7 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 .minimap{position:fixed;right:.8rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:4px;}
 .mm-dot{width:10px;height:10px;border-radius:50%;background:rgba(124,58,237,.2);cursor:pointer;border:2px solid rgba(124,58,237,.3);transition:all .25s;}
 .mm-dot.active{background:var(--purple);border-color:var(--yellow);transform:scale(1.6);box-shadow:0 0 12px var(--purple-glow);}.mm-dot:hover{background:var(--blue);border-color:var(--blue);transform:scale(1.4);}
-@media(max-width:860px){.minimap{display:none;}}
+@media(max-width:860px){.minimap{display:none;}.sidebar{display:none !important;}.sb-toggle{display:none !important;}}
 .nav-footer{background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark),var(--purple));padding:1rem 1.5rem;position:sticky;bottom:0;border-top:4px solid var(--yellow);z-index:100;border-radius:24px 24px 0 0;box-shadow:0 -8px 32px var(--purple-glow);}
 .btn-nav{font-family:'JetBrains Mono',monospace;font-size:.8rem;border-radius:20px;padding:.5rem 1.5rem;border:2px solid var(--yellow);background:transparent;color:var(--yellow);cursor:pointer;transition:all .25s;box-shadow:0 2px 12px rgba(234,179,8,.15);}
 .btn-nav:hover{background:var(--yellow);color:var(--black);transform:translateY(-2px);box-shadow:0 6px 20px rgba(234,179,8,.3);}.btn-nav:disabled{opacity:.3;cursor:not-allowed;transform:none;box-shadow:none;}
@@ -79,8 +81,6 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 @keyframes float1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(40px,30px) scale(1.1);}}
 @keyframes float2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-30px,-40px) scale(1.15);}}
 @keyframes float3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-20px,30px) scale(1.05);}}
-.sparkle{position:absolute;width:6px;height:6px;background:var(--yellow);border-radius:50%;animation:sparkle 2s ease-in-out infinite;pointer-events:none;}
-@keyframes sparkle{0%,100%{opacity:0;transform:scale(0);}50%{opacity:1;transform:scale(1);}}
 .card-ribbon{position:absolute;top:12px;right:-35px;background:linear-gradient(135deg,var(--orange),var(--yellow));color:var(--black);font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;padding:.2rem 2.5rem;transform:rotate(45deg);letter-spacing:.06em;box-shadow:0 2px 8px rgba(0,0,0,.15);}
 .depends-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.58rem;background:var(--gray-light);color:var(--gray-dark);border-radius:20px;padding:.12rem .5rem;margin:.1rem;border:1px solid rgba(107,114,128,.2);}
 .step-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));color:white;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;margin-right:.5rem;box-shadow:0 2px 8px var(--purple-glow);}
@@ -89,6 +89,26 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 .share-btn.copied{background:var(--green);color:white;border-color:var(--green);}
 .ilink{color:var(--purple);font-weight:600;text-decoration:none;border-bottom:2px dashed rgba(124,58,237,.3);cursor:pointer;transition:all .2s;}
 .ilink:hover{color:var(--orange);border-bottom-color:var(--orange);}
+/* ── Sidebar proof tree ── */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:280px;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-right:3px solid rgba(124,58,237,.15);z-index:200;overflow-y:auto;transform:translateX(-100%);transition:transform .3s ease;padding:0;box-shadow:4px 0 24px rgba(0,0,0,.08);}
+.sidebar.open{transform:translateX(0);}
+.sb-hdr{background:linear-gradient(135deg,var(--purple-dark),var(--blue-dark));color:var(--yellow);padding:.8rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:600;display:flex;justify-content:space-between;align-items:center;letter-spacing:.05em;}
+.sb-close{background:none;border:none;color:var(--yellow);font-size:1.2rem;cursor:pointer;line-height:1;}
+.sb-close:hover{color:var(--orange);}
+.sb-toggle{position:fixed;left:12px;top:12px;z-index:201;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));color:white;border:2px solid var(--yellow);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;box-shadow:0 3px 12px var(--purple-glow);transition:all .3s;}
+.sb-toggle:hover{transform:scale(1.15);box-shadow:0 6px 20px var(--purple-glow);}
+.ptree{padding:.8rem .6rem .8rem 0;font-family:'JetBrains Mono',monospace;font-size:.68rem;}
+.ptree ul{list-style:none;padding-left:1rem;margin:0;border-left:2px solid rgba(124,58,237,.15);}
+.ptree>ul{border-left:none;padding-left:.6rem;}
+.ptree li{position:relative;padding:3px 0 3px 10px;line-height:1.5;}
+.ptree li::before{content:'';position:absolute;left:-1rem;top:0;bottom:50%;border-left:2px solid rgba(124,58,237,.15);border-bottom:2px solid rgba(124,58,237,.15);width:10px;height:50%;}
+.ptree>ul>li::before{display:none;}
+.tn{cursor:pointer;padding:2px 6px;border-radius:8px;transition:all .2s;display:inline-block;}
+.tn:hover{background:var(--purple-light);color:var(--purple-dark);}
+.tn.active{background:var(--purple);color:white;box-shadow:0 2px 8px var(--purple-glow);}
+.tn-def{color:var(--blue-dark);}.tn-thm{color:var(--orange-dark);font-weight:600;}.tn-lem{color:var(--purple-dark);}.tn-cor{color:var(--yellow-dark);font-weight:600;}.tn-gap{color:var(--red-dark);font-weight:600;}
+.gap-box{background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(239,68,68,.02));border:2px solid var(--red);border-radius:16px;padding:.9rem 1.2rem;margin:.8rem 0;font-size:.92rem;}
+.gap-box .gap-title{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--red-dark);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;}
 </style>
 </head>
 <body>
@@ -96,6 +116,13 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 <div class="bubble bubble-2"></div>
 <div class="bubble bubble-3"></div>
 <div class="bubble bubble-4"></div>
+<!-- Sidebar toggle -->
+<button class="sb-toggle" id="sbToggle" onclick="toggleSB()" title="Proof Tree"><i class="bi bi-diagram-3"></i></button>
+<!-- Sidebar proof tree -->
+<div class="sidebar" id="sidebar">
+  <div class="sb-hdr"><span><i class="bi bi-diagram-3 me-1"></i>Proof Tree</span><button class="sb-close" onclick="toggleSB()">&times;</button></div>
+  <div class="ptree" id="ptree"></div>
+</div>
 <header class="site-header d-flex justify-content-between align-items-start flex-wrap gap-2">
   <div>
     <h1><i class="bi bi-infinity me-2" style="color:var(--yellow)"></i>Twin Primes — Coset Topology Proof <i class="bi bi-stars ms-1" style="color:var(--yellow);font-size:.8rem"></i></h1>
@@ -104,7 +131,7 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
       &nbsp;<i class="bi bi-dot"></i>&nbsp;
       <a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank"><i class="bi bi-file-text"></i> PAPER.md</a>
       &nbsp;<i class="bi bi-dot"></i>&nbsp;
-      <span style="color:var(--green-light)"><i class="bi bi-patch-check-fill"></i> 21 Proof Cards</span>
+      <span style="color:var(--green-light)"><i class="bi bi-patch-check-fill"></i> 16 Proof Cards</span>
     </div>
   </div>
   <div class="d-flex gap-2 flex-wrap">
@@ -114,14 +141,14 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 </header>
 <div class="prog-wrap">
   <div class="prog"><div class="prog-bar" id="pb" style="width:5%"></div></div>
-  <div class="prog-lbl" id="pl">Card 1 of 21</div>
+  <div class="prog-lbl" id="pl">Card 1 of 16</div>
 </div>
 <div class="ch-nav" id="chn"></div>
 <main class="card-area"><div class="proof-card" id="mc"></div></main>
 <div class="minimap" id="mm"></div>
 <footer class="nav-footer d-flex justify-content-between align-items-center">
   <button class="btn-nav" id="bp" onclick="go(-1)" disabled><i class="bi bi-arrow-left-circle me-1"></i>Prev</button>
-  <span class="ctr" id="ctr"><i class="bi bi-diamond-fill me-1" style="font-size:.5rem"></i>1 / 20<i class="bi bi-diamond-fill ms-1" style="font-size:.5rem"></i></span>
+  <span class="ctr" id="ctr"><i class="bi bi-diamond-fill me-1" style="font-size:.5rem"></i>1 / 16<i class="bi bi-diamond-fill ms-1" style="font-size:.5rem"></i></span>
   <button class="btn-nav" id="bn" onclick="go(1)">Next<i class="bi bi-arrow-right-circle ms-1"></i></button>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -129,16 +156,18 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
 const GH="https://github.com/FruitfulApproach/Lean4TPC/blob/main";
 const cards=[
 
+// ═══════════════════════════════════════════════════════════════
+// Card 0 — Abstract
+// ═══════════════════════════════════════════════════════════════
 {id:"abstract",ch:"Abstract",badge:"b-abs",title:"Abstract — The Monoid Tensor Product Approach",lean:null,body:`
-<p>We prove there are <strong>infinitely many twin prime pairs</strong> via the monoid tensor product $M = (\\mathbb{Z},\\circledast) \\otimes_{\\mathrm{Mon}} (\\mathbb{Z},\\star)$ and the submonoid $N = \\langle \\{k \\otimes k : k \\in \\mathbb{Z}\\} \\rangle \\leqslant M$.</p>
+<p>We prove there are <strong>infinitely many twin prime pairs</strong> via the monoid tensor product $M = (\\mathbb{Z},\\circledast) \\otimes_{\\mathrm{Mon}} (\\mathbb{Z},\\star)$ and the submonoid $N = \\langle \\{\\mathfrak{k} = (k,k) : k \\in \\mathbb{Z}\\} \\rangle \\leqslant M$.</p>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Core Strategy</div>
-<p>We transfer the twin-prime question into an algebraic/topological setting where Furstenberg's classic proof-technique applies. The map $\\phi(x)=6x+1$ converts the monoid $(\\mathbb{Z},\\circledast)$ into ordinary multiplication in $6\\mathbb{Z}+1$. The monoid tensor product $M$ has bilinearity relations $(a \\circledast b) \\otimes w = (a \\otimes w)(b \\otimes w)$ and $z \\otimes (c \\star d) = (z \\otimes c)(z \\otimes d)$, with $z \\otimes 0 = 0 \\otimes w = e$ (identity). This identity condition is <strong>key</strong>: it kills the "trivial splitting" that plagues the direct product. Irreducible elements of $N$ correspond exactly to twin prime pairs.</p>
+<p>We transfer the twin-prime question into an algebraic/topological setting where Furstenberg's classic proof-technique applies. The map $\\phi(x)=6x+1$ converts $(\\mathbb{Z},\\circledast)$ into ordinary multiplication in $6\\mathbb{Z}+1$. The monoid tensor product $M$ has bilinearity relations $(a \\circledast b) \\otimes w = (a \\otimes w)(b \\otimes w)$ and $z \\otimes (c \\star d) = (z \\otimes c)(z \\otimes d)$, with $z \\otimes 0 = 0 \\otimes w = e$ (identity). Irreducible elements of $N$ correspond exactly to twin prime pairs.</p>
 </div>
-<p><strong>Key identity:</strong> For each irreducible $\\widehat{q} = q \\otimes q \\in \\mathrm{Irr}(N)$:</p>
-<div class="math-block">$$\\widehat{q} \\cdot N = N \\cap (\\widehat{q} \\cdot M)$$</div>
-<p>In the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a> on $N$, each coset $\\widehat{q} \\cdot N = \\sigma^{-1}\\!\\bigl((q+\\phi(q)\\mathbb{Z})\\times(q+\\psi(q)\\mathbb{Z})\\bigr)$ is <a class="ilink" onclick="goToCard('cor-shadow-clopen')"><strong>clopen in $N$</strong></a> (preimage of a clopen product of arithmetic progressions). The <a class="ilink" onclick="goToCard('thm-5.2')">Furstenberg argument</a> then forces $|\\mathrm{Irr}(N)|=\\infty$.</p>
-<p><strong>Additionally:</strong> We prove that $N \\cap \\beta^{-1}(U)$ for any basic open $U$ is either <a class="ilink" onclick="goToCard('thm-empty-or-inf')"><strong>empty or infinite</strong></a> — a fundamental property of $N$'s interaction with the final topology that underpins the entire argument.</p>
+<p><strong>Key containment:</strong> For each irreducible $\\mathfrak{q} = (q,q) \\in \\mathrm{Irr}(N)$:</p>
+<div class="math-block">$$\\mathfrak{q} \\cdot N \\;\\subseteq\\; \\pi^{-1}\\!\\bigl((q+\\phi(q)\\mathbb{Z})\\times(q+\\psi(q)\\mathbb{Z})\\bigr) \\quad\\text{and}\\quad e \\notin \\pi^{-1}(\\cdots)$$</div>
+<p>In the <a class="ilink" onclick="goToCard('def-proj')">projected topology</a> on $N$, each $\\pi^{-1}(\\cdots)$ is <strong>clopen</strong>. Combined with the <a class="ilink" onclick="goToCard('lem-4.4')">covering</a> $N\\setminus\\{e\\} = \\bigcup \\mathfrak{q} \\cdot N$, the <a class="ilink" onclick="goToCard('thm-5.2')">Furstenberg argument</a> forces $|\\mathrm{Irr}(N)|=\\infty$.</p>
 <div class="d-flex flex-wrap gap-1 mt-3">
 <a href="https://en.wikipedia.org/wiki/Twin_prime" target="_blank" class="tag"><i class="bi bi-stars me-1"></i>Twin Primes</a>
 <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank" class="tag"><i class="bi bi-clock-history me-1"></i>Furstenberg 1955</a>
@@ -146,540 +175,331 @@ const cards=[
 <a href="https://en.wikipedia.org/wiki/Monoid" target="_blank" class="tag"><i class="bi bi-diagram-3 me-1"></i>Monoid Theory</a>
 </div>`},
 
-{id:"def-1.1",ch:"§1 Ops",badge:"b-def",title:"Definition 1.1 — Operations $\\mathbin{\\circledast}$ and $\\mathbin{\\star}$",lean:`${GH}/TPC/Basic.lean#L10`,body:`
+// ═══════════════════════════════════════════════════════════════
+// Card 1 — Def 1.1: Operations
+// ═══════════════════════════════════════════════════════════════
+{id:"def-1.1",ch:"§1 Algebra",badge:"b-def",title:"Definition 1.1 — Operations $\\circledast$ and $\\star$",lean:`${GH}/TPC/Basic.lean#L10`,body:`
 <p>Define two binary operations on $\\mathbb{Z}$:</p>
 <div class="math-block">$$x\\mathbin{\\circledast}y=6xy+x+y\\qquad x\\mathbin{\\star}y=-6xy+x+y$$</div>
-<p>Both have <strong>identity element $0$</strong>: one checks $x\\mathbin{\\circledast}0 = 6\\cdot x\\cdot 0 + x + 0 = x$ and similarly for $\\mathbin{\\star}$.</p>
+<p>Both have <strong>identity element $0$</strong>: $x\\circledast 0 = x$ and $x\\star 0 = x$.</p>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Why these operations?</div>
-<p>They arise from "transporting" ordinary multiplication through the maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$. Every integer $n\\equiv 1\\pmod{6}$ has the form $\\phi(x)$ for a unique $x$, and every $n\\equiv 5\\pmod{6}$ (equivalently $n\\equiv -1\\pmod{6}$) has the form $\\psi(x)$. Since all primes $>3$ satisfy $p\\equiv\\pm1\\pmod{6}$, these operations capture the multiplicative structure of primes in the correct residue classes.</p>
+<p>They arise from transporting ordinary multiplication through the maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$. Every integer $n\\equiv 1\\pmod{6}$ has the form $\\phi(x)$, and every $n\\equiv -1\\pmod{6}$ has the form $\\psi(x)$. Since all primes $>3$ satisfy $p\\equiv\\pm1\\pmod{6}$, these operations capture the multiplicative structure of primes in the correct residue classes.</p>
 </div>
 <div class="code-block">def mstar (x y : ℤ) : ℤ := 6 * x * y + x + y
 def sstar (x y : ℤ) : ℤ := -6 * x * y + x + y</div>
-<div class="example-box">
-<div class="example-title"><i class="bi bi-calculator me-1"></i>Computation Table</div>
-<div class="code-block" style="margin:0"> x    y   x⊛y   x⋆y    φ(x⊛y)       Check
- 1    1     8    -4      49      = 7·7 = φ(1)²
- 2    3    41   -31     247      = 13·19 = φ(2)·φ(3)
--1   -1     4    -8      25      = (-5)·(-5) = φ(-1)²
- 1   -1    -6     0     -35      = 7·(-5) = φ(1)·φ(-1)
- 0    x     x     x    6x+1      identity ✓</div>
-</div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show associativity proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>Proof of associativity for $\\circledast$:</strong></p>
-<p>$(x\\circledast y)\\circledast z = 6(6xy+x+y)z+(6xy+x+y)+z$</p>
-<p>$= 36xyz+6xz+6yz+6xy+x+y+z$</p>
-<p>$x\\circledast(y\\circledast z) = 6x(6yz+y+z)+x+(6yz+y+z)$</p>
-<p>$= 36xyz+6xy+6xz+x+6yz+y+z$</p>
-<p>Both equal $36xyz+6xy+6xz+6yz+x+y+z$. Commutativity: $x\\circledast y = 6xy+x+y = 6yx+y+x = y\\circledast x$. The $\\star$ case is identical with $-6$ replacing $6$ in the leading term.</p>
+<p><strong>Associativity of $\\circledast$:</strong></p>
+<p>$(x\\circledast y)\\circledast z = 36xyz+6xz+6yz+6xy+x+y+z$</p>
+<p>$x\\circledast(y\\circledast z) = 36xyz+6xy+6xz+x+6yz+y+z$</p>
+<p>Both equal $36xyz+6xy+6xz+6yz+x+y+z$. Commutativity: $x\\circledast y = 6xy+x+y = y\\circledast x$. The $\\star$ case is identical with $-6$ replacing $6$.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>`},
 
-{id:"thm-1.3",ch:"§1 Ops",badge:"b-thm",title:"Theorem 1.3 — Isomorphisms $\\phi$ and $\\psi$",lean:`${GH}/TPC/Basic.lean#L38`,body:`
+// ═══════════════════════════════════════════════════════════════
+// Card 2 — Thm 1.3: Isomorphisms
+// ═══════════════════════════════════════════════════════════════
+{id:"thm-1.3",ch:"§1 Algebra",badge:"b-thm",title:"Theorem 1.3 — Isomorphisms $\\phi$ and $\\psi$",lean:`${GH}/TPC/Basic.lean#L38`,body:`
 <p>The maps $\\phi(x)=6x+1$ and $\\psi(x)=6x-1$ are <strong>monoid isomorphisms</strong>:</p>
 <div class="math-block">$$\\phi:(\\mathbb{Z},\\circledast)\\xrightarrow{\\sim}(6\\mathbb{Z}+1,\\cdot)\\qquad\\psi:(\\mathbb{Z},\\star)\\xrightarrow{\\sim}(6\\mathbb{Z}-1,\\bullet)$$</div>
-<!-- https://q.uiver.app/#q=WzAsMyxbMCwwLCIoXG1hdGhiYntafSxcY2lyY2xlZGFzdCkiXSxbMiwwLCIoNlxtYXRoYmJ7Wn0rMSxcY2RvdCkiXSxbMSwxLCIoXG1hdGhiYntafSxcc3RhcikiXSxbMCwxLCJccGhpIiwwXSxbMiwxLCJccHNpIiwyXV0= -->
-<iframe class="quiver-embed" src="https://q.uiver.app/#q=WzAsMyxbMCwwLCIoXFxtYXRoYmJ7Wn0sXFxjaXJjbGVkYXN0KSJdLFsyLDAsIig2XFxtYXRoYmJ7Wn0rMSxcXGNkb3QpIl0sWzEsMSwiKFxcbWF0aGJie1p9LFxcc3RhcikiXSxbMCwxLCJcXHBoaSIsMF0sWzIsMSwiXFxwc2kiLDJdXQ==&embed" width="400" height="200" style="border-radius: 8px; border: none;"></iframe>
 <p>where $a\\bullet b = -(ab)$ on $6\\mathbb{Z}-1$. Both are bijections: $\\phi^{-1}(n)=\\frac{n-1}{6}$, $\\psi^{-1}(n)=\\frac{n+1}{6}$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
 <p><strong>$\\phi$ is multiplicative:</strong></p>
-<p>$\\phi(x\\circledast y) = 6(6xy+x+y)+1 = 36xy+6x+6y+1 = (6x+1)(6y+1) = \\phi(x)\\cdot\\phi(y)$.</p>
+<p>$\\phi(x\\circledast y) = 6(6xy+x+y)+1 = (6x+1)(6y+1) = \\phi(x)\\cdot\\phi(y)$. ✓</p>
 <p><strong>$\\phi$ is a bijection onto $6\\mathbb{Z}+1$:</strong></p>
-<p>If $n\\in 6\\mathbb{Z}+1$ then $n=6k+1$ for some $k\\in\\mathbb{Z}$, so $\\phi(k)=n$. Injectivity: $\\phi(x)=\\phi(y)\\Rightarrow 6x+1=6y+1\\Rightarrow x=y$.</p>
+<p>If $n\\in 6\\mathbb{Z}+1$ then $n=6k+1$ for some $k$, so $\\phi(k)=n$. Injectivity: $\\phi(x)=\\phi(y)\\Rightarrow x=y$. ✓</p>
 <p><strong>$\\psi$ is multiplicative (with $\\bullet$):</strong></p>
-<p>$\\psi(x\\star y)=6(-6xy+x+y)-1=-36xy+6x+6y-1=-[(6x-1)(6y-1)]$.</p>
-<p>And $\\psi(x)\\bullet\\psi(y) = -[(6x-1)(6y-1)]$. Equal. ✓</p>
-<p><strong>$\\psi$ is a bijection onto $6\\mathbb{Z}-1$:</strong> same argument as $\\phi$.</p>
+<p>$\\psi(x\\star y)=6(-6xy+x+y)-1=-[(6x-1)(6y-1)] = \\psi(x)\\bullet\\psi(y)$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="example-box">
 <div class="example-title"><i class="bi bi-lightning-charge me-1"></i>Key Consequence</div>
-<p>$x$ is <strong>$\\circledast$-irreducible</strong> (cannot be written as $a\\circledast b$ with $a,b\\neq 0$) $\\iff$ $\\phi(x)=6x+1$ is <strong>prime</strong> in $\\mathbb{Z}$ (up to sign). This is because $\\phi$ converts $\\circledast$-factorizations into ordinary factorizations in $6\\mathbb{Z}+1$. See <a class="ilink" onclick="goToCard('thm-4.2')">Thm 4.2</a> for the full irreducibility characterization.</p>
+<p>$x$ is <strong>$\\circledast$-irreducible</strong> $\\iff$ $\\phi(x)=6x+1$ is <strong>prime</strong> in $\\mathbb{Z}$ (up to sign). Similarly for $\\star$ and $\\psi$.</p>
 </div>
 <div class="code-block">lemma φ_mul (x y : ℤ) : φ (x ⊛ y) = φ x * φ y := by
-  simp [φ, mstar]; ring
+  simp [φ, mstar]; ring</div>`},
 
-lemma ψ_mul (x y : ℤ) : ψ (x ⋆ y) = -(ψ x * ψ y) := by
-  simp [ψ, sstar]; ring</div>`},
-
-{id:"lem-1.4",ch:"§1 Ops",badge:"b-lem",title:"Lemma 1.4 — No Zero Divisors",lean:`${GH}/TPC/Basic.lean#L62`,body:`
-<p><strong>Statement:</strong> If $u,v\\neq 0$ then $u\\mathbin{\\circledast}v\\neq 0$ and $u\\mathbin{\\star}v\\neq 0$.</p>
+// ═══════════════════════════════════════════════════════════════
+// Card 3 — Lem 1.4: No Zero Divisors
+// ═══════════════════════════════════════════════════════════════
+{id:"lem-1.4",ch:"§1 Algebra",badge:"b-lem",title:"Lemma 1.4 — No Zero Divisors",lean:`${GH}/TPC/Basic.lean#L62`,body:`
+<p><strong>Statement:</strong> If $u,v\\neq 0$ then $u\\circledast v\\neq 0$ and $u\\star v\\neq 0$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>For $\\circledast$:</strong> Suppose $u\\circledast v = 0$. Applying $\\phi$:</p>
-<p>$\\phi(u\\circledast v) = \\phi(u)\\phi(v) = (6u+1)(6v+1) = \\phi(0) = 1$.</p>
-<p>In $\\mathbb{Z}$, $ab=1$ forces $a=b=1$ or $a=b=-1$.</p>
-<p><strong>Case 1:</strong> $6u+1=6v+1=1 \\Rightarrow u=v=0$. Contradicts $u\\neq 0$.</p>
-<p><strong>Case 2:</strong> $6u+1=6v+1=-1 \\Rightarrow u=v=-1/3\\notin\\mathbb{Z}$. Impossible.</p>
-<p><strong>For $\\star$:</strong> Suppose $u\\star v = 0$. Applying $\\psi$:</p>
-<p>$\\psi(u\\star v) = -\\psi(u)\\psi(v) = -(6u-1)(6v-1)$. And $\\psi(0) = -1$.</p>
-<p>So $(6u-1)(6v-1) = 1$, giving $6u-1=6v-1=\\pm1$, so $u=v=0$ or $u=v=1/3\\notin\\mathbb{Z}$. Either way contradiction.</p>
+<p><strong>For $\\circledast$:</strong> If $u\\circledast v = 0$, applying $\\phi$: $(6u+1)(6v+1) = 1$. In $\\mathbb{Z}$: $a b=1$ forces $a=b=\\pm1$, giving $u=v=0$ or $u=v=-1/3\\notin\\mathbb{Z}$. Contradiction. ✓</p>
+<p><strong>For $\\star$:</strong> If $u\\star v = 0$, then $(6u-1)(6v-1)=1$, giving $u=v=0$ or $u=v=1/3\\notin\\mathbb{Z}$. Contradiction. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-exclamation-triangle me-1"></i>Where this is used</div>
-<p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i><a class="ilink" onclick="goToCard('thm-3.2')">Thm 3.2</a></span> Prime divisibility in the coset identity proof</p>
-<p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i><a class="ilink" onclick="goToCard('lem-3.4')">Lem 3.4</a></span> Injectivity of left multiplication $L_{\\widehat{q}}$</p>
-<p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i><a class="ilink" onclick="goToCard('thm-empty-or-inf')">Thm ∅/∞</a></span> Emptiness-or-infinitude of $N \\cap$ basic opens</p>
-</div>
-<div class="code-block">lemma mstar_no_zero_div (u v : ℤ) (hu : u ≠ 0) (hv : v ≠ 0) :
-    mstar u v ≠ 0 := by
-  intro h; have := φ_mul u v; rw [h] at this
-  simp [φ] at this; omega</div>`},
+<p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i><a class="ilink" onclick="goToCard('lem-proj-contain')">Containment Lem</a></span> The projected map $\\pi$ separates elements</p>
+<p><span class="depends-badge"><i class="bi bi-arrow-right me-1"></i><a class="ilink" onclick="goToCard('thm-empty-or-inf')">Thm ∅/∞</a></span> Distinctness of constructed elements</p>
+</div>`},
 
+// ═══════════════════════════════════════════════════════════════
+// Card 4 — Def 2.1–2.2: M, G, N
+// ═══════════════════════════════════════════════════════════════
 {id:"def-2.1",ch:"§2 Monoid",badge:"b-def",title:"Definition 2.1–2.2 — Monoid Tensor Product $M$, Generators $G$, Submonoid $N$",lean:`${GH}/TPC/Monoid.lean#L10`,body:`
 <p><strong>Definition 2.1.</strong> The <strong>monoid tensor product</strong>:</p>
 <div class="math-block">$$M = (\\mathbb{Z}, \\circledast) \\otimes_{\\mathrm{Mon}} (\\mathbb{Z}, \\star)$$</div>
 <p>with bilinearity relations:</p>
 <div class="math-block">$$(a \\circledast b) \\otimes w = (a \\otimes w)(b \\otimes w), \\qquad z \\otimes (c \\star d) = (z \\otimes c)(z \\otimes d)$$</div>
 <div class="math-block">$$z \\otimes 0 = 0 \\otimes w = e \\quad\\text{(identity)}$$</div>
-<p>The identity condition $z \\otimes 0 = 0 \\otimes w = e$ is <strong>key</strong>: it kills the "trivial splitting" that plagues the direct product.</p>
-<p><strong>Definition 2.2.</strong> The <strong>generating set</strong> is the set of diagonal tensors:</p>
-<div class="math-block">$$G = \\{k \\otimes k : k \\in \\mathbb{Z}\\} \\qquad N = \\langle G \\rangle = \\{(k_1 \\otimes k_1)(k_2 \\otimes k_2)\\cdots(k_r \\otimes k_r) : r \\geq 0,\\; k_i \\in \\mathbb{Z}\\}$$</div>
-<p>We write $\\widehat{k} = k \\otimes k$ for diagonal tensors. Elements of $N$ are <strong>formal products</strong> of diagonal tensors. A product $\\widehat{k_1}\\cdots\\widehat{k_r}$ with distinct $k_i$ does <strong>not</strong> simplify to a pure tensor (see <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4</a>). The multiset $\\{k_1,\\ldots,k_r\\}$ uniquely determines the element of $N$.</p>
+<p><strong>Definition 2.2.</strong> The <strong>generating set</strong> and <strong>diagonal submonoid</strong>:</p>
+<div class="math-block">$$G = \\{\\mathfrak{k} = (k,k) := k \\otimes k : k \\in \\mathbb{Z}\\} \\qquad N = \\langle G \\rangle$$</div>
+<p>Elements of $N$ are formal products of diagonal tensors $\\mathfrak{k}_1 \\cdots \\mathfrak{k}_r$. A product of distinct generators does <strong>not</strong> simplify to a pure tensor (see <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4</a>). The multiset $\\{k_1,\\ldots,k_r\\}$ uniquely determines the element of $N$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show that $N$ is a submonoid</button>
 <div class="proof-content" style="display:none">
 <p><strong>Identity:</strong> The empty product ($r=0$) gives $e \\in N$. ✓</p>
-<p><strong>Closure:</strong> If $\\widehat{k_1}\\cdots\\widehat{k_r} \\in N$ and $\\widehat{k_1'}\\cdots\\widehat{k_s'} \\in N$, their product is $\\widehat{k_1}\\cdots\\widehat{k_r}\\widehat{k_1'}\\cdots\\widehat{k_s'} \\in N$ (concatenation of generating sequences). ✓</p>
+<p><strong>Closure:</strong> If $\\mathfrak{k}_1\\cdots\\mathfrak{k}_r \\in N$ and $\\mathfrak{l}_1\\cdots\\mathfrak{l}_s \\in N$, their product $\\mathfrak{k}_1\\cdots\\mathfrak{k}_r\\mathfrak{l}_1\\cdots\\mathfrak{l}_s \\in N$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<div class="example-box">
-<div class="example-title"><i class="bi bi-calculator me-1"></i>Generator Products</div>
-<div class="code-block" style="margin:0">ˆ1 · ˆ1       = (1⊗1)(1⊗1)  shadow: (1⊛1, 1⋆1) = (8, -4)
-ˆ1 · ˆ2       = (1⊗1)(2⊗2)  shadow: (1⊛2, 1⋆2) = (15, -9)
-ˆ2 · ˆ3       = (2⊗2)(3⊗3)  shadow: (2⊛3, 2⋆3) = (41, -31)
-e · ˆk        = k⊗k          shadow: (k, k)  ← identity!
-ˆ1 · ˆ1 · ˆ1 = (1⊗1)³      shadow: (1⊛1⊛1, 1⋆1⋆1) = (57, -27)</div>
 </div>`},
 
+// ═══════════════════════════════════════════════════════════════
+// Card 5 — Prop 2.4: Structure of N
+// ═══════════════════════════════════════════════════════════════
 {id:"prop-2.4",ch:"§2 Monoid",badge:"b-prop",title:"Proposition 2.4 — Structure of $N = \\langle G \\rangle$",lean:`${GH}/TPC/Monoid.lean#L40`,body:`
-<p>We establish the basic structural properties of $N = \\langle G \\rangle$ inside the monoid tensor product $M$.</p>
-<p><strong>Prop 2.4.1 (Products of diagonal generators).</strong> For $a \\neq b$, the product $\\widehat{a} \\cdot \\widehat{b} = (a \\otimes a)(b \\otimes b)$ is a <strong>formal product</strong> in $M$ — it does NOT simplify to a single pure tensor.</p>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof</button>
+<p><strong>Prop 2.4.1.</strong> For $a \\neq b$, the product $\\mathfrak{a} \\cdot \\mathfrak{b}$ is a <strong>formal product</strong> — it does NOT simplify to a single pure tensor.</p>
+<p><strong>Prop 2.4.3.</strong> $M$ and $N$ are <strong>commutative</strong> (tensor product of commutative monoids is commutative).</p>
+<p><strong>Prop 2.4.4.</strong> $k \\mapsto \\mathfrak{k} = (k,k)$ is <strong>injective</strong> on $\\mathbb{Z} \\setminus \\{0\\}$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof via separating invariants</button>
 <div class="proof-content" style="display:none">
-<p>The bilinearity relations of $M$ are:</p>
-<div class="math-block">$$(a \\circledast b) \\otimes w = (a \\otimes w)(b \\otimes w) \\qquad z \\otimes (c \\star d) = (z \\otimes c)(z \\otimes d)$$</div>
-<p><span class="step-num">1</span><strong>Left bilinearity</strong> applies only when two factors share the <strong>same right component</strong>: $(a \\otimes \\mathbf{w})(b \\otimes \\mathbf{w}) = (a \\circledast b) \\otimes w$.</p>
-<p><span class="step-num">2</span><strong>Right bilinearity</strong> applies only when two factors share the <strong>same left component</strong>: $(\\mathbf{z} \\otimes c)(\\mathbf{z} \\otimes d) = z \\otimes (c \\star d)$.</p>
-<p><span class="step-num">3</span>In $(a \\otimes a)(b \\otimes b)$ with $a \\neq b$: the right components are $a$ and $b$ (different), and the left components are $a$ and $b$ (different). <strong>Neither</strong> relation applies.</p>
-<p>Therefore the product remains a formal word of length 2 in $M$, not a single pure tensor. ✓</p>
+<p>Define bilinear maps $f_{q,p}: \\mathbb{Z}\\times\\mathbb{Z} \\to (\\mathbb{Z},+)$ by $f_{q,p}(z,w) = v_q(|\\phi(z)|)\\cdot v_p(|\\psi(w)|)$ for primes $q \\equiv 1\\!\\!\\pmod{6}$, $p \\equiv 5\\!\\!\\pmod{6}$, where $v_q$ is the $q$-adic valuation.</p>
+<p><strong>Bilinearity check:</strong> $f(a\\circledast b, w) = v_q(|\\phi(a)\\phi(b)|)\\cdot v_p(|\\psi(w)|) = f(a,w) + f(b,w)$. Similarly for the right factor. And $f(0,w) = f(z,0) = 0$. ✓</p>
+<p>By the UMP, these extend to homomorphisms $\\bar{f}_{q,p}: M \\to (\\mathbb{Z},+)$ that separate generators: for $k \\neq l$, some $\\bar{f}_{q,p}$ distinguishes $\\mathfrak{k}$ from $\\mathfrak{l}$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
-<p><strong>Prop 2.4.2 (Equal indices: squares collapse to pure tensors).</strong> When $a = b$:</p>
-<div class="math-block">$$\\widehat{a}^2 = (a \\otimes a)(a \\otimes a) = (a \\circledast a) \\otimes a = a \\otimes (a \\star a)$$</div>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof</button>
-<div class="proof-content" style="display:none">
-<p>Now both factors share the right component $a$, so left bilinearity gives $(a \\otimes a)(a \\otimes a) = (a \\circledast a) \\otimes a$.</p>
-<p>Both factors also share the left component $a$, so right bilinearity gives $(a \\otimes a)(a \\otimes a) = a \\otimes (a \\star a)$.</p>
-<p>This implies the identity $(a \\circledast a) \\otimes a = a \\otimes (a \\star a)$ in $M$, i.e., $(6a^2+2a) \\otimes a = a \\otimes (-6a^2+2a)$.</p>
-<p>Note: this pure tensor is <strong>not diagonal</strong> unless $a = 0$ (since $a \\circledast a = 6a^2+2a \\neq a$ for $a \\neq 0$). ✓</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<p><strong>Prop 2.4.3 ($M$ and $N$ are commutative).</strong> Both source monoids $(\\mathbb{Z}, \\circledast)$ and $(\\mathbb{Z}, \\star)$ are commutative, so $M = A \\otimes_{\\mathrm{Mon}} B$ is commutative (the monoid tensor product of commutative monoids is commutative). Hence $N \\leq M$ is also commutative.</p>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof</button>
-<div class="proof-content" style="display:none">
-<p>The tensor product is presented as the free commutative monoid on symbols $\\{z \\otimes w : z,w \\in \\mathbb{Z}\\}$ modulo bilinearity. Since the free commutative monoid is commutative and the bilinearity relations preserve this (they are symmetric), the quotient $M$ is commutative. ✓</p>
-<p>Any submonoid of a commutative monoid is commutative. ✓</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<p><strong>Prop 2.4.4 (Generators are distinct).</strong> $k \\mapsto \\widehat{k} = k \\otimes k$ is injective on $\\mathbb{Z} \\setminus \\{0\\}$.</p>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof</button>
-<div class="proof-content" style="display:none">
-<p>Suppose $k \\otimes k = l \\otimes l$ in $M$. By the UMP, every bilinear map $f: \\mathbb{Z} \\times \\mathbb{Z} \\to C$ must agree: $f(k,k) = f(l,l)$.</p>
-<p>Consider $f: \\mathbb{Z} \\times \\mathbb{Z} \\to (\\mathbb{Z},+)$ defined by $f(z,w) = v_q(|\\phi(z)|) \\cdot v_p(|\\psi(w)|)$ for primes $q \\equiv 1 \\pmod{6}$, $p \\equiv 5 \\pmod{6}$.</p>
-<p>This is bilinear (check: $v_q(|\\phi(a \\circledast b)|) = v_q(|\\phi(a)|) + v_q(|\\phi(b)|)$, and $v_p(|\\psi(c \\star d)|) = v_p(|\\psi(c)|) + v_p(|\\psi(d)|)$, with $f(0,w) = f(z,0) = 0$). ✓</p>
-<p>Choosing $q = |\\phi(k)| = |6k+1|$ (when prime): $f(k,k) = 1 \\cdot v_p(|6k-1|)$, while $f(l,l) = v_q(|6l+1|) \\cdot v_p(|6l-1|)$. If $6l+1 \\neq \\pm(6k+1)$, then $v_q(|6l+1|)$ could differ, separating $k$ from $l$.</p>
-<p>More directly: the family of all such $f$ separates the generators, since $\\phi$ and $\\psi$ are injective and primes are dense enough in $6\\mathbb{Z}\\pm 1$ to distinguish all values. ✓</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<p><strong>Prop 2.4.5 (Unique representation up to ordering).</strong> Different multisets of non-zero generators give different elements of $N$: if $\\widehat{k_1}\\cdots\\widehat{k_r} = \\widehat{l_1}\\cdots\\widehat{l_s}$ in $M$, then $r = s$ and $\\{k_1,\\ldots,k_r\\} = \\{l_1,\\ldots,l_s\\}$ as multisets.</p>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof</button>
-<div class="proof-content" style="display:none">
-<p>The same bilinear maps $f_{q,p}$ from Prop 2.4.4 extend to homomorphisms $\\bar{f}_{q,p}: M \\to (\\mathbb{Z},+)$ by the UMP. On products:</p>
-<div class="math-block">$$\\bar{f}_{q,p}(\\widehat{k_1}\\cdots\\widehat{k_r}) = \\sum_{i=1}^{r} v_q(|6k_i+1|) \\cdot v_p(|6k_i-1|)$$</div>
-<p>If the products are equal in $M$, all homomorphic images agree: $\\sum_i v_q(|6k_i+1|) \\cdot v_p(|6k_i-1|) = \\sum_j v_q(|6l_j+1|) \\cdot v_p(|6l_j-1|)$ for all primes $q,p$.</p>
-<p>The vector $(v_q(|6k+1|) \\cdot v_p(|6k-1|))_{q,p}$ uniquely identifies each generator $\\widehat{k}$ (since the prime factorizations of $|6k+1|$ and $|6k-1|$ are unique). The family of all such linear invariants determines the multiset of generators. ✓</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
+<p><strong>Prop 2.4.5 (Unique multiset representation).</strong> Different multisets of non-zero generators give different elements: if $\\mathfrak{k}_1\\cdots\\mathfrak{k}_r = \\mathfrak{l}_1\\cdots\\mathfrak{l}_s$ in $M$, then $r=s$ and $\\{k_1,\\ldots,k_r\\} = \\{l_1,\\ldots,l_s\\}$ as multisets.</p>
 <div class="remark-box">
-<div class="remark-title"><i class="bi bi-exclamation-triangle me-1"></i>Key consequence for the norm</div>
-<p>Since elements of $N$ have a unique multiset representation $\\widehat{k_1}\\cdots\\widehat{k_r}$, the <strong>norm</strong> $\\|\\widehat{k_1}\\cdots\\widehat{k_r}\\| := \\prod_{i=1}^r (6k_i+1)^2$ is <strong>well-defined</strong> on $N$. See <a class="ilink" onclick="goToCard('lem-4.3')">Lemma 4.3</a> for the norm's properties.</p>
-</div>
-<div class="example-box">
-<div class="example-title"><i class="bi bi-calculator me-1"></i>Product computations</div>
-<div class="code-block" style="margin:0">ˆ1 · ˆ2   formal product, no simplification (1≠2)
-ˆ1 · ˆ1   = (1⊛1)⊗1 = 8⊗1  (pure, NOT diagonal)
-          = 1⊗(1⋆1) = 1⊗(−4) (same element, two forms)
-ˆ2 · ˆ2   = (2⊛2)⊗2 = 28⊗2  (pure, NOT diagonal)
-ˆ0        = 0⊗0 = e (identity)
-ˆ0 · ˆk   = ˆk (identity absorbed)</div>
+<div class="remark-title"><i class="bi bi-exclamation-triangle me-1"></i>Key for everything</div>
+<p>This is the <strong>foundation</strong> of the entire proof. The well-definedness of the projected map $\\pi$, the norm, and the covering all depend on unique multiset representation. See the <a class="ilink" onclick="goToCard('critical')">critical assessment</a> for details on the proof's status.</p>
 </div>`},
 
-{id:"prop-2.3",ch:"§2 Monoid",badge:"b-prop",title:"Proposition 2.3 — Topology on $M$ via UMP",lean:`${GH}/TPC/Monoid.lean#L55`,body:`
-<p>The canonical bilinear map $\\beta: \\mathbb{Z} \\times \\mathbb{Z} \\to M$ sends $(z,w) \\mapsto z \\otimes w$ and is <strong>universal</strong>: any bilinear map from $\\mathbb{Z} \\times \\mathbb{Z}$ to a monoid factors uniquely through $\\beta$.</p>
-<!-- https://q.uiver.app/#q=WzAsNCxbMCwwLCJcbWF0aGJie1p9XHRpbWVzXG1hdGhiYntafSJdLFsyLDAsIk0iXSxbMCwyLCJDIl0sWzIsMiwiIl0sWzAsMSwiXGJldGEiLDBdLFswLDIsImYiLDFdLFsxLDIsIlxleGlzdHMhXGJhcntmfSIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ== -->
-<iframe class="quiver-embed" src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG1hdGhiYntafVxcdGltZXNcXG1hdGhiYntafSJdLFsyLDAsIk0iXSxbMCwyLCJDIl0sWzIsMiwiIl0sWzAsMSwiXFxiZXRhIiwwXSxbMCwyLCJmIiwxXSxbMSwyLCJcXGV4aXN0cyFcXGJhcntmfSIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==&embed" width="300" height="260" style="border-radius: 8px; border: none;"></iframe>
-<p style="font-size:.85rem;color:var(--gray);">UMP: every bilinear $f: \\mathbb{Z} \\times \\mathbb{Z} \\to C$ factors uniquely as $f = \\bar{f} \\circ \\beta$.</p>
-<p>Give $M$ the <strong>final topology</strong>: $U \\subseteq M$ is open iff $\\beta^{-1}(U)$ is open in $\\mathbb{Z}^2$ (with the Furstenberg product topology, where basis elements are products of arithmetic progressions $a + b\\mathbb{Z}$, each clopen). This makes $\\beta$ continuous by construction and gives $M$ a topology where arithmetic-progression cosets are clopen.</p>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
-<div class="proof-content" style="display:none">
-<p><strong>The final topology is well-defined:</strong> By definition, $U \\subseteq M$ is open iff $\\beta^{-1}(U)$ is open in $\\mathbb{Z}^2$. This is a topology (the largest making $\\beta$ continuous).</p>
-<p><strong>Multiplication is continuous:</strong> We must show $\\mu: M \\times M \\to M$ is continuous. It suffices to check on pure tensors, where $\\mu$ acts component-wise as $(\\circledast, \\star)$.</p>
-<p><strong>Continuity of $\\circledast$ and $\\star$:</strong> In the Furstenberg topology, $(\\mathbb{Z}, +, \\cdot)$ is a <strong>topological ring</strong> — both addition and multiplication are continuous. Since $x \\circledast y = 6xy + x + y$ and $x \\star y = -6xy + x + y$ are <strong>polynomials</strong> in $x$ and $y$ with integer coefficients, they are compositions of continuous operations, hence continuous. ✓</p>
-<p>Therefore the monoid operation on $M$ is continuous in the final topology.</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<div class="remark-box">
-<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Consequence</div>
-<p>Left multiplication $L_{\\widehat{q}}(m) = \\widehat{q} \\cdot m$ is <strong>continuous</strong> for any fixed $\\widehat{q} \\in M$. Combined with injectivity (<a class="ilink" onclick="goToCard('lem-1.4')">Lem 1.4</a>), $L_{\\widehat{q}}$ is a homeomorphism onto its image when $\\widehat{q} \\neq e$.</p>
-</div>`},
-
-{id:"lem-3.1",ch:"§3 Coset",badge:"b-lem",title:"Lemma 3.1 — $\\widehat{a} \\cdot M$ is Clopen (via $\\beta$)",lean:`${GH}/TPC/CosetTopology.lean#L15`,body:`
-<p>For $\\widehat{a} = a \\otimes a$ with $a \\neq 0$, the preimage $\\beta^{-1}(\\widehat{a} \\cdot \\beta(\\mathbb{Z}^2))$ is the product of arithmetic progressions:</p>
-<div class="math-block">$$\\beta^{-1}(\\widehat{a} \\cdot M) = (a + \\phi(a)\\mathbb{Z}) \\times (a + \\psi(a)\\mathbb{Z})$$</div>
-<p>where $\\phi(a) = 6a+1$ and $\\psi(a) = 6a-1$. This is <strong>clopen</strong> in $\\mathbb{Z}^2$ (Furstenberg product topology). By the final topology on $M$, the coset $\\widehat{a} \\cdot M$ is therefore <strong>clopen in $M$</strong>.</p>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
-<div class="proof-content" style="display:none">
-<p><strong>First component:</strong> $\\{a\\circledast x : x\\in\\mathbb{Z}\\}$. Applying $\\phi$:</p>
-<p>$\\phi(a\\circledast x) = \\phi(a)\\phi(x) = (6a+1)(6x+1)$.</p>
-<p>As $x$ ranges over $\\mathbb{Z}$, $6x+1$ ranges over all of $6\\mathbb{Z}+1$. So the image under $\\phi$ is $(6a+1)\\cdot(6\\mathbb{Z}+1) = (6a+1) + 6(6a+1)\\mathbb{Z}$.</p>
-<p>Pulling back through $\\phi^{-1}$: $a+(6a+1)\\mathbb{Z} = a + \\phi(a)\\mathbb{Z}$. ✓</p>
-<p><strong>Second component:</strong> $\\{a\\star x : x\\in\\mathbb{Z}\\}$. Similarly via $\\psi$:</p>
-<p>$\\psi(a\\star x) = -(6a-1)(6x-1)$. As $x$ ranges over $\\mathbb{Z}$, $6x-1$ ranges over $6\\mathbb{Z}-1$.</p>
-<p>Pulling back: $a+(6a-1)\\mathbb{Z} = a + \\psi(a)\\mathbb{Z}$. ✓</p>
-<p><strong>Clopenness:</strong> Each arithmetic progression $a+b\\mathbb{Z}$ (with $b\\neq 0$) is clopen in the Furstenberg topology. Products of clopen sets are clopen in the product topology. Since $\\beta^{-1}(\\widehat{a} \\cdot M)$ is clopen in $\\mathbb{Z}^2$, by the final topology definition, $\\widehat{a} \\cdot M$ is clopen in $M$.</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<div class="example-box">
-<div class="example-title"><i class="bi bi-calculator me-1"></i>Explicit Cosets</div>
-<div class="code-block" style="margin:0">β⁻¹(ˆ1 · M) = (1+7ℤ) × (1+5ℤ)
-              = {...,−6,1,8,15,22,...} × {...,−4,1,6,11,16,...}
-β⁻¹(ˆ2 · M) = (2+13ℤ) × (2+11ℤ)
-β⁻¹(ˆ5 · M) = (5+31ℤ) × (5+29ℤ)
-
-Step sizes: φ(a) = 6a+1, ψ(a) = 6a−1  ← the isomorphism values!</div>
-</div>`},
-
-{id:"thm-3.2",ch:"§3 Coset",badge:"b-thm",title:"Theorem 3.2 — The Coset Identity (The Key Lemma)",lean:`${GH}/TPC/CosetTopology.lean#L45`,body:`
-<p style="position:relative;overflow:hidden;">For $\\widehat{q} = q \\otimes q \\in \\mathrm{Irr}(N)$ with $\\phi(q)$ prime:</p>
-<div class="math-block">$$\\boxed{\\widehat{q} \\cdot N = N \\cap (\\widehat{q} \\cdot M)}$$</div>
-<div class="remark-box">
-<div class="remark-title"><i class="bi bi-star-fill me-1"></i>This is the heart of the entire proof</div>
-<p>This identity is what makes the Furstenberg argument work for $N$. The left side is an algebraic object (coset of the submonoid); the right side is a topological object (intersection with a clopen set). Their equality bridges algebra and topology. The proof uses the prime divisibility of $\\phi(q)$ via $\\phi$.</p>
-</div>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
-<div class="proof-content" style="display:none">
-<p><strong>Direction ($\\subseteq$):</strong> If $m \\in \\widehat{q} \\cdot N$, then $m = \\widehat{q} \\cdot n$ for some $n \\in N$. Since $N$ is a submonoid containing $\\widehat{q}$, we have $m \\in N$. Also $m \\in \\widehat{q} \\cdot M$ trivially (since $N \\subseteq M$). So $m \\in N \\cap (\\widehat{q} \\cdot M)$. ✓</p>
-<p><strong>Direction ($\\supseteq$) — the hard direction:</strong></p>
-<p>Let $m \\in N \\cap (\\widehat{q} \\cdot M)$.</p>
-<p><span class="step-num">1</span><strong>Unpack membership in $\\widehat{q} \\cdot M$:</strong> There exists a pure tensor $p \\otimes r \\in M$ with $m = \\widehat{q} \\cdot (p \\otimes r)$. By bilinearity, the first component is $q \\circledast p$ and the second is $q \\star r$.</p>
-<p><span class="step-num">2</span><strong>Unpack membership in $N$:</strong> $m = \\widehat{k_1} \\cdots \\widehat{k_s}$ for some $k_1,\\ldots,k_s \\in \\mathbb{Z}$. The first-component shadow is $z = k_1 \\circledast \\cdots \\circledast k_s$ and second-component shadow is $w = k_1 \\star \\cdots \\star k_s$.</p>
-<p><span class="step-num">3</span><strong>Apply $\\phi$:</strong> From step 1: $\\phi(q) \\cdot \\phi(p) = \\phi(z)$. From step 2: $\\phi(z) = \\phi(k_1)\\cdots\\phi(k_s)$.</p>
-<p>So $\\phi(q) \\cdot \\phi(p) = \\phi(k_1)\\cdots\\phi(k_s)$.</p>
-<p><span class="step-num">4</span><strong>Use irreducibility:</strong> Since $\\widehat{q} \\in \\mathrm{Irr}(N)$, $\\phi(q)=6q+1$ is <strong>prime</strong> in $\\mathbb{Z}$ (this is precisely the content of <a class="ilink" onclick="goToCard('thm-4.2')">Thm 4.2</a>).</p>
-<p>Since $\\phi(q)$ is prime and divides $\\phi(k_1)\\cdots\\phi(k_s)$, by Euclid's lemma it divides some $\\phi(k_i)$.</p>
-<p><span class="step-num">5</span><strong>Force equality:</strong> Since $\\phi(k_i)\\in 6\\mathbb{Z}+1$ and $\\phi(q)$ is a prime in $6\\mathbb{Z}+1$ dividing $\\phi(k_i)$, we need $\\phi(k_i) = \\pm\\phi(q)$. But all values in $6\\mathbb{Z}+1$ satisfy $\\phi(k_i)\\equiv 1\\pmod{6}$, so $\\phi(k_i)=-\\phi(q)$ would give $\\phi(k_i)\\equiv -1\\pmod{6}$, contradicting $\\phi(k_i)\\equiv 1\\pmod{6}$ (when $\\phi(q)\\neq 1$, which holds since $q\\neq 0$). Therefore $\\phi(k_i)=\\phi(q)$, hence $k_i=q$.</p>
-<p><span class="step-num">6</span><strong>Reorder and conclude:</strong> By commutativity of $\\circledast$ and $\\star$, we may assume $k_1=q$. Then:</p>
-<p>$m = \\widehat{q} \\cdot (\\widehat{k_2} \\cdots \\widehat{k_s})$.</p>
-<p>Setting $n = \\widehat{k_2} \\cdots \\widehat{k_s} \\in N$, we get $m = \\widehat{q} \\cdot n \\in \\widehat{q} \\cdot N$. ✓</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>`},
-
-{id:"cor-3.3",ch:"§3 Coset",badge:"b-cor",title:"Corollary 3.3 — $\\widehat{q} \\cdot N$ is Clopen in $N$",lean:`${GH}/TPC/CosetTopology.lean#L82`,body:`
-<p>In the subspace topology on $N$ inherited from $M$ (via the final topology):</p>
-<div class="math-block">$$\\widehat{q} \\cdot N = N \\cap (\\widehat{q} \\cdot M)\\quad\\text{is clopen in }N$$</div>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
-<div class="proof-content" style="display:none">
-<p><span class="step-num">1</span>By <a class="ilink" onclick="goToCard('lem-3.1')">Lemma 3.1</a>, $\\widehat{q} \\cdot M$ is <strong>clopen in $M$</strong> (the preimage $\\beta^{-1}(\\widehat{q} \\cdot M)$ is a product of two arithmetic progressions, hence clopen in $\\mathbb{Z}^2$, hence $\\widehat{q} \\cdot M$ is clopen by the final topology).</p>
-<p><span class="step-num">2</span>By <a class="ilink" onclick="goToCard('thm-3.2')">Theorem 3.2</a>, $\\widehat{q} \\cdot N = N \\cap (\\widehat{q} \\cdot M)$.</p>
-<p><span class="step-num">3</span>In the <strong>subspace topology</strong> on $N \\subseteq M$, the open sets of $N$ are precisely $\\{N \\cap U : U\\text{ open in }M\\}$. Similarly for closed sets.</p>
-<p><span class="step-num">4</span>Since $\\widehat{q} \\cdot M$ is both open and closed in $M$, the intersection $N \\cap (\\widehat{q} \\cdot M)$ is both open and closed in $N$.</p>
-<p>Therefore $\\widehat{q} \\cdot N$ is <strong>clopen in $N$</strong>.</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<div class="code-block">theorem cosetN_isClopen (q : ℤ) (hq : IsIrred (q ⊗ q))
-    (hprime : (6*q+1).natAbs.Prime) :
-    IsClopen ((· * ·) (q ⊗ q) '' ↑N)</div>`},
-
-{id:"lem-3.4",ch:"§3 Coset",badge:"b-lem",title:"Lemma 3.4 — Cosets Are Infinite",lean:`${GH}/TPC/CosetTopology.lean#L95`,body:`
-<p><strong>Statement:</strong> For any $\\widehat{q} = q \\otimes q \\neq e$ in $N$: $|\\widehat{q} \\cdot N| = |N| = \\infty$.</p>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
-<div class="proof-content" style="display:none">
-<p><strong>$N$ is infinite:</strong> $N$ contains all generators $\\widehat{k} = k \\otimes k$ for $k\\in\\mathbb{Z}$, and these are pairwise distinct (since they differ in their component shadows). So $|N|\\geq|\\mathbb{Z}|=\\infty$.</p>
-<p><strong>$L_{\\widehat{q}}$ is injective:</strong> Suppose $\\widehat{q} \\cdot x = \\widehat{q} \\cdot y$ where $\\widehat{q} = q \\otimes q$ and $x, y \\in N$.</p>
-<p>Looking at first-component shadows: $q\\circledast x_1 = q\\circledast y_1$. Applying $\\phi$: $\\phi(q)\\phi(x_1) = \\phi(q)\\phi(y_1)$.</p>
-<p>Since $q\\neq 0$, $\\phi(q)=6q+1\\neq 1$ (as $q\\neq 0$ implies $|6q+1|\\geq 5$). Cancel: $\\phi(x_1)=\\phi(y_1)$, so $x_1=y_1$.</p>
-<p>Similarly for second-component shadows: $\\psi(q)\\psi(x_2)=\\psi(q)\\psi(y_2)$ gives $x_2=y_2$.</p>
-<p>Therefore $x = y$, so $L_{\\widehat{q}}$ is injective.</p>
-<p><strong>Conclusion:</strong> $L_{\\widehat{q}}: N \\to \\widehat{q} \\cdot N$ is a bijection from the infinite set $N$, so $|\\widehat{q} \\cdot N|=\\infty$.</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>`},
-
-{id:"def-shadow",ch:"§3½ New",badge:"b-def",title:"Definition — Shadow Map $\\sigma$ and Topology on $N$",lean:null,body:`
-<p>By <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4.5</a>, every element of $N$ has a <strong>unique multiset representation</strong> $\\widehat{k_1}\\cdots\\widehat{k_r}$. This lets us define the <strong>shadow map</strong>:</p>
-<div class="math-block">$$\\sigma = (\\sigma_1, \\sigma_2): N \\to \\mathbb{Z}^2, \\qquad \\sigma(\\widehat{k_1}\\cdots\\widehat{k_r}) = (k_1 \\circledast \\cdots \\circledast k_r,\\; k_1 \\star \\cdots \\star k_r)$$</div>
-<p>with $\\sigma(e) = (0, 0)$.</p>
-<!-- https://q.uiver.app/#q=WzAsNSxbMCwwLCJOIl0sWzIsMCwiKFxtYXRoYmJ7Wn0sXGNpcmNsZWRhc3QpIl0sWzQsMCwiKDZcbWF0aGJie1p9KzEsXGNkb3QpIl0sWzAsMSwiKFxtYXRoYmJ7Wn0sXHN0YXIpIl0sWzQsMSwiKDZcbWF0aGJie1p9LTEsXGJ1bGxldCkiXSxbMCwxLCJcc2lnbWFfMSIsMF0sWzAsMywiXHNpZ21hXzIiLDFdLFsxLDIsIlxwaGkiLDBdLFszLDQsIlxwc2kiLDBdXQ== -->
-<iframe class="quiver-embed" src="https://q.uiver.app/#q=WzAsNSxbMCwwLCJOIl0sWzIsMCwiKFxcbWF0aGJie1p9LFxcY2lyY2xlZGFzdCkiXSxbNCwwLCIoNlxcbWF0aGJie1p9KzEsXFxjZG90KSJdLFswLDEsIihcXG1hdGhiYntafSxcXHN0YXIpIl0sWzQsMSwiKDZcXG1hdGhiYntafS0xLFxcYnVsbGV0KSJdLFswLDEsIlxcc2lnbWFfMSIsMF0sWzAsMywiXFxzaWdtYV8yIiwxXSxbMSwyLCJcXHBoaSIsMF0sWzMsNCwiXFxwc2kiLDBdXQ==&embed" width="540" height="200" style="border-radius: 8px; border: none;"></iframe>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show that $\\sigma$ is well-defined and a homomorphism</button>
-<div class="proof-content" style="display:none">
-<p><strong>Well-defined:</strong> By <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4.5</a>, the multiset $\\{k_1,\\ldots,k_r\\}$ is unique. Since $\\circledast$ and $\\star$ are commutative and associative, the order doesn't affect $\\sigma_1$ or $\\sigma_2$. ✓</p>
-<p><strong>$\\sigma_1$ is a monoid homomorphism $N \\to (\\mathbb{Z}, \\circledast)$:</strong></p>
-<p>$\\sigma_1(m \\cdot m') = \\sigma_1(\\widehat{k_1}\\cdots\\widehat{k_r}\\widehat{l_1}\\cdots\\widehat{l_s}) = k_1 \\circledast \\cdots \\circledast k_r \\circledast l_1 \\circledast \\cdots \\circledast l_s$</p>
-<p>$= (k_1 \\circledast \\cdots \\circledast k_r) \\circledast (l_1 \\circledast \\cdots \\circledast l_s) = \\sigma_1(m) \\circledast \\sigma_1(m')$ ✓</p>
-<p>And $\\sigma_1(e) = 0$ (the identity of $\\circledast$). ✓</p>
-<p>Similarly $\\sigma_2: N \\to (\\mathbb{Z}, \\star)$ is a homomorphism. ✓</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<p><strong>The topology on $N$:</strong> Give $N$ the <strong>initial topology</strong> from $\\sigma$: a set $U \\subseteq N$ is open iff $U = \\sigma^{-1}(V)$ for some open $V \\subseteq \\mathbb{Z}^2$ (Furstenberg product topology). Equivalently, basic opens are:</p>
-<div class="math-block">$$\\sigma^{-1}\\bigl((a + b\\mathbb{Z}) \\times (c + d\\mathbb{Z})\\bigr) = \\{m \\in N : \\sigma_1(m) \\equiv a \\!\\!\\pmod{b},\\; \\sigma_2(m) \\equiv c \\!\\!\\pmod{d}\\}$$</div>
-<div class="remark-box">
-<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Why not the final topology from $\\beta$?</div>
-<p>The final topology from $\\beta: \\mathbb{Z}^2 \\to M$ only "sees" pure tensors $z \\otimes w \\in \\mathrm{im}(\\beta)$. Products of $\\geq 2$ distinct diagonal generators are <strong>not</strong> pure tensors (<a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4.1</a>), so they would be <strong>isolated points</strong> in the final topology — breaking the Furstenberg argument. The shadow map $\\sigma$ gives $N$ a non-trivial topology inherited from $\\mathbb{Z}^2$ via the homomorphism, where every element has infinite neighborhoods.</p>
-</div>
-<!-- https://q.uiver.app/#q=WzAsNCxbMCwwLCJOIl0sWzIsMCwiXG1hdGhiYntafV4yIl0sWzAsMiwiTiJdLFsyLDIsIlxtYXRoYmJ7Wn1eMiJdLFswLDEsIlxzaWdtYSIsMF0sWzIsMywiXHNpZ21hIiwwXSxbMCwyLCJcY2RvdFxoYXR7cX0iLDFdLFsxLDMsIkxfcSIsMV1d -->
-<iframe class="quiver-embed" src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJOIl0sWzIsMCwiXFxtYXRoYmJ7Wn1eMiJdLFswLDIsIk4iXSxbMiwyLCJcXG1hdGhiYntafV4yIl0sWzAsMSwiXFxzaWdtYSIsMF0sWzIsMywiXFxzaWdtYSIsMF0sWzAsMiwiXFxjZG90XFxoYXR7cX0iLDFdLFsxLDMsIkxfcSIsMV1d&embed" width="300" height="260" style="border-radius: 8px; border: none;"></iframe>
-<p style="font-size:.85rem;color:var(--gray);">Commutative square: $\\sigma$ intertwines $\\cdot\\widehat{q}$ with $L_q(z,w) = (q \\circledast z,\\, q \\star w)$.</p>`},
-
-{id:"cor-shadow-clopen",ch:"§3½ New",badge:"b-cor",title:"Corollary — $\\widehat{q} \\cdot N$ is Clopen in the Shadow Topology",lean:null,body:`
-<p>For each $\\widehat{q} = q \\otimes q \\in \\mathrm{Irr}(N)$ (i.e., $\\phi(q)$ and $\\psi(q)$ both prime), the coset $\\widehat{q} \\cdot N$ is <strong>clopen</strong> in the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a> on $N$:</p>
-<div class="math-block">$$\\widehat{q} \\cdot N = \\sigma^{-1}\\!\\bigl((q + \\phi(q)\\mathbb{Z}) \\times (q + \\psi(q)\\mathbb{Z})\\bigr)$$</div>
-<div class="remark-box">
-<div class="remark-title"><i class="bi bi-star-fill me-1"></i>Why this matters</div>
-<p>This is the shadow-topology analogue of <a class="ilink" onclick="goToCard('cor-3.3')">Cor 3.3</a>. While Cor 3.3 proves clopenness in the subspace topology inherited from $M$'s final topology, that topology has the wrong behavior on non-pure-tensor elements of $N$. Here we prove clopenness directly in the shadow topology — the topology actually used by the <a class="ilink" onclick="goToCard('thm-5.2')">Furstenberg argument</a>. The proof is cleaner: $\\widehat{q} \\cdot N$ is literally the $\\sigma$-preimage of a product of two arithmetic progressions.</p>
-</div>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
-<div class="proof-content" style="display:none">
-<p><strong>Claim:</strong> $\\widehat{q} \\cdot N = \\sigma^{-1}\\!\\bigl((q + \\phi(q)\\mathbb{Z}) \\times (q + \\psi(q)\\mathbb{Z})\\bigr)$.</p>
-<p><strong>Direction ($\\subseteq$):</strong></p>
-<p><span class="step-num">1</span>Let $m \\in \\widehat{q} \\cdot N$, so $m = \\widehat{q} \\cdot n$ for some $n \\in N$. Since $\\sigma$ is a <a class="ilink" onclick="goToCard('def-shadow')">homomorphism</a>:</p>
-<p>$\\sigma_1(m) = q \\circledast \\sigma_1(n)$, so $\\phi(\\sigma_1(m)) = \\phi(q) \\cdot \\phi(\\sigma_1(n))$. Hence $\\phi(q) \\mid \\phi(\\sigma_1(m))$.</p>
-<p>Now $\\phi(q) \\mid (6\\sigma_1(m)+1)$ means $6\\sigma_1(m)+1 \\equiv 0 \\pmod{\\phi(q)}$, i.e., $\\sigma_1(m) \\equiv q \\pmod{\\phi(q)}$ (since $6q+1 \\mid 6\\sigma_1(m)+1$ iff $\\sigma_1(m) \\in q + (6q+1)\\mathbb{Z}$). So $\\sigma_1(m) \\in q + \\phi(q)\\mathbb{Z}$. ✓</p>
-<p><span class="step-num">2</span>Similarly: $\\sigma_2(m) = q \\star \\sigma_2(n)$, so $\\psi(q) \\mid \\psi(\\sigma_2(m))$, giving $\\sigma_2(m) \\in q + \\psi(q)\\mathbb{Z}$. ✓</p>
-<p><strong>Direction ($\\supseteq$):</strong></p>
-<p><span class="step-num">3</span>Let $m \\in N$ with $\\sigma_1(m) \\in q + \\phi(q)\\mathbb{Z}$ and $\\sigma_2(m) \\in q + \\psi(q)\\mathbb{Z}$.</p>
-<p>Then $\\phi(q) \\mid \\phi(\\sigma_1(m))$, i.e., $\\phi(q) \\mid \\phi(k_1)\\cdots\\phi(k_r)$ where $m = \\widehat{k_1}\\cdots\\widehat{k_r}$.</p>
-<p><span class="step-num">4</span>Since $\\widehat{q} \\in \\mathrm{Irr}(N)$, $\\phi(q)$ is <strong>prime</strong> (<a class="ilink" onclick="goToCard('thm-4.2')">Thm 4.2</a>). By Euclid's lemma, $\\phi(q) \\mid \\phi(k_i)$ for some $i$.</p>
-<p><span class="step-num">5</span>Since $\\phi(k_i) \\in 6\\mathbb{Z}+1$ and $\\phi(q)$ is a prime dividing $\\phi(k_i)$, and both are $\\equiv 1 \\pmod{6}$, we get $\\phi(k_i) = \\phi(q)$ (negative prime factors would be $\\equiv -1 \\pmod{6}$, contradicting $\\phi(k_i) \\equiv 1$). So $k_i = q$.</p>
-<p><span class="step-num">6</span>Reorder: $m = \\widehat{q} \\cdot (\\widehat{k_1}\\cdots\\widehat{k_{i-1}}\\widehat{k_{i+1}}\\cdots\\widehat{k_r})$. The parenthesized product is in $N$, so $m \\in \\widehat{q} \\cdot N$. ✓</p>
-<p><strong>Clopenness:</strong></p>
-<p><span class="step-num">7</span>The set $(q + \\phi(q)\\mathbb{Z}) \\times (q + \\psi(q)\\mathbb{Z})$ is a product of two arithmetic progressions, hence <strong>clopen</strong> in the Furstenberg product topology on $\\mathbb{Z}^2$.</p>
-<p><span class="step-num">8</span>By definition of the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a> (initial topology from $\\sigma$), the preimage $\\sigma^{-1}(\\text{clopen}) = \\widehat{q} \\cdot N$ is <strong>clopen in $N$</strong>. ✓</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<div class="remark-box">
-<div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Explicit preimage</div>
-<p>Concretely, $m \\in \\widehat{q} \\cdot N$ iff $\\sigma_1(m) \\equiv q \\pmod{6q+1}$ and $\\sigma_2(m) \\equiv q \\pmod{6q-1}$. For $q=1$ (twin pair $(5,7)$): $\\sigma_1(m) \\equiv 1 \\pmod{7}$ and $\\sigma_2(m) \\equiv 1 \\pmod{5}$.</p>
-</div>`},
-
-{id:"thm-empty-or-inf",ch:"§3½ New",badge:"b-thm",title:"Theorem — Every Nonempty Open Set in $N$ is Infinite",lean:null,body:`
-<p>In the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a> on $N$:</p>
-<div class="math-block">$$\\text{For any }a,b,c,d\\in\\mathbb{Z}\\text{ with }b,d\\neq 0:\\quad \\sigma^{-1}\\bigl((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})\\bigr)\\text{ is either }\\emptyset\\text{ or infinite.}$$</div>
-<div class="remark-box">
-<div class="remark-title"><i class="bi bi-star-fill me-1"></i>Why this matters</div>
-<p>This shows that $N$ is "topologically large" — it cannot meet a basic open set in finitely many points. This is the deeper reason why $\\{e\\}$ cannot be open in $N$, which is the key contradiction in the Furstenberg argument.</p>
-</div>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
-<div class="proof-content" style="display:none">
-<p><strong>Direct computation of $\\sigma^{-1}((a+b\\mathbb{Z}) \\times (c+d\\mathbb{Z}))$:</strong></p>
-<p>An element $m = \\widehat{k_1}\\cdots\\widehat{k_r} \\in N$ lies in this set iff:</p>
-<div class="math-block">$$\\sigma_1(m) = k_1 \\circledast \\cdots \\circledast k_r \\equiv a \\!\\!\\pmod{b} \\quad\\text{and}\\quad \\sigma_2(m) = k_1 \\star \\cdots \\star k_r \\equiv c \\!\\!\\pmod{d}$$</div>
-<p>Applying $\\phi$ and $\\psi$: this is $\\phi(k_1)\\cdots\\phi(k_r) \\equiv \\phi(a) \\pmod{\\phi(a)\\cdot b'}$ and $\\psi(k_1)\\cdots\\psi(k_r) \\equiv \\psi(c)\\pmod{\\psi(c) \\cdot d'}$ for appropriate $b', d'$.</p>
-<p>Now suppose this set is nonempty. Pick $m_0 \\in N$ with $\\sigma(m_0) = (z_0, w_0)$ in the set.</p>
-<p><span class="step-num">1</span><strong>Construct new elements:</strong> For each $n \\in \\mathbb{Z}$, define $v_n = m_0 \\cdot \\widehat{nbd}$. Since $m_0 \\in N$ and $\\widehat{nbd} \\in G \\subseteq N$, we have $v_n \\in N$. ✓</p>
-<p><span class="step-num">2</span><strong>Compute shadows via $\\sigma$:</strong> Since $\\sigma$ is a homomorphism (<a class="ilink" onclick="goToCard('def-shadow')">Shadow Map</a>):</p>
-<p>$\\sigma_1(v_n) = z_0 \\circledast (nbd) = 6z_0 \\cdot nbd + z_0 + nbd = nbd(6z_0 + 1) + z_0$</p>
-<p>$\\sigma_2(v_n) = w_0 \\star (nbd) = -6w_0 \\cdot nbd + w_0 + nbd = nbd(-6w_0 + 1) + w_0$</p>
-<p><span class="step-num">3</span><strong>First shadow stays in $a + b\\mathbb{Z}$:</strong></p>
-<p>$\\sigma_1(v_n) = nbd(6z_0 + 1) + z_0 \\equiv z_0 \\equiv a \\pmod{b}$ &nbsp; (since $b \\mid nbd$) ✓</p>
-<p><span class="step-num">4</span><strong>Second shadow stays in $c + d\\mathbb{Z}$:</strong></p>
-<p>$\\sigma_2(v_n) = nbd(-6w_0 + 1) + w_0 \\equiv w_0 \\equiv c \\pmod{d}$ &nbsp; (since $d \\mid nbd$) ✓</p>
-<p><span class="step-num">5</span><strong>Distinctness:</strong> If $v_n = v_m$ then $\\sigma_1(v_n) = \\sigma_1(v_m)$:</p>
-<p>$\\phi(\\sigma_1(v_n)) = \\phi(z_0) \\cdot \\phi(nbd) = \\phi(z_0)(6nbd + 1)$</p>
-<p>$= \\phi(z_0)(6mbd + 1) = \\phi(\\sigma_1(v_m))$</p>
-<p>Since $\\phi(z_0) = 6z_0 + 1 \\neq 0$ (always odd, never zero), cancel: $6nbd + 1 = 6mbd + 1$, so $n = m$. ✓</p>
-<p>Since $\\sigma_1(v_n) \\neq \\sigma_1(v_m)$ for $n \\neq m$, the $v_n$ are <strong>pairwise distinct</strong> elements of $N$. ($\\sigma$ is well-defined, so different $\\sigma$-values $\\Rightarrow$ different elements.) ✓</p>
-<p><span class="step-num">6</span><strong>Conclusion:</strong> $\\{v_n : n \\in \\mathbb{Z}\\} \\subseteq \\sigma^{-1}((a+b\\mathbb{Z}) \\times (c+d\\mathbb{Z}))$ is infinite. ✓</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<div class="remark-box">
-<div class="remark-title"><i class="bi bi-diagram-3 me-1"></i>Logical structure</div>
-<p>The proof uses three ingredients: <span class="depends-badge">$\\sigma$ is a homomorphism</span> <span class="depends-badge">$G \\ni \\widehat{nbd}$ for all $n$</span> <span class="depends-badge">$\\phi(z_0) \\neq 0$ always (for injectivity)</span></p>
-</div>`},
-
-{id:"cor-no-isolated",ch:"§3½ New",badge:"b-cor",title:"Corollary — No Isolated Points in $N$",lean:null,body:`
-<p><strong>Statement:</strong> In the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a> on $N$, the submonoid $N$ has <strong>no isolated points</strong>. That is, for every $m \\in N$, the singleton $\\{m\\}$ is <strong>not open</strong> in $N$.</p>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
-<div class="proof-content" style="display:none">
-<p>Suppose for contradiction that $\\{m\\}$ is open in the shadow topology on $N$.</p>
-<p><span class="step-num">1</span>By definition of the initial topology from $\\sigma$, there exists an open set $V \\subseteq \\mathbb{Z}^2$ with $\\{m\\} = \\sigma^{-1}(V)$.</p>
-<p><span class="step-num">2</span>Let $(z_0, w_0) = \\sigma(m)$. Since $(z_0, w_0) \\in V$ and $V$ is open in $\\mathbb{Z}^2$, there exist $b,d \\neq 0$ with $(z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z}) \\subseteq V$.</p>
-<p><span class="step-num">3</span>Then $\\sigma^{-1}\\bigl((z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\bigr) \\subseteq \\sigma^{-1}(V) = \\{m\\}$.</p>
-<p><span class="step-num">4</span>But $m \\in \\sigma^{-1}\\bigl((z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\bigr)$, so this set is nonempty.</p>
-<p><span class="step-num">5</span>By the <a class="ilink" onclick="goToCard('thm-empty-or-inf')">Empty-or-Infinite Theorem</a>, it is <strong>infinite</strong> — contradicting the fact that it's contained in a singleton.</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<div class="remark-box">
-<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Significance</div>
-<p>This corollary gives a <strong>cleaner version of <a class="ilink" onclick="goToCard('lem-5.1')">Lemma 5.1</a></strong> (no singleton open in $N$). While Lemma 5.1 only needs this for $e$, the result holds for <em>every</em> element of $N$ — the submonoid $N$ is a <strong>perfect set</strong> (no isolated points) in the shadow topology.</p>
-</div>`},
-
-{id:"def-4.1",ch:"§4 Irred",badge:"b-def",title:"Definition 4.1 — Irreducibility in $N$",lean:`${GH}/TPC/Main.lean#L5`,body:`
+// ═══════════════════════════════════════════════════════════════
+// Card 6 — Def 4.1: Irreducibility
+// ═══════════════════════════════════════════════════════════════
+{id:"def-4.1",ch:"§3 Irred",badge:"b-def",title:"Definition 4.1 — Irreducibility in $N$",lean:`${GH}/TPC/Main.lean#L5`,body:`
 <p>An element $m \\in N \\setminus \\{e\\}$ is <strong>irreducible in $N$</strong> (written $m \\in \\mathrm{Irr}(N)$) if:</p>
 <div class="math-block">$$m = a \\cdot b\\text{ with }a,b\\in N \\implies a = e\\text{ or }b = e$$</div>
-<p>In other words, $m$ cannot be decomposed as a nontrivial product of two elements of $N$. We also write $\\mathrm{Irr}_\\otimes(N)$ for the set of tensor-irreducibles.</p>
+<p>In other words, $m$ cannot be decomposed as a nontrivial product of two elements of $N$.</p>
 <div class="remark-box">
-<div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Note on structure</div>
-<p>Every element of $N$ is a formal product of diagonal tensors $\\widehat{k} = k \\otimes k$. Irreducibility means the generating sequence has length exactly 1: $m = \\widehat{k} = k \\otimes k$ for some $k$ that is $\\circledast$-irreducible. See <a class="ilink" onclick="goToCard('thm-4.2')">Thm 4.2</a> for the full characterization.</p>
+<div class="remark-title"><i class="bi bi-info-circle-fill me-1"></i>Note</div>
+<p>Every element of $N$ is a product of diagonal tensors $\\mathfrak{k} = (k,k)$. Irreducibility means the generating sequence has length exactly 1: $m = \\mathfrak{k}$ for some $k$ that is simultaneously $\\circledast$-irreducible and $\\star$-irreducible.</p>
 </div>`},
 
-{id:"thm-4.2",ch:"§4 Irred",badge:"b-thm",title:"Theorem 4.2 — Irreducibles $\\iff$ Twin Primes",lean:`${GH}/TPC/Main.lean#L8`,body:`
-<p>Work in the <strong>monoid tensor product</strong> $M = (\\mathbb{Z},\\circledast) \\otimes_{\\mathrm{Mon}} (\\mathbb{Z},\\star)$. A pure tensor $z\\otimes w$ is $\\otimes$-irreducible if and only if $z$ is $\\circledast$-irreducible and $w$ is $\\star$-irreducible:</p>
-<div class="math-block">$$z\\otimes w\\in\\mathrm{Irr}(M) \\iff z\\notin\\{x\\circledast y : x,y\\neq 0\\}\\text{ and }w\\notin\\{x\\star y : x,y\\neq 0\\}$$</div>
-<p>Equivalently, via $\\phi$ and $\\psi$: $\\phi(z)=6z+1$ is $\\pm$prime and $\\psi(w)=6w-1$ is $\\pm$prime. For diagonal elements $\\widehat{k} = k\\otimes k$, both conditions fall on the same $k$, giving twin prime pairs $(6k-1,\\,6k+1)$.</p>
+// ═══════════════════════════════════════════════════════════════
+// Card 7 — Thm 4.2: Irreducibles ⟺ Twin Primes
+// ═══════════════════════════════════════════════════════════════
+{id:"thm-4.2",ch:"§3 Irred",badge:"b-thm",title:"Theorem 4.2 — Irreducibles $\\Longleftrightarrow$ Twin Primes",lean:`${GH}/TPC/Main.lean#L8`,body:`
+<p>A pure tensor $z\\otimes w$ is irreducible in $M$ iff $z$ is $\\circledast$-irreducible and $w$ is $\\star$-irreducible. For diagonal elements $\\mathfrak{k} = (k,k) \\in N$:</p>
+<div class="math-block">$$\\mathfrak{k} \\in \\mathrm{Irr}(N) \\iff \\phi(k)=6k+1 \\text{ is } \\pm\\text{prime and } \\psi(k)=6k-1 \\text{ is } \\pm\\text{prime}$$</div>
+<p>i.e., $(6k-1, 6k+1)$ is a <strong>twin prime pair</strong>.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>Setup:</strong> In the monoid tensor product $M = (\\mathbb{Z},\\circledast)\\otimes_{\\mathrm{Mon}}(\\mathbb{Z},\\star)$, the bilinearity relations are:</p>
-<div class="math-block">$$(a\\circledast a')\\otimes w = (a\\otimes w)\\cdot(a'\\otimes w)\\qquad z\\otimes(b\\star b') = (z\\otimes b)\\cdot(z\\otimes b')$$</div>
-<p>and the identity is $0\\otimes w = z\\otimes 0 = e$. The only way to factor a pure tensor $z\\otimes w$ into a product of non-identity elements is via these bilinearity relations.</p>
 <p><strong>($\\Rightarrow$) $z\\otimes w$ irreducible $\\Rightarrow$ both components irreducible:</strong></p>
-<p><span class="step-num">1</span><strong>$z$ is $\\circledast$-irreducible:</strong> If $z = a\\circledast b$ with $a,b\\neq 0$, then by bilinearity:</p>
-<p>$z\\otimes w = (a\\circledast b)\\otimes w = (a\\otimes w)\\cdot(b\\otimes w)$</p>
-<p>Both $a\\otimes w$ and $b\\otimes w$ are non-identity (since $a,b\\neq 0$ and $w\\neq 0$). This is a nontrivial factorization, contradicting irreducibility of $z\\otimes w$.</p>
-<p><span class="step-num">2</span><strong>$w$ is $\\star$-irreducible:</strong> If $w = c\\star d$ with $c,d\\neq 0$, then:</p>
-<p>$z\\otimes w = z\\otimes(c\\star d) = (z\\otimes c)\\cdot(z\\otimes d)$</p>
-<p>Again a nontrivial factorization. Contradiction.</p>
-<p><strong>($\\Leftarrow$) Both components irreducible $\\Rightarrow$ $z\\otimes w$ irreducible:</strong></p>
-<p>Suppose $z$ is $\\circledast$-irreducible and $w$ is $\\star$-irreducible. The only factorizations of a pure tensor in $M$ come from the bilinearity relations:</p>
-<p><span class="step-num">3</span><strong>Left-splitting:</strong> $z\\otimes w = (a\\otimes w)(b\\otimes w)$ requires $z = a\\circledast b$. Since $z$ is $\\circledast$-irreducible: $a=0$ or $b=0$, making one factor the identity $e$. Trivial.</p>
-<p><span class="step-num">4</span><strong>Right-splitting:</strong> $z\\otimes w = (z\\otimes c)(z\\otimes d)$ requires $w = c\\star d$. Since $w$ is $\\star$-irreducible: $c=0$ or $d=0$. Trivial.</p>
-<p><span class="step-num">5</span><strong>Mixed splitting:</strong> A product $(a\\otimes c)(b\\otimes d)$ with $a \\neq b$ AND $c \\neq d$ does <em>not</em> simplify to a single pure tensor via the bilinearity relations — it remains a <strong>formal product</strong> in $M$, not equal to any single $z\\otimes w$. This is because the bilinearity relations only allow factoring along one tensor factor at a time: $(a \\circledast b) \\otimes w$ splits the left factor while fixing $w$, and $z \\otimes (c \\star d)$ splits the right factor while fixing $z$. A product of two pure tensors with <em>both</em> components differing cannot be "recombined" into a single pure tensor. So mixed factorizations cannot produce a pure tensor $z\\otimes w$.</p>
+<p><span class="step-num">1</span>If $z = a\\circledast b$ with $a,b\\neq 0$, then $z\\otimes w = (a\\otimes w)(b\\otimes w)$, a nontrivial factorization. Contradicts irreducibility.</p>
+<p><span class="step-num">2</span>Similarly, if $w = c\\star d$ with $c,d\\neq 0$, then $z\\otimes w = (z\\otimes c)(z\\otimes d)$. Contradiction.</p>
+<p><strong>($\\Leftarrow$) Both irreducible $\\Rightarrow$ $z\\otimes w$ irreducible:</strong></p>
+<p><span class="step-num">3</span><strong>Left-splitting:</strong> $z\\otimes w = (a\\otimes w)(b\\otimes w)$ requires $z = a\\circledast b$. Irreducibility of $z$: $a=0$ or $b=0$. Trivial.</p>
+<p><span class="step-num">4</span><strong>Right-splitting:</strong> $z\\otimes w = (z\\otimes c)(z\\otimes d)$ requires $w = c\\star d$. Irreducibility of $w$: $c=0$ or $d=0$. Trivial.</p>
+<p><span class="step-num">5</span><strong>Mixed splitting:</strong> A product $(a\\otimes c)(b\\otimes d)$ with $a \\neq b$ AND $c \\neq d$ remains a formal product in $M$ — it cannot equal a single pure tensor.</p>
 <p>Therefore $z\\otimes w$ is irreducible. ✓</p>
-<p><strong>Connection to twin primes:</strong> By <a class="ilink" onclick="goToCard('thm-1.3')">Theorem 1.3</a>:</p>
-<p>$z$ is $\\circledast$-irreducible $\\iff$ $\\phi(z)=6z+1$ is $\\pm$prime</p>
-<p>$w$ is $\\star$-irreducible $\\iff$ $\\psi(w)=6w-1$ is $\\pm$prime</p>
-<p>For diagonal elements $\\widehat{k} = k\\otimes k \\in N$: both conditions are on the same $k$, giving $6k+1$ and $6k-1$ both $\\pm$prime — i.e., $(6k-1,\\,6k+1)$ is a <strong>twin prime pair</strong>.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<div class="remark-box">
-<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Why the tensor product?</div>
-<p>In the diagonal submonoid $N = \\langle\\{k \\otimes k\\}\\rangle \\leqslant M$, the two components share the same generator sequence, creating subtle coupling. The monoid tensor product $\\otimes_{\\mathrm{Mon}}$ decouples the components via bilinearity, making irreducibility decompose cleanly. The identity condition $z \\otimes 0 = 0 \\otimes w = e$ ensures that "trivial" tensors collapse to the identity, preventing spurious factorizations.</p>
 </div>
 <div class="example-box">
 <div class="example-title"><i class="bi bi-table me-1"></i>Twin Prime Table</div>
-<div class="code-block" style="margin:0"> k    φ(k)=6k+1  ψ(k)=6k−1  φ ±prime?  ψ ±prime?  k⊗k irred?  Twin pair
- 1       7          5        YES ✓      YES ✓      YES ✓       (5, 7)
- 2      13         11        YES ✓      YES ✓      YES ✓       (11, 13)
- 3      19         17        YES ✓      YES ✓      YES ✓       (17, 19)
- 4      25         23        NO  ✗      YES        NO  ✗       25 = 5²
- 5      31         29        YES ✓      YES ✓      YES ✓       (29, 31)
- 7      43         41        YES ✓      YES ✓      YES ✓       (41, 43)
-10      61         59        YES ✓      YES ✓      YES ✓       (59, 61)
-12      73         71        YES ✓      YES ✓      YES ✓       (71, 73)
-17     103        101        YES ✓      YES ✓      YES ✓       (101, 103)</div>
+<div class="code-block" style="margin:0"> k    φ(k)=6k+1  ψ(k)=6k-1  Twin pair?
+ 1       7          5       YES  (5, 7)
+ 2      13         11       YES  (11, 13)
+ 3      19         17       YES  (17, 19)
+ 4      25         23       NO   25 = 5²
+ 5      31         29       YES  (29, 31)
+ 7      43         41       YES  (41, 43)</div>
 </div>
-<p>So $|\\mathrm{Irr}_\\otimes(N)|=\\infty$ restricted to diagonal tensors $k\\otimes k$ is <strong>exactly</strong> the Twin Prime Conjecture.</p>`},
+<p>So $|\\mathrm{Irr}(N)|=\\infty$ (restricted to diagonal tensors) is <strong>exactly</strong> the Twin Prime Conjecture.</p>`},
 
-{id:"lem-4.3",ch:"§4 Irred",badge:"b-lem",title:"Lemma 4.3 — The Norm Function",lean:`${GH}/TPC/Main.lean#L40`,body:`
-<p>Define the <strong>norm</strong> on $N$:</p>
-<div class="math-block">$$\\|z \\otimes w\\| = \\phi(z)^2 = (6z+1)^2$$</div>
-<p>(where $z$ is the first-component shadow of the element).</p>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show properties and proofs</button>
+// ═══════════════════════════════════════════════════════════════
+// Card 8 — Lem 4.3: Norm
+// ═══════════════════════════════════════════════════════════════
+{id:"lem-4.3",ch:"§3 Irred",badge:"b-lem",title:"Lemma 4.3 — The Norm Function",lean:`${GH}/TPC/Main.lean#L40`,body:`
+<p>Define the <strong>norm</strong> on $N$ (well-defined by <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4.5</a>):</p>
+<div class="math-block">$$\\|\\mathfrak{k}_1 \\cdots \\mathfrak{k}_r\\| = \\prod_{i=1}^r \\phi(k_i)^2 = \\prod_{i=1}^r (6k_i+1)^2$$</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show properties</button>
 <div class="proof-content" style="display:none">
-<p><strong>N1. Non-negative:</strong> $\\|z \\otimes w\\|=(6z+1)^2\\geq 0$. Trivial. ✓</p>
-<p><strong>N2. Identity:</strong> $\\|e\\| = \\|0 \\otimes 0\\| = (6\\cdot 0+1)^2 = 1$. ✓</p>
-<p><strong>N3. Non-degenerate:</strong> $\\|m\\|=1 \\iff (6z+1)^2=1 \\iff 6z+1=\\pm 1 \\iff z=0$ or $z=-1/3$. Since $z\\in\\mathbb{Z}$, we get $z=0$, so $m = e$. ✓</p>
-<p><strong>N4. Multiplicative:</strong></p>
-<p>$\\|a \\cdot b\\| = \\phi(z_a \\circledast z_b)^2 = (\\phi(z_a)\\phi(z_b))^2 = \\phi(z_a)^2\\cdot\\phi(z_b)^2 = \\|a\\|\\cdot\\|b\\|$. ✓</p>
-<p><strong>N5. Proper factors have smaller norm:</strong></p>
-<p>If $m = a \\cdot b$ with $a, b \\neq e$, then $\\|a\\| \\geq 25$ (since $|\\phi(z_a)|\\geq 5$ for $z_a\\neq 0$, giving $\\|a\\| \\geq 25$). Similarly $\\|b\\|\\geq 25$. Then:</p>
-<p>$\\|a\\| = \\|m\\|/\\|b\\| \\leq \\|m\\|/25 < \\|m\\|$. ✓</p>
+<p><strong>N1. Non-negative:</strong> Product of squares. ✓</p>
+<p><strong>N2. Identity:</strong> $\\|e\\| = 1$ (empty product). ✓</p>
+<p><strong>N3. Non-degenerate:</strong> $\\|m\\|=1 \\iff$ all $(6k_i+1)^2 = 1 \\iff$ all $k_i=0 \\iff m = e$. ✓</p>
+<p><strong>N4. Multiplicative:</strong> $\\|a \\cdot b\\| = \\|a\\|\\cdot\\|b\\|$. ✓</p>
+<p><strong>N5. Proper factors have smaller norm:</strong> If $m = a \\cdot b$ with $a, b \\neq e$, then $\\|a\\| \\geq 25$ (since $|\\phi(k)|\\geq 5$ for $k\\neq 0$), so $\\|a\\| = \\|m\\|/\\|b\\| \\leq \\|m\\|/25 < \\|m\\|$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
-</div>
-<div class="example-box">
-<div class="example-title"><i class="bi bi-calculator me-1"></i>Norm Values</div>
-<div class="code-block" style="margin:0">‖e‖         = 1²  = 1     ← identity
-‖1 ⊗ 1‖     = 7²  = 49    ← irreducible (7 prime)
-‖2 ⊗ 2‖     = 13² = 169   ← irreducible (13 prime)
-‖(1⊗1)(1⊗1)‖ = 49² = 2401  = 49·49 = ‖1⊗1‖²  ← composite!</div>
 </div>`},
 
-{id:"lem-4.4",ch:"§4 Irred",badge:"b-cor",title:"Lemma 4.4 + Corollary 4.5 — Irreducible Divisors and Covering",lean:`${GH}/TPC/Main.lean#L55`,body:`
-<p><strong>Lemma 4.4 (Every element has an irreducible divisor):</strong></p>
-<p>For every $m \\in N \\setminus \\{e\\}$, there exists $\\widehat{q} \\in \\mathrm{Irr}(N)$ with $\\widehat{q} \\mid m$ (i.e., $m = \\widehat{q} \\cdot n$ for some $n \\in N$).</p>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof of Lemma 4.4</button>
+// ═══════════════════════════════════════════════════════════════
+// Card 9 — Lem 4.4 + Cor 4.5: Covering
+// ═══════════════════════════════════════════════════════════════
+{id:"lem-4.4",ch:"§3 Irred",badge:"b-cor",title:"Lemma 4.4 + Corollary 4.5 — Irreducible Divisors and Covering",lean:`${GH}/TPC/Main.lean#L55`,body:`
+<p><strong>Lemma 4.4:</strong> For every $m \\in N \\setminus \\{e\\}$, there exists $\\mathfrak{q} \\in \\mathrm{Irr}(N)$ with $\\mathfrak{q} \\mid m$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof</button>
 <div class="proof-content" style="display:none">
 <p><strong>Strong induction on $\\|m\\|$.</strong></p>
-<p><strong>Base:</strong> If $m$ is irreducible, take $\\widehat{q}=m$ and we're done (it divides itself: $m = m \\cdot e$).</p>
-<p><strong>Inductive step:</strong> If $m$ is not irreducible, write $m = a \\cdot b$ with $a, b \\neq e$.</p>
-<p>By <a class="ilink" onclick="goToCard('lem-4.3')">norm property N5</a>: $\\|a\\| < \\|m\\|$.</p>
-<p>By the induction hypothesis (applicable since $\\|a\\|<\\|m\\|$ and $a \\neq e$): there exists $\\widehat{q}\\in\\mathrm{Irr}(N)$ with $\\widehat{q} \\mid a$.</p>
-<p>Write $a = \\widehat{q} \\cdot c$. Then $m = \\widehat{q} \\cdot c \\cdot b = \\widehat{q} \\cdot (c \\cdot b)$.</p>
-<p>So $\\widehat{q} \\mid m$. ✓</p>
-<p><strong>Termination:</strong> The norm $\\|m\\|=(6z+1)^2$ takes values in $\\{1,25,49,121,\\ldots\\}\\subset\\mathbb{N}$, with $\\|m\\|=1\\iff m = e$. So for $m \\neq e$, $\\|m\\|\\geq 25$, and proper factors have strictly smaller norm. The descent terminates by well-ordering of $\\mathbb{N}$.</p>
+<p><strong>Base:</strong> If $m$ is irreducible, take $\\mathfrak{q}=m$. ✓</p>
+<p><strong>Step:</strong> If $m = a \\cdot b$ with $a, b \\neq e$, then $\\|a\\| < \\|m\\|$ by <a class="ilink" onclick="goToCard('lem-4.3')">N5</a>. By induction, some $\\mathfrak{q}\\in\\mathrm{Irr}(N)$ divides $a$, hence divides $m$. ✓</p>
+<p><strong>Termination:</strong> $\\|m\\| \\in \\mathbb{N}$ with $\\|m\\|\\geq 25$ for $m \\neq e$. Well-ordering. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <p><strong>Corollary 4.5 — The Covering:</strong></p>
-<div class="math-block">$$N\\setminus\\{e\\}=\\bigcup_{\\widehat{q}\\in\\mathrm{Irr}_\\otimes(N)}\\widehat{q} \\cdot N$$</div>
-<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof of Cor 4.5</button>
+<div class="math-block">$$N\\setminus\\{e\\}=\\bigcup_{\\mathfrak{q}\\in\\mathrm{Irr}(N)}\\mathfrak{q} \\cdot N$$</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>($\\supseteq$):</strong> Each $\\widehat{q} \\cdot N \\subseteq N\\setminus\\{e\\}$ because $\\widehat{q} \\cdot n = e$ only if $\\widehat{q} = e$ or $n = e$ (no zero divisors), and $\\widehat{q} \\neq e$ since $\\widehat{q}$ is irreducible.</p>
-<p><strong>($\\subseteq$):</strong> Let $m \\in N\\setminus\\{e\\}$. By Lemma 4.4, pick $\\widehat{q}\\in\\mathrm{Irr}(N)$ with $m = \\widehat{q} \\cdot n$. Then $m \\in \\widehat{q} \\cdot N$. ✓</p>
-<div class="code-block">-- Lean 4: norm descent (Lemma 4.4) produces
--- irreducible divisors within N directly.</div>
+<p><strong>($\\supseteq$):</strong> $\\mathfrak{q} \\cdot n = e$ only if $\\mathfrak{q} = e$ (no zero divisors), but $\\mathfrak{q}$ is irreducible hence $\\neq e$. So each $\\mathfrak{q} \\cdot N \\subseteq N\\setminus\\{e\\}$. ✓</p>
+<p><strong>($\\subseteq$):</strong> By Lemma 4.4, every $m \\in N\\setminus\\{e\\}$ has $\\mathfrak{q} \\mid m$, so $m \\in \\mathfrak{q} \\cdot N$. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
 </div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-diagram-3 me-1"></i>Analogy with Furstenberg</div>
-<p>This is the exact analogue of $\\mathbb{Z}\\setminus\\{\\pm1\\} = \\bigcup_{p\\text{ prime}} p\\mathbb{Z}$ in Furstenberg's original proof of the infinitude of primes.</p>
+<p>This is the exact analogue of $\\mathbb{Z}\\setminus\\{\\pm1\\} = \\bigcup_{p\\text{ prime}} p\\mathbb{Z}$ in Furstenberg's original proof.</p>
 </div>`},
 
-{id:"lem-5.1",ch:"§5 Main",badge:"b-lem",title:"Lemma 5.1 — No Singleton is Open in $N$",lean:`${GH}/TPC/Main.lean#L82`,body:`
-<p><strong>Statement:</strong> Every nonempty open set in the subspace topology on $N$ is <strong>infinite</strong>. In particular, no singleton $\\{m\\}$ is open in $N$.</p>
+// ═══════════════════════════════════════════════════════════════
+// Card 10 — Def: Projected Map π and Topology on N
+// ═══════════════════════════════════════════════════════════════
+{id:"def-proj",ch:"§4 Topology",badge:"b-def",title:"Definition — Projected Map $\\pi$ and Topology on $N$",lean:null,body:`
+<p>By <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4.5</a>, every element of $N$ has a <strong>unique multiset representation</strong> $\\mathfrak{k}_1\\cdots\\mathfrak{k}_r$. Define the <strong>projected map</strong>:</p>
+<div class="math-block">$$\\pi = (\\pi_1, \\pi_2): N \\to \\mathbb{Z}^2, \\qquad \\pi(\\mathfrak{k}_1\\cdots\\mathfrak{k}_r) = (k_1 \\circledast \\cdots \\circledast k_r,\\; k_1 \\star \\cdots \\star k_r)$$</div>
+<p>with $\\pi(e) = (0, 0)$.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show that $\\pi$ is well-defined and a homomorphism</button>
+<div class="proof-content" style="display:none">
+<p><strong>Well-defined:</strong> By <a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4.5</a>, the multiset $\\{k_1,\\ldots,k_r\\}$ is unique. Since $\\circledast$ and $\\star$ are commutative, order doesn't matter. ✓</p>
+<p><strong>Homomorphism:</strong> $\\pi_1(m \\cdot m') = \\pi_1(m) \\circledast \\pi_1(m')$ (concatenate generator sequences, then $\\circledast$-multiply). Similarly $\\pi_2$. ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<p><strong>The projected topology on $N$:</strong> Give $N$ the <strong>initial topology</strong> from $\\pi$: a set $U \\subseteq N$ is open iff $U = \\pi^{-1}(V)$ for some open $V \\subseteq \\mathbb{Z}^2$ (Furstenberg product topology). Basic opens are:</p>
+<div class="math-block">$$\\pi^{-1}\\bigl((a + b\\mathbb{Z}) \\times (c + d\\mathbb{Z})\\bigr) = \\{m \\in N : \\pi_1(m) \\equiv a \\!\\!\\pmod{b},\\; \\pi_2(m) \\equiv c \\!\\!\\pmod{d}\\}$$</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Why this topology?</div>
+<p>The final topology from $\\beta: \\mathbb{Z}^2 \\to M$ only "sees" pure tensors. Products of $\\geq 2$ distinct diagonal generators are <strong>not</strong> pure tensors, so they would be isolated in the final topology — breaking the Furstenberg argument. The projected map $\\pi$ gives $N$ a non-trivial topology where every element has infinite neighborhoods.</p>
+</div>
+<p style="font-size:.85rem;color:var(--gray);">Key: $\\pi$ intertwines left-multiplication by $\\mathfrak{q}$ with $L_q(z,w) = (q \\circledast z,\\, q \\star w)$ on $\\mathbb{Z}^2$.</p>`},
+
+// ═══════════════════════════════════════════════════════════════
+// Card 11 — Proposition: N is a Topological Monoid
+// ═══════════════════════════════════════════════════════════════
+{id:"prop-top-monoid",ch:"§4 Topology",badge:"b-prop",title:"Proposition — $N$ is a Topological Monoid",lean:null,body:`
+<p>Under the <a class="ilink" onclick="goToCard('def-proj')">projected topology</a>, the multiplication $\\mu: N \\times N \\to N$ is <strong>continuous</strong>, making $(N, \\mu)$ a <strong>topological monoid</strong>.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p>Let $U\\subseteq N$ be nonempty and open in the subspace topology. Then $U = N\\cap V$ for some open $V\\subseteq M$.</p>
-<p><span class="step-num">1</span>Pick $m \\in U$ with component shadows $(z_0, w_0)$. Since $V$ is open in the final topology on $M$, $\\beta^{-1}(V)$ is open in $\\mathbb{Z}^2$. Since $(z_0,w_0) \\in \\beta^{-1}(V)$, there exist $b,d>0$ with:</p>
-<p>$(z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\subseteq \\beta^{-1}(V)$</p>
-<p><span class="step-num">2</span>Then $N\\cap\\beta^{-1}\\bigl((z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})\\bigr)\\subseteq N\\cap V = U$.</p>
-<p><span class="step-num">3</span>By the <a class="ilink" onclick="goToCard('thm-empty-or-inf')">Empty-or-Infinite Theorem</a>, since $m$ is in this intersection, it is <strong>infinite</strong>.</p>
-<p><span class="step-num">4</span>Therefore $U$ contains infinitely many elements, so $|U|=\\infty$.</p>
-<p><strong>Alternatively</strong> (direct argument without the new theorem): For each $n\\in\\mathbb{Z}$, the element $m \\cdot \\widehat{nbd}\\in N$ has component shadows in $(z_0+b\\mathbb{Z})\\times(w_0+d\\mathbb{Z})$ (as computed in the proof of the emptiness-or-infinitude theorem), giving infinitely many distinct points in $U$.</p>
+<p><strong>Strategy:</strong> The projected topology is the initial topology from $\\pi: N \\to \\mathbb{Z}^2$. A map into $N$ is continuous iff its composition with $\\pi$ is continuous. So we need $\\pi \\circ \\mu: N \\times N \\to \\mathbb{Z}^2$ to be continuous.</p>
+<p><span class="step-num">1</span><strong>Factor through $\\pi$:</strong> Since $\\pi$ is a <a class="ilink" onclick="goToCard('def-proj')">homomorphism</a>:</p>
+<div class="math-block">$$\\pi(m \\cdot n) = \\bigl(\\pi_1(m) \\circledast \\pi_1(n),\\; \\pi_2(m) \\star \\pi_2(n)\\bigr)$$</div>
+<p>So $\\pi \\circ \\mu = (\\circledast,\\, \\star) \\circ ((\\pi_1 \\times \\pi_1),\\, (\\pi_2 \\times \\pi_2))$. It suffices to show $\\circledast$ and $\\star$ are continuous in the Furstenberg topology on $\\mathbb{Z}$.</p>
+<p><span class="step-num">2</span><strong>$\\circledast$ is continuous:</strong> Let $x_0 \\circledast y_0 \\in a + b\\mathbb{Z}$ (a basic open). Take $x \\in x_0 + b\\mathbb{Z}$, $y \\in y_0 + b\\mathbb{Z}$, say $x = x_0 + b\\alpha$, $y = y_0 + b\\beta$. Then:</p>
+<div class="math-block">$$x \\circledast y = 6(x_0+b\\alpha)(y_0+b\\beta) + (x_0+b\\alpha) + (y_0+b\\beta) = (x_0 \\circledast y_0) + b(\\cdots) \\in a + b\\mathbb{Z}$$</div>
+<p>since every cross-term contains a factor of $b$. So $\\circledast^{-1}(a+b\\mathbb{Z}) \\supseteq (x_0+b\\mathbb{Z})\\times(y_0+b\\mathbb{Z})$. ✓</p>
+<p><span class="step-num">3</span><strong>$\\star$ is continuous:</strong> Identical argument with $-6$ replacing $6$. ✓</p>
+<p><span class="step-num">4</span><strong>Compose:</strong> $\\pi_1, \\pi_2: N \\to \\mathbb{Z}$ are continuous by definition (initial topology). Products and compositions of continuous maps are continuous. Therefore $\\pi \\circ \\mu$ is continuous, hence $\\mu$ is continuous. ✓</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Consequence: Left translation is continuous</div>
+<p>For each $\\mathfrak{q} \\in N$, the map $L_{\\mathfrak{q}}: N \\to N$, $n \\mapsto \\mathfrak{q} \\cdot n$ is continuous (restrict $\\mu$ to $\\{\\mathfrak{q}\\} \\times N$). Under $\\pi$, this corresponds to $L_q(z,w) = (q \\circledast z,\\, q \\star w)$ on $\\mathbb{Z}^2$, which maps arithmetic progressions to arithmetic progressions.</p>
+</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-exclamation-triangle me-1"></i>Why $\\mathfrak{q}N$ is NOT automatically closed</div>
+<p>In a topological <strong>group</strong>, left translation is a homeomorphism, so $gH$ is closed for any closed subgroup $H$. But $N$ is a <strong>monoid</strong> — $L_{\\mathfrak{q}}$ is injective but not surjective, so not a homeomorphism. In the projected topology, a set is closed iff it equals $\\pi^{-1}(F)$ for closed $F$. Requiring $\\mathfrak{q}\\cdot N = \\pi^{-1}(\\cdots)$ is equivalent to the <a class="ilink" onclick="goToCard('critical')">false Coset Identity</a>. Instead, we use the <strong>containment approach</strong>: $\\mathfrak{q}\\cdot N \\subseteq \\pi^{-1}(S_q)$ with $S_q$ clopen and $e \\notin \\pi^{-1}(S_q)$.</p>
 </div>`},
 
-{id:"thm-5.2",ch:"§5 Main",badge:"b-thm",title:"Theorem 5.2 — $|\\mathrm{Irr}(N)|=\\infty$ (The Furstenberg Argument)",lean:`${GH}/TPC/Main.lean#L88`,body:`
+// ═══════════════════════════════════════════════════════════════
+// Card 12 — Containment Lemma (replaces false Coset Identity)
+// ═══════════════════════════════════════════════════════════════
+{id:"lem-proj-contain",ch:"§4 Topology",badge:"b-lem",title:"Lemma — Containment $\\mathfrak{q} \\cdot N \\subseteq \\pi^{-1}(S_q)$ and $e \\notin \\pi^{-1}(S_q)$",lean:null,body:`
+<p>For each irreducible $\\mathfrak{q} = (q,q) \\in \\mathrm{Irr}(N)$, define the <strong>clopen envelope</strong>:</p>
+<div class="math-block">$$S_q = (q + \\phi(q)\\mathbb{Z}) \\times (q + \\psi(q)\\mathbb{Z}) \\subseteq \\mathbb{Z}^2$$</div>
+<p>Then: <strong>(a)</strong> $\\mathfrak{q} \\cdot N \\subseteq \\pi^{-1}(S_q)$, and <strong>(b)</strong> $e \\notin \\pi^{-1}(S_q)$, and <strong>(c)</strong> $\\pi^{-1}(S_q)$ is <strong>clopen</strong>.</p>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p><strong>(a) Containment:</strong></p>
+<p><span class="step-num">1</span>Let $m = \\mathfrak{q} \\cdot n$ for $n \\in N$. Since $\\pi_1$ is a <a class="ilink" onclick="goToCard('def-proj')">homomorphism</a> (and $L_{\\mathfrak{q}}$ is <a class="ilink" onclick="goToCard('prop-top-monoid')">continuous</a>):</p>
+<p>$\\pi_1(m) = q \\circledast \\pi_1(n)$, so $\\phi(\\pi_1(m)) = \\phi(q) \\cdot \\phi(\\pi_1(n))$.</p>
+<p>Hence $\\phi(q) \\mid \\phi(\\pi_1(m))$, which gives $\\pi_1(m) \\in q + \\phi(q)\\mathbb{Z}$. ✓</p>
+<p><span class="step-num">2</span>Similarly: $\\pi_2(m) = q \\star \\pi_2(n)$, so $\\psi(q) \\mid \\psi(\\pi_2(m))$, giving $\\pi_2(m) \\in q + \\psi(q)\\mathbb{Z}$. ✓</p>
+<p><strong>(b) Identity excluded:</strong></p>
+<p><span class="step-num">3</span>$\\pi(e) = (0, 0)$. Need $0 \\notin q + \\phi(q)\\mathbb{Z}$, i.e., $(6q+1) \\nmid q$. Since $q \\neq 0$ (irreducibles are non-identity) and $|6q+1| > |q|$ for all $|q| \\geq 1$, this holds. ✓</p>
+<p><strong>(c) Clopenness:</strong></p>
+<p><span class="step-num">4</span>$S_q$ is a product of two arithmetic progressions, hence <strong>clopen</strong> in the Furstenberg product topology on $\\mathbb{Z}^2$. By the initial topology, $\\pi^{-1}(S_q)$ is clopen in $N$. ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<div class="gap-box">
+<div class="gap-title"><i class="bi bi-exclamation-triangle-fill me-1"></i>Important: Containment, NOT equality</div>
+<p>One might hope that $\\mathfrak{q} \\cdot N = \\pi^{-1}(S_q)$, but this is <strong>false</strong>. Counterexample: $\\mathfrak{36} = (36,36)$ has $\\pi(\\mathfrak{36}) = (36, 36)$ with $36 \\equiv 1 \\pmod{7}$ and $36 \\equiv 1 \\pmod{5}$, so $\\mathfrak{36} \\in \\pi^{-1}(S_1)$, but $\\mathfrak{36} \\notin \\mathfrak{1} \\cdot N$ since the generator multiset $\\{36\\}$ does not contain $1$. The Furstenberg argument only requires the <strong>containment + exclusion of $e$</strong>, not equality. See <a class="ilink" onclick="goToCard('critical')">Critical Assessment</a>.</p>
+</div>`},
+
+// ═══════════════════════════════════════════════════════════════
+// Card 13 — Thm: Every Nonempty Open Set in N is Infinite
+// ═══════════════════════════════════════════════════════════════
+{id:"thm-empty-or-inf",ch:"§4 Topology",badge:"b-thm",title:"Theorem — Every Nonempty Open Set in $N$ is Infinite",lean:null,body:`
+<p>In the <a class="ilink" onclick="goToCard('def-proj')">projected topology</a> on $N$:</p>
+<div class="math-block">$$\\text{For any }a,b,c,d\\in\\mathbb{Z}\\text{ with }b,d\\neq 0:\\quad \\pi^{-1}\\bigl((a+b\\mathbb{Z})\\times(c+d\\mathbb{Z})\\bigr)\\text{ is either }\\emptyset\\text{ or infinite.}$$</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-star-fill me-1"></i>Why this matters</div>
+<p>This shows $N$ is "topologically large" — no singleton $\\{m\\}$ can be open. This is the key contradiction target in the Furstenberg argument.</p>
+</div>
+<button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
+<div class="proof-content" style="display:none">
+<p>Suppose the set is nonempty. Pick $m_0 \\in N$ with $\\pi(m_0) = (z_0, w_0)$ in the basic open.</p>
+<p><span class="step-num">1</span><strong>Construct new elements:</strong> For each $n \\in \\mathbb{Z}$, define $v_n = m_0 \\cdot \\mathfrak{(nbd)}$. Since $\\mathfrak{(nbd)} \\in G \\subseteq N$, we have $v_n \\in N$. ✓</p>
+<p><span class="step-num">2</span><strong>First projected component stays in $a + b\\mathbb{Z}$:</strong></p>
+<p>$\\pi_1(v_n) = z_0 \\circledast (nbd) = nbd(6z_0 + 1) + z_0 \\equiv z_0 \\equiv a \\pmod{b}$ (since $b \\mid nbd$). ✓</p>
+<p><span class="step-num">3</span><strong>Second projected component stays in $c + d\\mathbb{Z}$:</strong></p>
+<p>$\\pi_2(v_n) = w_0 \\star (nbd) = nbd(-6w_0 + 1) + w_0 \\equiv w_0 \\equiv c \\pmod{d}$ (since $d \\mid nbd$). ✓</p>
+<p><span class="step-num">4</span><strong>Distinctness:</strong> $\\phi(\\pi_1(v_n)) = \\phi(z_0)(6nbd + 1)$. Since $\\phi(z_0) \\neq 0$, distinct $n$ give distinct $\\pi_1$-values, hence distinct elements (by well-definedness of $\\pi$). ✓</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-diagram-3 me-1"></i>Logical structure</div>
+<p>Uses: <span class="depends-badge">$\\pi$ is a homomorphism</span> <span class="depends-badge">$G \\ni \\mathfrak{(nbd)}$ for all $n$</span> <span class="depends-badge">$\\phi(z_0) \\neq 0$ for injectivity</span></p>
+</div>`},
+
+// ═══════════════════════════════════════════════════════════════
+// Card 14 — Thm 5.2: |Irr(N)| = ∞ (Corrected Furstenberg Argument)
+// ═══════════════════════════════════════════════════════════════
+{id:"thm-5.2",ch:"§5 Proof",badge:"b-thm",title:"Theorem 5.2 — $|\\mathrm{Irr}(N)|=\\infty$ (The Furstenberg Argument)",lean:`${GH}/TPC/Main.lean#L88`,body:`
 <div class="math-block">$$|\\mathrm{Irr}(N)| = \\infty$$</div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>Proof by contradiction.</strong> Assume $\\mathrm{Irr}(N)$ is finite: $\\mathrm{Irr}(N)=\\{\\widehat{q}_1,\\ldots,\\widehat{q}_m\\}$ where each $\\widehat{q}_i = q_i \\otimes q_i$.</p>
-<p><span class="step-num">1</span><strong>Apply the covering (<a class="ilink" onclick="goToCard('lem-4.4')">Cor 4.5</a>):</strong></p>
-<p>$N\\setminus\\{e\\} = \\bigcup_{i=1}^{m} \\widehat{q}_i \\cdot N$</p>
-<p><span class="step-num">2</span><strong>Each coset is clopen (<a class="ilink" onclick="goToCard('cor-shadow-clopen')">Shadow Clopenness</a>):</strong> Each $\\widehat{q}_i \\cdot N = \\sigma^{-1}\\!\\bigl((q_i + \\phi(q_i)\\mathbb{Z}) \\times (q_i + \\psi(q_i)\\mathbb{Z})\\bigr)$ is clopen in the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a> on $N$.</p>
-<p><span class="step-num">3</span><strong>Finite union of clopen = clopen:</strong> A finite union of clopen sets is clopen. So $N\\setminus\\{e\\}$ is clopen in $N$.</p>
-<p><span class="step-num">4</span><strong>Complement is open:</strong> Since $N\\setminus\\{e\\}$ is closed, $\\{e\\} = N\\setminus(N\\setminus\\{e\\})$ is <strong>open</strong> in $N$.</p>
-<p><span class="step-num">5</span><strong>Contradiction:</strong> But $\\{e\\}$ is a singleton, and by <a class="ilink" onclick="goToCard('lem-5.1')">Lemma 5.1</a>, every nonempty open set in $N$ is infinite. A singleton cannot be infinite. <strong>Contradiction!</strong></p>
-<p><span class="step-num">6</span><strong>Conclusion:</strong> $\\mathrm{Irr}(N)$ is not finite, i.e., $|\\mathrm{Irr}(N)|=\\infty$.</p>
+<p><strong>Proof by contradiction.</strong> Assume $\\mathrm{Irr}(N)$ is finite: $\\mathrm{Irr}(N)=\\{\\mathfrak{q}_1,\\ldots,\\mathfrak{q}_m\\}$.</p>
+<p><span class="step-num">1</span><strong>Clopen envelopes (<a class="ilink" onclick="goToCard('lem-proj-contain')">Containment Lemma</a>):</strong> For each $i$, define $C_i = \\pi^{-1}(S_{q_i})$ where $S_{q_i} = (q_i + \\phi(q_i)\\mathbb{Z}) \\times (q_i + \\psi(q_i)\\mathbb{Z})$. Each $C_i$ is <strong>clopen</strong> in the projected topology.</p>
+<p><span class="step-num">2</span><strong>Containment:</strong> $\\mathfrak{q}_i \\cdot N \\subseteq C_i$ for each $i$.</p>
+<p><span class="step-num">3</span><strong>Apply covering (<a class="ilink" onclick="goToCard('lem-4.4')">Cor 4.5</a>):</strong> $N\\setminus\\{e\\} = \\bigcup_{i=1}^{m} \\mathfrak{q}_i \\cdot N \\subseteq \\bigcup_{i=1}^{m} C_i$.</p>
+<p><span class="step-num">4</span><strong>Identity excluded:</strong> $e \\notin C_i$ for any $i$ (by the Containment Lemma, part (b)).</p>
+<p><span class="step-num">5</span><strong>Pinch:</strong> From steps 3–4: every non-identity element of $N$ is in $\\bigcup C_i$, and $e$ is not. Therefore $N \\setminus \\bigcup_{i=1}^m C_i = \\{e\\}$.</p>
+<p><span class="step-num">6</span><strong>Finite union of clopen = clopen:</strong> $\\bigcup_{i=1}^m C_i$ is clopen (finite union).</p>
+<p><span class="step-num">7</span><strong>Complement is clopen:</strong> $\\{e\\} = N \\setminus \\bigcup C_i$ is clopen, hence <strong>open</strong>.</p>
+<p><span class="step-num">8</span><strong>Contradiction:</strong> By the <a class="ilink" onclick="goToCard('thm-empty-or-inf')">Empty-or-Infinite Theorem</a>, every nonempty open set in $N$ is infinite. But $\\{e\\}$ is a singleton. <strong>Contradiction!</strong></p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — $|\\mathrm{Irr}(N)|=\\infty$</div>
 </div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-diagram-3 me-1"></i>Proof Ingredients</div>
 <p>This proof uses exactly four facts:</p>
-<p><span class="depends-badge"><a class="ilink" onclick="goToCard('cor-shadow-clopen')">Shadow Clopenness</a>: cosets clopen in $\\sigma$-topology</span> <span class="depends-badge"><a class="ilink" onclick="goToCard('lem-4.4')">Cor 4.5</a>: covering</span> <span class="depends-badge"><a class="ilink" onclick="goToCard('lem-5.1')">Lem 5.1</a>: no singleton open</span> <span class="depends-badge">Finite union of clopen = clopen</span></p>
+<p><span class="depends-badge"><a class="ilink" onclick="goToCard('lem-proj-contain')">Containment Lemma</a>: $\\mathfrak{q}\\cdot N \\subseteq C_q$, $e \\notin C_q$, $C_q$ clopen</span> <span class="depends-badge"><a class="ilink" onclick="goToCard('lem-4.4')">Cor 4.5</a>: covering</span> <span class="depends-badge"><a class="ilink" onclick="goToCard('thm-empty-or-inf')">Thm ∅/∞</a>: no finite open</span> <span class="depends-badge">Finite union of clopen = clopen</span></p>
+</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Key insight: equality not needed</div>
+<p>Unlike Furstenberg's original proof where each $p\\mathbb{Z}$ is <em>exactly</em> clopen, here we only need each $\\mathfrak{q} \\cdot N$ to be <em>contained in</em> a clopen set that excludes $e$. The "pinch" argument (step 5) then forces $\\{e\\}$ to be the complement.</p>
 </div>`},
 
-{id:"cor-5.3",ch:"§5 Main",badge:"b-cor",title:"Corollary 5.3 — Infinitely Many Twin Primes $\\blacksquare$",lean:`${GH}/TPC/Main.lean#L110`,body:`
+// ═══════════════════════════════════════════════════════════════
+// Card 15 — Cor 5.3: TPC ∎
+// ═══════════════════════════════════════════════════════════════
+{id:"cor-5.3",ch:"§5 Proof",badge:"b-cor",title:"Corollary 5.3 — Infinitely Many Twin Primes $\\blacksquare$",lean:`${GH}/TPC/Main.lean#L110`,body:`
 <div class="math-block">$$\\bigl|\\{k\\in\\mathbb{Z}:6k-1\\in\\pm\\mathbb{P}\\text{ and }6k+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty$$</div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p>By <a class="ilink" onclick="goToCard('thm-4.2')">Theorem 4.2</a>: $\\mathrm{Irr}(N) = \\{k \\otimes k : 6k+1\\in\\pm\\mathbb{P}\\text{ and }6k-1\\in\\pm\\mathbb{P}\\}$.</p>
+<p>By <a class="ilink" onclick="goToCard('thm-4.2')">Theorem 4.2</a>: $\\mathrm{Irr}(N) = \\{(k,k) : 6k+1\\in\\pm\\mathbb{P}\\text{ and }6k-1\\in\\pm\\mathbb{P}\\}$.</p>
 <p>By <a class="ilink" onclick="goToCard('thm-5.2')">Theorem 5.2</a>: $|\\mathrm{Irr}(N)|=\\infty$.</p>
-<p>Therefore the set $\\{k : 6k\\pm1\\in\\pm\\mathbb{P}\\}$ is infinite.</p>
-<p>For each such $k>0$, the pair $(6k-1, 6k+1)$ is a pair of primes differing by $2$ — a <strong>twin prime pair</strong>.</p>
-<p>(For $k<0$, we get twin primes via $|6k+1|$ and $|6k-1|$.)</p>
-<p>Since there are infinitely many such $k$, there are <strong>infinitely many twin prime pairs</strong>.</p>
+<p>For each such $k>0$, the pair $(6k-1, 6k+1)$ is a <strong>twin prime pair</strong>.</p>
+<p>Since infinitely many such $k$ exist, there are <strong>infinitely many twin prime pairs</strong>.</p>
 <div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — Twin Prime Conjecture ∎</div>
 </div>
 <p><strong>Complete logical chain:</strong></p>
@@ -688,54 +508,108 @@ Step sizes: φ(a) = 6a+1, ψ(a) = 6a−1  ← the isomorphism values!</div>
 <span style="color:var(--purple);font-weight:bold"> → </span>
 <span class="depends-badge"><a class="ilink" onclick="goToCard('thm-1.3')">Thm 1.3</a>: $\\phi,\\psi$ isos</span>
 <span style="color:var(--purple);font-weight:bold"> → </span>
-<span class="depends-badge"><a class="ilink" onclick="goToCard('lem-1.4')">Lem 1.4</a>: No zero divs</span>
+<span class="depends-badge"><a class="ilink" onclick="goToCard('def-2.1')">Def 2.1</a>: $M, N$</span>
 <span style="color:var(--blue);font-weight:bold"> → </span>
-<span class="depends-badge"><a class="ilink" onclick="goToCard('def-2.1')">Def 2.2</a>: $N=\\langle G\\rangle$</span>
-<span style="color:var(--blue);font-weight:bold"> + </span>
-<span class="depends-badge"><a class="ilink" onclick="goToCard('prop-2.3')">Prop 2.3</a>: Final topology via UMP</span>
+<span class="depends-badge"><a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4</a>: Unique rep</span>
+<span style="color:var(--blue);font-weight:bold"> → </span>
+<span class="depends-badge"><a class="ilink" onclick="goToCard('def-proj')">Def $\\pi$</a>: Topology</span>
 <span style="color:var(--green);font-weight:bold"> → </span>
-<span class="depends-badge"><a class="ilink" onclick="goToCard('lem-3.1')">Lem 3.1</a>: $\\widehat{a} \\cdot M$ clopen</span>
-<span style="color:var(--green);font-weight:bold"> → </span>
-<span class="depends-badge" style="background:var(--orange-light);border-color:var(--orange);">★ <a class="ilink" onclick="goToCard('thm-3.2')">Thm 3.2</a>: Coset Identity</span>
+<span class="depends-badge"><a class="ilink" onclick="goToCard('lem-proj-contain')">Contain.</a> + <a class="ilink" onclick="goToCard('lem-4.4')">Cover</a> + <a class="ilink" onclick="goToCard('thm-empty-or-inf')">∅/∞</a></span>
 <span style="color:var(--orange);font-weight:bold"> → </span>
-<span class="depends-badge"><a class="ilink" onclick="goToCard('cor-3.3')">Cor 3.3</a>: clopen in $N$</span>
-<span style="color:var(--orange);font-weight:bold"> + </span>
-<span class="depends-badge"><a class="ilink" onclick="goToCard('lem-4.3')">Norm</a> → <a class="ilink" onclick="goToCard('lem-4.4')">Covering</a></span>
-<span style="color:var(--purple);font-weight:bold"> → </span>
-<span class="depends-badge" style="background:var(--purple-light);border-color:var(--purple);">★ <a class="ilink" onclick="goToCard('thm-5.2')">Thm 5.2</a>: $|\\mathrm{Irr}(N)|=\\infty$</span>
+<span class="depends-badge" style="background:var(--purple-light);border-color:var(--purple);">★ <a class="ilink" onclick="goToCard('thm-5.2')">Thm 5.2</a></span>
 <span style="color:var(--purple);font-weight:bold"> → </span>
 <span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">★ Twin Primes ∎</span>
-</p>
-<div class="d-flex flex-wrap gap-1 mt-3">
-<a href="https://en.wikipedia.org/wiki/Twin_prime_conjecture" target="_blank" class="tag"><i class="bi bi-trophy-fill me-1"></i>Twin Prime Conjecture</a>
-<a href="${GH}/TPC/Main.lean" target="_blank" class="tag"><i class="bi bi-code-slash me-1"></i>Main.lean</a>
-<a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank" class="tag"><i class="bi bi-file-text me-1"></i>PAPER.md</a>
-</div>`},
+</p>`},
 
-{id:"summary",ch:"Bonus",badge:"b-rmk",title:"Summary — Proof Architecture & Key Insights",lean:null,body:`
+// ═══════════════════════════════════════════════════════════════
+// Card 16 — Critical Assessment
+// ═══════════════════════════════════════════════════════════════
+{id:"critical",ch:"§6 Gaps",badge:"b-gap",title:"Critical Assessment — Proof Gaps and Status",lean:null,body:`
+<div class="gap-box">
+<div class="gap-title"><i class="bi bi-x-circle-fill me-1"></i>Gap 1: The Coset Identity is FALSE</div>
+<p><strong>Claim (Thm 3.2, now removed):</strong> $\\mathfrak{q} \\cdot N = N \\cap (\\mathfrak{q} \\cdot M)$.</p>
+<p><strong>Counterexample:</strong> For $q=1$ ($\\phi(1)=7$ prime): in $M$ we can verify $(1 \\otimes 1)(36 \\otimes (-7))(5 \\otimes 1) = 36 \\otimes 36$ via bilinearity reductions (combine $1\\otimes 1$ and $5\\otimes 1$ sharing right component $1$ to get $36\\otimes 1$, then combine with $36\\otimes(-7)$ sharing left $36$ to get $36\\otimes 36$). So $\\mathfrak{36} \\in \\mathfrak{1} \\cdot M$. But $\\mathfrak{36} \\notin \\mathfrak{1} \\cdot N$ since its unique generator multiset $\\{36\\}$ does not contain $1$.</p>
+<p>The error in the original proof: the step "$\\phi(q) \\mid \\phi(k_i)$ implies $\\phi(k_i) = \\phi(q)$" is invalid — e.g. $7 \\mid 217 = \\phi(36)$ but $217 \\neq 7$.</p>
+<p><strong>Status: <span style="color:var(--green)">BYPASSED</span>.</strong> The corrected <a class="ilink" onclick="goToCard('thm-5.2')">Thm 5.2</a> uses only the <em>containment</em> $\\mathfrak{q} \\cdot N \\subseteq \\pi^{-1}(S_q)$ (trivially true), not the false equality. The "pinch" argument suffices. Note: although $N$ is a <a class="ilink" onclick="goToCard('prop-top-monoid')">topological monoid</a>, $\\mathfrak{q}\\cdot N$ is not automatically closed (that would require the false identity); the containment approach is the correct fix.</p>
+</div>
+
+<div class="gap-box">
+<div class="gap-title"><i class="bi bi-exclamation-triangle-fill me-1"></i>Gap 2: Unique Multiset Representation (Prop 2.4.5)</div>
+<p><strong>Status: <span style="color:var(--orange)">NEEDS TIGHTENING</span>.</strong> The proof sketch uses valuation-based bilinear maps $f_{q,p}(z,w) = v_q(|\\phi(z)|) \\cdot v_p(|\\psi(w)|)$ as separating invariants. The bilinearity check is correct. The claim that these collectively determine the multiset is plausible but the proof needs a rigorous case analysis.</p>
+<p><strong>Impact:</strong> This is the <strong>foundation</strong> — the projected map $\\pi$, the norm, the covering, and the Empty-or-Infinite theorem all depend on unique representation.</p>
+</div>
+
+<div class="gap-box">
+<div class="gap-title"><i class="bi bi-exclamation-triangle-fill me-1"></i>Gap 3: Mixed Splitting (Thm 4.2, Step 5)</div>
+<p>The claim that $(a\\otimes c)(b\\otimes d)$ with $a\\neq b, c\\neq d$ cannot equal a pure tensor is stated without rigorous proof. In a quotient monoid, ruling out direct rewrites is insufficient — one must rule out all rewrite chains. This is <strong>subsumed by Prop 2.4.5</strong>: if the separating invariants distinguish formal products from pure tensors, mixed splittings are ruled out.</p>
+<p><strong>Status: <span style="color:var(--orange)">DEPENDS ON GAP 2</span>.</strong></p>
+</div>
+
 <div class="remark-box">
-<div class="remark-title"><i class="bi bi-trophy-fill me-1"></i>The Big Picture</div>
-<p>The proof reformulates the Twin Prime Conjecture as a statement about the algebraic structure of $N = \\langle\\{k \\otimes k : k \\in \\mathbb{Z}\\}\\rangle$ inside the monoid tensor product $M = (\\mathbb{Z},\\circledast) \\otimes_{\\mathrm{Mon}} (\\mathbb{Z},\\star)$, then uses the final topology (induced by the universal bilinear map $\\beta$) to force infinitely many irreducibles.</p>
+<div class="remark-title"><i class="bi bi-bullseye me-1"></i>Bottom Line</div>
+<p>The entire proof's validity reduces to <strong>one key claim</strong>: <a class="ilink" onclick="goToCard('prop-2.4')"><strong>Prop 2.4.5</strong></a> (unique multiset representation in $N$). The separating-invariant approach is sound, but a complete proof requires showing that the family $\\{\\bar{f}_{q,p}\\}_{q,p}$ collectively determines multisets of generators. All other issues are either fixed (Gap 1) or dependent on this (Gaps 2–3).</p>
 </div>
-<p><strong>Three pillars of the proof:</strong></p>
-<p><span class="step-num">1</span><strong>Algebraic pillar — The Coset Identity (<a class="ilink" onclick="goToCard('thm-3.2')">Thm 3.2</a>):</strong> $\\widehat{q} \\cdot N = N \\cap (\\widehat{q} \\cdot M)$ for $\\widehat{q} = q \\otimes q$ with $\\phi(q)$ prime. This converts the algebraic coset into a topological intersection, bridging the two worlds.</p>
-<p><span class="step-num">2</span><strong>Topological pillar — Clopenness (<a class="ilink" onclick="goToCard('cor-shadow-clopen')">Shadow Clopenness</a>):</strong> In the <a class="ilink" onclick="goToCard('def-shadow')">shadow topology</a>, $\\widehat{q} \\cdot N = \\sigma^{-1}\\!\\bigl((q + \\phi(q)\\mathbb{Z}) \\times (q + \\psi(q)\\mathbb{Z})\\bigr)$ — the $\\sigma$-preimage of a product of arithmetic progressions, hence clopen. The proof uses primality of $\\phi(q)$ via Euclid's lemma (<a class="ilink" onclick="goToCard('thm-3.2')">Thm 3.2</a>-style argument) to show the set identity.</p>
-<p><span class="step-num">3</span><strong>Combinatorial pillar — Covering + No Singletons:</strong> Every nonidentity element has an irreducible divisor (by norm descent), giving the covering. No singleton is open (by the empty-or-infinite theorem). Together: finite $\\mathrm{Irr}(N)$ would force $\\{e\\}$ open — contradiction.</p>
-<div class="example-box">
-<div class="example-title"><i class="bi bi-key-fill me-1"></i>Novel Contribution</div>
-<p>Classical Furstenberg proofs work on $\\mathbb{Z}$ where cosets $p\\mathbb{Z}$ are automatically clopen. The challenge for twin primes is that $N$ is a <em>submonoid</em>, not a subgroup, and lives inside a tensor product rather than a ring. The coset identity (<a class="ilink" onclick="goToCard('thm-3.2')">Thm 3.2</a>) is what makes the Furstenberg technique work in this non-standard setting — it's the key that unlocks the entire proof. The monoid tensor product formulation, with its bilinearity relations and identity-killing property $z \\otimes 0 = 0 \\otimes w = e$, is what makes the irreducibility characterization (<a class="ilink" onclick="goToCard('thm-4.2')">Thm 4.2</a>) clean and prevents trivial splittings.</p>
-</div>
-<div class="d-flex flex-wrap gap-2 mt-3">
-<a href="index.html" class="tag" style="font-size:.75rem;padding:.3rem .8rem;"><i class="bi bi-house-heart me-1"></i>Back to Home</a>
-<a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="tag" style="font-size:.75rem;padding:.3rem .8rem;"><i class="bi bi-github me-1"></i>GitHub</a>
-<a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank" class="tag" style="font-size:.75rem;padding:.3rem .8rem;"><i class="bi bi-file-text me-1"></i>Full Paper</a>
-</div>`},
+
+<p><strong>What is solid:</strong></p>
+<p><span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">✓ Def 1.1, Thm 1.3, Lem 1.4</span> Algebraic foundations are elementary and verified.</p>
+<p><span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">✓ Topological Monoid</span> $\\circledast$ and $\\star$ are continuous (polynomial preimage of arithmetic progression is open). ✓</p>
+<p><span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">✓ Containment Lemma</span> $\\mathfrak{q}\\cdot N \\subseteq \\pi^{-1}(S_q)$ and $e\\notin\\pi^{-1}(S_q)$ are trivial given $\\pi$ is a homomorphism.</p>
+<p><span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">✓ Corrected Furstenberg argument</span> Given the ingredients, the pinch-style argument is valid.</p>
+<p><span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">✓ Thm 4.2</span> Irreducibility characterization is correct modulo the mixed-splitting step.</p>`},
 
 ];
+
+// ═══════════════════════════════════════════════════════════════
+// Proof tree data (DAG as tree with back-references)
+// ═══════════════════════════════════════════════════════════════
+const treeData = {id:'cor-5.3',label:'Cor 5.3: TPC',cls:'tn-cor',children:[
+  {id:'thm-5.2',label:'Thm 5.2: |Irr|=∞',cls:'tn-thm',children:[
+    {id:'lem-proj-contain',label:'Containment Lem',cls:'tn-lem',children:[
+      {id:'prop-top-monoid',label:'Prop: Top. Monoid',cls:'tn-lem',children:[
+        {id:'def-proj',label:'Def π: Topology',cls:'tn-def',children:[
+          {id:'prop-2.4',label:'Prop 2.4: Structure',cls:'tn-lem',children:[
+            {id:'def-2.1',label:'Def 2.1: M, G, N',cls:'tn-def',children:[]}
+          ]}
+        ]}
+      ]},
+      {id:'thm-4.2',label:'Thm 4.2: Irred↔Twins',cls:'tn-thm',children:[
+        {id:'thm-1.3',label:'Thm 1.3: φ,ψ isos',cls:'tn-thm',children:[
+          {id:'def-1.1',label:'Def 1.1: ⊛,⋆',cls:'tn-def',children:[]}
+        ]},
+        {id:'def-4.1',label:'Def 4.1: Irreducibility',cls:'tn-def',children:[]}
+      ]}
+    ]},
+    {id:'lem-4.4',label:'Cor 4.5: Covering',cls:'tn-lem',children:[
+      {id:'lem-4.3',label:'Lem 4.3: Norm',cls:'tn-lem',children:[
+        {id:'_prop-2.4',label:'Prop 2.4 ↑',cls:'tn-def',ref:'prop-2.4',children:[]}
+      ]},
+      {id:'_def-4.1',label:'Def 4.1 ↑',cls:'tn-def',ref:'def-4.1',children:[]}
+    ]},
+    {id:'thm-empty-or-inf',label:'Thm ∅/∞: No finite open',cls:'tn-thm',children:[
+      {id:'_def-proj',label:'Def π ↑',cls:'tn-def',ref:'def-proj',children:[]},
+      {id:'lem-1.4',label:'Lem 1.4: No 0-div',cls:'tn-lem',children:[
+        {id:'_thm-1.3',label:'Thm 1.3 ↑',cls:'tn-thm',ref:'thm-1.3',children:[]}
+      ]}
+    ]}
+  ]},
+  {id:'_thm-4.2',label:'Thm 4.2 ↑',cls:'tn-thm',ref:'thm-4.2',children:[]}
+]};
+
+function buildTree(node){
+  const targetId = node.ref || node.id;
+  const opacity = node.ref ? ' style="opacity:.5"' : '';
+  let html = `<li><span class="tn ${node.cls}" data-id="${targetId}"${opacity}>${node.label}</span>`;
+  if(node.children && node.children.length){
+    html += '<ul>' + node.children.map(buildTree).join('') + '</ul>';
+  }
+  html += '</li>';
+  return html;
+}
 
 let cur=0;
 const chapters=[...new Set(cards.map(c=>c.ch))];
 function goToCard(id){const i=cards.findIndex(c=>c.id===id);if(i>=0)jump(i);}
+function toggleSB(){document.getElementById('sidebar').classList.toggle('open');}
 function shareCard(){
   const url=window.location.origin+window.location.pathname+"#"+cards[cur].id;
   navigator.clipboard.writeText(url).then(()=>{
@@ -763,6 +637,10 @@ function render(){
     `<button class="ch-btn${cards[cur].ch===ch?" active":""}" onclick="jumpCh('${ch}')">${ch}</button>`).join("");
   document.getElementById("mm").innerHTML=cards.map((c,i)=>
     `<div class="mm-dot${i===cur?" active":""}" onclick="jump(${i})" title="Card ${i+1}: ${c.title.replace(/\$/g,'').replace(/\\\\/g,'').substring(0,30)}"></div>`).join("");
+  // highlight active tree node
+  document.querySelectorAll('.tn').forEach(el=>{
+    el.classList.toggle('active', el.dataset.id===c.id);
+  });
   if(window.renderMathInElement)
     renderMathInElement(document.getElementById("mc"),{
       delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],throwOnError:false});
@@ -778,8 +656,16 @@ function tp(btn){const el=btn.nextElementSibling;const open=el.style.display==="
 document.addEventListener("keydown",e=>{
   if(e.key==="ArrowRight"||e.key==="ArrowDown")go(1);
   if(e.key==="ArrowLeft"||e.key==="ArrowUp")go(-1);});
-const _s=sessionStorage.getItem("tpcCard");
-if(_s!==null){cur=Math.min(parseInt(_s,10),cards.length-1);sessionStorage.removeItem("tpcCard");}
+// Build proof tree
+document.getElementById("ptree").innerHTML='<ul>'+buildTree(treeData)+'</ul>';
+document.querySelectorAll('.tn').forEach(el=>{
+  el.addEventListener('click',e=>{
+    e.stopPropagation();
+    const id=el.dataset.id;
+    if(id)goToCard(id);
+  });
+});
+// Init
 if(window.location.hash){const h=window.location.hash.slice(1);const hi=cards.findIndex(c=>c.id===h);if(hi>=0)cur=hi;}
 window.addEventListener("hashchange",()=>{const h=window.location.hash.slice(1);const hi=cards.findIndex(c=>c.id===h);if(hi>=0&&hi!==cur)jump(hi);});
 render();
