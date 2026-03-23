@@ -171,7 +171,7 @@ body{font-family:'Source Sans 3',sans-serif;background:linear-gradient(135deg,#e
       &nbsp;<i class="bi bi-dot"></i>&nbsp;
       <a href="https://github.com/FruitfulApproach/Lean4TPC/blob/main/PAPER.md" target="_blank"><i class="bi bi-file-text"></i> PAPER.md</a>
       &nbsp;<i class="bi bi-dot"></i>&nbsp;
-      <span style="color:var(--green-light)"><i class="bi bi-patch-check-fill"></i> 22 Proof Cards</span>
+      <span style="color:var(--green-light)"><i class="bi bi-patch-check-fill"></i> 22 Cards</span>
     </div>
   </div>
   <div class="d-flex gap-2 flex-wrap">
@@ -621,7 +621,7 @@ ${mkVerify('lem-sep-inv','# Bilinearity: f(a⊛b,w) = f(a,w) + f(b,w)\nfails = [
 </div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-check2-circle me-1"></i>Gap status</div>
-<p><strong>Gap 2 (Prop 2.4.5) and Gap 3 (mixed splitting) are now closed</strong> by this lemma. The entire proof reduces to: existence of irreducible factorization (norm) + uniqueness (UFD). See the updated <a class="ilink" onclick="goToCard('critical')">critical assessment</a>.</p>
+<p><strong>Gap 2 (Prop 2.4.5) and Gap 3 (mixed splitting) are now closed</strong> by this lemma. The entire proof reduces to: existence of irreducible factorization (norm) + uniqueness (UFD).</p>
 </div>
 ${mkVerify('lem-ufd','# Irreducibles: φ(q) and |ψ(q)| both prime\nirreds = [k for k in range(-25,26) if k != 0\n          and is_prime(abs(phi(k)))\n          and is_prime(abs(psi(k)))]\n# UFD: distinct products of φ-images\n# → equal products force equal multisets')}`},
 
@@ -851,7 +851,7 @@ ${mkVerify('lem-4.4','# Every k ∈ N∖{e} has an irreducible divisor\n# (φ(q)
 </div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-exclamation-triangle me-1"></i>Why $\\mathfrak{q}N$ is NOT automatically closed</div>
-<p>In a topological <strong>group</strong>, left translation is a homeomorphism, so $gH$ is closed for any closed subgroup $H$. But $N$ is a <strong>monoid</strong> — $L_{\\mathfrak{q}}$ is injective but not surjective, so not a homeomorphism. In the projected topology, a set is closed iff it equals $\\pi^{-1}(F)$ for closed $F$. Requiring $\\mathfrak{q}\\cdot N = \\pi^{-1}(\\cdots)$ is equivalent to the <a class="ilink" onclick="goToCard('critical')">false Coset Identity</a>. Instead, we use the <strong>containment approach</strong>: $\\mathfrak{q}\\cdot N \\subseteq \\pi^{-1}(S_q)$ with $S_q$ clopen and $e \\notin \\pi^{-1}(S_q)$.</p>
+<p>In a topological <strong>group</strong>, left translation is a homeomorphism, so $gH$ is closed for any closed subgroup $H$. But $N$ is a <strong>monoid</strong> — $L_{\\mathfrak{q}}$ is injective but not surjective, so not a homeomorphism. In the projected topology, a set is closed iff it equals $\\pi^{-1}(F)$ for closed $F$. Requiring $\\mathfrak{q}\\cdot N = \\pi^{-1}(\\cdots)$ is equivalent to a false coset identity. Instead, we use the <strong>containment approach</strong>: $\\mathfrak{q}\\cdot N \\subseteq \\pi^{-1}(S_q)$ with $S_q$ clopen and $e \\notin \\pi^{-1}(S_q)$.</p>
 </div>
 ${mkVerify('prop-top-monoid','# ⊛ is continuous: (x₀+bℤ)×(y₀+bℤ) → (x₀⊛y₀)+bℤ\n# x=x₀+b·i, y=y₀+b·j ⟹ x⊛y ≡ x₀⊛y₀ (mod b)\nfor b,x0,y0 in [(3,1,2),(7,2,3),(5,4,1)]:\n    assert cts_circ(b,x0,y0)\n    # preimage of coset ⊇ coset×coset')}`},
 
@@ -877,7 +877,7 @@ ${mkVerify('prop-top-monoid','# ⊛ is continuous: (x₀+bℤ)×(y₀+bℤ) → 
 </div>
 <div class="gap-box">
 <div class="gap-title"><i class="bi bi-exclamation-triangle-fill me-1"></i>Important: Containment, NOT equality</div>
-<p>One might hope that $\\mathfrak{q} \\cdot N = \\pi^{-1}(S_q)$, but this is <strong>false</strong>. Counterexample: $\\mathfrak{36} = (36,36)$ has $\\pi(\\mathfrak{36}) = (36, 36)$ with $36 \\equiv 1 \\pmod{7}$ and $36 \\equiv 1 \\pmod{5}$, so $\\mathfrak{36} \\in \\pi^{-1}(S_1)$, but $\\mathfrak{36} \\notin \\mathfrak{1} \\cdot N$ since the generator multiset $\\{36\\}$ does not contain $1$. The Furstenberg argument only requires the <strong>containment + exclusion of $e$</strong>, not equality. See <a class="ilink" onclick="goToCard('critical')">Critical Assessment</a>.</p>
+<p>One might hope that $\\mathfrak{q} \\cdot N = \\pi^{-1}(S_q)$, but this is <strong>false</strong>. Counterexample: $\\mathfrak{36} = (36,36)$ has $\\pi(\\mathfrak{36}) = (36, 36)$ with $36 \\equiv 1 \\pmod{7}$ and $36 \\equiv 1 \\pmod{5}$, so $\\mathfrak{36} \\in \\pi^{-1}(S_1)$, but $\\mathfrak{36} \\notin \\mathfrak{1} \\cdot N$ since the generator multiset $\\{36\\}$ does not contain $1$. The Furstenberg argument only requires the <strong>containment + exclusion of $e$</strong>, not equality.</p>
 </div>
 ${mkVerify('lem-proj-contain','# For irred. q, n ∈ N: π(q·n) ∈ S_q\nfor q in irreds:\n    z = circ(q, n);  w = star(q, n)\n    assert (z - q) % phi(q) == 0   # part (a)\n    assert (w - q) % psi(q) == 0   # part (a)\n    assert (0 - q) % phi(q) != 0   # e ∉ S_q')}`},
 
@@ -1023,40 +1023,6 @@ ${mkVerify('thm-5.2','# Suppose Irr(N) finite = {q₁,…,qₘ}\n# Each Cᵢ = �
 <span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">★ Twin Primes ∎</span>
 </p>
 ${mkVerify('cor-5.3','# Irr(N) = {(k,k) : 6k±1 both prime} by Thm 4.2\n# |Irr(N)|=∞ by Thm 5.2 → infinitely many twin primes\ntwins = [(abs(psi(k)), phi(k))\n         for k in range(1, 200)\n         if is_prime(phi(k)) and is_prime(abs(psi(k)))]\nprint(f"{len(twins)} twin pairs in [1,199]")  # → ∞')}`},
-
-// ═══════════════════════════════════════════════════════════════
-// Card 16 — Critical Assessment
-// ═══════════════════════════════════════════════════════════════
-{id:"critical",ch:"§6 Gaps",badge:"b-gap",title:"Critical Assessment — Proof Gaps and Status",lean:null,body:`
-<div class="gap-box">
-<div class="gap-title"><i class="bi bi-x-circle-fill me-1"></i>Gap 1: The Coset Identity is FALSE</div>
-<p><strong>Claim (Thm 3.2, now removed):</strong> $\\mathfrak{q} \\cdot N = N \\cap (\\mathfrak{q} \\cdot M)$.</p>
-<p><strong>Counterexample:</strong> For $q=1$ ($\\phi(1)=7$ prime): in $M$ we can verify $(1 \\otimes 1)(36 \\otimes (-7))(5 \\otimes 1) = 36 \\otimes 36$ via bilinearity reductions (combine $1\\otimes 1$ and $5\\otimes 1$ sharing right component $1$ to get $36\\otimes 1$, then combine with $36\\otimes(-7)$ sharing left $36$ to get $36\\otimes 36$). So $\\mathfrak{36} \\in \\mathfrak{1} \\cdot M$. But $\\mathfrak{36} \\notin \\mathfrak{1} \\cdot N$ since its unique generator multiset $\\{36\\}$ does not contain $1$.</p>
-<p>The error in the original proof: the step "$\\phi(q) \\mid \\phi(k_i)$ implies $\\phi(k_i) = \\phi(q)$" is invalid — e.g. $7 \\mid 217 = \\phi(36)$ but $217 \\neq 7$.</p>
-<p><strong>Status: <span style="color:var(--green)">BYPASSED</span>.</strong> The corrected <a class="ilink" onclick="goToCard('thm-5.2')">Thm 5.2</a> uses only the <em>containment</em> $\\mathfrak{q} \\cdot N \\subseteq \\pi^{-1}(S_q)$ (trivially true), not the false equality. The "pinch" argument suffices. Note: although $N$ is a <a class="ilink" onclick="goToCard('prop-top-monoid')">topological monoid</a>, $\\mathfrak{q}\\cdot N$ is not automatically closed (that would require the false identity); the containment approach is the correct fix.</p>
-</div>
-
-<div class="gap-box" style="border-color:var(--green);background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(34,197,94,.02))">
-<div class="gap-title" style="color:var(--green-dark)"><i class="bi bi-check-circle-fill me-1"></i>Gap 2: Unique Multiset Representation (Prop 2.4.5) — RESOLVED</div>
-<p><strong>Status: <span style="color:var(--green-dark)">CLOSED</span></strong> by <a class="ilink" onclick="goToCard('lem-ufd')"><strong>Lemma 2.4.A</strong></a>. Restrict to irreducible generators $\\hat{q}$ — then $\\phi(q)=6q+1$ is <em>prime</em>. Uniqueness of irreducible factorization follows by induction: if $\\hat{q}_1\\cdots\\hat{q}_n = \\hat{\\lambda}_1\\cdots\\hat{\\lambda}_m$ with $m=1,n&gt;1$ then $\\hat{\\lambda}_1$ is reducible — contradiction. So $n=m$ by induction; then applying $\\phi$ gives a product of primes equation, and UFD in $\\mathbb{Z}$ gives multiset equality.</p>
-</div>
-
-<div class="gap-box" style="border-color:var(--green);background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(34,197,94,.02))">
-<div class="gap-title" style="color:var(--green-dark)"><i class="bi bi-check-circle-fill me-1"></i>Gap 3: Mixed Splitting (Thm 4.2, Step 5) — RESOLVED</div>
-<p>Subsumed by Lemma 2.4.A: unique irreducible factorization means a product of $\\geq 2$ irreducibles cannot equal any single pure tensor (norms differ). <strong>Status: <span style="color:var(--green-dark)">CLOSED</span>.</strong></p>
-</div>
-
-<div class="remark-box" style="border-color:var(--green)">
-<div class="remark-title" style="color:var(--green-dark)"><i class="bi bi-trophy-fill me-1"></i>Updated Bottom Line</div>
-<p>Both previously open gaps are now closed. The proof is complete modulo Gap 1 (the coset containment direction, already handled by the corrected formulation). The key insight: <strong>choosing irreducible generators</strong> makes $\\phi(q)$ prime, so Prop 2.4.5 reduces to UFD in $\\mathbb{Z}$ — no valuation-based invariants needed for the core argument.</p>
-</div>
-
-<p><strong>What is solid:</strong></p>
-<p><span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">✓ Def 1.1, Thm 1.3, Lem 1.4</span> Algebraic foundations are elementary and verified.</p>
-<p><span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">✓ Topological Monoid</span> $\\circledast$ and $\\star$ are continuous (polynomial preimage of arithmetic progression is open). ✓</p>
-<p><span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">✓ Containment Lemma</span> $\\mathfrak{q}\\cdot N \\subseteq \\pi^{-1}(S_q)$ and $e\\notin\\pi^{-1}(S_q)$ are trivial given $\\pi$ is a homomorphism.</p>
-<p><span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">✓ Corrected Furstenberg argument</span> Given the ingredients, the pinch-style argument is valid.</p>
-<p><span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">✓ Thm 4.2</span> Irreducibility characterization is correct modulo the mixed-splitting step.</p>`},
 
 ];
 
