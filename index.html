@@ -245,10 +245,10 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
   <div class="hero-inner">
     <div class="ey"><i class="bi bi-stars me-1"></i>Lean 4 + Mathlib4 &nbsp;·&nbsp;
       <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" style="color:var(--yellow-light)"><i class="bi bi-github"></i> FruitfulApproach/Lean4TPC</a>
-      &nbsp;·&nbsp; <span style="color:var(--green-light)"><i class="bi bi-patch-check-fill"></i> 22 Proof Cards</span></div>
+      &nbsp;·&nbsp; <span style="color:var(--green-light)"><i class="bi bi-patch-check-fill"></i> 24 Proof Cards</span></div>
     <h1 class="ht">Furstenberg Generalized to<br/>Handle the <span class="ac">Twin Prime Conjecture</span></h1>
-    <p class="hs">A <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg-style</a> topological proof that the submonoid $N=\langle\{k\otimes k\}\rangle$ of the monoid tensor product $M=(\mathbb{Z},\circledast)\otimes_{\mathrm{Mon}}(\mathbb{Z},\star)$ has infinitely many irreducibles — each corresponding to a twin prime pair. The containment lemma $\widehat{q}\cdot N\subseteq\pi^{-1}(S_q)$ with $S_q$ clopen, combined with the Empty-or-Infinite theorem, drives the Furstenberg argument. Formalized in <a href="https://leanprover.github.io/" target="_blank">Lean 4</a>.</p>
-    <div class="heq">$$\widehat{q}\cdot N\subseteq\pi^{-1}(S_q),\quad S_q=(q{+}\phi(q)\mathbb{Z})\times(q{+}\psi(q)\mathbb{Z})\text{ clopen}\quad\Rightarrow\quad |\mathrm{Irr}(N)|=\infty\quad\Rightarrow\quad\text{infinitely many twin primes}$$</div>
+    <p class="hs">A <a href="https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes" target="_blank">Furstenberg-style</a> topological proof that $|\mathrm{Irr}_M(G)|=\infty$, where $G=\{b\otimes b : b\text{ irred. in both }L\text{ and }R\}$ generates $K\subseteq T=L\otimes R$. The Key Lemma shows each $\mathfrak{b}\cdot K$ is closed in $K$ via the initial topology and affine structure of left-multiplication; injectivity of $f\!\restriction_K$ (unique factorization) then lets the $(\Leftarrow)$-direction of the initial topology drive the Furstenberg contradiction. Formalized in <a href="https://leanprover.github.io/" target="_blank">Lean 4</a>.</p>
+    <div class="heq">$$\mathfrak{b}\cdot K = f^{-1}\!\bigl((b,b)\cdot f(K)\bigr)\cap K\;\text{ closed in }K\quad\xRightarrow{\text{Furstenberg}}\quad|\mathrm{Irr}_M(G)|=\infty\quad\Rightarrow\quad\text{infinitely many twin primes}$$</div>
     <div class="hctas">
       <a href="tpc_cards.html" class="btn-ph"><i class="bi bi-play-circle-fill me-1"></i>Start Proof Deck</a>
       <a href="https://github.com/FruitfulApproach/Lean4TPC" target="_blank" class="btn-gh"><i class="bi bi-github me-1"></i>GitHub</a>
@@ -272,12 +272,12 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
     <div class="slbl slbl-purple"><i class="bi bi-bar-chart-fill me-1"></i>at a glance</div>
     <div class="stitle">The Project in Numbers</div>
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-num">22</div><div class="stat-label"><i class="bi bi-card-text me-1"></i>Proof Cards</div></div>
+      <div class="stat-card"><div class="stat-num">24</div><div class="stat-label"><i class="bi bi-card-text me-1"></i>Proof Cards</div></div>
       <div class="stat-card"><div class="stat-num">8+</div><div class="stat-label"><i class="bi bi-file-code me-1"></i>Lean 4 Files</div></div>
       <div class="stat-card"><div class="stat-num">6</div><div class="stat-label"><i class="bi bi-journal-text me-1"></i>Paper Sections</div></div>
       <div class="stat-card"><div class="stat-num">$\infty$</div><div class="stat-label"><i class="bi bi-stars me-1"></i>Twin Primes</div></div>
-      <div class="stat-card"><div class="stat-num">$\phi$</div><div class="stat-label">$=6x+1$</div></div>
-      <div class="stat-card"><div class="stat-num">$(6x{+}1)^2$</div><div class="stat-label"><i class="bi bi-rulers me-1"></i>The Norm</div></div>
+      <div class="stat-card"><div class="stat-num">$\alpha$</div><div class="stat-label">$=6b{+}1$ slope</div></div>
+      <div class="stat-card"><div class="stat-num">$\beta$</div><div class="stat-label">$=1{-}6b$ slope</div></div>
     </div>
   </div>
 </section>
@@ -289,23 +289,23 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
     <div class="stitle">Key Theorems</div>
 
     <div class="key-theorem">
-      <h3><i class="bi bi-key-fill me-2" style="color:var(--yellow)"></i>The Containment Lemma</h3>
-      <p>For any irreducible $\widehat{q}=(q,q)\in\mathrm{Irr}(N)$:</p>
-      <div class="math-block">$$\widehat{q}\cdot N\;\subseteq\;\pi^{-1}(S_q),\quad S_q=\bigl(q+\phi(q)\mathbb{Z}\bigr)\times\bigl(q+\psi(q)\mathbb{Z}\bigr)$$</div>
-      <p style="font-size:.9rem;">The set $S_q$ is a product of arithmetic progressions, hence <strong>clopen</strong> in the Furstenberg topology. The preimage $\pi^{-1}(S_q)$ is therefore clopen in $N$, and the containment ensures $\widehat{q}\cdot N$ sits inside a clopen envelope — the topological handle that drives the Furstenberg argument.</p>
+      <h3><i class="bi bi-key-fill me-2" style="color:var(--yellow)"></i>The Key Lemma — $\mathfrak{b}\cdot K$ is Closed</h3>
+      <p>For any $\mathfrak{b}=b\otimes b\in B$ (irred. in both $L$ and $R$), left-multiplication by $\mathfrak{b}$ in $K=\langle B\rangle\subseteq T$ satisfies:</p>
+      <div class="math-block">$$\mathfrak{b}\cdot K \;=\; f^{-1}\!\bigl((b,b)\cdot f(K)\bigr)\cap K \quad\text{is closed in }K$$</div>
+      <p style="font-size:.9rem;">The equality holds because $f\!\restriction_K$ is <strong>injective</strong> (unique factorization: $\alpha=6b+1$ and $\beta=1-6b$ are $\pm$primes, so UFD in $\mathbb{Z}$ separates words). Closedness then follows from the $(\Leftarrow)$ direction alone: $(b,b)\cdot f(K)$ is closed in $f(K)$ in the product Furstenberg topology (the affine maps $z\mapsto\alpha z+b$ and $w\mapsto\beta w+b$ have nonzero slopes, so their images land in single residue classes and complements are open), and the initial topology on $T$ pulls closed sets back for free.</p>
     </div>
 
     <div class="proof-highlight">
-      <h3><i class="bi bi-infinity me-2" style="color:var(--blue)"></i>Empty or Infinite</h3>
-      <p>For any $a,b,c,d\in\mathbb{Z}$ with $b,d\neq 0$:</p>
-      <div class="math-block" style="border-color:var(--green);">$$N\cap\bigl((a+b\mathbb{Z})\times(c+d\mathbb{Z})\bigr)\text{ is either }\emptyset\text{ or infinite}$$</div>
-      <p style="font-size:.9rem;margin-top:.6rem;"><strong>Proof sketch:</strong> If $(z_0,w_0)$ is in the intersection, then multiplying by $\Delta(nbd)$ stays in the same arithmetic progression box for every $n\in\mathbb{Z}$ (the correction terms are divisible by $b$ and $d$ respectively), and injectivity of $\phi$ gives distinctness.</p>
+      <h3><i class="bi bi-infinity me-2" style="color:var(--blue)"></i>Why Surjectivity is Free — and Irrelevant</h3>
+      <p>The topology on $T$ is <em>initial</em> w.r.t. $f$, so closed sets of $K$ are exactly $f^{-1}(C)\cap K$ for $C$ closed in $f(K)$. We only need:</p>
+      <div class="math-block" style="border-color:var(--green);">$$(\Leftarrow)\quad C\text{ closed in }f(K)\;\Rightarrow\; f^{-1}(C)\cap K\text{ closed in }K$$</div>
+      <p style="font-size:.9rem;margin-top:.6rem;">Surjectivity of $f\!\restriction_K$ onto $f(K)$ is a tautology (definition of image). Injectivity is the nontrivial content, supplying the reverse inclusion $f^{-1}((b,b)\cdot f(K))\cap K\subseteq\mathfrak{b}\cdot K$. A continuous bijection need not be a homeomorphism, but we never needed the forward direction — only $(\Leftarrow)$, which is free from the initial topology.</p>
     </div>
 
     <div class="key-theorem" style="border-color:var(--orange);">
-      <h3><i class="bi bi-trophy-fill me-2" style="color:var(--orange)"></i>Main Theorem (Theorem 5.2 + Corollary 5.3)</h3>
-      <div class="math-block" style="border-color:var(--orange);">$$|\mathrm{Irr}(N)|=\infty \quad\Longrightarrow\quad \text{infinitely many twin prime pairs}$$</div>
-      <p style="font-size:.9rem;">Furstenberg argument: the covering $N\setminus\{(0,0)\}=\bigcup\widehat{q}\cdot N$ by clopen sets (via the Containment Lemma), combined with the Empty-or-Infinite theorem showing no singleton is open, forces $|\mathrm{Irr}(N)|=\infty$. Since irreducibles biject with twin primes (Thm 4.2), we conclude.</p>
+      <h3><i class="bi bi-trophy-fill me-2" style="color:var(--orange)"></i>Furstenberg Conclusion — Infinitely Many Twin Primes</h3>
+      <div class="math-block" style="border-color:var(--orange);">$$|\mathrm{Irr}_M(G)|=\infty \quad\Longrightarrow\quad \text{infinitely many twin prime pairs}$$</div>
+      <p style="font-size:.9rem;">If $\mathrm{Irr}_M(G)$ were finite $=\{\mathfrak{b}_1,\ldots,\mathfrak{b}_m\}$, the covering $K\setminus\{e\}=\bigcup\mathfrak{b}_i\cdot K$ would be a finite union of closed sets each contained in a clopen envelope (product of arithmetic progressions in $\mathbb{Z}^2$). The Empty-or-Infinite theorem then forces $\{e\}$ to be open — but every basic open set in $K$ is infinite. Contradiction. Since irreducibles biject with twin primes (Thm 4.2), we conclude.</p>
     </div>
   </div>
 </section>
@@ -314,7 +314,7 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
 <section class="section-dark">
   <div class="section-inner">
     <div class="slbl slbl-blue"><i class="bi bi-collection me-1"></i>interactive</div>
-    <div class="stitle">Browse the Proof — 22 Cards</div>
+    <div class="stitle">Browse the Proof — 24 Cards</div>
     <p style="color:var(--gray);max-width:640px;line-height:1.7;margin-bottom:.5rem;">
       Click any card to jump to it in the <a href="tpc_cards.html" style="color:var(--yellow)">proof deck</a>. Use arrow keys to navigate. Every card has full, detailed proofs.
     </p>
@@ -322,31 +322,32 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
       <!-- §0 Abstract -->
       <a href="tpc_cards.html#abstract" class="fc fc-def"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 00</div><div class="fc-type t-def">ABSTRACT</div><div class="fc-title">The Furstenberg Approach</div><div class="fc-body">Generalizing Furstenberg's topological argument to handle twin primes via monoid tensor products.</div></a>
       <!-- §1 -->
-      <a href="tpc_cards.html#def-1.1" class="fc fc-def"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 01</div><div class="fc-type t-def">DEF 1.1</div><div class="fc-title">Operations $\circledast$ and $\star$</div><div class="fc-body">$x\circledast y=6xy+x+y$, $x\star y=-6xy+x+y$.</div></a>
-      <a href="tpc_cards.html#prop-composite-form" class="fc fc-prop"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 02</div><div class="fc-type t-prop">PROP</div><div class="fc-title">Products via $\circledast$, $\star$</div><div class="fc-body">Composite integers expressed through $\circledast$ and $\star$.</div></a>
-      <a href="tpc_cards.html#thm-1.3" class="fc fc-thm"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 03</div><div class="fc-type t-thm">THM 1.3</div><div class="fc-title">Isomorphisms $\phi,\psi$</div><div class="fc-body">$\phi(x)=6x+1:(\mathbb{Z},\circledast)\cong(6\mathbb{Z}+1,\cdot)$.</div></a>
-      <a href="tpc_cards.html#lem-1.4" class="fc fc-lem"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 04</div><div class="fc-type t-lem">LEM 1.4</div><div class="fc-title">No Zero Divisors</div><div class="fc-body">$u,v\neq 0\Rightarrow u\circledast v\neq 0$.</div></a>
+      <a href="tpc_cards.html#def-1.1" class="fc fc-def"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 01</div><div class="fc-type t-def">DEF 1.1</div><div class="fc-title">Monoids $L$ and $R$</div><div class="fc-body">$x*y=6xy+x+y$, $x\star y=-6xy+x+y$, both with identity $0$.</div></a>
+      <a href="tpc_cards.html#prop-composite-form" class="fc fc-prop"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 02</div><div class="fc-type t-prop">PROP</div><div class="fc-title">Isomorphism $L\cong R$</div><div class="fc-body">$\eta(x)=-x$ is a monoid isomorphism.</div></a>
+      <a href="tpc_cards.html#thm-1.3" class="fc fc-thm"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 03</div><div class="fc-type t-thm">THM 1.3</div><div class="fc-title">Isomorphisms $\phi,\psi$</div><div class="fc-body">$\phi(x)=6x+1:(L,*)\cong(6\mathbb{Z}+1,\cdot)$.</div></a>
+      <a href="tpc_cards.html#lem-1.4" class="fc fc-lem"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 04</div><div class="fc-type t-lem">LEM 1.4</div><div class="fc-title">No Zero Divisors</div><div class="fc-body">$u,v\neq 0\Rightarrow u*v\neq 0$ and $u\star v\neq 0$.</div></a>
       <!-- §2 -->
-      <a href="tpc_cards.html#def-2.1" class="fc fc-def"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 05</div><div class="fc-type t-def">DEF 2.1</div><div class="fc-title">$M$, $G$, $N$</div><div class="fc-body">Product monoid, diagonal generators, submonoid $N=\langle G\rangle$.</div></a>
-      <a href="tpc_cards.html#lem-sep-inv" class="fc fc-lem"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 06</div><div class="fc-type t-lem">LEM 2.3</div><div class="fc-title">Separating Invariants</div><div class="fc-body">Invariants that separate elements of $N$.</div></a>
-      <a href="tpc_cards.html#lem-ufd" class="fc fc-lem"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 07</div><div class="fc-type t-lem">LEM 2.4.A</div><div class="fc-title">Irreducible UFD</div><div class="fc-body">Irreducibility in the UFD sense for elements of $N$.</div></a>
-      <a href="tpc_cards.html#prop-2.4" class="fc fc-prop"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 08</div><div class="fc-type t-prop">PROP 2.4</div><div class="fc-title">$N$ Structure</div><div class="fc-body">Structural characterization of the submonoid $N$.</div></a>
-      <!-- §4 definitions -->
-      <a href="tpc_cards.html#def-4.1" class="fc fc-def"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 09</div><div class="fc-type t-def">DEF 4.1</div><div class="fc-title">Irreducibility in $N$</div><div class="fc-body">Cannot be nontrivially $\otimes$-factored in $N$.</div></a>
-      <a href="tpc_cards.html#thm-4.2" class="fc fc-thm"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 10</div><div class="fc-type t-thm">THM 4.2</div><div class="fc-title">Irred $\iff$ Twin Primes</div><div class="fc-body">$(z,w)\in\mathrm{Irr}(N)\iff 6z\pm1\in\pm\mathbb{P}$.</div></a>
-      <a href="tpc_cards.html#lem-4.3" class="fc fc-lem"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 11</div><div class="fc-type t-lem">LEM 4.3</div><div class="fc-title">The Norm Function</div><div class="fc-body">$\|(z,w)\|=(6z+1)^2$, multiplicative.</div></a>
-      <a href="tpc_cards.html#lem-4.4" class="fc fc-cor"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 12</div><div class="fc-type t-cor">COR 4.5</div><div class="fc-title">Covering by Irreducibles</div><div class="fc-body">$N\setminus\{(0,0)\}=\bigcup\widehat{q}\cdot N$.</div></a>
-      <!-- Topology §3/§4 -->
-      <a href="tpc_cards.html#def-proj" class="fc fc-def"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 13</div><div class="fc-type t-def">DEF $\pi$</div><div class="fc-title">Topology on $N$</div><div class="fc-body">Projection $\pi$ defining the subspace topology on $N$.</div></a>
-      <a href="tpc_cards.html#prop-clopen-preimage" class="fc fc-prop"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 14</div><div class="fc-type t-prop">PROP</div><div class="fc-title">Clopen Preimage</div><div class="fc-body">$\pi^{-1}(S_q)$ is clopen in $N$ since $S_q$ is clopen.</div></a>
-      <a href="tpc_cards.html#prop-top-monoid" class="fc fc-prop"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 15</div><div class="fc-type t-prop">PROP</div><div class="fc-title">Topological Monoid</div><div class="fc-body">$(M,\otimes)$ is a topological monoid in the Furstenberg topology.</div></a>
-      <a href="tpc_cards.html#lem-proj-contain" class="fc fc-lem"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 16</div><div class="fc-type t-lem">LEM</div><div class="fc-title">Containment Lemma</div><div class="fc-body">$\widehat{q}\cdot N\subseteq\pi^{-1}(S_q)$ for $S_q$ clopen.</div></a>
-      <!-- §5 -->
-      <a href="tpc_cards.html#thm-empty-or-inf" class="fc fc-new"><div class="fc-badge-new"><i class="bi bi-sparkle me-1"></i>KEY</div><div class="fc-num"><i class="bi bi-diamond-fill"></i> 17</div><div class="fc-type t-new">THM ∅/∞</div><div class="fc-title">Empty or Infinite</div><div class="fc-body">$N\cap(a{+}b\mathbb{Z})\times(c{+}d\mathbb{Z})$ is $\emptyset$ or infinite.</div></a>
-      <a href="tpc_cards.html#thm-furstenberg-recipe" class="fc fc-thm"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 18</div><div class="fc-type t-thm">THM</div><div class="fc-title">Furstenberg Recipe</div><div class="fc-body">Abstract Furstenberg criterion for infinite irreducibles.</div></a>
-      <a href="tpc_cards.html#prop-n-satisfies" class="fc fc-prop"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 19</div><div class="fc-type t-prop">PROP</div><div class="fc-title">$N$ Fits the Recipe</div><div class="fc-body">$N$ satisfies all hypotheses of the Furstenberg recipe.</div></a>
-      <a href="tpc_cards.html#thm-5.2" class="fc fc-thm"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 20</div><div class="fc-type t-thm">THM 5.2 ★</div><div class="fc-title">$|\mathrm{Irr}(N)|=\infty$</div><div class="fc-body">Furstenberg: finite $\Rightarrow\{(0,0)\}$ open. Contradiction.</div></a>
-      <a href="tpc_cards.html#cor-5.3" class="fc fc-cor"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 21</div><div class="fc-type t-cor">COR 5.3 ★</div><div class="fc-title">Infinitely Many Twin Primes</div><div class="fc-body">$|\{k:6k\pm1\in\pm\mathbb{P}\}|=\infty$. $\blacksquare$</div></a>
+      <a href="tpc_cards.html#def-2.1" class="fc fc-def"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 05</div><div class="fc-type t-def">DEF 2.1</div><div class="fc-title">$T$, $S$, $f$, $K$</div><div class="fc-body">Tensor product, product monoid, homomorphism $f$, submonoid $K=\langle B\rangle$.</div></a>
+      <a href="tpc_cards.html#lem-sep-inv" class="fc fc-lem"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 06</div><div class="fc-type t-lem">LEM</div><div class="fc-title">Initial Topology on $T$</div><div class="fc-body">Closed sets of $K$ are $f^{-1}(C)\cap K$ for $C$ closed in $f(K)$.</div></a>
+      <a href="tpc_cards.html#lem-ufd" class="fc fc-lem"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 07</div><div class="fc-type t-lem">LEM</div><div class="fc-title">$f\!\restriction_K$ Injective</div><div class="fc-body">UFD in $\mathbb{Z}$: distinct words in $B_0$ give distinct $f$-images.</div></a>
+      <a href="tpc_cards.html#prop-2.4" class="fc fc-prop"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 08</div><div class="fc-type t-prop">PROP</div><div class="fc-title">Key Equality</div><div class="fc-body">$\mathfrak{b}\cdot K = f^{-1}((b,b)\cdot f(K))\cap K$.</div></a>
+      <!-- §3 Irreducibles -->
+      <a href="tpc_cards.html#def-4.1" class="fc fc-def"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 09</div><div class="fc-type t-def">DEF</div><div class="fc-title">Irreducibles in $L$ and $R$</div><div class="fc-body">$b$ irred. in $L$ iff $6b+1\in\pm\mathbb{P}$; in $R$ iff $1-6b\in\pm\mathbb{P}$.</div></a>
+      <a href="tpc_cards.html#thm-4.2" class="fc fc-thm"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 10</div><div class="fc-type t-thm">THM 4.2</div><div class="fc-title">Irred. in Both $\Leftrightarrow$ Twin Primes</div><div class="fc-body">$b\in B_0\iff(6b-1,6b+1)$ is a twin prime pair.</div></a>
+      <!-- §4 Key Lemma -->
+      <a href="tpc_cards.html#lem-4.3" class="fc fc-lem"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 11</div><div class="fc-type t-lem">LEM</div><div class="fc-title">Affine Structure</div><div class="fc-body">$(b,b)\cdot(z,w)=(\alpha z+b,\beta w+b)$, $\alpha=6b+1$, $\beta=1-6b\neq 0$.</div></a>
+      <a href="tpc_cards.html#lem-4.4" class="fc fc-lem"><div class="fc-new"><i class="bi bi-key-fill me-1"></i>KEY</div><div class="fc-num"><i class="bi bi-diamond-fill"></i> 12</div><div class="fc-type t-lem">KEY LEM</div><div class="fc-title">$\mathfrak{b}\cdot K$ Closed in $K$</div><div class="fc-body">Affine images in Furstenberg topology + initial topology $(\Leftarrow)$.</div></a>
+      <!-- §5 Topology -->
+      <a href="tpc_cards.html#def-proj" class="fc fc-def"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 13</div><div class="fc-type t-def">DEF</div><div class="fc-title">Product Furstenberg Topology</div><div class="fc-body">Basis $(a+n\mathbb{Z})\times(b+m\mathbb{Z})$ on $S=\mathbb{Z}^2$.</div></a>
+      <a href="tpc_cards.html#prop-clopen-preimage" class="fc fc-prop"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 14</div><div class="fc-type t-prop">PROP</div><div class="fc-title">$(\Leftarrow)$: Initial Topology</div><div class="fc-body">$C$ closed in $f(K)\Rightarrow f^{-1}(C)\cap K$ closed in $K$.</div></a>
+      <a href="tpc_cards.html#prop-top-monoid" class="fc fc-prop"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 15</div><div class="fc-type t-prop">PROP</div><div class="fc-title">Furstenberg Closedness</div><div class="fc-body">Nonzero-slope affine images of closed submonoids are closed.</div></a>
+      <a href="tpc_cards.html#lem-proj-contain" class="fc fc-lem"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 16</div><div class="fc-type t-lem">LEM</div><div class="fc-title">Clopen Envelope</div><div class="fc-body">$\mathfrak{b}\cdot K\subseteq f^{-1}((b+\alpha\mathbb{Z})\times(b+\beta\mathbb{Z}))$ clopen.</div></a>
+      <!-- §6 Furstenberg -->
+      <a href="tpc_cards.html#thm-empty-or-inf" class="fc fc-new"><div class="fc-badge-new"><i class="bi bi-sparkle me-1"></i>KEY</div><div class="fc-num"><i class="bi bi-diamond-fill"></i> 17</div><div class="fc-type t-new">THM ∅/∞</div><div class="fc-title">Empty or Infinite</div><div class="fc-body">Every nonempty basic open set in $K$ is infinite.</div></a>
+      <a href="tpc_cards.html#thm-furstenberg-recipe" class="fc fc-thm"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 18</div><div class="fc-type t-thm">THM</div><div class="fc-title">Furstenberg Recipe</div><div class="fc-body">Abstract criterion (R1)–(R3) implying infinite irreducibles.</div></a>
+      <a href="tpc_cards.html#prop-n-satisfies" class="fc fc-prop"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 19</div><div class="fc-type t-prop">PROP</div><div class="fc-title">$K$ Fits the Recipe</div><div class="fc-body">$K$ satisfies (R1) covering, (R2) clopen envelopes, (R3) no finite opens.</div></a>
+      <a href="tpc_cards.html#thm-5.2" class="fc fc-thm"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 20</div><div class="fc-type t-thm">THM ★</div><div class="fc-title">$|\mathrm{Irr}_M(G)|=\infty$</div><div class="fc-body">Furstenberg: finite $\Rightarrow\{e\}$ open. Contradiction via Empty-or-$\infty$.</div></a>
+      <a href="tpc_cards.html#cor-5.3" class="fc fc-cor"><div class="fc-num"><i class="bi bi-diamond-fill"></i> 21</div><div class="fc-type t-cor">COR ★</div><div class="fc-title">Infinitely Many Twin Primes</div><div class="fc-body">$|\{b\in B_0\}|=\infty\Rightarrow$ infinitely many twin prime pairs. $\blacksquare$</div></a>
     </div>
     <div class="text-center mt-4"><a href="tpc_cards.html" class="btn-ph"><i class="bi bi-play-circle-fill me-1"></i>Open Proof Deck</a></div>
   </div>
@@ -359,33 +360,33 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
     <div class="stitle">Proof at a Glance</div>
     <div class="accordion mt-3" id="proofAccordion">
       <div class="accordion-item">
-        <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#acc1"><i class="bi bi-1-circle-fill me-2" style="color:var(--purple)"></i>§1 — Algebraic Setup: Operations &amp; Isomorphisms</button></h2>
+        <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#acc1"><i class="bi bi-1-circle-fill me-2" style="color:var(--purple)"></i>§1 — Algebraic Setup: $L$, $R$, and Their Isomorphism</button></h2>
         <div id="acc1" class="accordion-collapse collapse show" data-bs-parent="#proofAccordion"><div class="accordion-body">
-          <p>Define $x\circledast y = 6xy+x+y$ and $x\star y = -6xy+x+y$. The maps $\phi(x)=6x+1$ and $\psi(x)=6x-1$ are monoid isomorphisms to $(6\mathbb{Z}+1,\cdot)$ and $(6\mathbb{Z}-1,\bullet)$. Key consequence: <strong>no zero divisors</strong> ($u,v\neq 0\Rightarrow u\circledast v\neq 0$). We also show composites factor via $\circledast$ and $\star$.</p>
+          <p>Define $L=(\mathbb{Z},*)$ with $x*y=6xy+x+y$ and $R=(\mathbb{Z},\star)$ with $x\star y=-6xy+x+y$, both with identity $0$. The map $\eta(x)=-x$ is an isomorphism $L\cong R$. The maps $\phi(x)=6x+1:(L,*)\to(\mathbb{Z},\cdot)$ and the analogous map for $R$ show both monoids embed into $(\mathbb{Z},\cdot)$. Key consequence: <strong>no zero divisors</strong> ($u,v\neq 0\Rightarrow u*v\neq 0$).</p>
         </div></div>
       </div>
       <div class="accordion-item">
-        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc2"><i class="bi bi-2-circle-fill me-2" style="color:var(--blue)"></i>§2 — Monoid Structure: $M$, $G$, $N$</button></h2>
+        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc2"><i class="bi bi-2-circle-fill me-2" style="color:var(--blue)"></i>§2 — Tensor Product $T=L\otimes R$, Map $f$, and Submonoid $K$</button></h2>
         <div id="acc2" class="accordion-collapse collapse" data-bs-parent="#proofAccordion"><div class="accordion-body">
-          <p>$M = (\mathbb{Z},\circledast)\otimes_{\mathrm{Mon}}(\mathbb{Z},\star)$ is the monoid tensor product. The diagonal generators $G=\{k\otimes k\}$ generate the submonoid $N=\langle G\rangle$. Separating invariants and UFD-style irreducibility in $N$ are established, culminating in a structural characterization of $N$.</p>
+          <p>Form the monoid tensor product $T=L\otimes R$ and the product monoid $S=\mathbb{Z}^2$ with operation $(x,y)(z,w)=(x*z,\,y\star w)$. The homomorphism $f:T\to S$, $f(x\otimes y)=(x,y)$ induces the <strong>initial topology</strong> on $T$: $U\subseteq T$ open iff $U=f^{-1}(V)$, $V\subseteq S$ open. Define $B_0=\{b\in\mathbb{Z}:6b+1\text{ and }1-6b\text{ are }\pm\text{prime}\}$, $B=\{b\otimes b:b\in B_0\}$, $K=\langle B\rangle\subseteq T$.</p>
         </div></div>
       </div>
       <div class="accordion-item">
-        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc3"><i class="bi bi-3-circle-fill me-2" style="color:var(--green)"></i>§3 — Topology and Clopen Envelopes</button></h2>
+        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc3"><i class="bi bi-3-circle-fill me-2" style="color:var(--green)"></i>§3 — Injectivity of $f\!\restriction_K$ and the Key Equality</button></h2>
         <div id="acc3" class="accordion-collapse collapse" data-bs-parent="#proofAccordion"><div class="accordion-body">
-          <p>Equip $\mathbb{Z}$ with the <strong>Furstenberg topology</strong> (basis = arithmetic progressions). Define the projection $\pi: N\to\mathbb{Z}\times\mathbb{Z}$ and the clopen sets $S_q=(q+\phi(q)\mathbb{Z})\times(q+\psi(q)\mathbb{Z})$. The <strong>Containment Lemma</strong> establishes $\widehat{q}\cdot N\subseteq\pi^{-1}(S_q)$, giving each coset a clopen envelope. The <strong>Empty-or-Infinite</strong> theorem shows $N\cap(a+b\mathbb{Z})\times(c+d\mathbb{Z})$ is $\emptyset$ or infinite, so $N$ has no isolated points.</p>
+          <p>Every element of $K$ is a finite product of generators $b_i\otimes b_i\in B$, so $f$ maps it to $(b_1*\cdots*b_n,\;b_1\star\cdots\star b_n)$. The isomorphism $n\mapsto 6n+1$ transforms $*$-products into ordinary integer products of $\pm$primes. By <strong>unique factorization in $\mathbb{Z}$</strong>, $f\!\restriction_K$ is injective, giving the key equality $\mathfrak{b}\cdot K=f^{-1}((b,b)\cdot f(K))\cap K$.</p>
         </div></div>
       </div>
       <div class="accordion-item">
-        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc4"><i class="bi bi-4-circle-fill me-2" style="color:var(--orange)"></i>§4 — Irreducibles and the Furstenberg Argument</button></h2>
+        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc4"><i class="bi bi-4-circle-fill me-2" style="color:var(--orange)"></i>§4 — The Key Lemma: Affine Maps and Closedness</button></h2>
         <div id="acc4" class="accordion-collapse collapse" data-bs-parent="#proofAccordion"><div class="accordion-body">
-          <p>$(z,w)\in\mathrm{Irr}(N) \iff 6z+1$ and $6z-1$ are both $\pm$prime (Thm 4.2). The norm $\|(z,w)\|=(6z+1)^2$ gives descent: every element has an irreducible divisor, yielding the covering $N\setminus\{(0,0)\}=\bigcup\widehat{q}\cdot N$ by clopen sets. The abstract Furstenberg recipe is verified for $N$.</p>
+          <p>Left multiplication by $(b,b)$ in $S$ acts as $z\mapsto(6b+1)z+b$ and $w\mapsto(1-6b)w+b$ — two affine maps with slopes $\alpha=6b+1$ and $\beta=1-6b$, both $\pm$prime. Every image element lies in $b+\alpha\mathbb{Z}$ (resp. $b+\beta\mathbb{Z}$), an arithmetic progression. Points outside the image have explicit open Furstenberg neighborhoods disjoint from it (Case 1: wrong residue class mod $\alpha$; Case 2: right class but preimage misses $f(K)$, handled by closedness of $f(K)$). Hence $(b,b)\cdot f(K)$ is closed in $f(K)$, and the initial topology pulls this back to closedness of $\mathfrak{b}\cdot K$ in $K$.</p>
         </div></div>
       </div>
       <div class="accordion-item">
-        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc5"><i class="bi bi-5-circle-fill me-2" style="color:var(--yellow)"></i>§5 — Conclusion: Twin Primes ∎</button></h2>
+        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc5"><i class="bi bi-5-circle-fill me-2" style="color:var(--yellow)"></i>§5 — Furstenberg Conclusion: Infinitely Many Twin Primes ∎</button></h2>
         <div id="acc5" class="accordion-collapse collapse" data-bs-parent="#proofAccordion"><div class="accordion-body">
-          <p>If $\mathrm{Irr}(N)$ were finite, the covering $N\setminus\{(0,0)\}=\bigcup\widehat{q}\cdot N$ would be a finite union of clopen sets, making $\{(0,0)\}$ open. But the Empty-or-Infinite theorem says no singleton is open — <strong>contradiction</strong>. Therefore $|\mathrm{Irr}(N)|=\infty$, and by Thm 4.2 there are infinitely many twin primes. $\blacksquare$</p>
+          <p>Apply the abstract Furstenberg recipe to $(K,\cdot)$. (R1) Every $k\in K\setminus\{e\}$ has an irreducible divisor (norm descent). (R2) Each $\mathfrak{b}\cdot K$ is closed inside a clopen envelope — the preimage of $(b+\alpha\mathbb{Z})\times(b+\beta\mathbb{Z})$ in $f(K)$. (R3) Every nonempty basic open set in $K$ is infinite (Empty-or-Infinite). If $|\mathrm{Irr}_M(G)|$ were finite, the finite union of closed sets $\bigcup\mathfrak{b}_i\cdot K$ would force $\{e\}$ to be open — <strong>contradiction</strong>. Therefore $|\mathrm{Irr}_M(G)|=\infty$, and by Thm 4.2 there are infinitely many twin primes. $\blacksquare$</p>
         </div></div>
       </div>
     </div>
@@ -398,32 +399,31 @@ footer a{color:var(--yellow);text-decoration:none;transition:color .2s;}footer a
     <div class="slbl slbl-orange"><i class="bi bi-diagram-3 me-1"></i>logical flow</div>
     <div class="stitle">Dependency Chain</div>
     <div class="dep-row">
-      <a href="tpc_cards.html#def-1.1" class="dep-node">Def 1.1: $\circledast,\star$</a><span class="dep-arrow dep-arrow-purple">→</span>
+      <a href="tpc_cards.html#def-1.1" class="dep-node">Def 1.1: $L$, $R$, $*$, $\star$</a><span class="dep-arrow dep-arrow-purple">→</span>
       <a href="tpc_cards.html#thm-1.3" class="dep-node">Thm 1.3: $\phi,\psi$ isos</a><span class="dep-arrow dep-arrow-purple">→</span>
       <a href="tpc_cards.html#lem-1.4" class="dep-node">Lem 1.4: No zero divs</a>
     </div>
     <div class="dep-row">
-      <a href="tpc_cards.html#def-2.1" class="dep-node">Def 2.1: $M,G,N$</a><span class="dep-arrow dep-arrow-blue">→</span>
-      <a href="tpc_cards.html#lem-sep-inv" class="dep-node">Lem 2.3: Sep. Invariants</a><span class="dep-arrow dep-arrow-blue">+</span>
-      <a href="tpc_cards.html#lem-ufd" class="dep-node">Lem 2.4.A: UFD</a><span class="dep-arrow dep-arrow-blue">→</span>
-      <a href="tpc_cards.html#prop-2.4" class="dep-node">Prop 2.4: $N$ structure</a>
+      <a href="tpc_cards.html#def-2.1" class="dep-node">Def 2.1: $T,S,f,K$</a><span class="dep-arrow dep-arrow-blue">→</span>
+      <a href="tpc_cards.html#lem-ufd" class="dep-node">Lem: $f\!\restriction_K$ injective (UFD)</a><span class="dep-arrow dep-arrow-blue">→</span>
+      <a href="tpc_cards.html#prop-2.4" class="dep-node">Key equality $\mathfrak{b}K=f^{-1}(\cdots)$</a>
     </div>
     <div class="dep-row">
-      <a href="tpc_cards.html#def-proj" class="dep-node">Def $\pi$: topology on $N$</a><span class="dep-arrow dep-arrow-green">→</span>
-      <a href="tpc_cards.html#prop-clopen-preimage" class="dep-node">Prop: clopen preimage</a><span class="dep-arrow dep-arrow-green">+</span>
-      <a href="tpc_cards.html#thm-4.2" class="dep-node">Thm 4.2: Irred↔Twins</a><span class="dep-arrow dep-arrow-green">→</span>
-      <a href="tpc_cards.html#lem-proj-contain" class="dep-node" style="border-color:var(--yellow);background:rgba(234,179,8,.1);"><strong>★ Containment Lemma</strong></a>
+      <a href="tpc_cards.html#def-proj" class="dep-node">Initial topology on $T$</a><span class="dep-arrow dep-arrow-green">→</span>
+      <a href="tpc_cards.html#prop-clopen-preimage" class="dep-node">$(\Leftarrow)$: closed pulls back</a><span class="dep-arrow dep-arrow-green">+</span>
+      <a href="tpc_cards.html#thm-4.2" class="dep-node">Affine slopes $\alpha,\beta\neq 0$</a><span class="dep-arrow dep-arrow-green">→</span>
+      <a href="tpc_cards.html#lem-proj-contain" class="dep-node" style="border-color:var(--yellow);background:rgba(234,179,8,.1);"><strong>★ Key Lemma: $\mathfrak{b}K$ closed</strong></a>
     </div>
     <div class="dep-row">
-      <a href="tpc_cards.html#lem-1.4" class="dep-node">Lem 1.4</a><span class="dep-arrow dep-arrow-green">+</span>
-      <a href="tpc_cards.html#prop-top-monoid" class="dep-node">Prop: Top. Monoid</a><span class="dep-arrow dep-arrow-green">→</span>
-      <a href="tpc_cards.html#thm-empty-or-inf" class="dep-node" style="border-color:var(--green);background:rgba(34,197,94,.08);"><i class="bi bi-sparkle me-1"></i>Empty or ∞</a>
+      <a href="tpc_cards.html#lem-1.4" class="dep-node">No zero divs</a><span class="dep-arrow dep-arrow-green">+</span>
+      <a href="tpc_cards.html#prop-top-monoid" class="dep-node">Product Furstenberg topology</a><span class="dep-arrow dep-arrow-green">→</span>
+      <a href="tpc_cards.html#thm-empty-or-inf" class="dep-node" style="border-color:var(--green);background:rgba(34,197,94,.08);"><i class="bi bi-sparkle me-1"></i>Empty or $\infty$</a>
     </div>
     <div class="dep-row">
-      <a href="tpc_cards.html#lem-4.4" class="dep-node">Cor 4.5: Covering</a><span class="dep-arrow dep-arrow-orange">+</span>
-      <a href="tpc_cards.html#lem-proj-contain" class="dep-node">Containment</a><span class="dep-arrow dep-arrow-orange">+</span>
-      <a href="tpc_cards.html#thm-empty-or-inf" class="dep-node">Empty or ∞</a><span class="dep-arrow dep-arrow-yellow" style="font-size:1.3rem">⟹</span>
-      <strong style="font-family:'Playfair Display',serif;font-size:1.1rem;background:linear-gradient(135deg,var(--yellow),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$|\mathrm{Irr}(N)|=\infty$ → Twin Primes. $\blacksquare$</strong>
+      <a href="tpc_cards.html#lem-4.4" class="dep-node">Covering: $K\setminus\{e\}=\bigcup\mathfrak{b}K$</a><span class="dep-arrow dep-arrow-orange">+</span>
+      <a href="tpc_cards.html#lem-proj-contain" class="dep-node">$\mathfrak{b}K$ closed in clopen envelope</a><span class="dep-arrow dep-arrow-orange">+</span>
+      <a href="tpc_cards.html#thm-empty-or-inf" class="dep-node">Empty or $\infty$</a><span class="dep-arrow dep-arrow-yellow" style="font-size:1.3rem">⟹</span>
+      <strong style="font-family:'Playfair Display',serif;font-size:1.1rem;background:linear-gradient(135deg,var(--yellow),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$|\mathrm{Irr}_M(G)|=\infty$ → Twin Primes. $\blacksquare$</strong>
     </div>
   </div>
 </section>

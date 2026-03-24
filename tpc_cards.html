@@ -1101,28 +1101,34 @@ ${mkVerify('lem-4.4')}`},
 ${mkVerify('prop-top-monoid')}`},
 
 // ═══════════════════════════════════════════════════════════════
-// Card 12 — Containment Lemma (replaces false Coset Identity)
+// Card 12 — Key Lemma: 𝔟·K is closed in K
 // ═══════════════════════════════════════════════════════════════
-{id:"lem-proj-contain",ch:"§4 Topology",badge:"b-lem",title:"Lemma — Containment $\\mathfrak{q} \\cdot N \\subseteq \\pi^{-1}(S_q)$ and $e \\notin \\pi^{-1}(S_q)$",lean:null,body:`
-<p>For each irreducible $\\mathfrak{q} = (q,q) \\in \\mathrm{Irr}(N)$, define the <strong>clopen envelope</strong>:</p>
-<div class="math-block">$$S_q = (q + \\phi(q)\\mathbb{Z}) \\times (q + \\psi(q)\\mathbb{Z}) \\subseteq \\mathbb{Z}^2$$</div>
-<p>Then: <strong>(a)</strong> $\\mathfrak{q} \\cdot N \\subseteq \\pi^{-1}(S_q)$, and <strong>(b)</strong> $e \\notin \\pi^{-1}(S_q)$, and <strong>(c)</strong> $\\pi^{-1}(S_q)$ is <strong>clopen</strong>.</p>
+{id:"lem-proj-contain",ch:"§4 Topology",badge:"b-lem",title:"Key Lemma — $\\mathfrak{b}\\cdot K$ is Closed in $K$",lean:null,body:`
+<p>For every $\\mathfrak{b}=b\\otimes b\\in B$, the left translate $\\mathfrak{b}\\cdot K$ is <strong>closed in $K$</strong> (subspace initial topology).</p>
+<div class="math-block">$$\\mathfrak{b}\\cdot K \\;=\\; f^{-1}\\!\\bigl((b,b)\\cdot f(K)\\bigr)\\cap K \\quad\\text{is closed in }K$$</div>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-lock-fill me-1"></i>Why the equality holds — injectivity of $f\\!\\restriction_K$</div>
+<p>The $\\supseteq$ inclusion is the content. Take $t\\in K$ with $f(t)=(b,b)\\cdot f(k)=f(\\mathfrak{b}\\cdot k)$. By <strong>injectivity</strong> of $f\\!\\restriction_K$ we conclude $t=\\mathfrak{b}\\cdot k\\in\\mathfrak{b}\\cdot K$.</p>
+<p><strong>Injectivity via UFD.</strong> Every $k\\in K$ is a product $\\mathfrak{b}_1\\cdots\\mathfrak{b}_n$, $b_i\\in B_0$, so $f(k)=(b_1*\\cdots*b_n,\\,b_1\\star\\cdots\\star b_n)$. The map $x\\mapsto 6x+1$ converts $*$-products to products of $\\pm$primes in $\\mathbb{Z}$. By UFD in $\\mathbb{Z}$, distinct words give distinct products, so $f\\!\\restriction_K$ is injective.</p>
+<p><em>Note: surjectivity onto $f(K)$ is a tautology (definition of image). A continuous bijection need not be a homeomorphism — but we only ever use the $({\\Leftarrow})$ direction of the initial topology, never the forward direction.</em></p>
+</div>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>(a) Containment:</strong></p>
-<p><span class="step-num">1</span>Let $m = \\mathfrak{q} \\cdot n$ for $n \\in N$. Since $\\pi_1$ is a <a class="ilink" onclick="goToCard('def-proj')">homomorphism</a> (and $L_{\\mathfrak{q}}$ is <a class="ilink" onclick="goToCard('prop-top-monoid')">continuous</a>):</p>
-<p>$\\pi_1(m) = q \\circledast \\pi_1(n)$, so $\\phi(\\pi_1(m)) = \\phi(q) \\cdot \\phi(\\pi_1(n))$.</p>
-<p>Hence $\\phi(q) \\mid \\phi(\\pi_1(m))$, which gives $\\pi_1(m) \\in q + \\phi(q)\\mathbb{Z}$. ✓</p>
-<p><span class="step-num">2</span>Similarly: $\\pi_2(m) = q \\star \\pi_2(n)$, so $\\psi(q) \\mid \\psi(\\pi_2(m))$, giving $\\pi_2(m) \\in q + \\psi(q)\\mathbb{Z}$. ✓</p>
-<p><strong>(b) Identity excluded:</strong></p>
-<p><span class="step-num">3</span>$\\pi(e) = (0, 0)$. Need $0 \\notin q + \\phi(q)\\mathbb{Z}$, i.e., $(6q+1) \\nmid q$. Since $q \\neq 0$ (irreducibles are non-identity) and $|6q+1| > |q|$ for all $|q| \\geq 1$, this holds. ✓</p>
-<p><strong>(c) Clopenness:</strong></p>
-<p><span class="step-num">4</span>$S_q$ is a product of two arithmetic progressions, hence <strong>clopen</strong> in the Furstenberg product topology on $\\mathbb{Z}^2$. By the <a class="ilink" onclick="goToCard('prop-clopen-preimage')">Clopen Preimage Proposition</a>, $\\pi^{-1}(S_q)$ is clopen in $N$. ✓</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED</div>
+<p><strong>Step 1 — Reduction via the initial topology.</strong> The closed sets of $K$ are exactly $f^{-1}(C)\\cap K$ for $C$ closed in $f(K)\\subseteq S$. By the equality (injectivity) it suffices to show $(b,b)\\cdot f(K)$ is <strong>closed in $f(K)$</strong> in the product Furstenberg topology, then apply $(\\Leftarrow)$: closed $\\Rightarrow$ preimage closed.</p>
+<p><strong>Step 2 — Explicit affine action in $\\mathbb{Z}^2$.</strong> Left multiplication by $(b,b)$ acts as:</p>
+<div class="math-block">$$b*z \\;=\\; (6b{+}1)z+b \\;=:\\; \\phi_1(z) \\qquad b\\star w \\;=\\; (1{-}6b)w+b \\;=:\\; \\phi_2(w)$$</div>
+<p>Set $\\alpha:=6b+1$, $\\beta:=1-6b$. Since $b\\in B_0$ both are $\\pm$primes, so $\\alpha,\\beta\\neq 0$. Every element of $(b,b)\\cdot f(K)$ lies in the clopen set $(b+\\alpha\\mathbb{Z})\\times(b+\\beta\\mathbb{Z})$ since $\\phi_1(z)\\equiv b\\pmod{\\alpha}$ and $\\phi_2(w)\\equiv b\\pmod{\\beta}$. In the product Furstenberg topology, basic open sets are $(a+n\\mathbb{Z})\\times(c+m\\mathbb{Z})$, so any point $(x,y)$ with $x\\not\\equiv b\\pmod\\alpha$ or $y\\not\\equiv b\\pmod\\beta$ is already separated from $(b,b)\\cdot f(K)$ by the open neighborhood $(x+\\alpha\\mathbb{Z})\\times(y+\\beta\\mathbb{Z})$.</p>
+<p><strong>Step 3 — Affine Lemma (closedness of $\\phi_i(M_i)$).</strong> Let $M_1=\\pi_1(f(K))$, a closed submonoid of $(\\mathbb{Z},*)$. For $x\\in M_1\\setminus\\phi_1(M_1)$:</p>
+<p><span class="step-num">1</span><strong>Case $x\\not\\equiv b\\pmod{\\alpha}$:</strong> $x+\\alpha\\mathbb{Z}$ is open and disjoint from $\\phi_1(M_1)\\subseteq b+\\alpha\\mathbb{Z}$. ✓</p>
+<p><span class="step-num">2</span><strong>Case $x\\equiv b\\pmod{\\alpha}$, $(x{-}b)/\\alpha\\notin M_1$:</strong> Since $M_1$ is closed in Furstenberg's topology, there is an arithmetic progression $a+d\\mathbb{Z}\\ni(x{-}b)/\\alpha$ disjoint from $M_1$. Then $\\phi_1(a+d\\mathbb{Z})=\\alpha a+b+\\alpha d\\mathbb{Z}$ is open, contains $x$, and is disjoint from $\\phi_1(M_1)$ by injectivity. ✓</p>
+<p>Hence $\\phi_1(M_1)$ is closed in $M_1$. Identically $\\phi_2(M_2)$ is closed in $M_2=\\pi_2(f(K))$. Therefore $(b,b)\\cdot f(K)=\\bigl(\\phi_1(M_1)\\times\\phi_2(M_2)\\bigr)\\cap f(K)$ is closed in $f(K)$.</p>
+<p><strong>Step 4 — Pull back.</strong> By definition of the initial topology:</p>
+<div class="math-block">$$\\mathfrak{b}\\cdot K = f^{-1}\\!\\bigl((b,b)\\cdot f(K)\\bigr)\\cap K \\quad\\text{is closed in }K.$$</div>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — $\\mathfrak{b}\\cdot K$ is closed in $K$. $\\blacksquare$</div>
 </div>
-<div class="gap-box">
-<div class="gap-title"><i class="bi bi-exclamation-triangle-fill me-1"></i>Important: Containment, NOT equality</div>
-<p>One might hope that $\\mathfrak{q} \\cdot N = \\pi^{-1}(S_q)$, but this is <strong>false</strong>. Counterexample: $\\mathfrak{36} = (36,36)$ has $\\pi(\\mathfrak{36}) = (36, 36)$ with $36 \\equiv 1 \\pmod{7}$ and $36 \\equiv 1 \\pmod{5}$, so $\\mathfrak{36} \\in \\pi^{-1}(S_1)$, but $\\mathfrak{36} \\notin \\mathfrak{1} \\cdot N$ since the generator multiset $\\{36\\}$ does not contain $1$. The Furstenberg argument only requires the <strong>containment + exclusion of $e$</strong>, not equality.</p>
+<div class="remark-box">
+<div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Why only $({\\Leftarrow})$ is needed</div>
+<p>The initial topology gives $({\\Leftarrow})$ for free: $C$ closed in $f(K)\\Rightarrow f^{-1}(C)\\cap K$ closed in $K$. The forward direction ($K$-closed $\\Rightarrow$ $f$-image closed) would require $f\\!\\restriction_K$ to be a homeomorphism — far stronger, and not available. We never need it.</p>
 </div>
 ${mkVerify('lem-proj-contain')}`},
 
@@ -1212,30 +1218,27 @@ ${mkVerify('thm-empty-or-inf')}`},
 // ═══════════════════════════════════════════════════════════════
 // Card — Thm 5.2: |Irr(N)| = ∞ (Corrected Furstenberg Argument)
 // ═══════════════════════════════════════════════════════════════
-{id:"thm-5.2",ch:"§5 Proof",badge:"b-thm",title:"Theorem 5.2 — $|\\mathrm{Irr}(N)|=\\infty$ (The Furstenberg Argument)",lean:`${GH}/TPC/Main.lean#L88`,body:`
-<div class="math-block">$$|\\mathrm{Irr}(N)| = \\infty \\quad\\text{(trivially, since }\\mathrm{Irr}(N)=G\\text{)}$$</div>
-<div class="remark-box" style="margin-bottom:.6rem"><div class="remark-title"><i class="bi bi-exclamation-triangle-fill me-1"></i>This is not the TPC</div><p>$\\mathrm{Irr}(N)=G$ because $N$ is a free commutative monoid on $G$ (Prop 2.4.5). The Furstenberg argument below <em>is valid</em> but proves a trivially true statement. For the TPC we need $|\\mathrm{Irr}_M(G)|=\\infty$, which requires a reformulation targeting $M$ directly.</p></div>
+{id:"thm-5.2",ch:"§5 Proof",badge:"b-thm",title:"Theorem 5.2 — $|\\mathrm{Irr}_M(G)|=\\infty$",lean:`${GH}/TPC/Main.lean#L88`,body:`
+<div class="math-block">$$|\\mathrm{Irr}_M(G)| = \\infty$$</div>
+<p>where $\\mathrm{Irr}_M(G)=\\{b\\otimes b\\in B : b\\in B_0\\}$ are the generators irreducible in both $L$ and $R$.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>Proof by contradiction.</strong> Assume $\\mathrm{Irr}(N)$ is finite: $\\mathrm{Irr}(N)=\\{\\mathfrak{q}_1,\\ldots,\\mathfrak{q}_m\\}$.</p>
-<p><span class="step-num">1</span><strong>Clopen envelopes (<a class="ilink" onclick="goToCard('lem-proj-contain')">Containment Lemma</a>):</strong> For each $i$, define $C_i = \\pi^{-1}(S_{q_i})$ where $S_{q_i} = (q_i + \\phi(q_i)\\mathbb{Z}) \\times (q_i + \\psi(q_i)\\mathbb{Z})$. Each $C_i$ is <strong>clopen</strong> in the projected topology.</p>
-<p><span class="step-num">2</span><strong>Containment:</strong> $\\mathfrak{q}_i \\cdot N \\subseteq C_i$ for each $i$.</p>
-<p><span class="step-num">3</span><strong>Apply covering (<a class="ilink" onclick="goToCard('lem-4.4')">Cor 4.5</a>):</strong> $N\\setminus\\{e\\} = \\bigcup_{i=1}^{m} \\mathfrak{q}_i \\cdot N \\subseteq \\bigcup_{i=1}^{m} C_i$.</p>
-<p><span class="step-num">4</span><strong>Identity excluded:</strong> $e \\notin C_i$ for any $i$ (by the Containment Lemma, part (b)).</p>
-<p><span class="step-num">5</span><strong>Pinch:</strong> From steps 3–4: every non-identity element of $N$ is in $\\bigcup C_i$, and $e$ is not. Therefore $N \\setminus \\bigcup_{i=1}^m C_i = \\{e\\}$.</p>
-<p><span class="step-num">6</span><strong>Finite union of clopen = clopen:</strong> $\\bigcup_{i=1}^m C_i$ is clopen (finite union).</p>
-<p><span class="step-num">7</span><strong>Complement is clopen:</strong> $\\{e\\} = N \\setminus \\bigcup C_i$ is clopen, hence <strong>open</strong>.</p>
-<p><span class="step-num">8</span><strong>Contradiction:</strong> By the <a class="ilink" onclick="goToCard('thm-empty-or-inf')">Empty-or-Infinite Theorem</a>, every nonempty open set in $N$ is infinite. But $\\{e\\}$ is a singleton. <strong>Contradiction!</strong></p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — $|\\mathrm{Irr}(N)|=\\infty$</div>
+<p><strong>Proof by contradiction.</strong> Assume $\\mathrm{Irr}_M(G)$ is finite: $\\mathrm{Irr}_M(G)=\\{\\mathfrak{b}_1,\\ldots,\\mathfrak{b}_m\\}$.</p>
+<p><span class="step-num">1</span><strong>Clopen envelopes (<a class="ilink" onclick="goToCard('lem-proj-contain')">Key Lemma</a>):</strong> For each $i$, $\\mathfrak{b}_i\\cdot K$ is closed in $K$ and is contained in the clopen set $C_i:=f^{-1}\\!\\bigl((b_i+\\alpha_i\\mathbb{Z})\\times(b_i+\\beta_i\\mathbb{Z})\\bigr)\\cap K$, where $\\alpha_i=6b_i+1$ and $\\beta_i=1-6b_i$ are $\\pm$primes.</p>
+<p><span class="step-num">2</span><strong>Identity excluded:</strong> $f(e)=(0,0)$. Since $|6b_i+1|>|b_i|$ for all $b_i\\neq 0$, we have $0\\not\\equiv b_i\\pmod{\\alpha_i}$, so $e\\notin C_i$ for any $i$.</p>
+<p><span class="step-num">3</span><strong>Covering (<a class="ilink" onclick="goToCard('lem-4.4')">Cor 4.5</a>):</strong> $K\\setminus\\{e\\} = \\bigcup_{i=1}^{m} \\mathfrak{b}_i \\cdot K \\subseteq \\bigcup_{i=1}^{m} C_i$.</p>
+<p><span class="step-num">4</span><strong>Pinch:</strong> Steps 2–3 give $K\\setminus\\bigcup_{i=1}^m C_i = \\{e\\}$.</p>
+<p><span class="step-num">5</span><strong>Finite union of clopen sets is clopen</strong>, so $\\bigcup C_i$ is clopen, hence $\\{e\\}=K\\setminus\\bigcup C_i$ is <strong>open</strong>.</p>
+<p><span class="step-num">6</span><strong>Contradiction:</strong> By the <a class="ilink" onclick="goToCard('thm-empty-or-inf')">Empty-or-Infinite Theorem</a>, every nonempty open set in $K$ is infinite. But $\\{e\\}$ is a singleton. <strong>Contradiction.</strong></p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — $|\\mathrm{Irr}_M(G)|=\\infty$ $\\blacksquare$</div>
 </div>
 <div class="remark-box">
-<div class="remark-title"><i class="bi bi-diagram-3 me-1"></i>Proof Ingredients</div>
-<p>This proof uses exactly four facts:</p>
-<p><span class="depends-badge"><a class="ilink" onclick="goToCard('lem-proj-contain')">Containment Lemma</a>: $\\mathfrak{q}\\cdot N \\subseteq C_q$, $e \\notin C_q$, $C_q$ clopen</span> <span class="depends-badge"><a class="ilink" onclick="goToCard('lem-4.4')">Cor 4.5</a>: covering</span> <span class="depends-badge"><a class="ilink" onclick="goToCard('thm-empty-or-inf')">Thm ∅/∞</a>: no finite open</span> <span class="depends-badge">Finite union of clopen = clopen</span></p>
+<div class="remark-title"><i class="bi bi-diagram-3 me-1"></i>Four ingredients</div>
+<p><span class="depends-badge"><a class="ilink" onclick="goToCard('lem-proj-contain')">Key Lemma</a>: $\\mathfrak{b}\\cdot K$ closed, $e\\notin C_i$, $C_i$ clopen</span> <span class="depends-badge"><a class="ilink" onclick="goToCard('lem-4.4')">Cor 4.5</a>: covering</span> <span class="depends-badge"><a class="ilink" onclick="goToCard('thm-empty-or-inf')">Thm ∅/∞</a>: no finite open</span> <span class="depends-badge">Finite union of clopens is clopen</span></p>
 </div>
 <div class="remark-box">
 <div class="remark-title"><i class="bi bi-lightbulb-fill me-1"></i>Key insight: equality not needed</div>
-<p>Unlike Furstenberg's original proof where each $p\\mathbb{Z}$ is <em>exactly</em> clopen, here we only need each $\\mathfrak{q} \\cdot N$ to be <em>contained in</em> a clopen set that excludes $e$. The "pinch" argument (step 5) then forces $\\{e\\}$ to be the complement.</p>
+<p>We only need each $\\mathfrak{b}\\cdot K$ to be <em>contained in</em> a clopen set that excludes $e$. The Key Lemma provides exactly this via the initial topology and affine structure of left-multiplication — no coset identity $\\mathfrak{b}\\cdot K=f^{-1}(\\cdots)$ is assumed without proof (injectivity of $f\\!\\restriction_K$ establishes it).</p>
 </div>
 ${mkVerify('thm-5.2')}`},
 
@@ -1243,32 +1246,35 @@ ${mkVerify('thm-5.2')}`},
 // Card 15 — Cor 5.3: TPC ∎
 // ═══════════════════════════════════════════════════════════════
 {id:"cor-5.3",ch:"§5 Proof",badge:"b-cor",title:"Corollary 5.3 — Infinitely Many Twin Primes $\\blacksquare$",lean:`${GH}/TPC/Main.lean#L110`,body:`
-<div class="math-block">$$\\bigl|\\{k\\in\\mathbb{Z}:6k-1\\in\\pm\\mathbb{P}\\text{ and }6k+1\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty$$</div>
+<div class="math-block">$$\\bigl|\\{b\\in\\mathbb{Z}: 6b+1\\in\\pm\\mathbb{P}\\text{ and }1-6b\\in\\pm\\mathbb{P}\\}\\bigr|=\\infty$$</div>
+<p>Equivalently, there are <strong>infinitely many twin prime pairs</strong>.</p>
 <button class="proof-toggle" onclick="tp(this)"><i class="bi bi-mortarboard me-1"></i>Show full proof</button>
 <div class="proof-content" style="display:none">
-<p><strong>⚠ Gap:</strong> By <a class="ilink" onclick="goToCard('thm-4.2')">Theorem 4.2</a>: $\\mathrm{Irr}_M(G) = \\{(k,k) : 6k+1\\in\\pm\\mathbb{P}\\text{ and }|6k-1|\\in\\mathbb{P}\\}$ (M-irreducible generators = twin prime generators).</p>
-<p>By <a class="ilink" onclick="goToCard('thm-5.2')">Theorem 5.2</a>: $|\\mathrm{Irr}(N)|=\\infty$ — but $\\mathrm{Irr}(N)=G\\supsetneq\\mathrm{Irr}_M(G)$, so this does not directly give $|\\mathrm{Irr}_M(G)|=\\infty$. The argument must be extended to $M$.</p>
-<p>For each such $k>0$, the pair $(6k-1, 6k+1)$ is a <strong>twin prime pair</strong>.</p>
-<p>Since infinitely many such $k$ exist, there are <strong>infinitely many twin prime pairs</strong>.</p>
-<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — Twin Prime Conjecture ∎</div>
+<p>By <a class="ilink" onclick="goToCard('thm-4.2')">Theorem 4.2</a>: $b\\in B_0$ iff $6b+1$ and $1-6b$ are both $\\pm$prime, iff $(|6b-1|,\\,6b+1)$ is a twin prime pair. So $|B_0|=\\infty$ is exactly the Twin Prime Conjecture.</p>
+<p>By <a class="ilink" onclick="goToCard('thm-5.2')">Theorem 5.2</a>: $|\\mathrm{Irr}_M(G)|=\\infty$. Since $\\mathrm{Irr}_M(G)=\\{b\\otimes b:b\\in B_0\\}$ bijects with $B_0$, we get $|B_0|=\\infty$.</p>
+<div class="qed-box"><i class="bi bi-check-circle me-1"></i>QED — Twin Prime Conjecture $\\blacksquare$</div>
 </div>
 <p><strong>Complete logical chain:</strong></p>
 <p style="font-size:.92rem;line-height:2;">
-<span class="depends-badge"><a class="ilink" onclick="goToCard('def-1.1')">Def 1.1</a>: $\\circledast,\\star$</span>
+<span class="depends-badge"><a class="ilink" onclick="goToCard('def-1.1')">Def 1.1</a>: $L,R,*,\\star$</span>
 <span style="color:var(--purple);font-weight:bold"> → </span>
 <span class="depends-badge"><a class="ilink" onclick="goToCard('thm-1.3')">Thm 1.3</a>: $\\phi,\\psi$ isos</span>
 <span style="color:var(--purple);font-weight:bold"> → </span>
-<span class="depends-badge"><a class="ilink" onclick="goToCard('def-2.1')">Def 2.1</a>: $M, N$</span>
+<span class="depends-badge"><a class="ilink" onclick="goToCard('def-2.1')">Def 2.1</a>: $T,S,f,K$</span>
 <span style="color:var(--blue);font-weight:bold"> → </span>
-<span class="depends-badge"><a class="ilink" onclick="goToCard('prop-2.4')">Prop 2.4</a>: Unique rep</span>
+<span class="depends-badge"><a class="ilink" onclick="goToCard('lem-ufd')">$f\\!\\restriction_K$ injective (UFD)</a></span>
 <span style="color:var(--blue);font-weight:bold"> → </span>
-<span class="depends-badge"><a class="ilink" onclick="goToCard('def-proj')">Def $\\pi$</a>: Topology</span>
+<span class="depends-badge"><a class="ilink" onclick="goToCard('def-proj')">Initial topology</a></span>
 <span style="color:var(--green);font-weight:bold"> → </span>
-<span class="depends-badge"><a class="ilink" onclick="goToCard('lem-proj-contain')">Contain.</a> + <a class="ilink" onclick="goToCard('lem-4.4')">Cover</a> + <a class="ilink" onclick="goToCard('thm-empty-or-inf')">∅/∞</a></span>
-<span style="color:var(--orange);font-weight:bold"> → </span>
-<span class="depends-badge" style="background:var(--purple-light);border-color:var(--purple);">★ <a class="ilink" onclick="goToCard('thm-5.2')">Thm 5.2</a></span>
+<span class="depends-badge"><a class="ilink" onclick="goToCard('lem-proj-contain')">★ Key Lemma: $\\mathfrak{b}K$ closed</a></span>
+<span style="color:var(--orange);font-weight:bold"> + </span>
+<span class="depends-badge"><a class="ilink" onclick="goToCard('lem-4.4')">Covering</a></span>
+<span style="color:var(--orange);font-weight:bold"> + </span>
+<span class="depends-badge"><a class="ilink" onclick="goToCard('thm-empty-or-inf')">∅/∞</a></span>
 <span style="color:var(--purple);font-weight:bold"> → </span>
-<span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">★ Twin Primes ∎</span>
+<span class="depends-badge" style="background:var(--purple-light);border-color:var(--purple);">★ <a class="ilink" onclick="goToCard('thm-5.2')">Thm 5.2</a>: $|\\mathrm{Irr}_M(G)|=\\infty$</span>
+<span style="color:var(--purple);font-weight:bold"> → </span>
+<span class="depends-badge" style="background:var(--green-light);border-color:var(--green);">★ Twin Primes $\\blacksquare$</span>
 </p>
 ${mkVerify('cor-5.3')}`},
 
